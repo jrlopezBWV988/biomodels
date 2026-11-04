@@ -8,6 +8,17 @@
 <script src="../jsmol/JSmol.min.js"></script>
 <script src="../jsmol/js/Jmol2.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style>
+.leyenda-cdr { border-collapse: collapse; font-size: 13.5px; min-width: 150px; }
+.leyenda-cdr caption { font-weight: 600; color: var(--title, #13324a); text-align: left; padding: 0 2px 6px; white-space: nowrap; }
+.leyenda-cdr th { font-weight: 600; text-align: left; padding: 4px 10px 6px 2px; border-bottom: 1px solid var(--line, #dbe2e9); }
+.leyenda-cdr th:first-child { color: rgb(46,139,87); }
+.leyenda-cdr th:last-child { color: rgb(170,70,0); }
+.leyenda-cdr td { padding: 5px 12px 5px 2px; white-space: nowrap; vertical-align: middle; }
+.leyenda-cdr tr.resto td { border-top: 1px solid var(--line, #dbe2e9); padding-top: 8px; color: var(--muted, #5a6977); }
+.leyenda-cdr tr.antigeno td { color: var(--muted, #5a6977); }
+.leyenda-cdr .mc { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 8px; vertical-align: -2px; border: 1px solid rgba(0,0,0,.25); }
+</style>
 </head>
 <body>
 <font face="Tahoma">
@@ -44,28 +55,27 @@
 		<TABLE border="1" cellspacing="5">
 		<TR>
 			<TD valign="top">
-				<B><CENTER>
-				<TABLE border="2" cellspacing="5" bgcolor="#000099">
-				<TR>
-				<TD colspan="2"><P ALIGN="CENTER"><FONT size="-1" COLOR="#FFFFFF">CDR</FONT></TD>
-				</TR>
-				<TR>
-				<TD><FONT size="-1"  COLOR="#669933">L<sub>V</FONT></sub></TD>
-				<TD><FONT size="-1" COLOR="#CC6600">H<sub>V</sub></FONT></TD>
-				</TR>
-				<TR>
-				<TD><FONT size="-1" COLOR="#66FF00">CDR<sub>1</sub></FONT></TD>
-				<TD><FONT size="-1" COLOR="#FF3300">CDR<sub>1</sub></FONT></TD>
-				</TR>
-				<TR>
-				<TD><FONT size="-1" COLOR="#33FFFF">CDR<sub>2</sub></FONT></TD>
-				<TD><FONT size="-1" COLOR="#FF9900">CDR<sub>2</sub></FONT></TD>
-				</TR>
-				<TR>
-				<TD><FONT size="-1" COLOR="#CCCCFF">CDR<sub>3</sub></FONT></TD>
-				<TD><FONT size="-1" COLOR="#FFFF00">CDR<sub>3</sub></FONT></TD>
-				</TR></CENTER>
-				</TABLE></B>
+				<table class="leyenda-cdr">
+				<caption>C&oacute;digo de colores</caption>
+				<tr><th>L<sub>V</sub></th><th>H<sub>V</sub></th></tr>
+				<tr>
+					<td><span class="mc" style="background:rgb(0,255,0)"></span>CDR<sub>1</sub></td>
+					<td><span class="mc" style="background:rgb(255,69,0)"></span>CDR<sub>1</sub></td>
+				</tr>
+				<tr>
+					<td><span class="mc" style="background:rgb(0,255,255)"></span>CDR<sub>2</sub></td>
+					<td><span class="mc" style="background:rgb(255,165,0)"></span>CDR<sub>2</sub></td>
+				</tr>
+				<tr>
+					<td><span class="mc" style="background:rgb(255,255,255)"></span>CDR<sub>3</sub></td>
+					<td><span class="mc" style="background:rgb(255,255,0)"></span>CDR<sub>3</sub></td>
+				</tr>
+				<tr class="resto">
+					<td><span class="mc" style="background:rgb(46,139,87)"></span>Resto</td>
+					<td><span class="mc" style="background:rgb(170,70,0)"></span>Resto</td>
+				</tr>
+				<tr class="antigeno"><td colspan="2"><span class="mc" style="background:rgb(255,0,255)"></span>Lisozima</td></tr>
+				</table>
 			</TD>
 			<TD valign="top">
 			<script> 

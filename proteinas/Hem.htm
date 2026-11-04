@@ -24,6 +24,7 @@
 	<form>
 	<script>
 		  jmolInitialize("../jsmol/js");
+		  Jmol.Info.j2sPath = "../jsmol/j2s";
 		  jmolSetParameter("UseCommandThread","true");
 		  jmolApplet(350, "load ../pdb/HEM.cif; cpk on; background aliceblue");
 		  jmolBr();

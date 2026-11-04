@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<style type="text/css">
+    html, body {
+    margin:0px;
+	height:100%;
+	width:100%;
+	font-family:'Tahoma';
+	font-size:small;
+	}
+   	#col-izq {
+    height:540px;
+    width:500px;
+	padding-top:10px;
+	padding-left:5px;
+	float:left;
+	}
+    #col-der {
+    height:540px;
+    padding-top:10px;
+	padding-left:5px;
+	text-align:left;
+	width:auto;
+	border-left:#CCCCCC solid 1px;
+	overflow-y:scroll;
+	}
+	#pie {
+	height:100px;
+    margin-left:0px;
+    width:100%;
+	float:left;
+	border-top:#CCCCCC solid 1px;
+	padding:5px;
+	background-color:#FFFFCC;
+	}
+</style>
+<title>Ribosoma</title>
+<meta name="Generator" content="EditPlus 1.2" />
+<meta name="Author" content="" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+</script>
+</head>
+<body>
+<div id="col-izq">
+	<center><font size="+1"><b><i><font color="#004080">Estructura del Ribosom</font>a</i></b></font></center>
+	<script type="text/javascript">
+	//<![CDATA[
+      jmolInitialize("./jsmol/js");
+      jmolSetParameter("UseCommandThread","true");
+      jmolApplet([495,510],"load files './pdb/2QNH.pdb.gz'" +
+	  "'./pdb/1VSP.pdb.gz';" +
+	  "model all; wireframe off; spacefill off;" +
+	  "color chain;cartoon on; hide :z/1.1 or :2/1.1; background aliceblue;");
+      jmolBr();
+	//]]>
+	</script>
+</div>
+<div id="col-der">
+	Se muestra la estructura del ribosoma 70S de la bacteria 
+	<a target="new" href="http://en.wikipedia.org/wiki/Thermus_thermophilus"><i><b>thermus thermophilus</b></i></a>.
+	<p>
+	<script type="text/javascript">
+	//<![CDATA[
+ 	jmolButton("model ALL; select all; hide none; wireframe off;" +
+	"spacefill 100%;color green; select 2.1; color red;hide :z/1.1 or :2/1.1;spin off;" +
+	 "moveto 0.0 { 465 -752 -468 135.8} 106.12 0.1 0.0 {-138.0435 24.96 -103.537994}" +
+	 "157.06401 {0.0 0.0 0.0} -44.765408 34.166775 0.0",
+	"x");
+	//]]>
+	</script>
+	Si se muestra la subunidad <b>30S</b> en verde, y la subunidad <b>50S</b> en rojo,
+	puede apreciarse la hendidura entre ambas subunidades en la que se colocar&aacute;n
+	el <b>mRNA</b> y los <b>tRNAs</b> durante la s&iacute;ntesis prote&iacute;ca.
+	<p>
+	<b><i><font color="#008000"><font size="+1"><u>Subunidad 30S</u></font></font></i></b>
+	<Br>
+	<script type="text/javascript">
+	//<![CDATA[
+	jmolButton("model all; select 1.1; wireframe off; spacefill off;" +
+	"color chain; cartoon on; select 2.1; spacefill off; wireframe off; cartoon off;" +
+	"backbone on; color cpk; hide :z/1.1 or :2/1.1;" +
+	"moveto 0.0 { 465 -752 -468 135.8} 106.12 0.1 0.0 {-138.0435 24.96 -103.537994}" +
+	"157.06401 {0.0 0.0 0.0} -44.765408 34.166775 0.0;",
+	"x");
+	//]]>
+	</script>
+	Si se simplifica la vista de la subunidad <b>50S</b> mostrando solo su esqueleto, puede apreciarse 
+	la estructura de todas las mol&eacute;culas que forman la subunidad <b>30S</b>.
+	<Br> 
+	Con m&aacute;s detalle:
+	<ul>
+	<li><script type="text/javascript">
+		//<![CDATA[
+		jmolButton("model all; select all; wireframe off; spacefill off; backbone on;cartoon off;" +
+		"color cpk; select :y/1.1;cartoon on; color green; hide :z/1.1 or :2/1.1 or :3/1.1;" +
+		"center {-138.0435 24.96 -103.537994};" +
+		"moveto -1.0 {0 0 1 0} 100.0 0.1 0.0 {-138.0435 24.96 -103.537994}" +
+		"157.06401 {0.0 0.0 0.0} 0.0 0.0 0.0;" +
+		"moveto 0.0 { -144 975 -170 106.42} 140.02 0.3 -13.53 {-138.0435 24.96 -103.537994}" +
+		"157.06401 {0.0 0.0 0.0} 25.462437 16.030167 0.0;",
+		"16S rRNA (verde)");
+		//]]>
+		</script>
+	</li>
+	<li><script type="text/javascript">
+		//<![CDATA[
+		jmolButton("model all; select all; wireframe off; spacefill off; backbone on;cartoon off;" +
+		"select 1.1; cartoon on; color blue; select :y/1.1;cartoon off; color cpk;" +
+		"hide :z/1.1 or :2/1.1 or :3/1.1",
+		"Prote&iacute;nas (azul)");
+		//]]>
+		</script>
+	</li>
+	</ul>
+	El <b>rRNA 16S</b> forma el n&uacute;cleo central, mientras que las 17 prote&iacute;nas 
+	necesarias para formar la subunidad 30S se disponen en la superficie.
+	<p>
+	<b><i><font color="#FF0000"><font size="+1"><u>Subunidad 50S</u></font></font></i></b>
+	<Br>
+	<script type="text/javascript">
+	//<![CDATA[
+	jmolButton("model all; select 2.1; wireframe off; spacefill off;" +
+	"color chain; cartoon on; select 1.1; spacefill off; wireframe off; cartoon off;" +
+	"backbone on; color cpk; hide :z/1.1 or :2/1.1;" +
+	"moveto 0.0 { 465 -752 -468 135.8} 106.12 0.1 0.0 {-138.0435 24.96 -103.537994}" +
+	"157.06401 {0.0 0.0 0.0} -44.765408 34.166775 0.0;",
+	"x");
+	//]]>
+	</script>
+	Si ahora simplificamos la vista de la subunidad <b>30S</b> mostrando solo su esqueleto, 
+	apreciamos la estructura de todas las mol&eacute;culas que forman la subunidad <b>50S</b>.
+	<Br> 
+	Con m&aacute;s detalle:
+	<ul>
+	<li><script type="text/javascript">
+		//<![CDATA[
+		jmolButton("model all; select all; wireframe off; spacefill off; backbone on;cartoon off;" +
+		"color cpk; select :w/2.1;cartoon on; color green; hide :z/1.1 or :2/1.1 or :3/1.1;" +
+		"center {-138.0435 24.96 -103.537994};" +
+		"moveto 0.0 { 502 -751 -429 156.86} 124.45 0.2 0.0 {-138.0435 24.96 -103.537994}" +
+		"157.06401 {0.0 0.0 0.0} -43.858223 29.745975 0.0",
+		"23S rRNA (verde)");
+		//]]>
+		</script>
+	</li>
+	<li><script type="text/javascript">
+		//<![CDATA[
+		jmolButton("model all; select all; wireframe off; spacefill off; backbone on;cartoon off;" +
+		"color cpk; select :x/2.1;cartoon on; color red; hide :z/1.1 or :2/1.1 or :3/1.1;" +
+		"center {-138.0435 24.96 -103.537994};" +
+		"moveto 0.0 { 502 -751 -429 156.86} 124.45 0.2 0.0 {-138.0435 24.96 -103.537994}" +
+		"157.06401 {0.0 0.0 0.0} -43.858223 29.745975 0.0",
+		"5S rRNA (rojo)");
+		//]]>
+		</script>
+	</li>
+	<li><script type="text/javascript">
+		//<![CDATA[
+		jmolButton("model all; select all; wireframe off; spacefill off; backbone on;cartoon off;" +
+		"select 2.1; cartoon on; color blue; select :w/2.1 or :x/2.1;cartoon off; color cpk;" +
+		"hide :z/1.1 or :2/1.1 or :3/1.1",
+		"Prote&iacute;nas (azul)");
+		//]]>
+		</script>
+	</li>
+	</ul>
+	El <b>rRNA 23S</b> forma el n&uacute;cleo central, mientras que el <b>rRNA 5S</b> y las 28
+	prote&iacute;nas necesarias para completar la subunidad 50S se disponen en la superficie. Al igual
+	que en la subunidad 30S, las prote&iacute;nas son estructural globulares con lazos sin estructura
+	secundaria definida que se introducen como "serpientes" entre el rRNA.
+	<p>
+	<b><i><font size="+1"><u>mRNA y tRNAs</u></font></i></b>
+	<Br>
+	<script type="text/javascript">
+	//<![CDATA[
+ 	jmolButton("model ALL; select all; hide none; wireframe off;" +
+	"spacefill 100%; color green; select 2.1; color red;spin on;" +
+	"moveto 0.0 { 465 -752 -468 135.8} 106.12 0.1 0.0 {-138.0435 24.96 -103.537994}" +
+	"157.06401 {0.0 0.0 0.0} -44.765408 34.166775 0.0;" +
+	"select :z/1.1 or :2/1.1; cartoon on; color orange;" +
+	"select :3/1.1; cartoon on; color blue",
+	"x");
+	//]]>
+	</script>
+	Los <b>t-RNA</b> ocupando el <b>sitio P</b> y el <b>sitio E</b> se muestran en naranja. 
+	El fragmento de <b>mRNA</b> contenido en el ribosoma se muestra en azul.
+	<Br>
+	<script type="text/javascript">
+	//<![CDATA[
+	jmolButton("model all; hide none; select all; wireframe off;" +
+	"spacefill off; color gainsboro; cartoon off; backbone on;" +
+	"select :z/1.1 or :2/1.1; cartoon on; color orange;" +
+	"select :3/1.1; cartoon on; color blue",
+	"x");
+	//]]>
+	</script>
+	El resto de las	mol&eacute;culas se muestran en gris.
+</div>
+<div id="pie">
+<center>
+<script type="text/javascript">
+	jmolButton("model all; wireframe off; spacefill off; backbone off;" +
+	"display :w/2.1; cartoon on; color green",
+	"rRNA 23S");
+</script>
+<script type="text/javascript">
+	jmolButton("model all; wireframe off; spacefill off; backbone off;" +
+	"display :x/2.1; cartoon on; color red",
+	"rRNA 5S");
+</script>
+<script type="text/javascript">
+	jmolButton("model all; wireframe off; spacefill off; backbone off;" +
+	"display :y/1.1; cartoon on; color green",
+	"rRNA 16S");
+</script>
+<script type="text/javascript">
+	//<![CDATA[
+ 	jmolButton("model ALL; select all; hide none; wireframe off;" +
+	"spacefill off;color chain;cartoon on; hide :z/1.1 or :2/1.1;" +
+	"moveto 0.0 { 465 -752 -468 135.8} 106.12 0.1 0.0 {-138.0435 24.96 -103.537994}" +
+	"157.06401 {0.0 0.0 0.0} -44.765408 34.166775 0.0",
+	"Imagen original");
+	//]]>
+</script>
+	&nbsp;&nbsp;
+<script type="text/javascript">
+	//<![CDATA[
+ 	jmolCheckbox("spin on", "spin off", "Rotaci&oacute;n")
+	//]]>
+</script>
+	</center>
+</div>
+</body>
+</html>

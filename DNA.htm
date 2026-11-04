@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Estructura del DNA</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Estructura del DNA</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(500, "load ./pdb/BDL002.gz; cpk on; moveto 0.0 { -142 749 647 152.85} 100.0 0.07 0.07 {14.450001 20.7785 9.656} 24.755383 {0.0 0.0 0.0} 40.113823 29.19447 0.0; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=top>
+		<script>
+	      jmolMenu([
+	        ["load ./pdb/BDL002.gz; cpk on; moveto 0.0 { -142 749 647 152.85}   100.0 0.07 0.07 {14.450001 20.7785 9.656} 24.755383 {0.0 0.0 0.0} 40.113823 29.19447 0.0", "Forma B (Watson-Crick)", "selected"],
+			["load ./pdb/140D.gz; cpk on", "Forma A"],
+			["load ./pdb/2ZNA.gz; select * and not hydrogen; cpk on; moveto 0.0 { -73 -719 -691 171.64} 100.0 0.07 0.07 {0.0 0.0 18.575} 26.1035 {0.0 0.0 0.0} 0.17162022 37.790977 0.0", "Forma Z"]
+		 ]);
+		</script>
+		<P>
+		<script>
+			jmolButton("cartoon off; select *; spacefill off; wireframe off; select * and not hydrogen; color cpk; wireframe 0.2", "Modelo de Varillas");
+		</script> 
+		<P>
+		<script>
+			jmolButton("select *; cartoon off; select * and not hydrogen; color cpk; spacefill 100%; isosurface off", "Esferas de Van der Walls");
+		</script> 
+		<P>
+		<script>
+			jmolButton("cartoon off; select backbone and not hydrogen; spacefill 100%; color green; select bases and not hydrogen;; spacefill 100%; color red", "Esqueleto en verde \r Bases en rojo");
+		</script> 
+		<p>
+		<script>
+			jmolButton("select *; spacefill off; wireframe off; cartoon on; color cpk", "Esquema");
+		</script> 
+		<p>
+		<script>
+			jmolCheckbox("spin on", "spin off", "Rotaci&oacute;n")
+		</script>
+		<P>
+		</TD>
+</TR>
+</Table>
+<BR>
+<b><i>Comparaci&oacute;n entre las geometrias de las tres formas de DNA:</b></i>
+<P>
+<table border="1" cellspacing="2">
+<tr>
+	<th></th>
+	<th>Forma A</th>
+	<th bgcolor="#FFF8DC">Forma B</th>
+	<th>Forma Z</th>
+</tr>
+<tr>
+	<td><b><i>Sentido de giro</i></b></td>
+	<td align="center">dextrorsa</td>
+	<td align="center" bgcolor="#FFF8DC">dextrorsa</td>
+	<td align="center">sinistrorsa</td>
+</tr>
+<tr>
+	<td><b><i>Unidad de repetici&oacute;n</i></b></td>
+	<td align="right">1 pb</td>
+	<td align="right" bgcolor="#FFF8DC">1 pb</td>
+	<td align="right">2 pb</td>
+</tr>
+<tr>
+	<td><b><i>Rotaci&oacute;n/pb</i></b></td>
+	<td align="right">32.7&deg;</td>
+	<td align="right" bgcolor="#FFF8DC">35.9&deg;</td>
+	<td align="right">60&deg;</td>
+</tr>
+<tr>
+	<td><b><i>pb/vuelta</i></b></td>
+	<td align="right">11</td>
+	<td align="right" bgcolor="#FFF8DC">10.5</td>
+	<td align="right">12</td>
+</tr>
+<tr>
+	<td><b><i>Inclinaci&oacute;n entre los pb y el eje</i></b></td>
+	<td align="right">+19&deg;</td>
+	<td align="right" bgcolor="#FFF8DC">-1.2&deg;</td>
+	<td align="right">-9&deg;</td>
+</tr>
+<tr>
+	<td><b><i>Avance/pb en el eje</i></b></td>
+	<td align="right">2.3 &Aring;</td>
+	<td align="right" bgcolor="#FFF8DC">3.32 &Aring;</td>
+	<td align="right">3.8 &Aring;</td>
+</tr>
+<tr>
+	<td><b><i>Avance/vuelta de la h&eacute;lice</i></b></td>
+	<td align="right">28.2 &Aring;</td>
+	<td align="right" bgcolor="#FFF8DC">33.2 &Aring;</td>
+	<td align="right">45.6 &Aring;</td>
+</tr>
+<tr>
+	<td><b><i>Giro de la h&eacute;lice</i></b></td>
+	<td align="right">+18&deg;</td>
+	<td align="right" bgcolor="#FFF8DC">+16&deg;</td>
+	<td align="right">0&deg;</td>
+</tr>
+<tr>
+	<td><b><i>&Aacute;ngulo del enlace glucos&iacute;dico</i></b></td>
+	<td align="center">anti</td>
+	<td align="center" bgcolor="#FFF8DC">anti</td>
+	<td align="center">C: anti<br/>G: syn</td>
+</tr>
+<tr>
+	<td><b><i>Anillo de la ribosa</i></b><Br>
+	<img src="images/Endo-Ribosa.png" alt="" title="" border="0" height="120">
+	</td>
+	<td align="center">C3'-endo</td>
+	<td align="center" bgcolor="#FFF8DC">C2'-endo</td>
+	<td align="center">C: C2'-endo<br/>G: C3'-endo</td>
+</tr>
+<tr>
+	<td><b><i>Di&aacute;metro</i></b></td>
+	<td align="right">23 &Aring;</td>
+	<td align="right" bgcolor="#FFF8DC">20 &Aring;</td>
+	<td align="right">18 &Aring;</td>
+</tr>
+</table>
+</BODY>
+</HTML>

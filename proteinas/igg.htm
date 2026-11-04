@@ -1,0 +1,48 @@
+<html>
+ <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+ <title>IgG</title>
+ <script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body>
+<P>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD valign="top">
+	<CENTER><form>
+	<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolApplet(420, "load ../pdb/igg.pdb.gz; moveTo 0 0 -1000 0 12.0 100 0 -7; background aliceblue; select (atomno>=1) and (atomno<=3484); colour atoms [0,0,255];select (atomno>=3485) and (atomno<=6968); colour atoms [0,255,255]; select (atomno>=6969) and (atomno<=8575); colour atoms [0,255,0]; select (atomno>=8576) and (atomno<=10182); colour atoms [255,255,0]; select (atomno>=10183) and (atomno<=10402); colour atoms [255,0,0]; select all; spacefill on; spin on");
+		  jmolBr();
+		  jmolButton("moveTo 0 0 -1000 0 12.0 100 0 -7; background aliceblue; select (atomno>=1) and (atomno<=3484); colour atoms [0,0,255];select (atomno>=3485) and (atomno<=6968); colour atoms [0,255,255]; select (atomno>=6969) and (atomno<=8575); colour atoms [0,255,0]; select (atomno>=8576) and (atomno<=10182); colour atoms [255,255,0]; select (atomno>=10183) and (atomno<=10402); colour atoms [255,0,0]; select all; spacefill on; spin on", "imagen original");
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign="top">
+	<CENTER><FONT COLOR="#3333CC"><B>Estructura de las IgG</B></FONT></CENTER>
+	<p>
+	Las IgG son tetr&aacute;meros formados por cuatro cadenas polipept&iacute;dicas: dos cadenas pesadas, <B><FONT COLOR="#3366FF">H1</FONT> y<FONT COLOR="#33FFFF"></B> H2</FONT>) y dos cadenas ligeras, <B><FONT COLOR="#FFFF00">L1</FONT></B> y <B><FONT COLOR="#33CC00">L2</FONT></B>).<BR>
+	Las cadenas H y las L se unen por puentes disulfuro intercatenarios. 
+	<BR>
+	Adem&aacute;s, existen puentes disulfuro intracatenarios que hacen que tanto las cadenas ligeras como las pesadas se plieguen en varios dominios:
+	<FONT SIZE="-1"><UL type="solid circle">
+		<LI>Los primeros 108 aa. de todas las cadenas son diferentes para cada anticuerpo y forman la <I><B>Regi&oacute;n Variable</B></I> (V<sub>H</sub> y V<sub>L</sub>). Este dominio contiene el sitio de uni&oacute;n con el ant&iacute;geno.</li>
+		<LI>El resto de aa. son id&eacute;nticos para todas las inmunoglobulinas de una clase (G, A, M, D o E), y forman la denominada <I><B>Regi&oacute;n Constante</B></I> (C<sub>H</sub> y C<sub>L</sub>).</li>
+	</UL>
+	</font>
+	<p>
+	<script>
+		jmolButton("restrict backbone; spacefill off; select cys; color cpk; spacefill on; color ssbonds", "x");
+	</script>
+	Las ciste&iacute;nas que forman los puentes disulfuro se muestran aqu&iacute; en modelo espacial, superpuestas en el esqueleto pept&iacute;dico de las cuatro cadenas. 
+	<BR>
+	</TD>
+</TR>
+</body>
+</html>

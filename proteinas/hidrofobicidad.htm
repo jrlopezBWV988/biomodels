@@ -1,0 +1,118 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+<title>Hidrofobicidad</title>
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<script type="text/javascript">
+var step=5	
+function change(ctl,inc)
+{	var v = parseInt(ctl.value)
+	if ( inc>0 && v>(100-step) ) return
+	if ( inc<0 && v<step ) return
+	v += step*inc
+	if ( ctl.name == "depth" )
+	{	if ( v > ctl.form.slab.value ) return
+		ctl.value=v
+		doDepth(v) 
+	}
+	if ( ctl.name == "slab" )
+	{	if ( v < ctl.form.depth.value ) return
+		ctl.value=v
+		doSlab(v) 
+	}
+}
+function doSlab(v) { jmolScript("slab " + v) }
+function doDepth(v) { jmolScript("depth " + v) }
+</script>
+<style type="text/css">
+<!--
+body { font-family:Arial, Helvetica, sans-serif; }
+.Estilo1 {
+	color: #CC6600;
+	font-size: 0.85em;
+}
+.Estilo2 {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.Estilo3 {
+	color: #018D6D;
+	font-weight: bold;
+}
+.Estilo4 {
+	color: #0000FF;
+	font-weight: bold;
+}
+.Estilo5 {
+	color: #FFFF00;
+	font-weight: bold;
+}
+.Estilo6 {font-size: 0.8em}
+-->
+</style>
+</head>
+<body>
+<form>
+<table>
+<tr valign="top">
+    <td valign="top">
+	<CENTER><script type="text/javascript">
+		jmolInitialize("../jsmol/js");
+		jmolApplet(420, "load ../pdb/hho.pdb.gz; restrict not solvent; moveTo 0 282 -803 525 81.1; background aliceblue; color cpk; slab on; spacefill on");
+		jmolBr();
+		jmolButton("moveTo 1 282 -803 525 81.1; select *; background aliceblue; color cpk; slab on; spacefill on", "imagen original");
+	</script></CENTER>
+	</td>
+    <td valign="top">
+	<CENTER><FONT SIZE="+1" COLOR="#3333CC"><B>Hidrofobicidad de las proteinas globulares:<BR>Cadena alfa de la hemoglobina</B></FONT></CENTER><P>
+		<table border="0" bgcolor="#FFFFCC">
+		<thead>
+		<div align="center"><input type="reset" onClick="jmolScript('slab 100; depth 0')" value="Seccion original"></div>
+		</thead>
+		<tr align="center">
+		<td colspan="2">Plano anterior</td>
+		<td colspan="2">posterior</td>
+		<td colspan="2">(Ambos)</td>
+		</tr>
+		<tr>
+		<td align="right"><input type="text" name="slab" value="100" size="4" onChange="doSlab(this.value)">%</td>
+		<td align="left"><input type="button" value="+" onClick="change(this.form.slab,1)"><br/>
+		<input type="button" value="-" onClick="change(this.form.slab,-1)"></td>
+		<td align="right"><input type="text" name="depth" value="0" size="4" onChange="doDepth(this.value)">%</td>
+		<td align="left"><input type="button" value="+" onClick="change(this.form.depth,1)"><br/>
+		<input type="button" value="-" onClick="change(this.form.depth,-1)"></td>
+		<td align="center"><input type="button" value="Adelante" onClick="change(this.form.slab,1);change(this.form.depth,1)"><br/>
+		<input type="button" value="Atras" onClick="change(this.form.depth,-1);change(this.form.slab,-1)"></td>
+		</tr>
+		<tr align="center">
+		<td colspan="2"><span class="Estilo6">(porcentaje visible)</span></td>
+		<td colspan="2"><span class="Estilo6">(porcentaje oculto)</span></td>
+		<td align="center">&nbsp;</td>
+		</tr>
+		</table>
+<P>
+<script>
+	jmolCheckbox("set spin x 10; set spin y 10; spin on", "spin off", "Rotaci&oacute;n")
+</script> 
+<P>
+<script type="text/javascript">
+jmolButton("select Gly,Ala,Pro,Val,Leu,Ile,Met, Phe; colour [34,17,255]; select Ser, Thr, Cys, Asn, Gln, Tyr, Trp; colour [246,153,154];select Lys, His, Arg; colour [255,32,9]; select Asp, Glu; colour [254,114,0]; select hem; color green","X")
+</script>
+La distribuci&oacute;n de los amino&aacute;cidos en la prote&iacute;na seg&uacute;n el car&aacute;cter polar o apolar de su cadena lateral puede apreciarse con el siguiente codigo de colores:
+	<ol type="1"><B>
+    <li><FONT COLOR="#2211FF">Apolares (Gly,Ala,Pro,Val,Leu,Ile,Met,Phe)</FONT></li>
+    <li><FONT COLOR="#F69986">Polares sin carga (Ser,Thr,Cys,Asn,Gln,Tyr,Trp</FONT></li>
+    <li><FONT COLOR="#FE7200">Polares con carga positiva (Lys, His, Arg)</FONT></li>
+    <li><FONT COLOR="#FF2009">Polares con carga negativa (Asp, Glu)</FONT></li>
+    <li><FONT COLOR="#009900"><I>Hemo</I></FONT></li><B/>
+	</ol> 
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

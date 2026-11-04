@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+<TITLE>Miglobina y Hemoglobina</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<font face="Tahoma">
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<body>
+<table width="780">
+<tr>
+    <td valign=top>
+	<form>
+		<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(420, "load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120;restrict not solvent; background aliceblue; spacefill on; colour chain; select hem; color cpk; spin on");
+		</script>
+		</form>
+	</td>
+    <td valign="top">
+	 La <B>conformaci&oacute;n T</B> est&aacute; estabilizada por puentes salinos que se rompen al unirse el ox&iacute;geno (<B>conformaci&oacute;n R</B>) 
+     <P>
+	 <IMG SRC="../images/psalinos.png">
+	 <P>
+	 <TABLE border="0" valign="top" align="left">
+	 <TR>
+	 	<TD valign="top" align="center">
+		<script>
+			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120; select *; background aliceblue; spacefill off; wireframe off; cartoons on; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select hem; cartoons off; spacefill on; colour cpk; spin on","Forma T");
+		</script>
+		<hr>
+		</TD>
+	 	<TD valign="top" align="center">
+		<script>
+			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz; moveTo 0 -999 27 28 95.0 120; select *; background aliceblue; spacefill off; wireframe off; cartoons on; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select hem; cartoons off; spacefill on; colour cpk; spin on","Forma R");
+		</script>
+		<hr>
+		</TD>
+	 </TR>
+	 <TR>
+	 	<TD valign="top" align="center">
+			<script>
+			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120; select *; background aliceblue;wireframe off; cartoons off; spacefill off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select His146,Lys40; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","His146-Lys40");
+			</script>
+		</TD>
+	 	<TD valign="top" align="center">
+		--->
+		<script>
+			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *; background aliceblue;wireframe off; cartoons off; spacefill off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select His146,Lys40; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","His146-Lys40");
+			</script>
+		</TD>
+	 </TR>
+	 <TR>
+	 	<TD valign="top" align="center">
+			<script>
+			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120; select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp94B,Asp94D, His146; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cp; spin off","Asp94-His146");
+			</script>
+		</TD>
+	 	<TD valign="top" align="center">
+		--->
+		<script>
+			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp94B,Asp94D, His146; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Asp94-His146");
+			</script>
+		</TD>
+	 </TR>
+	 <TR>
+	 	<TD valign="top" align="center">
+			<script>
+			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120;select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp126,Arg141; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Asp126-Arg141");
+			</script>
+		</TD>
+	 	<TD valign="top" align="center">
+		--->
+		<script>
+			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *;zoom 120; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp126,Arg141; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Asp126-Arg141");
+			</script>
+		</TD>
+	 </TR>
+	 <TR>
+	 	<TD valign="top" align="center">
+			<script>
+			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120;select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Val1,Arg141; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Val1-Arg141");
+			</script>
+		</TD>
+	 	<TD valign="top" align="center">
+		--->
+		<script>
+			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Val1C,Arg141A, Val1A, Arg141C; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Val1-Arg141");
+			</script>
+		</TD>
+	 </TR>
+	 </TABLE>
+	 </td>
+</tr>
+</table>
+</BODY>
+</HTML>

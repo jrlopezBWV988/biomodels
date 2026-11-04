@@ -1,0 +1,10 @@
+table {
+  width: 100%;
+  max-width: 1080px;
+}
+td {
+   width: 33%;
+   vertical-align: top;
+   text-align: center;
+   padding: 10px;
+}

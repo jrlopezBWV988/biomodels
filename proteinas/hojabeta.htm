@@ -1,0 +1,77 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Hoja plegada beta</title>
+</head>
+<font face="Tahoma">
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<body>
+<table width="780" cellpadding=5>
+ <tr>
+    <td valign=top>
+	<CENTER>
+	<form>
+		<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(420, "load ../pdb/hoja_beta.pdb.gz; moveTo 0 -816 -349 461 76.8; background aliceblue; spacefill on; spin on");
+		  jmolBr();
+		  jmolBr();
+		  jmolButton("moveTo 0 -816 -349 461 76.8; background aliceblue; select *; spacefill on; color cpk; spin on", "imagen original");
+		  </script>
+		</form>
+	</CENTER>
+	</td>
+    <td valign="top">
+       <font SIZE="5" COLOR="#3333CC" face="Tahoma"><b>Hoja plegada beta</b></font>
+	   <hr>
+	   <P>
+	   <B>
+	   <script>
+	  jmolRadioGroup([
+		  ["load ../pdb/silk.pdb.gz; moveTo 0 -816 -349 461 76.8; background aliceblue; spacefill on; spin on",  "Fibro&iacute;na de la seda"],
+		  ["load ../pdb/hoja_beta.pdb.gz; moveTo 0 -816 -349 461 76.8; background aliceblue; spacefill on; spin on",  "Hoja beta (fragmento del enzima Lisozima)", "checked"]
+		]);
+	  </script>
+	  </B>
+	  <BR>
+	  <I>(La fibro&iacute;na de la seda est&aacute; formada por polp&eacute;ptidos con la secuencia<br>
+        </span><span style="mso-color-index: 3"><font color="#3333CC">(-Gly-ser-Gly-Ala-Gly-Ala-)<span style="mso-color-index: 3; position: relative; top: .37em; mso-text-raise: -25%">n</span></font></span><span style="color: black; mso-color-index: 3"><span style="mso-spacerun: yes; color: black; mso-color-index: 3">&nbsp;</span>plegados
+        en hojas beta antiparalelas)</span></b></font></I>
+	<hr>
+	<P>
+	<script>
+		jmolButton("spin on;select *;hbonds off;cartoons off; color cpk; spacefill on; select backbone; spacefill on;color [255,255,0]", "x");
+	</script>
+	Esqueleto Pept&iacute;dico en amarillo
+	<P>
+	<script>
+		jmolButton("spin on;select *;hbonds off;cartoons off; spacefill on; color [0,255,0];select backbone;spacefill on;color [255,255,0]", "x");
+	</script>
+	Esqueleto Pept&iacute;dico en amarillo y cadenas laterales en verde
+	<script>
+		jmolButton("spin on;select *;hbonds off; cartoons off; spacefill off; wireframe 60;color [0,255,0];select backbone;color [255,255,0]", "x");
+	</script>
+	(modelo de varillas)  
+	<P>  
+	<script>
+		jmolButton("spin on;select *;hbonds calculate;cartoons off; spacefill off; wireframe off; color cpk;  select backbone; wireframe 60", "x");
+	</script>
+	Los puentes de hidrogeno (trazos punteados) se establecen entre el CO y el NH de los enlaces pept&iacute;dicos de las cadenas antiparalelas
+	 <P>  
+	<script>
+		jmolButton("spin on;select *;hbonds off;wireframe off;hbonds off; spacefill off;cartoons on; color structure", "x");
+	</script>
+	Representaci&oacute;n convencional
+	</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Bases y Nucleótidos</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Bases y Nucle&oacute;tidos</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(450, "load ./pdb/Adenina.gz; cpk on; spacefill 25%; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=top>
+		<script>
+	      jmolMenu([
+	        ["#optgroup", "Bases Nitrogenadas:"],
+			["load ./pdb/Adenina.gz; cpk on; spacefill 25%", "Adenina", "selected"],
+			["load ./pdb/Guanina.gz; cpk on; spacefill 25%", "Guanina"],
+			["load ./pdb/Citosina.gz; cpk on; spacefill 25%", "Citosina"],
+			["load ./pdb/Timina.mol; cpk on; spacefill 25%", "Timina"],
+			["load ./pdb/Uracilo.gz; cpk on; spacefill 25%", "Uracilo"],["#optgroupEnd"],["#optgroup", "Nucle&oacute;tidos trifosfato:"],
+			["load ./pdb/ATP.gz; cpk on; spacefill 25%", "ATP"],
+			["load ./pdb/ATPMg.gz; cpk on; spacefill 100%", "ATP(Mg)"],
+			["load ./pdb/GTP.gz; cpk on; spacefill 25%", "GTP"],
+			["load ./pdb/CTP.gz; cpk on; spacefill 25%", "CTP"],
+			["load ./pdb/UTP.gz; cpk on; spacefill 25%", "UTP"],
+			["load ./pdb/dTTP.gz; cpk on; spacefill 25%", "dTTP"]
+		 ]);
+		</script>
+		<P>
+		<script>
+			jmolButton("select *; spacefill 100%", "Esferas de Van der Walls");
+		</script> 
+		<p>
+		<script>
+			jmolButton("select *; spacefill 25%", "Modelo de esferas y varillas");
+		</script> 
+		<P>
+		<script>
+			jmolButton("select *; spacefill off", "Modelo de varillas");
+		</script> 
+		<P>
+		<script>
+			jmolCheckbox("set spin x 10; set spin y 10; spin on", "spin off", "Rotaci&oacute;n")
+		</script> 	
+	</TD>
+</TR>
+</BODY>
+</HTML>

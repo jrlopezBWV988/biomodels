@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+<TITLE>Miglobina y Hemoglobina</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<font face="Tahoma">
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<body>
+<table width="780">
+<tr>
+    <td valign=top>
+	<form>
+		<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(420, "load ../pdb/hemo-deOxy-HeliceF.pdb.gz;moveTo 0 -912 406 55 34.9 150; restrict not solvent; zoom 150;select *;background aliceblue; spacefill off; wireframe off; cartoons on; select hem; cartoons off; wireframe 50; select atomno=2283; spacefill on; select atomno=2284; spacefill on; select iron; spacefill on; colour cpk; select His92; spacefill off; wireframe 50; colour cpk; spin on");
+		</script>
+		</form>
+	</td>
+    <td valign="top">
+       <B>
+	   <script>
+	  jmolRadioGroup([
+		  ["load ../pdb/hemo-deOxy-HeliceF.pdb.gz;moveTo 0 -912 406 55 34.9 150; restrict not solvent; zoom 150;select *;background aliceblue; spacefill off; wireframe off; cartoons on; select hem; cartoons off; wireframe 50; select atomno=2283; spacefill on; select atomno=2284; spacefill on; select iron; spacefill on; colour cpk; select His92; spacefill off; wireframe 50; colour cpk; spin on",  "DeOxiHb", "checked"],
+		  ["load ../pdb/hemo-Oxy-HeliceF.pdb.gz;moveTo 0 -922 219 -319 37.1 150;restrict not solvent; zoom 150;select *;background aliceblue; spacefill off; wireframe off; cartoons on; select hem; cartoons off; wireframe 50; select atomno=2283; spacefill on; select atomno=2284; spacefill on; select iron; spacefill on; colour cpk; select His92; spacefill off; wireframe 50; colour cpk; spin on",  "OxiHb"]
+		]);
+	  </script>
+	 <P></B>
+	 <IMG SRC="../images/d2sp3.png">
+	 <P>
+	 El hierro ferroso se une mediante 6 enlaces coordinados a los cuatro nitrogenos del anillo de porfirina, al nitrogeno imidaz&oacute;lico de la His92 y al Ox&iacute;geno molecular.
+	 </BODY>
+</HTML>

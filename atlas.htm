@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Atlas</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body class="portada">
+<font face="Tahoma">
+<table width="100%">
+<tr valign="top">
+	<td colspan="2" valign="middle">
+		<img src="images/jr.profile.jpg" width="150" align="left"/>
+		Bienvenido a esta web sobre estructuras moleculares.<br>
+		La responsabilidad de su dise&ntilde;o y mantenimiento es de<br>
+		<i><a href="mailto:jrlopez@ibgm.uva.es">Jos&eacute; Ram&oacute;n L&oacute;pez L&oacute;pez</a></i>,
+		<br>profesor de Bioqu&iacute;mica y Biolog&iacute;a Molecular de la Universidad de Valladolid.
+		<br>
+		<br>Deber&iacute;as ver una mol&eacute;cula de hemoglobina danso vueltas.
+		<br>
+		<br>Estas p&aacuteginas utilizan JSmol (<a href="http://jmol.sourceforge.net/">http://jmol.sourceforge.net/</a>).		
+		<br><img src="images/Jmol_JSmol_logo.png" width="228" height="40" alt="" border="0"/>	
+	</td>
+</tr>
+<tr valign="top">
+	<td>
+		<form>
+		<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolApplet(420, "load ./pdb/2hhd.pdb.gz; restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; spacefill on; select hem; color cpk; spin on");
+		  jmolBr();
+		  jmolButton("restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; spacefill on; select hem; color cpk; spin on", "imagen original");
+		</script>
+	<ul>
+    <li>Bot&oacute;n izquierdo: <i>desplazamiento y giro</i></li>
+	<li>Bot&oacute;n derecho: <i>men&uacute;</i></li>
+	<li>May&uacute;sculas + Bot&oacute;n izquierdo</li>
+    <ul>
+    <li>derecha-izquierda:<i> giro</i></li>
+    <li>arriba-abajo: <i>zoom</i></li>
+	</ul> 
+	<li>Ctrl + Bot&oacute;n derecho: <i>desplazamiento</i></li>
+	</ul>
+    </td>
+</tr>
+</table>
+
+</BODY>
+</HTML>

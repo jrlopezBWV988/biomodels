@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<link rel="stylesheet" type="text/css" href="biomodels.css">
+<script src="./jsmol/JSmol.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+var DGli = 'DGli';
+var LGli = 'LGli';
+var DiH = 'DiH';
+var JmolInfo = {
+ 	 width:'100%',
+ 	 height:'100%',
+ 	 color:'#F0F8FF',
+ 	 j2sPath:'./jsmol/j2s',
+ 	 serverURL:'./jsmol/php/jsmol.php',
+ 	 use:'html5'
+	 }
+$(document).ready(function(){
+	$('#JmolDiv_DGli').html(Jmol.getAppletHtml(DGli, JmolInfo));
+	$('#JmolDiv_LGli').html(Jmol.getAppletHtml(LGli, JmolInfo));
+	$('#JmolDiv_DiH').html(Jmol.getAppletHtml(DiH, JmolInfo));
+	Jmol.script(DGli, 'load ./pdb/glucidos/D-Gliceraldehido.mol;cpk on;reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 94.42; rotate y 53.31; rotate z 167.39; zoom 132.25; translate x -0.57; translate y 1.72; set rotationRadius 6.22');
+	Jmol.script(LGli, 'load ./pdb/glucidos/L-Gliceraldehido.mol;cpk on;reset;background aliceblue;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 92.0; rotate y 124.3; rotate z -172.36; zoom 132.25; translate x 0.29; translate y 2.57; set rotationRadius 6.22');
+	Jmol.script(DiH, 'load ./pdb/glucidos/Dihidroxiacetona.mol;cpk on;reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 94.42; rotate y 53.31; rotate z 167.39; zoom 132.25; translate x -0.57; translate y 1.72; set rotationRadius 6.22');
+});
+</script>
+</head>
+<body>
+<TABLE border="1" cellspacing="5">
+<tr valign="center">
+	<td>
+	<img src="./pdb/glucidos/D-Gliceraldehido.png" style="float:left;height:150px;">
+	<a href="https://en.wikipedia.org/wiki/Glyceraldehyde">D-Gliceralde&iacute;do</a>
+	<script>
+			Jmol.jmolButton(DGli, "select *; colour cpk; spacefill 25%", "Bolas y Varillas");
+			Jmol.jmolBr();
+			Jmol.jmolButton(DGli, "select *; colour cpk; spacefill 100%", "Esferas de Van der Walls");
+			Jmol.jmolBr();
+			Jmol.jmolCheckbox(DGli, "set spin x 0; set spin y 30; spin on", "spin off", "Rotaci&oacute;n ");
+			Jmol.jmolBr();
+			Jmol.jmolButton(DGli, "select *; spacefill 25%; colour cpk; select C3; spacefill 28%; colour atoms [20,120,20]", "C2");
+	</script>
+	</td>
+	<td>
+	<img src="./pdb/glucidos/L-Gliceraldehido.png" style="float:left;height:150px;">
+	<a href="https://en.wikipedia.org/wiki/Glyceraldehyde">L-Gliceralde&iacute;do</a>
+	<script>
+			Jmol.jmolButton(LGli, "select *; colour cpk; spacefill 25%", "Bolas y Varillas");
+			Jmol.jmolBr();
+			Jmol.jmolButton(LGli, "select *; colour cpk; spacefill 100%", "Esferas de Van der Walls");
+			Jmol.jmolBr();
+			Jmol.jmolCheckbox(LGli, "set spin x 0; set spin y 30; spin on", "spin off", "Rotaci&oacute;n ");
+			Jmol.jmolBr();
+			Jmol.jmolButton(LGli, "select *; spacefill 25%; colour cpk; select C3; spacefill 28%; colour atoms [20,120,20]", "C2");
+	</script>
+	<td>
+	<img src="./pdb/glucidos/Dihidroxiacetona.jpg" style="float:left;height:150px;">
+	<a href="https://en.wikipedia.org/wiki/Dihydroxyacetone">Dihidroxiacetona</a>
+	<script>
+			Jmol.jmolButton(DiH, "select *; colour cpk; spacefill 25%", "Bolas y Varillas");
+			Jmol.jmolBr();
+			Jmol.jmolButton(DiH, "select *; colour cpk; spacefill 100%", "Esferas de Van der Walls");
+			Jmol.jmolBr();
+			Jmol.jmolCheckbox(DiH, "set spin x 0; set spin y 30; spin on", "spin off", "Rotación")
+	</script>
+	</td>
+</TR>
+<TR>
+	<TD>
+	<div id="JmolDiv_DGli" style="width:350px; height:350px;"></div>
+	</TD>
+	<TD>
+	<div id="JmolDiv_LGli" style="width:350px; height:350px;"></div>
+	</TD>
+	<TD>
+	<div id="JmolDiv_DiH" style="width:350px; height:350px;"></div>
+	</TD>
+</TR>
+<TR>
+	<TD colspan="2">
+		<ul>
+    	<li>El <FONT COLOR="#6633CC"><B><u><i>Gliceraldeh&iacute;do</i></u></b></FONT> tiene un carbono asim&eacute;trico (C2), que determina la existencia de 2 is&oacute;meros posibles (2<sup>#C asimetricos</sup>), D y L.</li>
+   		<li>Si observa los modelos del <i><b>D-Gliceralde&iacute;do</b></i> y el <b><i>L-Gliceraldeh&iacute;do</i></b> con el modelo de bolas y varillas ver&aacute; que ambas moléculas son imágenes especulares.</li>
+        <i>(Puede girar amabas moleculas para comprobarlo.)</i>
+    	<li>Los is&oacute;meros que son imagenes especulares se denominan <FONT COLOR="#CC2A27"><b><i><u>Enanti&oacute;meros</u></i></b></FONT>.<Br></li>
+		</ul> 
+	</TD>
+	<TD colspan="1">
+		<ul>
+		<li><i>La <FONT COLOR="#6633CC"><B><u><i>Dihidroxiacetona</i></u></b></FONT> no tiene carbonos asimétricos, por lo que no tiene isómeros ópticos.</i></li>
+		</ul>
+	</TD>
+</TR>
+</table>
+</body>
+</html>

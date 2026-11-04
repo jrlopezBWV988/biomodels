@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Estructura del DNA</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Estructura de cSrc</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(500, "load ./pdb/2SRC.pdb.gz; select *;spacefill off; wireframe off; cartoon on; color gray; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=top>
+		<script>
+	      jmolMenu([
+	        ["load ./pdb/2SRC.pdb.gz; select *;spacefill off; wireframe off; cartoon		on; color gray; background aliceblue", "cSrc (Conformaci&oacute;n inactiva)", "selected"],
+			["load ./pdb/1Y57.pdb.gz; select *;spacefill off; wireframe off; cartoon on; color gray; background aliceblue", "cSrc (Conformaci&oacute;n activa)"]
+		 ]);
+		</script>
+		<P>
+		<script>
+			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (267-520) green", "SH1");
+		</script>
+		<P>
+		<script>
+			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (148-245) red", "SH2");
+		</script>
+		<P>
+		<script>
+			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (81-143) blue", "SH3");
+		</script>
+		<P>
+		<script>
+			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (249-253) cyan", "H&eacute;lice PPII");
+		</script>
+		<P> 
+		<script>
+			jmolCheckbox("spin on", "spin off", "Rotaci&oacute;n")
+		</script>
+		<P>
+		</TD>
+</TR>
+</Table>
+<BR>
+</BODY>
+</HTML>

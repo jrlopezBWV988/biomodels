@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Glucidos</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(350, "load ./pdb/glucidos/D-Alosa.mol; cpk on; background aliceblue;reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 112.31; rotate y 5.88; rotate z -115.21; zoom 100.0; translate x -0.86; translate y -3.71; set rotationRadius 6.22");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=center>
+		<script>
+	      jmolMenu([
+	        ["load ./pdb/glucidos/D-Alosa.mol; cpk on;reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 112.31; rotate y 5.88; rotate z -115.21; zoom 100.0; translate x -0.86; translate y -3.71; set rotationRadius 6.22", "D-Alosa","selected"],
+			["load ./pdb/glucidos/D-Altrosa.mol; cpk on;reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z -94.36; rotate y 123.31; rotate z -9.69; set rotationRadius 6.2", "D-Altrosa"],
+			["load ./pdb/glucidos/D-Glucosa.mol; cpk on;reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -96.68; rotate y 118.65; rotate z 6.05; set rotationRadius 6.27", "D-Glucosa"],
+			["load ./pdb/glucidos/D-Manosa.mol; cpk on;reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -95.99; rotate y 93.64; rotate z -2.43; set rotationRadius 6.27", "D-Manosa"],
+			["load ./pdb/glucidos/D-Gulosa.mol; cpk on;reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -96.27; rotate y 122.99; rotate z 2.5; set rotationRadius 6.27", "D-Gulosa"],
+			["load ./pdb/glucidos/D-Idosa.mol; cpk on;reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -92.74; rotate y 92.21; rotate z -5.08; translate x 2.86; translate y 0.86; set rotationRadius 6.27", "D-Idosa"],
+			["load ./pdb/glucidos/D-Galactosa.mol; cpk on;reset;center {0.4827001 -0.02275002 0.10675001}; rotate z 94.19; rotate y 100.75; rotate z -171.27; set rotationRadius 6.27", "D-Galactosa"],
+			["load ./pdb/glucidos/D-Talosa.mol; cpk on;reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -96.05; rotate y 61.97; rotate z 0.67; set rotationRadius 6.27", "D-Talosa"],
+			["load ./pdb/alfaDglucopiranosa.pdb.gz; cpk on", "Alfa-D-Glucopiranosa"],
+			["load ./pdb/betaDglucopiranosa.pdb.gz; cpk on", "Beta-D-Glucopiranosa"]
+		 ]);
+		</script>
+		<P>
+		Las <FONT COLOR="#6633CC"><B><u><i>Aldohexosas</i>s</u></b></FONT> tienen cuatro carbonos asimetricos, que determinan la existencia de 16 isomeros posibles (2<sup>#C asimetricos</sup>).
+		<Br>
+		<i>En esta p&aacute;gina se muestran los 8 de la serie D (definida por la configuraci&oacute;n del C5).</i>
+		<p>
+		<script>
+			jmolButton("select *; spacefill 25%; colour cpk; select C3; spacefill 28%; colour atoms [20,120,20]", "C2");
+			jmolButton("select *; spacefill 25%; colour cpk; select C6; spacefill 28%; colour atoms [20,120,20]", "C3");
+			jmolButton("select *; spacefill 25%; colour cpk; select C9; spacefill 28%; colour atoms [20,120,20]", "C4");
+			jmolButton("select *; spacefill 25%; colour cpk; select C12; spacefill 28%; colour atoms [20,120,20]", "C5");
+		</script> Carbonos asim&eacute;tricos
+		<p> 
+		
+		<script>
+			jmolButton("select *; colour cpk; spacefill 100%", "x");
+		</script> Esferas de Van der Walls
+		<Br>
+		<script>
+			jmolButton("select *; colour cpk; spacefill 25%", "x");
+		</script> Modelo de esferas y varillas
+		<P>
+		<FONT COLOR="#6633CC">
+		Por defecto se ha cargado en la p&aacute;gina la D-Alosa.<Br>
+		<i>(Si ha cargado otra molecula, vuelva a cargar la D-Alosa)</i>.<Br>
+		Si observa la mol&eacute;cula con le modelo de esferas y varillas (
+		<script>
+			jmolButton("select *; colour cpk; spacefill 25%", "x");
+		</script>
+		) 
+		podr&iacute;a parecer que se trata de la D-Idosa,<Br>  
+		<b><i>pero eso ser&iacute;a interpretar erroneamente las proyecciones de Fisher.</i></b><Br>
+		Puede rotar los carbonos asim&eacute;tricos, uno a uno, de cada uno de los is&oacute;meros y comprobar que la disposici&oacute;n <Br>
+		espacial en cada caso es la que viene definida por la proyecci&oacute;n de Fisher correspondiente.<Br>
+		</FONT>
+		<p>
+		<script>
+			jmolCheckbox("set spin x 0; set spin y 30; spin on", "spin off", "Rotaci&oacute;n")
+		</script> 	
+	</TD>
+</TR>
+</table>
+<b><i><font color="#FF373B">Proyecciones de Fisher:</font></i></b>
+<table border="1" cellspacing="2" width="500">
+<tr valign="center">
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" colspan="8">
+	<FONT SIZE="-1"><i>
+	(Representaci&oacute;n en 2D de la configuraci&oacute;n tetra&eacute;drica (3D) de los enlaces sp<sup>3</sup> del carbono, 
+	relevante para definir la disposici&oacute;n en el espacio de los sustituyentes de un carbono asim&eacute;trico. 
+	Asumiendo que el carbono est&aacute en el plano del dibujo, los enlaces horizontales se proyectan hacia delante del plano
+	y los verticales hacia atr&aacute;s).
+ 	</i></FONT>
+	</td>
+</tr>
+<tr valign="center">
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Alosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Allose">D-Alosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Altrosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Altrose">D-Altrosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Glucosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Glucose">D-Glucosa</div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Manosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Mannose">D-Manosa</a></div>
+	</td>
+<!--</tr>  -->
+<!-- <tr valign="center"> -->
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Gulosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Gulose">D-Gulosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Idosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Idose">D-Idosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Galactosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Galactose">D-Galactosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;"><br />
+	<img src="./pdb/glucidos/D-Talosa.png" width="100px"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Talose">D-Talosa</a></div>
+	</td>
+</tr>
+</table>
+</div>
+</BODY>
+</HTML>

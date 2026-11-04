@@ -1,0 +1,50 @@
+<html>
+ <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+ <title>Dominio Inmunoglobulina</title>
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="10">
+<TR>
+	<TD vailgn="top">
+	<CENTER><form>
+	<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolApplet(420, "load ../pdb/iggdomain.pdb.gz; select *;moveto 0 -845 -481 233 89.8; background aliceblue;spacefill on;colour structure");
+		  jmolBr();
+		  jmolButton("moveto 2 -845 -481 233 89.8; select *;background aliceblue;spacefill on;colour structure;slab off", "Imagen original");  
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign="top">
+	<CENTER><FONT COLOR="#3333CC"><B>Plegamiento de inmunoglobulina (C<sub>L</sub>)</B></FONT></CENTER>
+	Los dominios constantes de las Ig tienen una estructura supersecundaria caracteristica conocida como "plegamiento de inmunoglobulina".(<FONT color="#F00080">H&eacute;lice Alfa</FONT>, <FONT color="#FF9900">Hoja Beta</FONT>, y <FONT color="#808080">Sin Estructura secundaria Definida</FONT>)
+	<form>
+	<script>
+		  jmolButton("select *; spacefill off; wireframe off; cartoons on; colour structure; slab off", "Modelo esquem&aacute;tico");
+		  jmolBr();
+		  jmolBr();
+		  jmolButton("select *;spacefill off; wireframe off; cartoons on; colour structure; select cys; spacefill on; colour cpk; slab off", "Ciste&iacute;nas");
+		  jmolBr();
+		  jmolBr();
+		  jmolHtml("El Dominio CL tiene  tres residuos de Cys. Dos de ellos forman un puente disulfuro intracatenario.El tercero forma un puente disulfuro con la regi&oacute;n constante de la cadena pesada.");
+		  jmolBr();
+		  jmolBr();
+		  jmolButton("select *;spacefill on; wireframe off; slab 50;depth 10;slab on; select buried; colour grey;select surface; colour blue; select backbone; colour green; select (Cys134,Cys194);colour orange", "Secci&oacute;n");
+	</script>
+	</form>
+	Los esqueletos pept&iacute;dicos de las hojas beta forman un "<FONT COLOR="#006633"><B>emparedado</B></FONT>" que contiene los residuos 
+	<FONT COLOR="#9999CC"><B><I>hidr&oacute;fobos</I></B></FONT> de la mol&eacute;cula. Los residuos <FONT COLOR="#0033FF"><I><B>polares y cargados</B></I></FONT> se disponen hacia la superficie, en contacto con el solvente. El <FONT COLOR="#FF9900"><I><B>puente disulfuro</B></I></FONT> queda enterrado en el n&uacute;cleo hidr&oacute;fobo. 
+	
+	</TD>
+</TR>
+</TABLE>
+</body>
+</html>

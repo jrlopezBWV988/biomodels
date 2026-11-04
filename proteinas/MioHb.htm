@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+<TITLE>Miglobina y Hemoglobina</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<font face="Tahoma">
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<body>
+<table width="780" valign="top">
+<tr>
+    <td valign=top>
+	<form>
+		<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(420, "load ../pdb/mioglobinaO2.pdb.gz;restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; spacefill on; spin on");
+		</script>
+		</form>
+	</td>
+    <td valign="top">
+       <hr>
+	   <B>
+	   <script>
+	  jmolRadioGroup([
+		  ["load ../pdb/mioglobinaO2.pdb.gz; restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; spacefill on; spin on",  "Mioglobina", "checked"],
+		  ["load ../pdb/2hhd.pdb.gz;restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; spacefill on; spin on",  "Hemoglobina"]
+		]);
+	  </script>
+	  <BR></B>
+	  <I>(Esferas de Van der Walls. Colores cpk. No se muestran los &aacute;tomos de Hidrogeno.)</I>
+	  <hr>
+	<P>
+	<script>
+		jmolButton("select *;spacefill off; cartoons on; wireframe off; set hetero off; colour group", "x");
+	</script>
+	Estructura secundaria: prote&iacute;nas "todo alfa"
+	<P>
+	<script>
+		jmolButton("select *;spacefill off;cartoons on;wireframe off;set hetero on;colour group;select hem;spacefill on;colour cpk", "x");
+	</script>
+	Grupo prost&eacute;tico: HEMO
+	<P>
+	<script>
+		jmolButton("select *;spacefill on;colour chain;set hetero on; select hetero;spacefill off; select hem; spacefill on; colour cpk", "x");
+	</script>
+	La mioglobina est&aacute; formada por un &uacute;nico polip&eacute;ptido. 
+	La hemoglobina est&aacute; formada por cuatro cadenas polipept&iacute;dicas (<font color='#33CCFF'><B>alfa<sub>1</sub></B></font>, <font color='#00FF99'><B>beta<sub>1</sub></B></font>, <font color='#FFCCFF'><B>alfa<sub>2</sub></B></font> y <font color='#FFFF00'><B>beta<sub>2</sub></B></font>), unidas entre s&iacute; de forma no covalente.</B> Existe un contacto estrecho entre las cadenas alfa y beta, mientras que apenas hay interacci&oacute;n entre alfa1 y alfa2 o beta1 y beta2. 
+</BODY>
+</HTML>

@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Apareamiento de Bases</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Apareamiento de Bases</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(480, "load ./pdb/ATpair.gz; cpk on; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=top>
+		<script>
+	      jmolMenu([
+	        ["load ./pdb/ATpair.gz; cpk on", "AT (pH=7.2)", "selected"],
+			["load ./pdb/CGpair.gz; cpk on", "CG (pH=7.2)"],
+			["load ./pdb/CGpair.pH2.gz; cpk on", "CG (pH=2)"]
+		 ]);
+		</script>
+		<p>
+		<script>
+			jmolButton("select *; zoom 160; hbonds calculate; spacefill 25%; isosurface off", "Modelo de esferas y varillas");
+		</script> 
+		<P>
+		<script>
+			jmolButton("select *; spacefill 100%;isosurface off", "Esferas de Van der Walls");
+		</script> 
+		<P>
+		<script>
+			jmolCheckbox("set spin x 10; set spin y 10; spin on", "spin off", "Rotaci&oacute;n")
+		</script>
+		<P>
+		</TD>
+</TR>
+</BODY>
+</HTML>

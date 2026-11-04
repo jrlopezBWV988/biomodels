@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+<TITLE>H&eacute;lice de col&aacute;geno</TITLE>
+<font face="Tahoma">
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<META NAME="Generator" CONTENT="Microsoft FrontPage 4.0">
+<META NAME="Author" CONTENT="Jose Ramon Lopez Lopez">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<TABLE width=780>
+<TR>
+	<TD>
+	<CENTER>
+	<form>
+		<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolApplet(420, "load ../pdb/colageno.pdb.gz; moveTo 0 -642 -646 413 136.2 124; select *;wireframe off; background aliceblue;colour cpk;spacefill on;labels off; spin on");
+		  jmolBr();
+		  jmolBr();
+		  jmolButton("moveTo 0 -642 -646 413 136.2 124; select *;wireframe off; background aliceblue;colour cpk;spacefill on;labels off; spin on", "imagen original");
+		  </script>
+		</form>
+	</CENTER>
+	</TD>
+	<TD valign="top">
+	<FONT SIZE="+2" COLOR="#3333CC"><B>Col&aacute;geno</B><Br></FONT>
+	<P>
+	<script>
+		jmolButton("moveTo 0 -642 -646 413 136.2 124; select *; slab off;spacefill on; wireframe off;colour chain; labels off", "x");
+	</script>
+	Las tres h&eacute;lices de colageno se superenrrollan en una superhelice dextrorsa
+	<P>
+	<script>
+		jmolButton("moveTo 0 -642 -646 413 136.2 124; slab off;restrict *A;spacefill on; wireframe off;colour cpk", "x");
+	</script>
+	Cada h&eacute;lice es una helice sinistrorsa con una paso de 3 aminoacidos por vuelta.&nbsp;
+	<script>
+		jmolButton("moveTo 1 -642 -646 413 136.2 373 1 61;restrict *A; spacefill on; colour chain;select [Gly]:A;spacefill on; wireframe off;colour cpk", "x");
+	</script>
+	Cada 3 amino&aacute;cidos se repite un residuo de Glicina (colores cpk). 
+	<script>
+		jmolButton("moveTo 0 -642 -646 413 136.2 373 1 61; select *;spacefill off; color chain; trace 0.5; select Gly; spacefill on; colour cpk;", "x");
+	</script>
+	Las cadenas laterales de la glicina (&aacute;tomos de H, no mostrados) se disponen <I>hacia el interior </I>de la triple helice,&nbsp;
+	<script>
+		jmolButton("moveTo 1 551 508 662 119.0 1960 2 -91;select *; color chain; spacefill on", "x");
+	</script>
+	haciendo que sea una estructura muy compacta.
+	<P>
+	<script>
+		jmolButton("moveTo 1 551 508 662 119.0 1960; select *;cartoons off;spacefill on;colour chain; select Ala;spacefill on; wireframe off;colour cpk", "x");
+	</script>
+	En este modelo, una <B>Gly</B> de cada cada cadena ha sido sustituida por una <B>Ala</B> (colores cpk). El grupo metilo de la cadena lateral de la <B>Ala</B>, m&aacute;s voluminoso que el H de la <B>Gly</B>, es suficiente para separar la triple h&eacute;lice, haciendo que en ese punto sea menos compacta.
+	<P>
+	</TD>
+</TR>
+</TABLE>
+</font>
+</BODY>
+</HTML>

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Aminoacidos</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Amino&aacute;cidos</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(420, "load ./pdb/aminoacidos/Glicina.mol; cpk on; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=center>
+		<script>
+		  jmolMenu([
+	        ["#optgroup", "Polares sin carga:"],
+			["load ./pdb/aminoacidos/Glicina.mol; cpk on", "Glicina (Gly, G)", "selected"],
+			["load ./pdb/aminoacidos/Serina.mol; cpk on", "Serina (Ser, S)"],
+			["load ./pdb/aminoacidos/Treonina.mol; cpk on", "Treonina (Thr, T)"],
+			["load ./pdb/aminoacidos/Cisteina.mol; cpk on", "Ciste&iacute;na (Cys, C)"],
+			["load ./pdb/aminoacidos/Asparragina.mol; cpk on", "Asparragina (Asn, N)"],
+			["load ./pdb/aminoacidos/Glutamina.mol; cpk on", "Glutamina (Gln, Q)"],
+			["#optgroupEnd"],
+			["#optgroup", "Polares con carga positiva:"],
+			["load ./pdb/aminoacidos/Lisina.mol; cpk on", "Lisina (Lys, K)"],
+			["load ./pdb/aminoacidos/Arginina.mol; cpk on", "Arginina (Arg, R)"],
+			["load ./pdb/aminoacidos/Histidina.mol; cpk on", "Histidina (His, H)"],
+			["#optgroupEnd"],
+			["#optgroup", "Polares con carga negativa:"],
+			["load ./pdb/aminoacidos/Aspartato.mol; cpk on", "Acido Asp&aacute;rtico (Asp, D)"],
+			["load ./pdb/aminoacidos/Glutamato.mol; cpk on", "Acido Glut&aacute;mico (Glu, E)"],
+			["#optgroupEnd"],
+			["#optgroup", "Apolares Alif&aacute;ticos:"],
+			["load ./pdb/aminoacidos/Alanina.mol; cpk on", "Alanina (Ala, A)"],
+			["load ./pdb/aminoacidos/Valina.mol; cpk on", "Valina (Val, V)"],
+			["load ./pdb/aminoacidos/Leucina.mol; cpk on", "Leucina (Leu, L)"],
+			["load ./pdb/aminoacidos/Isoleucina.mol; cpk on", "Isoleucina (Ile, I)"],
+			["load ./pdb/aminoacidos/Metionina.mol; cpk on", "Metionina (Met, M)"],
+		    ["load ./pdb/aminoacidos/Prolina.mol; cpk on", "Prolina (Pro, P)"],
+			["#optgroupEnd"],
+			["#optgroup", "Apolares Arom&aacute;ticos:"],
+			["load ./pdb/aminoacidos/Fenilalanina.mol; cpk on", "Fenilalanina (Phe, F)"],
+			["load ./pdb/aminoacidos/Tirosina.mol; cpk on", "Tirosina (Tyr, Y)"],
+			["load ./pdb/aminoacidos/Triptofano.mol; cpk on", "Triptofano (Trp, W)"],
+			["#optgroupEnd"],
+			["#optgroup", "NO PROTE&Iacute;COS:"],
+			["load ./pdb/aminoacidos/Homocisteina.mol; cpk on", "Homociste&iacute;na"],
+			["load ./pdb/aminoacidos/Homoserina.mol; cpk on", "Homoserina"],
+			["load ./pdb/aminoacidos/Citrulina.mol; cpk on", "Citrulina"],
+			["load ./pdb/aminoacidos/Ornitina.mol; cpk on", "Ornitina"]
+	    ]);
+		</script>
+		<P>
+		<script>
+			jmolButton("select *; spacefill 25%; isosurface off", "Modelo de esferas y varillas");
+		</script> 
+		<P>
+		<script>
+			jmolButton("select *; spacefill 25%; isosurface ignore(solvent)molecular; color isosurface translucent", "Modelo de esferas y varillas \r (superfice transparente)");
+		</script> 
+		<P>
+		<script>
+			jmolButton("select *; spacefill off; isosurface off", "Modelo de varillas");
+		</script> 
+		<P>
+		<script>
+			jmolButton("select *; spacefill 100%;isosurface off", "Esferas de Van der Walls");
+		</script> 
+		<P>
+		<script>
+			jmolCheckbox("set spin x 10; set spin y 10; spin on", "spin off", "Rotaci&oacute;n")
+		</script>
+		<P>
+		Todos los modelos se presentan en su estado de protonaci&oacute;n a pH fisiol&oacute;gico.
+		</TD>
+</TR>
+</BODY>
+</HTML>

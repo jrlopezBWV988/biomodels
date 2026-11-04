@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Cetopentosas</TITLE>
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(350, "load ./pdb/glucidos/D-Ribulosa.mol;cpk on;reset;background aliceblue;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 90.3; rotate y 135.01; rotate z -3.21; translate x -0.86; translate y -3.71; set rotationRadius 6.22");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=center>
+		<script>
+	      jmolMenu([
+	        ["load ./pdb/glucidos/D-Ribulosa.mol; cpk on;reset;background aliceblue;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 90.3; rotate y 135.01; rotate z -3.21; translate x -0.86; translate y -3.71; set rotationRadius 6.22", "D-Ribulosa","selected"],
+			["load ./pdb/glucidos/D-Xilulosa.mol; cpk on;reset;background aliceblue;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 102.82; rotate y 54.98; rotate z -1.68; translate x 0.29; translate y -4.86; set rotationRadius 6.2", "D-Xilulosa"]
+			]);
+		</script>
+		<P>
+		Las <FONT COLOR="#6633CC"><B><u><i>Cetopentosas</i></u></b></FONT> tienen dos carbonos asimetricos, que determinan la existencia de 4 isomeros posibles (2<sup>#C asimetricos</sup>).
+		<Br>
+		<i>En esta p&aacute;gina se muestran los 2 de la serie D (definida por la configuraci&oacute;n del C4).</i>
+		<p>
+		<script>
+			jmolButton("select *; spacefill 25%; colour cpk; select C5; spacefill 28%; colour atoms [20,120,20]", "C3");
+			jmolButton("select *; spacefill 25%; colour cpk; select C8; spacefill 28%; colour atoms [20,120,20]", "C4");
+		</script> Carbonos asim&eacute;tricos
+		<p> 
+		
+		<script>
+			jmolButton("select *; colour cpk; spacefill 100%", "x");
+		</script> Esferas de Van der Walls
+		<Br>
+		<script>
+			jmolButton("select *; colour cpk; spacefill 25%", "x");
+		</script> Modelo de esferas y varillas
+		<P>
+		<FONT COLOR="#6633CC">
+		Si observa la mol&eacute;cula con le modelo de esferas y varillas podr&iacute;a parecer que hay un error en el nombre,<Br>  
+		<b><i>pero eso ser&iacute;a interpretar erroneamente las proyecciones de Fisher.</i></b><Br>
+		Puede rotar los carbonos asim&eacute;tricos, uno a uno, de cada uno de los is&oacute;meros y comprobar que la disposici&oacute;n <Br>
+		espacial en cada caso es la que viene definida por la proyecci&oacute;n de Fisher correspondiente.<Br>
+		</FONT>
+		<p>
+		<script>
+			jmolCheckbox("set spin x 0; set spin y 30; spin on", "spin off", "Rotaci&oacute;n")
+		</script> 	
+	</TD>
+</TR>
+</table>
+<b><i><font color="#FF373B">Proyecciones de Fisher:</font></i></b>
+<table border="1" cellspacing="2" width="800">
+<tr valign="center">
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" colspan="4">
+	<FONT SIZE="-1"><i>
+	(Representaci&oacute;n en 2D de la configuraci&oacute;n tetra&eacute;drica (3D) de los enlaces sp<sup>3</sup> del carbono, 
+	relevante para definir la disposici&oacute;n en el espacio de los sustituyentes de un carbono asim&eacute;trico. 
+	Asumiendo que el carbono est&aacute en el plano del dibujo, los enlaces horizontales se proyectan hacia delante del plano
+	y los verticales hacia atr&aacute;s).
+ 	</i></FONT>
+	</td>
+</tr>
+<tr valign="center">
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" align="center"><br />
+	<img src="./pdb/glucidos/D-Ribulosa.jpg" height="150px" ><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Ribulose">D-Ribulosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" align="center"><br />
+	<img src="./pdb/glucidos/D-Xilulosa.jpg" height="150p"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Xylulose">D-Xilulosa</a></div>
+	</td>
+</tr>
+</table>
+</div>
+</BODY>
+</HTML>

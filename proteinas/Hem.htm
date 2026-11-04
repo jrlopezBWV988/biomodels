@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+
+<TITLE>Glucidos</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Grupo Hemo</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(350, "load ../pdb/HEM.cif; cpk on; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=top>
+		<P>
+		<script>
+			jmolButton("select *; spacefill 100%", "x");
+		</script> Esferas de Van der Walls
+		<p>
+		<script>
+			jmolButton("select *; spacefill 25%", "x");
+		</script> Modelo de esferas y varillas
+		<P>
+		<script>
+			jmolButton("select *; spacefill off", "x");
+		</script> Modelo de varillas
+		<P>
+		<script>
+			jmolCheckbox("set spin x 10; set spin y 10; spin on", "spin off", "Rotaci&oacute;n")
+		</script> 	
+	</TD>
+</TR>
+</BODY>
+</HTML>

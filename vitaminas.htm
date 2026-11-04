@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Vitaminas</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Vitaminas</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(500, "load ./pdb/retinol.gz; cpk on; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=top>
+		<script>
+	      jmolMenu([
+	        ["load ./pdb/retinol.gz; cpk on", "Retinol (A)", "selected"],
+			["load ./pdb/All-trans-retinal.gz; cpk on", "All-trans retinal"],
+			["load ./pdb/11-cis-retinal.gz; cpk on", "11-cis retinal"],
+			["load ./pdb/beta-caroteno.gz; cpk on", "beta-caroteno"],
+			["load ./pdb/Tiamina.gz; cpk on", "Tiamina (B1)"],
+			["load ./pdb/Riboflavina.gz; cpk on", "Riboflavina (B2)"],
+			["load ./pdb/Niacina.gz; cpk on", "Niacina (B3)"],
+			["load ./pdb/Pantotenico.gz; cpk on", "Acido Pantot&eacute;nico (B5)"],
+			["load ./pdb/Piridoxamina.gz; cpk on", "Piridoxamina (B6)"],
+			["load ./pdb/Piridoxal.fosfato.gz; cpk on", "Piridoxal fosfato"],
+			["load ./pdb/Biotina.gz; cpk on", "Biotina (B7)"],
+			["load ./pdb/Tetrahidrofolato.gz; cpk on", "Tetrahidrofolato (B9)"],
+			["load ./pdb/Metilentetrahidrofolato.gz; cpk on", "N<sup>5</sup>-N<sup>10</sup>-metilen Tetrahidrofolato"],
+			["load ./pdb/metilcobalamina.6Co.unido.gz; cpk on", "Cobalamina (B12)"],
+			["load ./pdb/ascorbato.gz; cpk on", "Ascorbato (C)"],
+			["load ./pdb/dehidroascorbato.gz; cpk on", "Dehidroascorbato"],
+			["load ./pdb/Colecalciferol.gz; cpk on", "Colecalciferol (D)"],
+			["load ./pdb/tocoferol.gz; cpk on", "Tocoferol (E)"],
+			["load ./pdb/Filoquinona.K1.gz; cpk on", "Filoquinona (K1)"],
+			["load ./pdb/Menadiona.K3.gz; cpk on", "Menadiona (K3)"]
+		]);
+		</script>
+		<P>
+		<script>
+			jmolButton("select *; spacefill 100%;isosurface off", "x");
+		</script> Esferas de Van der Walls
+		<p>
+		<script>
+			jmolButton("select *; spacefill 25%; isosurface off", "x");
+		</script> Modelo de esferas y varillas
+		<P>
+		<script>
+			jmolButton("select *; spacefill 25%; isosurface ignore(solvent)molecular; color isosurface translucent", "x");
+		</script> Modelo de esferas y varillas (superfice transparente)
+		<P>
+		<script>
+			jmolButton("select *; spacefill off; isosurface off", "x");
+		</script> Modelo de varillas
+		<P>
+		<script>
+			jmolCheckbox("set spin x 10; set spin y 10; spin on", "spin off", "Rotaci&oacute;n")
+		</script> 	
+	</TD>
+</TR>
+</BODY>
+</HTML>

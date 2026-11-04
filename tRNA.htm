@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<TITLE>Estructura del tRNA-Phe</TITLE>
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Phe-tRNA</B></FONT>
+	<BR>
+	<form>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(560, "load ./pdb/4TNA.pdb.gz; select *; cartoon off; wireframe off; spacefill off; select * and not MG; color cpk; spacefill 100%; moveto 0.0 { -317 714 625 164.88} 107.84 0.0 0.0 {35.390503 5.095499 27.198502} 51.779823 {0.0 0.0 0.0} 39.6943 18.04541 0.0; cpk on; background aliceblue");
+		  jmolBr();
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign=top>
+		<script>
+			jmolButton("cartoon off; label off; select *; spacefill off; wireframe off; select * and not MG; color cpk; wireframe 0.2", "Modelo de Varillas");
+		</script> 
+		<P>
+		<script>
+			jmolButton("select *; cartoon off; label off; select * and not MG; color cpk; spacefill 100%; isosurface off", "Esferas de Van der Walls");
+		</script> 
+		<P>
+		<script>
+			jmolButton("cartoon off; label off; select backbone and not MG; spacefill 100%; color green; select bases and not hydrogen;; spacefill 100%; color red", "Esqueleto en verde \r Bases en rojo");
+		</script> 
+		<p>
+		<script>
+			jmolButton("select *; label off; spacefill off; wireframe off; cartoon on; color cpk", "Esquema");
+		</script> 
+		<p>
+		<p>
+		<script>
+			jmolButton("select *; spacefill off; wireframe off; cartoon on; color cpk; select [OMG]34; wireframe 0.4; select [OMG]34:A.N1; font label 30 serif bold; label G; select [A]35; wireframe 0.4; select [A]35:A.C2; font label 30 serif bold; label A; select [A]36; wireframe 0.4; select [A]36:A.C2; font label 30 serif bold; label A;color cpk; select [G]1; color green; select [G]1:A.P #2;; font label 40 serif bold; label 5'; select [A]76; color blue; select [A]76:A.N9; font label 40 serif bold; label 3'", "Anticocon");
+		</script> 
+		<B>
+		<FONT COLOR="#008000">5'</FONT>-GAA-<FONT COLOR="#1E90FF">3'</FONT>
+		</B>
+		<p>
+		<script>
+			jmolCheckbox("spin on", "spin off", "Rotaci&oacute;n")
+		</script>
+		<P>
+		</TD>
+</TR>
+</BODY>
+</HTML>

@@ -10,57 +10,60 @@
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
+<style>
+.controles-src { text-align: center; padding-top: 6px; }
+.controles-src input[type="button"] { margin: 4px 6px; min-width: 64px; }
+.controles-src label { margin-left: 10px; white-space: nowrap; }
+</style>
 </HEAD>
 <script src="./jsmol/JSmol.min.js"></script>
 <script src="./jsmol/js/Jmol2.js"></script>
+<script>
+	// Comandos comunes a los dos visores
+	var estiloInicial = "select *; spacefill off; wireframe off; cartoon on; color gray; background aliceblue; "
+		+ "isosurface superficie select(protein) ignore(not protein) color [245,245,245] vdw translucent 0.9; "
+		+ "spin on";
+	// Envía el mismo comando a los dos visores
+	function ambos(cmd) {
+		Jmol.script(jmolApplet0, cmd);
+		Jmol.script(jmolApplet1, cmd);
+	}
+</script>
 <body>
 <font face="Tahoma">
 <TABLE border="0" cellspacing="5">
 <TR>
 	<TD>
 	<CENTER>
-	<FONT SIZE="+2" COLOR="#6633CC"><B>Estructura de cSrc</B></FONT>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>cSrc Inactiva</B></FONT>
 	<BR>
-	<form>
 	<script>
 		  jmolInitialize("./jsmol/js");
 		  jmolSetParameter("UseCommandThread","true");
-		  jmolApplet(500, "load ./pdb/2SRC.pdb.gz; select *;spacefill off; wireframe off; cartoon on; color gray; background aliceblue");
-		  jmolBr();
+		  jmolApplet(420, "load ./pdb/2SRC.pdb.gz; " + estiloInicial);
 	</script>
-	</form></CENTER>
+	</CENTER>
 	</TD>
-	<TD valign=top>
-		<script>
-	      jmolMenu([
-	        ["load ./pdb/2SRC.pdb.gz; select *;spacefill off; wireframe off; cartoon		on; color gray; background aliceblue", "cSrc (Conformaci&oacute;n inactiva)", "selected"],
-			["load ./pdb/1Y57.pdb.gz; select *;spacefill off; wireframe off; cartoon on; color gray; background aliceblue", "cSrc (Conformaci&oacute;n activa)"]
-		 ]);
-		</script>
-		<P>
-		<script>
-			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (267-520) green", "SH1");
-		</script>
-		<P>
-		<script>
-			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (148-245) red", "SH2");
-		</script>
-		<P>
-		<script>
-			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (81-143) blue", "SH3");
-		</script>
-		<P>
-		<script>
-			jmolButton("cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (249-253) cyan", "H&eacute;lice PPII");
-		</script>
-		<P> 
-		<script>
-			jmolCheckbox("spin on", "spin off", "Rotaci&oacute;n")
-		</script>
-		<P>
-		</TD>
+	<TD>
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>cSrc Activa</B></FONT>
+	<BR>
+	<script>
+		  jmolApplet(420, "load ./pdb/1Y57.pdb.gz; " + estiloInicial);
+	</script>
+	</CENTER>
+	</TD>
 </TR>
-</Table>
+<TR>
+	<TD colspan="2" class="controles-src">
+		<input type="button" value="SH1" onclick="ambos('cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (267-520) green')">
+		<input type="button" value="SH2" onclick="ambos('cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (148-245) red')">
+		<input type="button" value="SH3" onclick="ambos('cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (81-143) blue')">
+		<input type="button" value="H&eacute;lice PPII" onclick="ambos('cartoon off; select *; spacefill off; wireframe off; cartoon on; color gray; color (249-253) cyan')">
+		<label><input type="checkbox" checked onclick="ambos(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
+	</TD>
+</TR>
+</TABLE>
 <BR>
 </BODY>
 </HTML>

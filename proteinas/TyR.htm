@@ -42,7 +42,7 @@
 	box-sizing: border-box;
 }
 .tyr-botones input[type="button"] { margin: 3px 0; min-width: 140px; }
-#botonRotacion { min-width: 140px; margin: 0; }
+#botonRotacion, #botonInicial { min-width: 140px; margin: 0; }
 #botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
 .tyr-puentes { grid-column: 1; }
 .tyr-equilibrio { grid-column: 2 / 4; align-self: center; text-align: center; }
@@ -92,6 +92,16 @@
 		boton.value = girando ? "Detener rotación" : "Activar rotación";
 		boton.className = girando ? "activo" : "";
 	}
+
+	// Recupera en los dos visores la representación y la orientación iniciales
+	function vistaInicial() {
+		girando = false;
+		var boton = document.getElementById("botonRotacion");
+		boton.value = "Activar rotación";
+		boton.className = "";
+		Jmol.script(jmolApplet0, "spin off; " + estiloInicial + orientacionT);
+		Jmol.script(jmolApplet1, "spin off; " + estiloInicial + orientacionR);
+	}
 </script>
 </head>
 <body>
@@ -114,6 +124,7 @@
 			<input type="button" value="Val1-Arg141" onclick="ambos(puente('(val1 or arg141) and (:A or :C)'))">
 		</div>
 		<input type="button" id="botonRotacion" value="Activar rotación" onclick="rotacion(this)">
+		<input type="button" id="botonInicial" value="Vista inicial" onclick="vistaInicial()">
 	</div>
 
 	<div class="tyr-visor">

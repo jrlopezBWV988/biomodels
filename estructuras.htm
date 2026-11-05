@@ -2,10 +2,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>Atlas de estructuras</title>
+<script>
+// Carga en el marco derecho la página indicada en ?p=archivo.htm
+function cargarPagina() {
+	var p = new URLSearchParams(window.location.search).get("p");
+	if (p && /^[\w\-]+\.html?$/i.test(p)) {
+		window.frames["f_right"].location.replace(p);
+	}
+}
+</script>
 </head>
-<frameset cols="200,80%" border="0" frameborder="0">
+<frameset cols="200,80%" border="0" frameborder="0" onload="cargarPagina()">
 <frame src="indice.htm" name="f_left" scrolling="auto" target="_self">
 <frame src="atlas.htm"  name="f_right" target="_self" scrolling="auto">
 </frameset>

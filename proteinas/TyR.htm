@@ -1,106 +1,136 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<HTML>
-<HEAD>
+<!DOCTYPE html>
+<html lang="es">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../css/moderno.css">
-
-<TITLE>Miglobina y Hemoglobina</TITLE>
-<META NAME="Generator" CONTENT="EditPlus 1.2">
-<META NAME="Author" CONTENT="">
-<META NAME="Keywords" CONTENT="">
-<META NAME="Description" CONTENT="">
-</HEAD>
-<font face="Tahoma">
+<title>Hemoglobina: formas Tensa y Relajada</title>
+<style>
+.tyr {
+	display: grid;
+	grid-template-columns: 422px minmax(170px, 210px) 422px;
+	column-gap: 24px;
+	row-gap: 28px;
+	align-items: start;
+	width: max-content;
+	max-width: 100%;
+}
+.tyr-visor { text-align: center; }
+.tyr-visor h2 {
+	margin: 0 0 10px;
+	font-size: 26px;
+	font-weight: 500;
+	color: var(--ink);
+}
+.tyr-centro {
+	align-self: center;
+	margin-top: 44px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+}
+.tyr-botones {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	padding: 18px 14px;
+	background: var(--surface-soft);
+	border-radius: var(--radius);
+	width: 100%;
+	box-sizing: border-box;
+}
+.tyr-botones input[type="button"] { margin: 3px 0; min-width: 140px; }
+#botonRotacion { min-width: 140px; margin: 0; }
+#botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tyr-puentes { grid-column: 1; }
+.tyr-equilibrio { grid-column: 2 / 4; align-self: center; text-align: center; }
+.tyr-puentes img { width: 100%; }
+.tyr-equilibrio img { width: 100%; max-width: 560px; }
+</style>
 <script src="../jsmol/JSmol.min.js"></script>
 <script src="../jsmol/js/Jmol2.js"></script>
+<script>
+	// Colores de las cadenas (los mismos que el esquema de los puentes salinos)
+	// A = alfa1, B = beta1, C = alfa2, D = beta2
+	var colorCadenas = "select protein and :A; color [0,204,255]; "
+		+ "select protein and :B; color [255,0,0]; "
+		+ "select protein and :C; color [0,0,255]; "
+		+ "select protein and :D; color [255,102,0]; ";
+
+	// Representación inicial: cartoon coloreado por cadenas y grupos hemo en esferas
+	var estiloInicial = "select *; spacefill off; wireframe off; backbone off; cartoon on; "
+		+ colorCadenas
+		+ "select hem; cartoon off; spacefill on; color cpk; select none; ";
+
+	// Orientaciones establecidas en los estados de JSmol (Forma T y Forma R)
+	var orientacionT = "moveto 0.0 {16 688 -725 179.36} 120.0 -2.86 0.24 {15.081 1.9395 13.5805} 38.176178644424915 {0 0 0} 0 0 0 3.0 0.0 0.0; ";
+	var orientacionR = "moveto 0.0 {-998 56 17 85.67} 120.0 0.0 0.0 {1.1105 0.0175 -0.1725} 37.72741976093302 {0 0 0} 0 0 0 3.0 0.0 0.0; ";
+
+	var ajustes = "background aliceblue; restrict not (solvent or PO4); set spinX 0; set spinY 30; set spinZ 0; set spinFps 30; ";
+
+	// Vista de un puente salino: esqueleto coloreado, residuos en esferas y hemo en varillas
+	function puente(seleccion) {
+		return "select *; spacefill off; wireframe off; cartoon off; backbone on; "
+			+ colorCadenas
+			+ "select " + seleccion + "; spacefill on; color cpk; "
+			+ "select hem; spacefill off; wireframe 100; color cpk; select none";
+	}
+
+	// Envía el mismo comando a los dos visores
+	function ambos(cmd) {
+		Jmol.script(jmolApplet0, cmd);
+		Jmol.script(jmolApplet1, cmd);
+	}
+
+	// Activa o detiene la rotación en los dos visores a la vez
+	var girando = false;
+	function rotacion(boton) {
+		girando = !girando;
+		ambos(girando ? "spin on" : "spin off");
+		boton.value = girando ? "Detener rotación" : "Activar rotación";
+		boton.className = girando ? "activo" : "";
+	}
+</script>
+</head>
 <body>
-<table width="780">
-<tr>
-    <td valign=top>
-	<form>
+<div class="tyr">
+
+	<div class="tyr-visor">
+		<h2>Conformación T</h2>
 		<script>
-		  jmolInitialize("../jsmol/js");
-		  jmolSetParameter("UseCommandThread","true");
-		  jmolApplet(420, "load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120;restrict not solvent; background aliceblue; spacefill on; colour chain; select hem; color cpk; spin on");
+			jmolInitialize("../jsmol/js");
+			jmolSetParameter("UseCommandThread", "true");
+			jmolApplet(420, "load ../pdb/deoxyhemoglobina.pdb.gz; " + ajustes + estiloInicial + orientacionT);
 		</script>
-		</form>
-	</td>
-    <td valign="top">
-	 La <B>conformaci&oacute;n T</B> est&aacute; estabilizada por puentes salinos que se rompen al unirse el ox&iacute;geno (<B>conformaci&oacute;n R</B>) 
-     <P>
-	 <IMG SRC="../images/psalinos.png">
-	 <P>
-	 <TABLE border="0" valign="top" align="left">
-	 <TR>
-	 	<TD valign="top" align="center">
+	</div>
+
+	<div class="tyr-centro">
+		<div class="tyr-botones">
+			<input type="button" value="His146-Lys40" onclick="ambos(puente('(his146 or lys40) and protein'))">
+			<input type="button" value="Asp94-His146" onclick="ambos(puente('(asp94 or his146) and (:B or :D)'))">
+			<input type="button" value="Asp126-Arg141" onclick="ambos(puente('(asp126 or arg141) and (:A or :C)'))">
+			<input type="button" value="Val1-Arg141" onclick="ambos(puente('(val1 or arg141) and (:A or :C)'))">
+		</div>
+		<input type="button" id="botonRotacion" value="Activar rotación" onclick="rotacion(this)">
+	</div>
+
+	<div class="tyr-visor">
+		<h2>Conformación R</h2>
 		<script>
-			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120; select *; background aliceblue; spacefill off; wireframe off; cartoons on; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select hem; cartoons off; spacefill on; colour cpk; spin on","Forma T");
+			jmolApplet(420, "load ../pdb/oxyhemoglobina.pdb.gz; " + ajustes + estiloInicial + orientacionR);
 		</script>
-		<hr>
-		</TD>
-	 	<TD valign="top" align="center">
-		<script>
-			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz; moveTo 0 -999 27 28 95.0 120; select *; background aliceblue; spacefill off; wireframe off; cartoons on; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select hem; cartoons off; spacefill on; colour cpk; spin on","Forma R");
-		</script>
-		<hr>
-		</TD>
-	 </TR>
-	 <TR>
-	 	<TD valign="top" align="center">
-			<script>
-			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120; select *; background aliceblue;wireframe off; cartoons off; spacefill off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select His146,Lys40; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","His146-Lys40");
-			</script>
-		</TD>
-	 	<TD valign="top" align="center">
-		--->
-		<script>
-			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *; background aliceblue;wireframe off; cartoons off; spacefill off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select His146,Lys40; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","His146-Lys40");
-			</script>
-		</TD>
-	 </TR>
-	 <TR>
-	 	<TD valign="top" align="center">
-			<script>
-			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120; select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp94B,Asp94D, His146; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cp; spin off","Asp94-His146");
-			</script>
-		</TD>
-	 	<TD valign="top" align="center">
-		--->
-		<script>
-			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp94B,Asp94D, His146; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Asp94-His146");
-			</script>
-		</TD>
-	 </TR>
-	 <TR>
-	 	<TD valign="top" align="center">
-			<script>
-			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120;select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp126,Arg141; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Asp126-Arg141");
-			</script>
-		</TD>
-	 	<TD valign="top" align="center">
-		--->
-		<script>
-			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *;zoom 120; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Asp126,Arg141; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Asp126-Arg141");
-			</script>
-		</TD>
-	 </TR>
-	 <TR>
-	 	<TD valign="top" align="center">
-			<script>
-			jmolButton("load ../pdb/deoxyhemoglobina.pdb.gz; moveTo 0 39 694 -719 171.5 120;select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Val1,Arg141; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Val1-Arg141");
-			</script>
-		</TD>
-	 	<TD valign="top" align="center">
-		--->
-		<script>
-			jmolButton("load ../pdb/oxyhemoglobina.pdb.gz;moveTo 0 -999 27 28 95.0 120; select *; background aliceblue;wireframe off; spacefill off; cartoons off; backbone; select *A; colour blue; select *B; colour yellow; select *C; colour cyan; select *D; colour green; select Val1C,Arg141A, Val1A, Arg141C; cartoons off; spacefill on; colour cpk; select hem; spacefill off; wireframe 100; colour cpk; spin off","Val1-Arg141");
-			</script>
-		</TD>
-	 </TR>
-	 </TABLE>
-	 </td>
-</tr>
-</table>
-</BODY>
-</HTML>
+	</div>
+
+	<div class="tyr-puentes">
+		<img src="../images/puentes_salinos.png" alt="La forma T está estabilizada por 8 puentes salinos entre las cadenas alfa1, alfa2, beta1 y beta2">
+	</div>
+
+	<div class="tyr-equilibrio">
+		<img src="../images/equilibrio_TR.png" alt="Equilibrio entre la desoxihemoglobina (forma Tensa, baja afinidad) y la oxihemoglobina (forma Relajada, alta afinidad)">
+	</div>
+
+</div>
+</body>
+</html>

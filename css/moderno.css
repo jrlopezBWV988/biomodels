@@ -221,56 +221,65 @@ font[color="#00FF00" i], font[color="#FFFFFF" i], font[color="#CCCCFF" i] {
 .nav-lateral {
   background: var(--nav-bg) !important;
   color: var(--nav-ink) !important;
-  padding: 20px 10px 32px;
+  padding: 20px 8px 32px;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.35;
+  overflow-x: hidden;
 }
-.nav-lateral table, .nav-lateral td { width: 100%; padding: 0; text-align: left; }
 .nav-lateral img[src*="LogoUva"] {
   display: block;
   width: 92px !important;
-  margin: 2px 8px 16px;
+  height: auto;
+  margin: 2px 8px 18px;
   border-radius: 6px;
 }
-.nav-lateral p { margin: 0 0 4px; }
-.nav-lateral b {
+.nav-lateral ul { list-style: none; margin: 0; padding: 0; }
+
+/* Nivel 1: los nueve apartados principales, todos con el mismo estilo */
+.nav-lateral .nivel1 > li { margin: 0 0 2px; }
+.nav-lateral .nivel1 > li > a,
+.nav-lateral .cat {
   display: block;
-  color: var(--nav-muted);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-  padding: 14px 8px 4px;
-}
-.nav-lateral b + br { display: none; }
-.nav-lateral b:has(> a) { padding: 0; margin: 2px 0; }
-.nav-lateral b a {
-  /* Encabezados que también son enlaces (Inicio, Aminoácidos…) */
-  display: block;
+  padding: 6px 8px;
+  border-radius: 6px;
   color: #eef4f9;
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0;
-  text-transform: none;
-  padding: 6px 8px;
-  margin: 0 -8px;
-  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
 }
-.nav-lateral a {
-  display: inline-block;
-  vertical-align: top;
+.nav-lateral .cat { cursor: default; }
+
+/* Nivel 2: contenido de cada apartado */
+.nav-lateral .nivel2 {
+  margin: 0 0 8px 8px;
+  padding-left: 4px;
+  border-left: 1px solid #2a4052;
+}
+.nav-lateral .nivel2 a {
+  display: block;
+  padding: 3px 8px;
+  border-radius: 6px;
   color: var(--nav-ink);
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: background .15s ease, color .15s ease;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
 }
+
+/* Grupos dentro de Proteínas (Estructura Secundaria, etc.) */
+.nav-lateral .grupo {
+  display: block;
+  padding: 8px 8px 2px;
+  color: var(--nav-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+.nav-lateral .nivel2 > li:first-child > .grupo { padding-top: 2px; }
+.nav-lateral .nivel3 { margin-left: 6px; }
+
+.nav-lateral a { transition: background .15s ease, color .15s ease; }
 .nav-lateral a:hover { background: var(--nav-hover); color: #fff; text-decoration: none; }
-.nav-lateral a.activo { background: var(--nav-hover); color: var(--nav-accent); }
-.nav-lateral b a.activo { color: var(--nav-accent); }
-.nav-lateral font[size="-1"] { font-size: 13px; }
-.nav-lateral a:has(font[size="-1"]) { padding: 3px 6px; white-space: nowrap; }
-.nav-lateral br + font[size="-1"] { color: var(--nav-muted); }
-.nav-lateral img[src$="redball.gif"] { display: none; }
+.nav-lateral a.activo,
+.nav-lateral .nivel1 > li > a.activo { background: var(--nav-hover); color: var(--nav-accent); }
 
 /* ======================================================
    Submenús en marco superior (glúcidos, globinas, inmuno)

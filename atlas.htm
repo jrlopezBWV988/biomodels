@@ -10,6 +10,47 @@
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
+<style>
+/* Recuadro de instrucciones del ratón, con el mismo fondo que el visor JSmol */
+.ayuda-raton {
+	box-sizing: border-box;
+	width: 300px;
+	margin-left: 18px;
+	padding: 16px 18px;
+	background: #f0f8ff;
+	border: 1px solid var(--line, #dbe2e9);
+	border-radius: var(--radius, 10px);
+	box-shadow: var(--shadow, 0 4px 14px rgba(18,32,44,.06));
+}
+.ayuda-raton h3 {
+	margin: 0 0 12px;
+	font-size: 1.05rem;
+	font-weight: 600;
+	color: var(--title, #13324a);
+}
+.ayuda-raton dl { margin: 0; }
+.ayuda-raton dt {
+	margin-top: 12px;
+	font-weight: 500;
+}
+.ayuda-raton dt:first-of-type { margin-top: 0; }
+.ayuda-raton dd {
+	margin: 2px 0 0;
+	color: var(--muted, #5a6977);
+	font-size: .93em;
+}
+.ayuda-raton kbd {
+	display: inline-block;
+	padding: 1px 7px;
+	font-family: inherit;
+	font-size: .85em;
+	color: var(--accent-strong, #134e69);
+	background: #ffffff;
+	border: 1px solid #c4d3df;
+	border-bottom-width: 2px;
+	border-radius: 5px;
+}
+</style>
 </HEAD>
 <script src="./jsmol/JSmol.min.js"></script>
 <script src="./jsmol/js/Jmol2.js"></script>
@@ -18,7 +59,7 @@
 <table width="100%">
 <tr valign="top">
 	<td colspan="2" valign="middle">
-		<img src="images/jr.profile.jpg" width="150" align="left"/>
+		<img src="images/jr.foto.jpg" width="161" height="200" alt="Jos&eacute; Ram&oacute;n L&oacute;pez L&oacute;pez" align="left"/>
 		Bienvenido a esta web sobre estructuras moleculares.<br>
 		La responsabilidad de su dise&ntilde;o y mantenimiento es de<br>
 		<i><a href="mailto:jrlopez@ibgm.uva.es">Jos&eacute; Ram&oacute;n L&oacute;pez L&oacute;pez</a></i>,
@@ -26,12 +67,12 @@
 		<br>
 		<br>Deber&iacute;as ver una mol&eacute;cula de hemoglobina dando vueltas.
 		<br>
-		<br>Estas p&aacuteginas utilizan JSmol (<a href="http://jmol.sourceforge.net/">http://jmol.sourceforge.net/</a>).		
-		<br><img src="images/Jmol_JSmol_logo.png" width="228" height="40" alt="" border="0"/>	
+		<br>Estas p&aacute;ginas utilizan JSmol (<a href="http://jmol.sourceforge.net/">http://jmol.sourceforge.net/</a>).
+		<br><img src="images/JSmol_logo.png" width="116" height="40" alt="JSmol" border="0"/>
 	</td>
 </tr>
 <tr valign="top">
-	<td>
+	<td width="1">
 		<form>
 		<script>
 		  jmolInitialize("./jsmol/js");
@@ -39,17 +80,23 @@
 		  jmolBr();
 		  jmolButton("restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; spacefill on; select hem; color cpk; spin on", "imagen original");
 		</script>
-	<ul>
-    <li>Bot&oacute;n izquierdo: <i>desplazamiento y giro</i></li>
-	<li>Bot&oacute;n derecho: <i>men&uacute;</i></li>
-	<li>May&uacute;sculas + Bot&oacute;n izquierdo</li>
-    <ul>
-    <li>derecha-izquierda:<i> giro</i></li>
-    <li>arriba-abajo: <i>zoom</i></li>
-	</ul> 
-	<li>Ctrl + Bot&oacute;n derecho: <i>desplazamiento</i></li>
-	</ul>
-    </td>
+		</form>
+	</td>
+	<td>
+		<div class="ayuda-raton">
+			<h3>Uso del rat&oacute;n</h3>
+			<dl>
+				<dt><kbd>Bot&oacute;n izquierdo</kbd></dt>
+				<dd>Desplazamiento y giro</dd>
+				<dt><kbd>Bot&oacute;n derecho</kbd></dt>
+				<dd>Men&uacute;</dd>
+				<dt><kbd>May&uacute;s</kbd> + <kbd>Bot&oacute;n izquierdo</kbd></dt>
+				<dd>Derecha&ndash;izquierda: giro<br>Arriba&ndash;abajo: zoom</dd>
+				<dt><kbd>Ctrl</kbd> + <kbd>Bot&oacute;n derecho</kbd></dt>
+				<dd>Desplazamiento</dd>
+			</dl>
+		</div>
+	</td>
 </tr>
 </table>
 

@@ -296,15 +296,15 @@ font[color="#00FF00" i], font[color="#FFFFFF" i], font[color="#CCCCFF" i] {
 /* ======================================================
    Portada (atlas.htm)
    ====================================================== */
-body.portada img[src*="jr.profile"] {
-  width: 112px !important;
-  height: 112px !important;
+body.portada img[src*="jr.foto"] {
+  width: 161px !important;
+  height: 200px !important;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 0;
   margin: 0 22px 12px 0;
   box-shadow: var(--shadow);
 }
-body.portada img[src*="Jmol_JSmol_logo"] { margin-top: 10px; opacity: .9; }
+body.portada img[src*="JSmol_logo"] { margin-top: 10px; opacity: .9; }
 body.portada > font > table > tbody > tr:first-child > td {
   background: var(--surface);
   border: 1px solid var(--line);

@@ -19,9 +19,8 @@
 .controles-src input.b-sh1  { background: #00FF00; color: #000; border-color: #00b000; }
 .controles-src input.b-sh2  { background: #FF0000; color: #fff; border-color: #b00000; }
 .controles-src input.b-sh3  { background: #0000FF; color: #fff; border-color: #0000b0; }
-.controles-src input.b-ppii { background: #00FFFF; color: #000; border-color: #00b0b0; }
 .controles-src input.b-sh1:hover, .controles-src input.b-sh2:hover,
-.controles-src input.b-sh3:hover, .controles-src input.b-ppii:hover { filter: brightness(0.85); }
+.controles-src input.b-sh3:hover { filter: brightness(0.85); }
 .leyenda-src { text-align: center; font-size: 0.9em; padding-top: 2px; }
 .mecanismo-src { text-align: center; padding-top: 12px; }
 .mecanismo-src img { width: 100%; max-width: 860px; height: auto; }
@@ -30,17 +29,26 @@
 <script src="./jsmol/JSmol.min.js"></script>
 <script src="./jsmol/js/Jmol2.js"></script>
 <script>
-	// Tirosinas reguladoras en esferas (spacefill): Y416 (bucle de activación) y Y527 (cola C-terminal).
+	// Elementos que se muestran siempre: hélice PPII del conector (249-253) en cian y
+	// tirosinas reguladoras en esferas (spacefill): Y416 (bucle de activación) y Y527 (cola C-terminal).
 	// En 2SRC la Y527 está fosforilada; su átomo de fósforo se colorea en naranja.
-	var tirosinas = "select 416; spacefill on; color [255,200,0]; select 416 and *.OH; label Y416; "
-		+ "select 527; spacefill on; color magenta; select 527 and *.OH; label Y527; select 527 and _P; color [255,128,0]; "
-		+ "select 416,527; font label 16 sansserif bold; color label black; set labelfront; set labeloffset 8 8; select *; ";
+	var tirosinas = "color (249-253) cyan; "
+		+ "select 416; spacefill on; color [255,200,0]; "
+		+ "select 527; spacefill on; color magenta; select 527 and _P; color [255,128,0]; select *; ";
 	// Representación base: cartoon gris (se borran representaciones y etiquetas previas)
 	var base = "select *; spacefill off; wireframe off; label off; cartoon on; color gray; ";
+	// Vista inicial (sin rotación) equivalente en los dos modelos: 1Y57 se superpuso a 2SRC por los
+	// Calfa del dominio SH1 (267-520) y se eligió una dirección de visión en la que se separan
+	// SH3, SH2 y SH1. El dominio SH1 ocupa la misma posición y orientación en ambos visores;
+	// el mismo rotationRadius garantiza la misma escala.
+	var vista = [
+		"set rotationRadius 52; moveto 0 {0.3421 -0.8419 0.4173} 163.07 95 0 0 {2.944 34.288 53.227} 52; ",
+		"set rotationRadius 52; moveto 0 {-0.0306 -0.7176 -0.6958} 99.85 95 0 0 {-3.376 35.155 43.958} 52; "
+	];
 	// Comandos comunes a los dos visores
 	var estiloInicial = base + "background aliceblue; "
 		+ "isosurface superficie select(protein) ignore(not protein) color [245,245,245] vdw translucent 0.9; "
-		+ tirosinas + "spin on";
+		+ tirosinas;
 	// Sitio de unión de SH2 a la fosfotirosina (pY527): residuos a <= 4 Å de pY527 en 2SRC
 	var sitioSH2 = "155,175,177,178,179,185,201,203";
 	// Sitio de unión de SH3 a la hélice PPII del conector: residuos a <= 4 Å de 249-253 en 2SRC
@@ -50,13 +58,17 @@
 		SH2:  "color (148-245) red; color (" + sitioSH2 + ") [139,0,0]; "
 			+ "select (" + sitioSH2 + ") and (sidechain or *.CA); wireframe 0.3; select *; ",
 		SH3:  "color (81-143) blue; color (" + sitioSH3 + ") [0,0,110]; "
-			+ "select (" + sitioSH3 + ") and (sidechain or *.CA); wireframe 0.3; select *; ",
-		PPII: "color (249-253) cyan; "
+			+ "select (" + sitioSH3 + ") and (sidechain or *.CA); wireframe 0.3; select *; "
 	};
 	// Envía el mismo comando a los dos visores
 	function ambos(cmd) {
 		Jmol.script(jmolApplet0, cmd);
 		Jmol.script(jmolApplet1, cmd);
+	}
+	function vistaInicial() {
+		Jmol.script(jmolApplet0, "spin off; " + vista[0]);
+		Jmol.script(jmolApplet1, "spin off; " + vista[1]);
+		var r = document.getElementById("rotacion"); if (r) r.checked = false;
 	}
 	function dominio(d) {
 		ambos("cartoon off; " + base + dominios[d] + tirosinas);
@@ -74,7 +86,7 @@
 	<script>
 		  jmolInitialize("./jsmol/js");
 		  jmolSetParameter("UseCommandThread","true");
-		  jmolApplet(420, "load ./pdb/2SRC.pdb.gz; " + estiloInicial);
+		  jmolApplet(420, "load ./pdb/2SRC.pdb.gz; " + estiloInicial + vista[0]);
 	</script>
 	</CENTER>
 	</TD>
@@ -83,7 +95,7 @@
 	<FONT SIZE="+2" COLOR="#6633CC"><B>cSrc Activa</B></FONT>
 	<BR>
 	<script>
-		  jmolApplet(420, "load ./pdb/1Y57.pdb.gz; " + estiloInicial);
+		  jmolApplet(420, "load ./pdb/1Y57.pdb.gz; " + estiloInicial + vista[1]);
 	</script>
 	</CENTER>
 	</TD>
@@ -93,13 +105,13 @@
 		<input type="button" class="b-sh1" value="SH1" onclick="dominio('SH1')">
 		<input type="button" class="b-sh2" value="SH2" onclick="dominio('SH2')">
 		<input type="button" class="b-sh3" value="SH3" onclick="dominio('SH3')">
-		<input type="button" class="b-ppii" value="H&eacute;lice PPII" onclick="dominio('PPII')">
-		<label><input type="checkbox" checked onclick="ambos(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
+		<input type="button" value="Vista inicial" onclick="vistaInicial()">
+		<label><input type="checkbox" id="rotacion" onclick="ambos(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
 	</TD>
 </TR>
 <TR>
 	<TD colspan="2" class="leyenda-src">
-		Esferas: <b style="color:#c89a00">Y416</b> (bucle de activaci&oacute;n) y <b style="color:#c000c0">Y527</b> (cola C-terminal; fosforilada en la forma inactiva, 2SRC).
+		Esferas: <b style="color:#c89a00">Y416</b> (bucle de activaci&oacute;n) y <b style="color:#c000c0">Y527</b> (cola C-terminal; fosforilada en la forma inactiva, 2SRC). En <b style="color:#00a0a0">cian</b>: h&eacute;lice PPII del conector SH2-SH1.
 		En color oscuro: sitio de uni&oacute;n de SH2 a la fosfotirosina y de SH3 a la h&eacute;lice PPII.
 	</TD>
 </TR>

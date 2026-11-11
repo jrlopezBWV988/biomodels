@@ -11,17 +11,21 @@
 <META NAME="Keywords" CONTENT="">
 <META NAME="Description" CONTENT="">
 <style>
-.controles-src { text-align: center; padding-top: 6px; }
-.controles-src input[type="button"] { margin: 4px 6px; min-width: 64px; }
-.controles-src label { margin-left: 10px; white-space: nowrap; }
-.titulo-src { text-align: center; font-size: 1.35em; line-height: 1.35; margin: 4px auto 10px; max-width: 860px; }
+.controles-src { vertical-align: middle !important; text-align: center; padding: 4px !important; width: 1%; white-space: nowrap; }
+.controles-src .pila { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+.controles-src input[type="button"] { margin: 3px !important; min-width: 64px; white-space: nowrap; }
+.tabla-src { width: min-content !important; margin: 0 auto; }
+.controles-src label { margin: 3px; white-space: nowrap; }
+.titulo-src { text-align: center; font-size: 1.6rem; line-height: 1.25; margin: 4px auto 10px; max-width: 900px; }
+.cabecera-src font[size="+2"] { font-size: 1.35em; }
+@media (max-width: 640px) { .titulo-src { font-size: 1.35rem; } }
 /* Botones con el mismo color que aplican al modelo */
 .controles-src input.b-sh1  { background: #00FF00; color: #000; border-color: #00b000; }
 .controles-src input.b-sh2  { background: #FF0000; color: #fff; border-color: #b00000; }
 .controles-src input.b-sh3  { background: #0000FF; color: #fff; border-color: #0000b0; }
 .controles-src input.b-sh1:hover, .controles-src input.b-sh2:hover,
 .controles-src input.b-sh3:hover { filter: brightness(0.85); }
-.leyenda-src { text-align: center; font-size: 0.9em; padding-top: 2px; }
+.leyenda-src { text-align: center; font-size: 1.1em; line-height: 1.45; padding-top: 2px; }
 .mecanismo-src { text-align: center; padding-top: 12px; }
 .mecanismo-src img { width: 100%; max-width: 860px; height: auto; }
 </style>
@@ -77,9 +81,9 @@
 <body>
 <font face="Tahoma">
 <div class="titulo-src">Src es una Tyr quinasa que se activa mediante un complejo mecanismo<br>que involucra a varios de sus dominios</div>
-<TABLE border="0" cellspacing="5">
+<TABLE class="tabla-src" border="0" cellspacing="5">
 <TR>
-	<TD>
+	<TD class="cabecera-src">
 	<CENTER>
 	<FONT SIZE="+2" COLOR="#6633CC"><B>cSrc Inactiva</B></FONT>
 	<BR>
@@ -90,7 +94,16 @@
 	</script>
 	</CENTER>
 	</TD>
-	<TD>
+	<TD class="controles-src">
+		<div class="pila">
+			<input type="button" class="b-sh1" value="SH1" onclick="dominio('SH1')">
+			<input type="button" class="b-sh2" value="SH2" onclick="dominio('SH2')">
+			<input type="button" class="b-sh3" value="SH3" onclick="dominio('SH3')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial()">
+			<label><input type="checkbox" id="rotacion" onclick="ambos(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
+		</div>
+	</TD>
+	<TD class="cabecera-src">
 	<CENTER>
 	<FONT SIZE="+2" COLOR="#6633CC"><B>cSrc Activa</B></FONT>
 	<BR>
@@ -101,22 +114,13 @@
 	</TD>
 </TR>
 <TR>
-	<TD colspan="2" class="controles-src">
-		<input type="button" class="b-sh1" value="SH1" onclick="dominio('SH1')">
-		<input type="button" class="b-sh2" value="SH2" onclick="dominio('SH2')">
-		<input type="button" class="b-sh3" value="SH3" onclick="dominio('SH3')">
-		<input type="button" value="Vista inicial" onclick="vistaInicial()">
-		<label><input type="checkbox" id="rotacion" onclick="ambos(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
-	</TD>
-</TR>
-<TR>
-	<TD colspan="2" class="leyenda-src">
-		Esferas: <b style="color:#c89a00">Y416</b> (bucle de activaci&oacute;n) y <b style="color:#c000c0">Y527</b> (cola C-terminal; fosforilada en la forma inactiva, 2SRC). En <b style="color:#00a0a0">cian</b>: h&eacute;lice PPII del conector SH2-SH1.
+	<TD colspan="3" class="leyenda-src">
+		Esferas: <b style="color:#c89a00">Y416</b> (bucle de activaci&oacute;n) y <b style="color:#c000c0">Y527</b> (cola C-terminal; fosforilada en la forma inactiva). En <b style="color:#00a0a0">cian</b>: h&eacute;lice PPII del conector SH2-SH1.
 		En color oscuro: sitio de uni&oacute;n de SH2 a la fosfotirosina y de SH3 a la h&eacute;lice PPII.
 	</TD>
 </TR>
 <TR>
-	<TD colspan="2" class="mecanismo-src">
+	<TD colspan="3" class="mecanismo-src">
 		<img src="./images/Src.Mecanismo.png" alt="Mecanismo de activaci&oacute;n de Src">
 	</TD>
 </TR>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+
+<link rel="stylesheet" type="text/css" href="biomodels.css">
+<title>Tetrosas</title>
+<script src="./jsmol/JSmol.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+var Aldo = 'Aldo';
+var Ceto = 'Ceto';
+var JmolInfo = {
+	width:'100%',
+	height:'100%',
+	color:'#F0F8FF',
+	j2sPath:'./jsmol/j2s',
+	serverURL:'./jsmol/php/jsmol.php',
+	use:'html5'
+	}
+// Representación inicial: bolas y varillas. Las coordenadas de los .mol ya están
+// orientadas como la proyección de Fisher (cadena vertical hacia atrás, sustituyentes
+// horizontales hacia el observador).
+var inicio = '; spacefill 25%; wireframe 0.15; colour cpk; zoom 110';
+// Carbono asimétrico C2 (aldotetrosas) = átomo C3 del fichero; C3 = átomo C6.
+// En la D-eritrulosa el único carbono asimétrico (C3) es el átomo C5 del fichero.
+var cAldo = {C2:'C3', C3:'C6'};
+var cCeto = {C3:'C5'};
+
+$(document).ready(function(){
+	$('#JmolDiv_Aldo').html(Jmol.getAppletHtml(Aldo, JmolInfo));
+	$('#JmolDiv_Ceto').html(Jmol.getAppletHtml(Ceto, JmolInfo));
+	Jmol.script(Aldo, 'load ./pdb/glucidos/D-Eritrosa.mol' + inicio);
+	Jmol.script(Ceto, 'load ./pdb/glucidos/D-Eritrulosa.mol' + inicio);
+});
+
+function ambos(cmd) {
+	Jmol.script(Aldo, cmd);
+	Jmol.script(Ceto, cmd);
+}
+function asimetrico(c) {
+	var base = 'select *; spacefill 25%; colour cpk; ';
+	if (cAldo[c]) Jmol.script(Aldo, base + 'select ' + cAldo[c] + '; spacefill 28%; colour atoms [20,120,20]');
+	else Jmol.script(Aldo, base);
+	if (cCeto[c]) Jmol.script(Ceto, base + 'select ' + cCeto[c] + '; spacefill 28%; colour atoms [20,120,20]');
+	else Jmol.script(Ceto, base);
+}
+function cargarAldo(sel) {
+	Jmol.script(Aldo, 'load ./pdb/glucidos/' + sel.value + '.mol' + inicio);
+}
+</script>
+</head>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="5">
+<TR valign="top">
+	<TD align="center">
+	<b>Aldotetrosas</b><br>
+	<select onchange="cargarAldo(this)">
+		<option value="D-Eritrosa" selected>D-Eritrosa</option>
+		<option value="D-Treosa">D-Treosa</option>
+	</select>
+	<div id="JmolDiv_Aldo" style="width:350px; height:350px;"></div>
+	</TD>
+	<TD align="center">
+	<b>Cetotetrosa</b><br>
+	<span style="display:inline-block;padding:2px 0;">D-Eritrulosa</span>
+	<div id="JmolDiv_Ceto" style="width:350px; height:350px;"></div>
+	</TD>
+	<TD valign="center">
+		<P>
+		Las <FONT COLOR="#6633CC"><B><u><i>Aldotetrosas</i></u></b></FONT> tienen dos carbonos asim&eacute;tricos (C2 y C3),
+		que determinan la existencia de 4 is&oacute;meros posibles (2<sup>#C asim&eacute;tricos</sup>).
+		La <FONT COLOR="#6633CC"><B><u><i>Cetotetrosa</i></u></b></FONT> (eritrulosa) tiene un &uacute;nico carbono asim&eacute;trico (C3).
+		<Br>
+		<i>En esta p&aacute;gina se muestran los de la serie D (definida por la configuraci&oacute;n del C3).</i>
+		<p>
+		<input type="button" value="Bolas y Varillas" onclick="ambos('select *; colour cpk; spacefill 25%')"><br>
+		<input type="button" value="Esferas de Van der Walls" onclick="ambos('select *; colour cpk; spacefill 100%')">
+		<p>
+		<input type="button" value="C2" onclick="asimetrico('C2')">
+		<input type="button" value="C3" onclick="asimetrico('C3')"> Carbonos asim&eacute;tricos
+		<br><FONT SIZE="-1"><i>(En la D-eritrulosa el C2 es el carbono carbon&iacute;lico y no es asim&eacute;trico).</i></FONT>
+		<p>
+		<label><input type="checkbox" onclick="ambos(this.checked ? 'set spin x 0; set spin y 30; spin on' : 'spin off')"> Rotaci&oacute;n</label>
+	</TD>
+</TR>
+</TABLE>
+<b><i><font color="#FF373B">Proyecciones de Fisher:</font></i></b>
+<table border="1" cellspacing="2" width="800">
+<tr valign="center">
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" colspan="8">
+	<FONT SIZE="-1"><i>
+	(Representaci&oacute;n en 2D de la configuraci&oacute;n tetra&eacute;drica (3D) de los enlaces sp<sup>3</sup> del carbono, 
+	relevante para definir la disposici&oacute;n en el espacio de los sustituyentes de un carbono asim&eacute;trico. 
+	Asumiendo que el carbono est&aacute en el plano del dibujo, los enlaces horizontales se proyectan hacia delante del plano
+	y los verticales hacia atr&aacute;s).
+ 	</i></FONT>
+	</td>
+</tr>
+<tr valign="center">
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" align="center"><br />
+	<img src="./pdb/glucidos/D-Eritrosa.png" style="width:100px;max-width:none;"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Erythrose">D-Eritrosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" align="center"><br />
+	<img src="./pdb/glucidos/D-Treosa.png" style="width:100px;max-width:none;"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Threose">D-Treosa</a></div>
+	</td>
+	<td style="border-color : #333300 #333300 #333300 #333300; border-style: solid;" align="center"><br />
+	<img src="./pdb/glucidos/D-Eritrulosa.png" style="width:100px;max-width:none;"><br />
+	<div align="center"><a href="https://en.wikipedia.org/wiki/Erythrulose">D-Eritrulosa</a></div>
+	</td>
+</tr>
+</table>
+</font>
+</body>
+</html>

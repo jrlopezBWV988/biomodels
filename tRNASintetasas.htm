@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="css/moderno.css">
 <TITLE>Aminoacil-tRNA sintetasas</TITLE>
 <style>
-.enlaces-sint { margin: 0 0 12px 5px; font-size: 1.1em; font-weight: 600; }
+.enlaces-sint { margin: 0 0 12px 5px; }
+.enlaces-sint input[type="button"] { margin: 3px !important; white-space: nowrap; }
 .cabecera-sint { vertical-align: top !important; }
 .cabecera-sint font[size="+2"] { font-size: 1.35em; }
 .controles-sint { vertical-align: top !important; text-align: center; padding: 4px !important; width: 1%; white-space: nowrap; }
@@ -38,7 +39,7 @@
 	// Visor izquierdo (jmolApplet0): clase I, GlnRS de E. coli con tRNA-Gln y ATP (PDB 1GTR).
 	// Visor derecho (jmolApplet1): clase II, AspRS de E. coli con tRNA-Asp y aspartil-adenilato (PDB 1C0A).
 	//   La unidad asimétrica de 1C0A es un monómero; el dímero biológico (cadenas C y D) se ha generado
-	//   con la operación de simetría cristalográfica y,x,-z.
+	//   con la operación de simetría cristalográfica y,x,-z. En "Motivos" solo se muestran las cadenas A y B.
 	// Representación inspirada en PDB-101 (Molecule of the Month 16): proteína en esferas,
 	// tRNA en cartoon gris azulado, anticodón amarillo, extremo aceptor verde y ligando blanco.
 	var luz = "background aliceblue; set specular true; set specpower 25; set specpercent 40; "
@@ -46,12 +47,14 @@
 	var lig = ["ATP", "AMO"];   // ATP (1GTR) y aspartil-adenilato (1C0A)
 	var anticodon = ["34-36:B", "634-636:B or 634-636:D"];
 	var aceptor   = ["74-76:B", "674-676:B or 674-676:D"];
-	// Común a todas las vistas: tRNA en cartoon y ligando en esferas blancas
-	function trna(i) {
-		return "select nucleic; cartoon 0.8; color [141,167,194]; "
-			+ "select " + anticodon[i] + "; color [235,223,94]; "
-			+ "select " + aceptor[i] + "; color [61,252,182]; "
-			+ "select " + lig[i] + "; cartoon off; spacefill 0.8; wireframe 0.25; color white; ";
+	// Común a todas las vistas: tRNA en cartoon y ligando en esferas blancas.
+	// "sel" limita la selección (en "Motivos" de AspRS, al monómero A y su tRNA B).
+	function trna(i, sel) {
+		var y = sel ? " and (" + sel + ")" : "";
+		return "select nucleic" + y + "; cartoon 0.8; color [141,167,194]; "
+			+ "select (" + anticodon[i] + ")" + y + "; color [235,223,94]; "
+			+ "select (" + aceptor[i] + ")" + y + "; color [61,252,182]; "
+			+ "select " + lig[i] + y + "; cartoon off; spacefill 0.8; wireframe 0.25; color white; ";
 	}
 	var limpiar = "spin off; select *; spacefill off; wireframe off; cartoon off; label off; ";
 	// Estilo inicial: proteína roja (segundo monómero en un tono más oscuro), como en PDB-101
@@ -84,32 +87,33 @@
 	var motivos = [
 		limpiar + "select protein; cartoon on; color cartoon [120,120,120]; "
 			+ "select 40-43:A; spacefill 0.5; wireframe 0.3; color [0,200,255]; select 267-271:A; spacefill 0.5; wireframe 0.3; color [255,160,0]; " + trna(0) + "select " + lig[0] + "; spacefill on; ",
-		limpiar + "select protein; cartoon on; color cartoon [120,120,120]; select protein and :C; color cartoon [70,70,70]; "
+		limpiar + "select protein and :A; cartoon on; color cartoon [120,120,120]; "
 			+ "select 148-166:A; spacefill 0.5; wireframe 0.3; color [0,200,255]; select 213-231:A; spacefill 0.5; wireframe 0.3; color [255,160,0]; "
-			+ "select 528-540:A; spacefill 0.5; wireframe 0.3; color [230,80,230]; " + trna(1) + "select " + lig[1] + "; spacefill on; "
+			+ "select 528-540:A; spacefill 0.5; wireframe 0.3; color [230,80,230]; " + trna(1, ":A or :B") + "select " + lig[1] + " and :A; spacefill on; "
 	];
 	// Orientación inicial de cada visor (eje x y z, ángulo). El acercamiento de "Motivos" se centra en el ligando.
 	var giro = [[0, 0, 1, 0], [0, 1, 0, 90]];
+	// En "Motivos" el monómero de AspRS se gira para que se vean el sitio activo y el tRNA ("rotate y -90; rotate z -90")
+	var giroMotivos = [[0, 0, 1, 0], [-1, -1, -1, 120]];
 	var centroGeneral = ["{37.98 13.78 20.55}", "{40.12 40.12 0.0}"];   // centro de la caja que envuelve cada estructura
 	var centroMotivos = ["(ATP)", "(AMO and :A)"];
-	var vista = ["reset; center all; zoom 100; ", "reset; center all; zoom 100; rotate y 90; "];
+	var vista = ["reset; center " + centroGeneral[0] + "; zoom 100; ", "reset; center " + centroGeneral[1] + "; zoom 100; rotate y 90; "];
 	// Las vistas generales se restablecen directamente; moveto (animado) solo se usa para entrar o salir
 	// del acercamiento de "Motivos", porque en JSmol un moveto casi nulo puede dejar el visor en negro.
 	var enMotivos = false;
 	function aplicar(i, cmd) { Jmol.script(i == 0 ? jmolApplet0 : jmolApplet1, cmd); }
 	function sinRotacion() { var r = document.getElementById("rotacion"); if (r) r.checked = false; }
-	function moverA(i, zoom, centro) {
-		var g = giro[i];
+	function moverA(i, zoom, centro, g) {
 		return "select *; moveto 1.0 {" + g[0] + " " + g[1] + " " + g[2] + "} " + g[3] + " " + zoom + " 0 0 " + centro + "; ";
 	}
 	function general(estilos, ley) {
-		for (var i = 0; i < 2; i++) aplicar(i, "spin off; " + estilos[i] + (enMotivos ? moverA(i, 100, centroGeneral[i]) : "select *; " + vista[i]));
+		for (var i = 0; i < 2; i++) aplicar(i, "spin off; " + estilos[i] + (enMotivos ? moverA(i, 100, centroGeneral[i], giro[i]) : "select *; " + vista[i]));
 		enMotivos = false; sinRotacion(); leyenda(ley);
 	}
 	function vistaInicial() { general(estilo, ""); }
 	function verDominios()  { general(dominios, "dominios"); }
 	function verMotivos() {
-		for (var i = 0; i < 2; i++) aplicar(i, "spin off; " + motivos[i] + (enMotivos ? "" : moverA(i, 200, centroMotivos[i])));
+		for (var i = 0; i < 2; i++) aplicar(i, "spin off; " + motivos[i] + (enMotivos ? "" : moverA(i, 200, centroMotivos[i], giroMotivos[i])));
 		enMotivos = true; sinRotacion(); leyenda("motivos");
 	}
 	function ambos(cmd) { aplicar(0, cmd); aplicar(1, cmd); }
@@ -125,7 +129,7 @@
 </script>
 <body>
 <font face="Tahoma">
-<div class="enlaces-sint"><a href="MSC.htm">MSC humano</a></div>
+<div class="enlaces-sint"><input type="button" value="Complejo multisintetasa humano (MSC)" onclick="location.href='MSC.htm'"></div>
 <TABLE class="tabla-sint" border="0" cellspacing="5">
 <TR>
 	<TD class="cabecera-sint">
@@ -152,7 +156,8 @@
 	<ul>
 	<li>El ATP se une en <b><i>conformaci&oacute;n extendida</i></b>&nbsp;<sup>5</sup>.</li>
 	<li>Se aproximan al tallo aceptor del tRNA por el <b><i>surco menor</i></b> y transfieren el amino&aacute;cido al
-	<b><i>2&prime;-OH</i></b> de la adenosina terminal A76&nbsp;<sup>1,2,4</sup> (TrpRS y TyrRS son excepciones en la uni&oacute;n al tRNA&nbsp;<sup>2</sup>).</li>
+	<b><i>2&prime;-OH</i></b> de la adenosina terminal A76&nbsp;<sup>1,2,4</sup> (TrpRS y TyrRS son excepciones en la uni&oacute;n al tRNA&nbsp;<sup>2</sup>). Despu&eacute;s el amino&aacute;cido pasa al
+	3&prime;-OH&nbsp;<sup>9</sup>.</li>
 	<li>GlnRS, GluRS, ArgRS y LysRS-I necesitan el tRNA para activar el amino&aacute;cido&nbsp;<sup>2</sup>.</li>
 	<li>El paso limitante suele ser la <b><i>liberaci&oacute;n del aminoacil-tRNA</i></b> (salvo IleRS y algunas GluRS)&nbsp;<sup>2</sup>.</li>
 	<li>IleRS, LeuRS y ValRS corrigen errores (<i>editing</i>) en el dominio CP1&nbsp;<sup>2</sup>.</li>
@@ -186,7 +191,8 @@
 		  jmolApplet(420, "load ./pdb/1C0A_dimero.pdb.gz; " + luz + estilo[1] + vista[1]);
 	</script>
 	<BR><div class="pie-sint">D&iacute;mero de AspRS de <i>E. coli</i> con dos tRNA<sup>Asp</sup> y aspartil-adenilato
-	(PDB 1C0A)&nbsp;<sup>7</sup>. El segundo mon&oacute;mero se ha generado por simetr&iacute;a cristalogr&aacute;fica.</div>
+	(PDB 1C0A)&nbsp;<sup>7</sup>. El segundo mon&oacute;mero se ha generado por simetr&iacute;a cristalogr&aacute;fica.
+	En la vista de motivos se muestra un solo mon&oacute;mero con su tRNA, para mayor claridad.</div>
 	<div class="leyenda-sint ley-base"><span class="it"><span class="c" style="background:#DE4B6B"></span>AspRS</span> <span class="it"><span class="c" style="background:#96284A"></span>2.&ordm; mon&oacute;mero</span> <span class="it"><span class="c" style="background:#8DA7C2"></span>tRNA</span> <span class="it"><span class="c" style="background:#EBDF5E"></span>anticod&oacute;n</span> <span class="it"><span class="c" style="background:#3DFCB6"></span>extremo aceptor</span> <span class="it"><span class="c" style="background:#fff"></span>Asp-AMP</span></div>
 	<div class="leyenda-sint ley-dominios" style="display:none"><span class="it"><span class="c" style="background:#DE4B6B"></span>dominio catal&iacute;tico</span> <span class="it"><span class="c" style="background:#FFA000"></span>inserci&oacute;n GAD</span> <span class="it"><span class="c" style="background:#A0A0A0"></span>bisagra</span> <span class="it"><span class="c" style="background:#4682E6"></span>uni&oacute;n al anticod&oacute;n (OB)</span> <span class="it"><span class="c" style="background:#555"></span>2.&ordm; mon&oacute;mero</span></div>
 	<div class="leyenda-sint ley-motivos" style="display:none"><span class="it"><span class="c" style="background:#00C8FF"></span>motivo 1</span> <span class="it"><span class="c" style="background:#FFA000"></span>motivo 2</span> <span class="it"><span class="c" style="background:#E650E6"></span>motivo 3</span> <span class="it"><span class="c" style="background:#fff"></span>Asp-AMP</span></div>
@@ -226,6 +232,10 @@
 <div class="comun-sint">
 <p>Ambas clases catalizan la misma reacci&oacute;n en <b><i>dos pasos</i></b>: el amino&aacute;cido se activa con ATP
 formando aminoacil-adenilato y pirofosfato, y despu&eacute;s se transfiere al extremo 3&prime; del tRNA&nbsp;<sup>2</sup>.
+<b><i>Sea cual sea el hidroxilo aminoacilado en primer lugar, el aminoacil-tRNA que llega al ribosoma lleva el
+amino&aacute;cido en el 3&prime;-OH</i></b>: el grupo aminoacilo migra entre el 2&prime;-OH y el 3&prime;-OH (transacilaci&oacute;n),
+y el factor de elongaci&oacute;n EF-Tu convierte la mezcla de is&oacute;meros en el is&oacute;mero 3&prime;, que es el que entrega al
+ribosoma&nbsp;<sup>9</sup>.
 Las subclases se muestran seg&uacute;n Pang <i>et al.</i>&nbsp;<sup>3</sup>; la asignaci&oacute;n de ArgRS (Ia o Ib) y de AlaRS
 (IIa o IIc) var&iacute;a entre autores&nbsp;<sup>3&ndash;5</sup>. LysRS existe en las dos clases&nbsp;<sup>2</sup>.
 La representaci&oacute;n de las estructuras sigue el estilo de PDB-101&nbsp;<sup>8</sup>.</p>
@@ -247,7 +257,9 @@ based on mutually exclusive sets of sequence motifs. <i>Nature</i> 347:203&ndash
 <i>Escherichia coli</i>: a snapshot of the second step. <i>EMBO J</i> 18:6532&ndash;6541.
 <a href="https://doi.org/10.1093/emboj/18.22.6532" target="_blank">doi:10.1093/emboj/18.22.6532</a><br>
 [8] Goodsell D (2001). Molecule of the Month: Aminoacyl-tRNA synthetases. PDB-101.
-<a href="https://doi.org/10.2210/rcsb_pdb/mom_2001_4" target="_blank">doi:10.2210/rcsb_pdb/mom_2001_4</a></p>
+<a href="https://doi.org/10.2210/rcsb_pdb/mom_2001_4" target="_blank">doi:10.2210/rcsb_pdb/mom_2001_4</a><br>
+[9] Safro M, Klipcan L (2013). The mechanistic and evolutionary aspects of the 2&prime;- and 3&prime;-OH paradigm in biosynthetic
+machinery. <i>Biol Direct</i> 8:17. <a href="https://doi.org/10.1186/1745-6150-8-17" target="_blank">doi:10.1186/1745-6150-8-17</a></p>
 </div>
 <BR>
 </BODY>

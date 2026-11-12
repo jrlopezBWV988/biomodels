@@ -32,47 +32,67 @@
 .controles-msc input.b-aimp1, .controles-msc input.b-aimp2, .controles-msc input.b-aimp3 { text-shadow: 0 0 3px rgba(0,0,0,.9), 0 0 1px #000; }
 .controles-msc input[class^="b-"]:hover { filter: brightness(0.85); }
 .pie-msc { max-width: 640px; font-size: 0.95em; color: #5a6977; text-align: left; line-height: 1.45; }
+.texto-msc { margin-top: 10px; color: #33404c; }
+.texto-msc p { margin: 0 0 8px; text-align: justify; }
+.refs-msc { font-size: 0.85em; color: #5a6977; text-align: left !important; }
 </style>
 </HEAD>
 <script src="./jsmol/JSmol.min.js"></script>
 <script src="./jsmol/js/Jmol2.js"></script>
 <script>
-	// Modelo ma-iegv0 (ModelArchive) del complejo multisintetasa humano con 14 tRNAs colocados
+	// Modelo ma-iegv0 (ModelArchive) del complejo multisintetasa humano con 13 tRNAs colocados
 	// por superposición de complejos sintetasa-tRNA experimentales.
 	// Proteínas: cartoon gris (como en SRC.htm). tRNAs: cartoon naranja, el color del fósforo en la
 	// opción "Esquema" de tRNA.htm, aplicado a todo el tRNA para que no aparezcan nucleótidos en rojo.
 	var naranja = "[255,128,0]";
 	var palido = "[228,228,228]";
-	var base = "select *; spacefill off; wireframe off; label off; cartoon on; "
+	var base = "select *; spacefill off; wireframe off; label off; cartoon on; color cartoon opaque; "
 		+ "select protein; color cartoon gray; "
 		+ "select nucleic; color cartoon " + naranja + "; select *; ";
 	var estiloInicial = base + "background aliceblue; ";
 	// Centro de la caja que envuelve el complejo (el centro de masas está desplazado hacia los tRNAs)
 	var vista = "reset; center {-19.70 93.83 93.24}; zoom 95; ";
+	// La misma vista inicial como moveto animado (radio explícito para deshacer el acercamiento)
+	var vistaAnimada = "moveto 1.0 {0 0 1} 0 95 0 0 {-19.70 93.83 93.24} 192.5; ";
 	// Cada componente: cadenas con su color (un color por monómero) y tRNAs unidos
 	var componentes = {
-		MetRS:    { cad: [[":A", "[0,192,0]"]],                               trna: ":tMA" },
-		GluProRS: { cad: [[":C", "[224,0,224]"], [":N", "[130,0,150]"]],      trna: ":tEC or :tEN or :tPC or :tPN" },
-		AspRS:    { cad: [[":E", "[0,210,210]"], [":L", "[0,110,140]"]],      trna: ":tDE or :tDL" },
-		GlnRS:    { cad: [[":F", "[232,184,0]"]],                             trna: ":tQF" },
-		ArgRS:    { cad: [[":G", "[128,64,255]"]],                            trna: ":tRG" },
-		LysRS:    { cad: [[":H", "[255,130,200]"], [":M", "[180,20,90]"]],    trna: ":tKH or :tKM" },
-		IleRS:    { cad: [[":J", "[160,82,45]"]],                             trna: ":tIJ" },
-		LeuRS:    { cad: [[":K", "[30,120,255]"]],                            trna: ":tLK" },
-		AIMP1:    { cad: [[":I", "[20,32,122]"]],                             trna: ":tXI" },
-		AIMP2:    { cad: [[":D", "[180,0,60]"]],                              trna: "" },
-		AIMP3:    { cad: [[":B", "[120,140,0]"]],                             trna: "" }
+		MetRS:    { cad: [[":A", "[0,192,0]"]],                               trna: ":tMA",
+		           vista: "{0.9324 -0.3513 0.0847} 170.38 100 0 0 {2.78 37.22 23.89} 60.1" },
+		GluProRS: { cad: [[":C", "[224,0,224]"], [":N", "[130,0,150]"]],      trna: ":tEC or :tEN or :tPC or :tPN",
+		           vista: "{0.4647 0.8479 -0.2553} 101.53 100 0 0 {-10.52 173.61 84.26} 151.4" },
+		AspRS:    { cad: [[":E", "[0,210,210]"], [":L", "[0,110,140]"]],      trna: ":tDE or :tDL",
+		           vista: "{-0.421 -0.7716 -0.4768} 101.37 100 0 0 {4.55 20.56 83.32} 71.8" },
+		GlnRS:    { cad: [[":F", "[232,184,0]"]],                             trna: ":tQF",
+		           vista: "{0.0229 -0.6313 -0.7752} 105.4 100 0 0 {-1.23 38.76 118.33} 60.0" },
+		ArgRS:    { cad: [[":G", "[128,64,255]"]],                            trna: ":tRG",
+		           vista: "{-0.6591 -0.0339 0.7512} 63.07 100 0 0 {-24.8 -14.91 105.51} 65.1" },
+		LysRS:    { cad: [[":H", "[255,130,200]"], [":M", "[180,20,90]"]],    trna: ":tKH or :tKM",
+		           vista: "{0.6687 -0.7429 -0.0299} 52.56 100 0 0 {16.39 -20.11 168.18} 73.6" },
+		IleRS:    { cad: [[":J", "[160,82,45]"]],                             trna: ":tIJ",
+		           vista: "{-0.0756 0.668 -0.7403} 104.06 100 0 0 {-55.61 -8.22 92.5} 68.9" },
+		LeuRS:    { cad: [[":K", "[30,120,255]"]],                            trna: ":tLK",
+		           vista: "{-0.9973 0.0603 -0.0425} 89.43 100 0 0 {-13.93 -42.64 63.84} 79.8" },
+		AIMP1:    { cad: [[":I", "[20,32,122]"]],                             trna: "",
+		           vista: "{-0.5721 -0.2786 -0.7714} 146.28 100 0 0 {-13.46 19.57 77.7} 53.8" },
+		AIMP2:    { cad: [[":D", "[180,0,60]"]],                              trna: "",
+		           vista: "{0.266 0.7466 0.6098} 53.93 100 0 0 {-19.87 21.23 123.32} 74.2" },
+		AIMP3:    { cad: [[":B", "[120,140,0]"]],                             trna: "",
+		           vista: "{-0.655 0.0987 0.7492} 168.28 100 0 0 {-35.85 33.85 41.13} 31.6" }
 	};
-	// Resalta un componente: el resto del complejo, tRNAs incluidos, queda en gris muy pálido
+	// Resalta un componente: el resto del complejo, tRNAs incluidos, queda en gris muy pálido y
+	// semitransparente; después la molécula gira y se acerca para mostrar el componente.
+	// Cada "vista" (eje, ángulo, zoom, centro, radio) se calculó buscando la orientación en la que
+	// el componente y sus tRNAs quedan menos tapados por el resto del complejo.
 	function resaltar(n) {
 		var c = componentes[n];
-		var s = "select *; spacefill off; wireframe off; label off; cartoon on; color cartoon " + palido + "; ";
-		for (var i = 0; i < c.cad.length; i++) s += "select " + c.cad[i][0] + "; color cartoon " + c.cad[i][1] + "; ";
-		if (c.trna) s += "select " + c.trna + "; color cartoon " + naranja + "; ";
-		jmolScript(s + "select *; ");
+		var s = "spin off; select *; spacefill off; wireframe off; label off; cartoon on; color cartoon translucent 0.4 " + palido + "; ";
+		for (var i = 0; i < c.cad.length; i++) s += "select " + c.cad[i][0] + "; color cartoon opaque " + c.cad[i][1] + "; ";
+		if (c.trna) s += "select " + c.trna + "; color cartoon opaque " + naranja + "; ";
+		jmolScript(s + "select *; moveto 1.0 " + c.vista + "; ");
+		var r = document.getElementById("rotacion"); if (r) r.checked = false;
 	}
 	function vistaInicial() {
-		jmolScript("spin off; " + base + vista);
+		jmolScript("spin off; " + base + vistaAnimada);
 		var r = document.getElementById("rotacion"); if (r) r.checked = false;
 	}
 </script>
@@ -96,6 +116,37 @@
 	colocado superponiendo complejos sintetasa&ndash;tRNA experimentales sobre cada sintetasa;
 	su posici&oacute;n es aproximada. Los d&iacute;meros se muestran con un tono distinto para cada
 	mon&oacute;mero. La carga del modelo tarda unos segundos.</div>
+	<div class="pie-msc texto-msc">
+	<p>El MSC humano re&uacute;ne nueve actividades aminoacil-tRNA sintetasa en ocho prote&iacute;nas
+	(MetRS, GluProRS, AspRS, GlnRS, ArgRS, LysRS, IleRS y LeuRS; GluProRS es bifuncional, con las
+	actividades GluRS y ProRS en una sola cadena) y tres prote&iacute;nas no sintetasas: AIMP1 (p43),
+	AIMP2 (p38) y AIMP3 (p18) [1]. Frente a sus hom&oacute;logas bacterianas, estas enzimas han
+	incorporado dominios a&ntilde;adidos que median el ensamblaje del complejo y funciones nuevas:
+	dominios tipo GST en MetRS, GluProRS, AIMP2 y AIMP3, que forman el n&uacute;cleo del complejo [1];
+	dominios WHEP (h&eacute;lice-giro-h&eacute;lice), tres en el conector entre GluRS y ProRS y uno en MetRS [2];
+	cremalleras de leucina en el extremo N de ArgRS, AIMP1 y AIMP2 [3]; extensiones N-terminales
+	helicoidales en LysRS y AspRS que se unen al tRNA de forma inespec&iacute;fica [3]; y, en AIMP1, la
+	regi&oacute;n que, liberada por prote&oacute;lisis, es la citocina EMAP II [2]. Al menos 9 de los 11
+	componentes tienen funciones no can&oacute;nicas [1], a menudo tras salir del complejo por
+	fosforilaci&oacute;n: GluProRS, fosforilada en Ser886 y Ser999 en macr&oacute;fagos activados por
+	IFN-&gamma;, forma el complejo GAIT (con NSAP1, L13a y GAPDH), que silencia la traducci&oacute;n de
+	ARNm inflamatorios como el del VEGF-A, y como efector de mTORC1&ndash;S6K1 influye en la adiposidad [2];
+	la fosforilaci&oacute;n de LysRS activa los mastocitos y contribuye al cebado del VIH-1 [1], y la LysRS
+	libre genera Ap<sub>4</sub>A, que activa el factor de transcripci&oacute;n MITF [2]; la fosforilaci&oacute;n
+	de MetRS libera AIMP3, que activa la respuesta de p53 al da&ntilde;o del ADN [1, 2]; LeuRS act&uacute;a como
+	sensor de leucina para mTORC1 [1]; y AIMP1 y AIMP2 tienen actividad supresora de tumores [2].
+	Mutaciones en <i>RARS1</i>, <i>DARS1</i>, <i>EPRS1</i>, <i>AIMP1</i> y <i>AIMP2</i> causan
+	leucodistrofias hipomielinizantes de inicio infantil [1].</p>
+	<p class="refs-msc">[1] Khan K, Baleanu-Gogonea C, Willard B, Gogonea V, Fox PL (2020). 3-Dimensional
+	architecture of the human multi-tRNA synthetase complex. <i>Nucleic Acids Res</i> 48:8740&ndash;8754.
+	<a href="https://doi.org/10.1093/nar/gkaa569" target="_blank">doi:10.1093/nar/gkaa569</a><br>
+	[2] Khan K, Gogonea V, Fox PL (2022). Aminoacyl-tRNA synthetases of the multi-tRNA synthetase
+	complex and their role in tumorigenesis. <i>Transl Oncol</i> 19:101392.
+	<a href="https://doi.org/10.1016/j.tranon.2022.101392" target="_blank">doi:10.1016/j.tranon.2022.101392</a><br>
+	[3] Guo M, Schimmel P, Yang X-L (2010). Functional expansion of human tRNA synthetases achieved by
+	structural inventions. <i>FEBS Lett</i> 584:434&ndash;442.
+	<a href="https://doi.org/10.1016/j.febslet.2009.11.064" target="_blank">doi:10.1016/j.febslet.2009.11.064</a></p>
+	</div>
 	</CENTER>
 	</TD>
 	<TD class="controles-msc">

@@ -1,0 +1,77 @@
+<html>
+ <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css">
+ <title>&Aacute;cido graso sintasa (FAS)</title>
+<script src="../jsmol/JSmol.min.js"></script>
+<script src="../jsmol/js/Jmol2.js"></script>
+</head>
+<body>
+<font face="Tahoma">
+<TABLE border="0" cellspacing="10">
+<TR>
+	<TD valign="top">
+	<CENTER><form>
+	<script>
+		  jmolInitialize("../jsmol/js");
+		  jmolApplet(520, "load ../pdb/FAS_completa_ACP_TE.pdb.gz; frame 1; background aliceblue; select all; cartoons only; set cartoonFancy true; select 1-407; color cartoon [xFFC000]; select 408-489; color cartoon [x8DD3C7]; select 490-817; color cartoon [xE41A1C]; select 818-856; color cartoon [x808080]; select 857-1110; color cartoon [xFF7F00]; select 1111-1407; color cartoon [xA6761D]; select 1408-1520; color cartoon [x80B1D3]; select 1521-1879; color cartoon [x4DAF4A]; select 1880-2118; color cartoon [x377EB8]; select 2119-2199; color cartoon [x6A3D9A]; select 2200-2512; color cartoon [xF781BF]; select occupancy=0; color cartoon [x222222]; select [4HH]; wireframe 0.3; color cpk; select [NDP]; wireframe 0.25; spacefill 0.6; color cpk; select all; moveto 0 quaternion {0.136836 0.350977 -0.549887 0.745463}; rotate z 90; zoomto 0 {*} 0; ");
+		  jmolBr();
+		  jmolButton("spin off; animation off; frame 1; center {*}; select all; cartoons only; select 1-407; color cartoon [xFFC000]; select 408-489; color cartoon [x8DD3C7]; select 490-817; color cartoon [xE41A1C]; select 818-856; color cartoon [x808080]; select 857-1110; color cartoon [xFF7F00]; select 1111-1407; color cartoon [xA6761D]; select 1408-1520; color cartoon [x80B1D3]; select 1521-1879; color cartoon [x4DAF4A]; select 1880-2118; color cartoon [x377EB8]; select 2119-2199; color cartoon [x6A3D9A]; select 2200-2512; color cartoon [xF781BF]; select occupancy=0; color cartoon [x222222]; select [4HH]; wireframe 0.3; color cpk; select [NDP]; wireframe 0.25; spacefill 0.6; color cpk; select all; moveto 0 quaternion {0.136836 0.350977 -0.549887 0.745463}; rotate z 90; zoomto 0 {*} 0; ", "Vista inicial");
+		  jmolButton("spin on", "Girar");
+		  jmolButton("spin off; animation off", "Parar");
+	</script>
+	</form></CENTER>
+	</TD>
+	<TD valign="top">
+	<CENTER><FONT COLOR="#3333CC"><B>&Aacute;cido graso sintasa de mam&iacute;fero (PDB 2VZ8)</B></FONT></CENTER>
+	La FAS de mam&iacute;fero es un homod&iacute;mero en forma de X. Cada cadena (~2500 residuos) contiene, en un solo polip&eacute;ptido, todos los dominios necesarios para sintetizar palmitato. En este modelo los dos prot&oacute;meros se colorean por dominios; la parte <B>condensadora</B> (KS, MAT) queda abajo y la parte <B>modificadora</B> (DH, &Psi;ME, &Psi;KR, ER, KR) arriba. La ACP, unida a KR por un conector flexible, se muestra en dos posiciones observadas por crio-EM: atracada en la DH o en la ER.
+	<ul>
+	<li><FONT COLOR="#FFC000"><B>KS</B></FONT> (1-407): &beta;-cetoacil sintasa: condensa acetilo/acilo con malonilo</li>
+	<li><FONT COLOR="#8DD3C7"><B>LD</B></FONT> (408-489): dominio conector KS-MAT</li>
+	<li><FONT COLOR="#E41A1C"><B>MAT</B></FONT> (490-817): malonil/acetil transferasa: carga los sustratos</li>
+	<li><FONT COLOR="#808080"><B>conector MAT-DH</B></FONT> (818-856): conector entre la parte condensadora y la modificadora</li>
+	<li><FONT COLOR="#FF7F00"><B>DH</B></FONT> (857-1110): deshidratasa: forma el enoilo</li>
+	<li><FONT COLOR="#A6761D"><B>&Psi;ME</B></FONT> (1111-1407): pseudo-metiltransferasa (sin actividad catal&iacute;tica)</li>
+	<li><FONT COLOR="#80B1D3"><B>&Psi;KR</B></FONT> (1408-1520): pseudo-cetorreductasa (estructural)</li>
+	<li><FONT COLOR="#4DAF4A"><B>ER</B></FONT> (1521-1879): enoil reductasa (NADPH)</li>
+	<li><FONT COLOR="#377EB8"><B>KR</B></FONT> (1880-2118): &beta;-cetoacil reductasa (NADPH)</li>
+	<li><FONT COLOR="#6A3D9A"><B>ACP</B></FONT> (2119-2199): prote&iacute;na transportadora de acilos: lleva el intermediario unido al brazo de fosfopantete&iacute;na</li>
+	<li><FONT COLOR="#F781BF"><B>TE</B></FONT> (2200-2512): tioesterasa: libera el palmitato</li>
+	<li><FONT COLOR="#222222"><B>Negro</B></FONT>: tramos no resueltos, a&ntilde;adidos s&oacute;lo para mostrar la continuidad de la cadena (no son coordenadas experimentales).</li>
+	</ul>
+	La posici&oacute;n de la <B>TE</B> es <B>esquem&aacute;tica</B>: su plegamiento procede de un modelo de AlphaFold, pero en la enzima real la TE se mueve libremente y ninguna estructura experimental la ha localizado. Las varillas muestran el brazo de fosfopantete&iacute;na de la ACP y el NADPH unido a ER y KR.
+	<form>
+	<script>
+		  jmolButton("select all; cartoons only; select 1-407; color cartoon [xFFC000]; select 408-489; color cartoon [x8DD3C7]; select 490-817; color cartoon [xE41A1C]; select 818-856; color cartoon [x808080]; select 857-1110; color cartoon [xFF7F00]; select 1111-1407; color cartoon [xA6761D]; select 1408-1520; color cartoon [x80B1D3]; select 1521-1879; color cartoon [x4DAF4A]; select 1880-2118; color cartoon [x377EB8]; select 2119-2199; color cartoon [x6A3D9A]; select 2200-2512; color cartoon [xF781BF]; select occupancy=0; color cartoon [x222222]; select [4HH]; wireframe 0.3; color cpk; select [NDP]; wireframe 0.25; spacefill 0.6; color cpk; select all; center {*}; zoom 100; ", "D&iacute;mero");
+		  jmolButton("select all; cartoons only; select 1-407; color cartoon [xFFC000]; select 408-489; color cartoon [x8DD3C7]; select 490-817; color cartoon [xE41A1C]; select 818-856; color cartoon [x808080]; select 857-1110; color cartoon [xFF7F00]; select 1111-1407; color cartoon [xA6761D]; select 1408-1520; color cartoon [x80B1D3]; select 1521-1879; color cartoon [x4DAF4A]; select 1880-2118; color cartoon [x377EB8]; select 2119-2199; color cartoon [x6A3D9A]; select 2200-2512; color cartoon [xF781BF]; select occupancy=0; color cartoon [x222222]; select [4HH]; wireframe 0.3; color cpk; select [NDP]; wireframe 0.25; spacefill 0.6; color cpk; select all; select chain=B; cartoons off; center {chain=A}; zoom 140; ", "Un prot&oacute;mero");
+		  jmolButton("select all; cartoons only; select chain=B; cartoons off; select chain=A; color cartoon group; center {chain=A}; zoom 140; ", "Recorrido N&rarr;C (cadena A)");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select occupancy=0; color cartoon [xFF00FF]; cartoon 1.2; select all; ", "Tramos a&ntilde;adidos");
+		  jmolBr();
+		  jmolBr();
+		  jmolButton("animation off; frame 1; select all; cartoons only; select 1-407; color cartoon [xFFC000]; select 408-489; color cartoon [x8DD3C7]; select 490-817; color cartoon [xE41A1C]; select 818-856; color cartoon [x808080]; select 857-1110; color cartoon [xFF7F00]; select 1111-1407; color cartoon [xA6761D]; select 1408-1520; color cartoon [x80B1D3]; select 1521-1879; color cartoon [x4DAF4A]; select 1880-2118; color cartoon [x377EB8]; select 2119-2199; color cartoon [x6A3D9A]; select 2200-2512; color cartoon [xF781BF]; select occupancy=0; color cartoon [x222222]; select [4HH]; wireframe 0.3; color cpk; select [NDP]; wireframe 0.25; spacefill 0.6; color cpk; select all; ", "ACP en DH");
+		  jmolButton("animation off; frame 2; select all; cartoons only; select 1-407; color cartoon [xFFC000]; select 408-489; color cartoon [x8DD3C7]; select 490-817; color cartoon [xE41A1C]; select 818-856; color cartoon [x808080]; select 857-1110; color cartoon [xFF7F00]; select 1111-1407; color cartoon [xA6761D]; select 1408-1520; color cartoon [x80B1D3]; select 1521-1879; color cartoon [x4DAF4A]; select 1880-2118; color cartoon [x377EB8]; select 2119-2199; color cartoon [x6A3D9A]; select 2200-2512; color cartoon [xF781BF]; select occupancy=0; color cartoon [x222222]; select [4HH]; wireframe 0.3; color cpk; select [NDP]; wireframe 0.25; spacefill 0.6; color cpk; select all; ", "ACP en ER");
+		  jmolButton("animation mode loop; animation fps 1; animation on; ", "Animar ACP");
+		  jmolButton("animation off; select all; cartoons only; select 1-407; color cartoon [xFFC000]; select 408-489; color cartoon [x8DD3C7]; select 490-817; color cartoon [xE41A1C]; select 818-856; color cartoon [x808080]; select 857-1110; color cartoon [xFF7F00]; select 1111-1407; color cartoon [xA6761D]; select 1408-1520; color cartoon [x80B1D3]; select 1521-1879; color cartoon [x4DAF4A]; select 1880-2118; color cartoon [x377EB8]; select 2119-2199; color cartoon [x6A3D9A]; select 2200-2512; color cartoon [xF781BF]; select occupancy=0; color cartoon [x222222]; select [4HH]; wireframe 0.3; color cpk; select [NDP]; wireframe 0.25; spacefill 0.6; color cpk; select all; zoomto 1 {within(14, [4HH] and chain=A and thisModel)} 0; ", "Brazo de fosfopantete&iacute;na");
+		  jmolButton("animation off; select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select [NDP]; wireframe 0.25; spacefill 1.2; color cpk; select all; ", "NADPH");
+		  jmolBr();
+		  jmolBr();
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 1-407; color cartoon [xFFC000]; select all; ", "KS");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 408-489; color cartoon [x8DD3C7]; select all; ", "LD");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 490-817; color cartoon [xE41A1C]; select all; ", "MAT");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 818-856; color cartoon [x808080]; select all; ", "conector MAT-DH");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 857-1110; color cartoon [xFF7F00]; select all; ", "DH");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 1111-1407; color cartoon [xA6761D]; select all; ", "&Psi;ME");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 1408-1520; color cartoon [x80B1D3]; select all; ", "&Psi;KR");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 1521-1879; color cartoon [x4DAF4A]; select all; ", "ER");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 1880-2118; color cartoon [x377EB8]; select all; ", "KR");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 2119-2199; color cartoon [x6A3D9A]; select all; ", "ACP");
+		  jmolButton("select all; cartoons only; color cartoon [xDDDDDD]; select [4HH]; wireframe 0.3; color cpk; center {*}; zoom 100; select 2200-2512; color cartoon [xF781BF]; select all; ", "TE");
+	</script>
+	</form>
+	<small>Modelo h&iacute;brido con fines docentes. KS-KR: PDB <a href="https://www.rcsb.org/structure/2VZ8" target="_blank">2VZ8</a> (cerdo; Maier T, Leibundgut M, Ban N (2008) Science 321:1315-1322, <a href="https://doi.org/10.1126/science.1161269" target="_blank">doi:10.1126/science.1161269</a>). ACP: PDB <a href="https://www.rcsb.org/structure/8VG4" target="_blank">8VG4</a> y <a href="https://www.rcsb.org/structure/8VF7" target="_blank">8VF7</a> (humana; Schultz K et al. (2025) Nature, <a href="https://doi.org/10.1038/s41586-025-08587-x" target="_blank">doi:10.1038/s41586-025-08587-x</a>). TE: <a href="https://alphafold.ebi.ac.uk/entry/P49327" target="_blank">AlphaFold AF-P49327-F1</a>. Numeraci&oacute;n de cerdo (UniProt A5YV76); l&iacute;mites de dominio seg&uacute;n CATH y UniProt.</small>
+	</TD>
+</TR>
+</TABLE>
+</body>
+</html>

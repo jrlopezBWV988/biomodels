@@ -8,7 +8,7 @@
 <style>
 .tabla-msc { width: min-content !important; margin: 0; }
 .cabecera-msc font[size="+2"] { font-size: 1.35em; }
-.controles-msc { vertical-align: middle !important; text-align: center; padding: 4px !important; width: 1%; white-space: nowrap; }
+.controles-msc { vertical-align: top !important; text-align: center; padding: 4px !important; width: 1%; white-space: nowrap; }
 .controles-msc .pila { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
 .controles-msc input[type="button"] { margin: 3px !important; min-width: 64px; white-space: nowrap; }
 .controles-msc label { margin: 3px; white-space: nowrap; }
@@ -34,6 +34,8 @@
 .pie-msc { max-width: 640px; font-size: 0.95em; color: #5a6977; text-align: left; line-height: 1.45; }
 .texto-msc { margin-top: 10px; color: #33404c; }
 .texto-msc p { margin: 0 0 8px; text-align: justify; }
+.texto-msc ul { margin: 0 0 8px; padding-left: 1.6em; list-style: disc; }
+.texto-msc li { margin: 0 0 3px; text-align: justify; }
 .refs-msc { font-size: 0.85em; color: #5a6977; text-align: left !important; }
 </style>
 </HEAD>
@@ -117,26 +119,31 @@
 	su posici&oacute;n es aproximada. Los d&iacute;meros se muestran con un tono distinto para cada
 	mon&oacute;mero. La carga del modelo tarda unos segundos.</div>
 	<div class="pie-msc texto-msc">
-	<p>El MSC humano re&uacute;ne nueve actividades aminoacil-tRNA sintetasa en ocho prote&iacute;nas
+	<p>El <b>MSC</b> humano re&uacute;ne <b><i>nueve actividades aminoacil-tRNA sintetasa en ocho prote&iacute;nas</i></b>
 	(MetRS, GluProRS, AspRS, GlnRS, ArgRS, LysRS, IleRS y LeuRS; GluProRS es bifuncional, con las
-	actividades GluRS y ProRS en una sola cadena) y tres prote&iacute;nas no sintetasas: AIMP1 (p43),
-	AIMP2 (p38) y AIMP3 (p18) [1]. Frente a sus hom&oacute;logas bacterianas, estas enzimas han
-	incorporado dominios a&ntilde;adidos que median el ensamblaje del complejo y funciones nuevas:
-	dominios tipo GST en MetRS, GluProRS, AIMP2 y AIMP3, que forman el n&uacute;cleo del complejo [1];
-	dominios WHEP (h&eacute;lice-giro-h&eacute;lice), tres en el conector entre GluRS y ProRS y uno en MetRS [2];
-	cremalleras de leucina en el extremo N de ArgRS, AIMP1 y AIMP2 [3]; extensiones N-terminales
-	helicoidales en LysRS y AspRS que se unen al tRNA de forma inespec&iacute;fica [3]; y, en AIMP1, la
-	regi&oacute;n que, liberada por prote&oacute;lisis, es la citocina EMAP II [2]. Al menos 9 de los 11
-	componentes tienen funciones no can&oacute;nicas [1], a menudo tras salir del complejo por
-	fosforilaci&oacute;n: GluProRS, fosforilada en Ser886 y Ser999 en macr&oacute;fagos activados por
-	IFN-&gamma;, forma el complejo GAIT (con NSAP1, L13a y GAPDH), que silencia la traducci&oacute;n de
-	ARNm inflamatorios como el del VEGF-A, y como efector de mTORC1&ndash;S6K1 influye en la adiposidad [2];
-	la fosforilaci&oacute;n de LysRS activa los mastocitos y contribuye al cebado del VIH-1 [1], y la LysRS
-	libre genera Ap<sub>4</sub>A, que activa el factor de transcripci&oacute;n MITF [2]; la fosforilaci&oacute;n
-	de MetRS libera AIMP3, que activa la respuesta de p53 al da&ntilde;o del ADN [1, 2]; LeuRS act&uacute;a como
-	sensor de leucina para mTORC1 [1]; y AIMP1 y AIMP2 tienen actividad supresora de tumores [2].
-	Mutaciones en <i>RARS1</i>, <i>DARS1</i>, <i>EPRS1</i>, <i>AIMP1</i> y <i>AIMP2</i> causan
-	leucodistrofias hipomielinizantes de inicio infantil [1].</p>
+	actividades GluRS y ProRS en una sola cadena) y <b><i>tres prote&iacute;nas no sintetasas</i></b>:
+	AIMP1 (p43), AIMP2 (p38) y AIMP3 (p18)&nbsp;<sup>1</sup>.</p>
+	<p>Frente a sus hom&oacute;logas bacterianas, estas enzimas han incorporado dominios a&ntilde;adidos
+	que median el ensamblaje del complejo y funciones nuevas:</p>
+	<ul>
+	<li><b><i>Dominios tipo GST</i></b> en MetRS, GluProRS, AIMP2 y AIMP3, que forman el n&uacute;cleo del complejo&nbsp;<sup>1</sup>;</li>
+	<li><b><i>Dominios WHEP (h&eacute;lice-giro-h&eacute;lice)</i></b>, tres en el conector entre GluRS y ProRS y uno en MetRS&nbsp;<sup>2</sup>;</li>
+	<li><b><i>Cremalleras de leucina</i></b> en el extremo N de ArgRS, AIMP1 y AIMP2&nbsp;<sup>3</sup>;</li>
+	<li>extensiones N-terminales helicoidales en LysRS y AspRS que se unen al tRNA de forma inespec&iacute;fica&nbsp;<sup>3</sup>;</li>
+	<li>y, en AIMP1, la regi&oacute;n que, liberada por prote&oacute;lisis, es la citocina <b>EMAP II</b>&nbsp;<sup>2</sup>.</li>
+	</ul>
+	<p>Al menos 9 de los 11 componentes tienen funciones no can&oacute;nicas&nbsp;<sup>1</sup>,
+	<b><i><u>a menudo tras salir del complejo por fosforilaci&oacute;n:</u></i></b></p>
+	<ul>
+	<li>GluProRS, fosforilada en Ser886 y Ser999 en macr&oacute;fagos activados por IFN-&gamma;, forma el
+	complejo GAIT (con NSAP1, L13a y GAPDH), que silencia la traducci&oacute;n de ARNm inflamatorios como
+	el del VEGF-A, y como efector de mTORC1&ndash;S6K1 influye en la adiposidad&nbsp;<sup>2</sup>;</li>
+	<li>La fosforilaci&oacute;n de LysRS activa los mastocitos y contribuye al cebado del VIH-1&nbsp;<sup>1</sup>,
+	y la LysRS libre genera Ap<sub>4</sub>A, que activa el factor de transcripci&oacute;n MITF&nbsp;<sup>2</sup>;</li>
+	<li>la fosforilaci&oacute;n de MetRS libera AIMP3, que activa la respuesta de p53 al da&ntilde;o del ADN&nbsp;<sup>1,&nbsp;2</sup>;</li>
+	<li>LeuRS act&uacute;a como sensor de leucina para mTORC1&nbsp;<sup>1</sup>; y</li>
+	<li>AIMP1 y AIMP2 tienen actividad supresora de tumores&nbsp;<sup>2</sup>.</li>
+	</ul>
 	<p class="refs-msc">[1] Khan K, Baleanu-Gogonea C, Willard B, Gogonea V, Fox PL (2020). 3-Dimensional
 	architecture of the human multi-tRNA synthetase complex. <i>Nucleic Acids Res</i> 48:8740&ndash;8754.
 	<a href="https://doi.org/10.1093/nar/gkaa569" target="_blank">doi:10.1093/nar/gkaa569</a><br>

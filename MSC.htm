@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+<TITLE>Complejo multisintetasa humano (MSC)</TITLE>
+<style>
+.enlaces-msc { margin: 0 0 12px 5px; font-size: 1.1em; font-weight: 600; }
+.tabla-msc { width: min-content !important; margin: 0; }
+.cabecera-msc font[size="+2"] { font-size: 1.35em; }
+.controles-msc { vertical-align: middle !important; text-align: center; padding: 4px !important; width: 1%; white-space: nowrap; }
+.controles-msc .pila { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+.controles-msc input[type="button"] { margin: 3px !important; min-width: 64px; white-space: nowrap; }
+.controles-msc label { margin: 3px; white-space: nowrap; }
+.controles-msc .sep { height: 10px; }
+/* Botones con el mismo color que aplican al modelo */
+.controles-msc input.b-met { background: #00C000; color: #000; border-color: #008a00; }
+.controles-msc input.b-glupro { background: #E000E0; color: #fff; border-color: #a000a0; }
+.controles-msc input.b-asp { background: #00C8C8; color: #000; border-color: #008f8f; }
+.controles-msc input.b-gln { background: #E8B800; color: #000; border-color: #a88600; }
+.controles-msc input.b-arg { background: #8040FF; color: #fff; border-color: #5a2db3; }
+.controles-msc input.b-lys { background: #FF69B4; color: #000; border-color: #c24f88; }
+.controles-msc input.b-ile { background: #A0522D; color: #fff; border-color: #703920; }
+.controles-msc input.b-leu { background: #1E78FF; color: #fff; border-color: #1554b3; }
+.controles-msc input[class^="b-"]:hover { filter: brightness(0.85); }
+.pie-msc { max-width: 640px; font-size: 0.95em; color: #5a6977; text-align: left; line-height: 1.45; }
+</style>
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<script>
+	// Modelo ma-iegv0 (ModelArchive) del complejo multisintetasa humano con 14 tRNAs colocados
+	// por superposición de complejos sintetasa-tRNA experimentales.
+	// Proteínas: cartoon gris (como en SRC.htm). tRNAs: cartoon con color cpk (opción "Esquema" de tRNA.htm).
+	var base = "select *; spacefill off; wireframe off; label off; cartoon on; "
+		+ "select protein; color cartoon gray; "
+		+ "select nucleic; color cpk; color cartoon cpk; select *; ";
+	var estiloInicial = base + "background aliceblue; ";
+	var vista = "reset; center all; zoom 105; ";
+	// Cadenas de cada sintetasa en el modelo y color con el que se resaltan
+	var sintetasas = {
+		MetRS:    ":A",          // metionil-tRNA sintetasa
+		GluProRS: ":C or :N",    // glutamil-prolil-tRNA sintetasa (dímero)
+		AspRS:    ":E or :L",    // aspartil-tRNA sintetasa (dímero)
+		GlnRS:    ":F",          // glutaminil-tRNA sintetasa
+		ArgRS:    ":G",          // arginil-tRNA sintetasa
+		LysRS:    ":H or :M",    // lisil-tRNA sintetasa (dímero)
+		IleRS:    ":J",          // isoleucil-tRNA sintetasa
+		LeuRS:    ":K"           // leucil-tRNA sintetasa
+	};
+	var colores = {
+		MetRS: "[0,192,0]", GluProRS: "[224,0,224]", AspRS: "[0,200,200]", GlnRS: "[232,184,0]",
+		ArgRS: "[128,64,255]", LysRS: "[255,105,180]", IleRS: "[160,82,45]", LeuRS: "[30,120,255]"
+	};
+	function sintetasa(s) {
+		jmolScript(base + "select " + sintetasas[s] + "; color cartoon " + colores[s] + "; select *; ");
+	}
+	function vistaInicial() {
+		jmolScript("spin off; " + base + vista);
+		var r = document.getElementById("rotacion"); if (r) r.checked = false;
+	}
+</script>
+<body>
+<font face="Tahoma">
+<div class="enlaces-msc"><a href="tRNASintetasas.htm">&larr; aa-tRNA Sintetasas</a></div>
+<TABLE class="tabla-msc" border="0" cellspacing="5">
+<TR>
+	<TD class="cabecera-msc">
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Complejo multisintetasa humano (MSC)</B></FONT>
+	<BR>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  Jmol.Info.j2sPath = "./jsmol/j2s";   // árbol j2s completo: incluye el lector mmCIF
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(640, "load ./pdb/ma-iegv0_tRNA_atlas.cif.gz; " + estiloInicial + vista);
+	</script>
+	<BR>
+	<div class="pie-msc">Modelo estructural del complejo (ModelArchive
+	<a href="https://doi.org/10.5452/ma-iegv0" target="_blank">ma-iegv0</a>). Los tRNAs se han
+	colocado superponiendo complejos sintetasa&ndash;tRNA experimentales sobre cada sintetasa;
+	su posici&oacute;n es aproximada. La carga del modelo tarda unos segundos.</div>
+	</CENTER>
+	</TD>
+	<TD class="controles-msc">
+		<div class="pila">
+			<input type="button" class="b-met" value="MetRS" onclick="sintetasa('MetRS')">
+			<input type="button" class="b-glupro" value="GluProRS" onclick="sintetasa('GluProRS')">
+			<input type="button" class="b-asp" value="AspRS" onclick="sintetasa('AspRS')">
+			<input type="button" class="b-gln" value="GlnRS" onclick="sintetasa('GlnRS')">
+			<input type="button" class="b-arg" value="ArgRS" onclick="sintetasa('ArgRS')">
+			<input type="button" class="b-lys" value="LysRS" onclick="sintetasa('LysRS')">
+			<input type="button" class="b-ile" value="IleRS" onclick="sintetasa('IleRS')">
+			<input type="button" class="b-leu" value="LeuRS" onclick="sintetasa('LeuRS')">
+			<div class="sep"></div>
+			<input type="button" value="Vista inicial" onclick="vistaInicial()">
+			<label><input type="checkbox" id="rotacion" onclick="jmolScript(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
+		</div>
+	</TD>
+</TR>
+</TABLE>
+<BR>
+</BODY>
+</HTML>

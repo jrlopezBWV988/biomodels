@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css">
+<TITLE>Aminoacil-tRNA sintetasas</TITLE>
+<style>
+.enlaces-sint { margin: 0 0 12px 5px; font-size: 1.1em; font-weight: 600; }
+.controles-sint { vertical-align: middle !important; text-align: center; padding: 4px !important; width: 1%; white-space: nowrap; }
+.controles-sint .pila { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+.controles-sint input[type="button"] { margin: 3px !important; min-width: 64px; white-space: nowrap; }
+.controles-sint label { margin: 3px; white-space: nowrap; }
+.tabla-sint { width: min-content !important; margin: 0; }
+.cabecera-sint font[size="+2"] { font-size: 1.35em; }
+.pie-sint { font-size: 0.95em; color: #5a6977; }
+</style>
+</HEAD>
+<script src="./jsmol/JSmol.min.js"></script>
+<script src="./jsmol/js/Jmol2.js"></script>
+<script>
+	// Visor izquierdo (jmolApplet0): sintetasa de clase II, AspRS de levadura con tRNA-Asp (1ASY).
+	// Visor derecho (jmolApplet1): sintetasa de clase I, GlnRS de E. coli con tRNA-Gln (1QTQ).
+	// Representación base: proteína en cartoon gris claro y tRNA en cartoon naranja.
+	var estiloInicial = "select *; spacefill off; wireframe off; label off; cartoon on; "
+		+ "select protein; color cartoon [200,200,200]; "
+		+ "select nucleic; color cartoon [230,120,30]; "
+		+ "select hetero and not (water or nucleic); wireframe 0.25; spacefill 0.5; color cpk; "
+		+ "select *; background aliceblue; ";
+	var vista = [
+		"reset; center all; zoom 100; ",
+		"reset; center all; zoom 100; "
+	];
+	// Envía el mismo comando a los dos visores
+	function ambos(cmd) {
+		Jmol.script(jmolApplet0, cmd);
+		Jmol.script(jmolApplet1, cmd);
+	}
+	function vistaInicial() {
+		Jmol.script(jmolApplet0, "spin off; " + vista[0]);
+		Jmol.script(jmolApplet1, "spin off; " + vista[1]);
+		var r = document.getElementById("rotacion"); if (r) r.checked = false;
+	}
+</script>
+<body>
+<font face="Tahoma">
+<div class="enlaces-sint"><a href="MSC.htm">MSC humano</a></div>
+<TABLE class="tabla-sint" border="0" cellspacing="5">
+<TR>
+	<TD class="cabecera-sint">
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Clase II</B></FONT>
+	<BR>
+	<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolSetParameter("UseCommandThread","true");
+		  jmolApplet(420, "load ./pdb/1ASY.pdb.gz; " + estiloInicial + vista[0]);
+	</script>
+	<BR><span class="pie-sint">AspRS con tRNA<sup>Asp</sup> (levadura, PDB 1ASY)</span>
+	</CENTER>
+	</TD>
+	<TD class="controles-sint">
+		<div class="pila">
+			<input type="button" value="Vista inicial" onclick="vistaInicial()">
+			<label><input type="checkbox" id="rotacion" onclick="ambos(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
+		</div>
+	</TD>
+	<TD class="cabecera-sint">
+	<CENTER>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Clase I</B></FONT>
+	<BR>
+	<script>
+		  jmolApplet(420, "load ./pdb/1QTQ.pdb.gz; " + estiloInicial + vista[1]);
+	</script>
+	<BR><span class="pie-sint">GlnRS con tRNA<sup>Gln</sup> (<i>E. coli</i>, PDB 1QTQ)</span>
+	</CENTER>
+	</TD>
+</TR>
+</TABLE>
+<BR>
+</BODY>
+</HTML>

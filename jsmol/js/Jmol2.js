@@ -129,6 +129,7 @@ function _jmolApplet(size, inlineModel, script, nameSuffix) {
 		++_jmol.appletCount;
 		script || (script = "select *");
 		inlineModel && (script = 'load DATA "inline"\n' + inlineModel + '\nEND "inline";' + script); 
+		script += ";refresh"; // biomodels: JSmol 16.5.7 draws the logo grey on the first frame of a still view; redraw once
 		var Info = {}
 		for (var i in Jmol.Info)
 			Info[i] = Jmol.Info[i]

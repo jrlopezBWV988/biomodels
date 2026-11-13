@@ -7,6 +7,18 @@
 (function () {
   "use strict";
 
+  // Si la página se abre dentro de la antigua versión con marcos (por ejemplo,
+  // una copia de estructuras.htm guardada en la caché del navegador), sale de los
+  // marcos y se muestra sola, para que el índice no aparezca duplicado.
+  // Solo actúa con los nombres de marco de la versión antigua, así que no afecta
+  // a la página si se inserta en otra web o en una presentación.
+  if (window.top !== window.self && /^(f_right|f_left|up|down)$/.test(window.name)) {
+    try {
+      window.top.location.replace(window.location.href);
+      return;
+    } catch (e) { /* si el navegador no lo permite, la página sigue cargando */ }
+  }
+
   // Carpeta raíz del sitio, deducida de la dirección de este mismo script (…/js/marco.js).
   var yo = document.currentScript || document.querySelector('script[src*="js/marco.js"]');
   var RAIZ = yo.src.replace(/js\/marco\.js(\?.*)?$/, "");

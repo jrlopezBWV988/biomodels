@@ -1,5 +1,11 @@
 // JSmolJavaExt.js
  
+// contains class declarations for 
+// Integer, Byte, Short, Float, Double, Character
+// EventObject, EventListenerProxy
+// Throwable, Error
+// and many others. If these classes have js files in java/, those files are unused
+
 
 // This library will be wrapped by an additional anonymous function using ANT in 
 // build_03_tojs.xml. This task will also modify variable names. References 
@@ -7,6 +13,9 @@
 // (local scope) Clazz_xxx, allowing them to be further compressed using
 // Google Closure Compiler in that same ANT task.
 
+// BH 2026.06.16 fixing sp.$replace; x.replace(y,"...$$...") use of $$ needs escaping
+// BH 2025.11.10 removing override of String.prototype.concat
+// BH 2023.07.08 NaN.0 fix
 // BH 10/16/2017 6:51:20 AM fixing range error for MSIE in prepareCallback setting arguments.length < 0
 // BH 10/13/2017 7:03:28 AM fix for String.initialize(bytes) applying bytes as arguments
 // BH 9/18/2017 10:15:18 PM adding Integer.compare()
@@ -555,7 +564,7 @@ return new Byte(n);
 
 Clazz._floatToString = function(f) {
  var s = ""+f
- if (s.indexOf(".") < 0 && s.indexOf("e") < 0)
+ if (s.indexOf(".") < 0 && s.indexOf("e") < 0 && s != "NaN")
  	 s += ".0";
  return s;
 }
@@ -995,6 +1004,8 @@ return buf.join('');
 
 if(String.prototype.$replace==null){
 java.lang.String=String;
+Clazz._setDeclared("String", String);
+
 if(Clazz._supportsNativeObject){
 for(var i=0;i<Clazz._extendedObjectMethods.length;i++){
 var p=Clazz._extendedObjectMethods[i];
@@ -1021,7 +1032,14 @@ sp.$replace=function(c1,c2){
 	} else {    
 		c1=c1.replace(/([\\\$\.\*\+\|\?\^\{\}\(\)\[\]])/g,function($0,$1){return"\\"+$1;});
 	}
-	return this.replace(new RegExp(c1,"gm"),c2);
+	var pt = c2.indexOf("$");
+	var is$ = (pt >= 0 && pt < c2.length - 1);
+	if (is$)
+		c2 = c2.split("$").join("\uFFFD");
+	var ret = this.replace(new RegExp(c1,"gm"),c2);
+	if (is$)
+		ret = ret.split("\uFFFD").join("$");
+	return ret;	
 };
 sp.$generateExpFunction=function(str){
 var arr=[];
@@ -1068,9 +1086,7 @@ for(i=0;i<arr.length-1;i++){
 funStr+="\""+arr[i]+"\" + $"+orders[i]+" + ";
 }
 funStr+="\""+arr[i]+"\"; }";
-var f=null;
-eval(funStr)
-return f;
+return eval(funStr);
 };
 
 sp.replaceAll=function(exp,str){
@@ -1385,13 +1401,13 @@ for(var i=0;i<srcEnd-srcBegin;i++){
 dst[dstBegin+i]=this.charAt(srcBegin+i);
 }
 };
-sp.$concat=sp.concat;
-sp.concat=function(s){
-if(s==null){
-throw new NullPointerException();
-}
-return this.$concat(s);
-};
+//sp.$concat=sp.concat;
+//sp.concat=function(s){
+//if(s==null){
+//throw new NullPointerException();
+//}
+//return this.$concat(s);
+//};
 
 sp.$lastIndexOf=sp.lastIndexOf;
 sp.lastIndexOf=function(s,last){
@@ -1421,27 +1437,32 @@ sp.codePointAt || (sp.codePointAt = sp.charCodeAt); // Firefox only
 
 })(String.prototype);
 
+var textDecoder = new TextDecoder();
+
 String.instantialize=function(){
 switch (arguments.length) {
 case 0:
 	return new String();
 case 1:
 	var x=arguments[0];
-  if (x.BYTES_PER_ELEMENT || x instanceof Array){
-		return (x.length == 0 ? "" : typeof x[0]=="number" ? Encoding.readUTF8Array(x) : x.join(''));
+  if (x.BYTES_PER_ELEMENT) {
+		return (x.length == 0 ? "" : typeof x[0]=="number" ? textDecoder.decode(x) : x.join(''));
+  }
+  if (x instanceof Array){
+		return (x.length == 0 ? "" : typeof x[0]=="number" ? textDecoder.decode(new Uint8Array(x)) : x.join(''));
   }
 	if(typeof x=="string"||x instanceof String){
 		return new String(x);
 	}
-	if(x.__CLASS_NAME__=="StringBuffer"||x.__CLASS_NAME__=="java.lang.StringBuffer"){
-		var value=x.shareValue();
-		var length=x.length();
-		var valueCopy=new Array(length);
-		for(var i=0;i<length;i++){
-			valueCopy[i]=value[i];
-		}
-		return valueCopy.join('')
-	}
+//	if(x.__CLASS_NAME__=="StringBuffer"||x.__CLASS_NAME__=="java.lang.StringBuffer"){
+//		var value=x.shareValue();
+//		var length=x.length();
+//		var valueCopy=new Array(length);
+//		for(var i=0;i<length;i++){
+//			valueCopy[i]=value[i];
+//		}
+//		return valueCopy.join('')
+//	}
 	return""+x;
 case 2:	
 	var x=arguments[0];
@@ -1482,11 +1503,12 @@ case 4:
 	if(typeof y=="string"||y instanceof String){
 		var offset=arguments[1];
 		var length=arguments[2];
-		var arr=new Array(length);
+		var arr=new Uint8Array(length);
 		for(var i=0;i<length;i++){
 			arr[i]=bytes[offset+i];
 		}
-		return Encoding.readUTF8Array(arr);
+		return textDecoder.decode(arr);
+		//return Encoding.readUTF8Array(arr);
 	}
 	var count=arguments[3];
 	var offset=arguments[2];
@@ -1520,7 +1542,7 @@ if(navigator.userAgent.toLowerCase().indexOf("chrome")!=-1){
 
 })(Clazz._Encoding);
 
-
+var c$;
 
 c$=Clazz.decorateAsClass(function(){
 this.value=0;
@@ -1625,14 +1647,7 @@ return"class java.lang.Character";
 }
 }return String.valueOf(c);
 },"~N");
-Clazz.defineStatics(c$,
-"MIN_VALUE",'\u0000',
-"MAX_VALUE",'\uffff',
-"MIN_RADIX",2,
-"MAX_RADIX",36,
-"TYPE",null);
-
-java.lang.Character.TYPE=java.lang.Character.prototype.TYPE=java.lang.Character;
+c$.TYPE=c$;
 
 
 
@@ -1646,19 +1661,23 @@ Clazz._ArrayWrapper = function(a, type) {
    getName: function() { return this.__CLASS_NAME__ }
  };
 }
-c$=Clazz_declareType(java.lang.reflect,"Array");
-c$.newInstance=Clazz_defineMethod(c$,"newInstance",
+c$=Clazz.declareType(java.lang.reflect,"Array");
+c$.newInstance=Clazz.defineMethod(c$,"newInstance",
 function(componentType,size){
-var a = Clazz_newArray(size);
+var a = Clazz.newArray(size);
  a.getClass = function() { return new Clazz._ArrayWrapper(this, componentType);};
 return a;
 },"Class,~N");
 
+c$.getLength = function(o){return o.length};
+c$.get = function(o, i){return o[i]};
+
 javautil.Date=Date;
 Date.TYPE="javautil.Date";
 Date.__CLASS_NAME__="Date";
+Clazz._setDeclared("java.util.Date", Date);
+Clazz._setDeclared("Date", Date);
 Clazz.implementOf(Date,[java.io.Serializable,java.lang.Comparable]);
-
 Clazz.defineMethod(javautil.Date,"clone",
 function(){
 return new Date(this.getTime());
@@ -1678,13 +1697,10 @@ return Clazz.instanceOf(obj,javautil.Date)&&this.getTime()==(obj).getTime();
 },"Object");
 Clazz.defineMethod(javautil.Date,"compareTo",
 function(anotherDate){
+if (anotherDate == null)return 1;
 var thisTime=this.getTime();
 var anotherTime=anotherDate.getTime();
 return(thisTime<anotherTime?-1:(thisTime==anotherTime?0:1));
-},"javautil.Date");
-Clazz.defineMethod(javautil.Date,"compareTo",
-function(o){
-return this.compareTo(o);
 },"Object");
 Clazz.overrideMethod(javautil.Date,"hashCode",
 function(){
@@ -1752,22 +1768,19 @@ function(){
 this.fillInStackTrace();
 });
 Clazz.makeConstructor(c$,
-function(message){
-this.fillInStackTrace();
-this.detailMessage=message;
-},"~S");
-Clazz.makeConstructor(c$,
 function(message,cause){
 this.fillInStackTrace();
+if (!cause && typeof message == "object") {
+	cause = message;
+	message = cause.toString();
+}
+cause && (this.cause=cause);
 this.detailMessage=message;
-this.cause=cause;
 },"~S,Throwable");
-Clazz.makeConstructor(c$,
-function(cause){
-this.fillInStackTrace();
-this.detailMessage=(cause==null?null:cause.toString());
-this.cause=cause;
-},"Throwable");
+
+
+
+
 Clazz.defineMethod(c$,"getMessage",
 function(){
 return (this.message || this.detailMessage || this.toString());
@@ -1949,25 +1962,22 @@ return this.lineNumber==-2;
 });
 Clazz.overrideMethod(c$,"toString",
 function(){
-var buf=new StringBuilder(80);
-buf.append(this.getClassName());
-buf.append('.');
-buf.append(this.getMethodName());
+var buf = this.getClassName() + "." + this.getMethodName();
 if(this.isNativeMethod()){
-buf.append("(Native Method)");
+buf += ("(Native Method)");
 }else{
 var fName=this.getFileName();
 if(fName==null){
-buf.append("(Unknown Source)");
+buf += ("(Unknown Source)");
 }else{
 var lineNum=this.getLineNumber();
-buf.append('(');
-buf.append(fName);
+buf += ('(');
+buf += (fName);
 if(lineNum>=0){
-buf.append(':');
-buf.append(lineNum);
-}buf.append(')');
-}}return buf.toString();
+buf += (':');
+buf = buf + lineNum;
+}buf += (')');
+}}return buf;
 });
 TypeError.prototype.getMessage || (TypeError.prototype.getMessage = function(){ return (this.message || this.toString()) + (this.getStackTrace ? this.getStackTrace() : Clazz.getStackTrace())});
 
@@ -2000,16 +2010,8 @@ c$=Clazz.declareType(java.lang,"AbstractMethodError",IncompatibleClassChangeErro
 c$=Clazz.declareType(java.lang,"AssertionError",Error);
 Clazz.makeConstructor(c$,
 function(detailMessage){
-Clazz.superConstructor(this,AssertionError,[String.valueOf(detailMessage),(Clazz.instanceOf(detailMessage,Throwable)?detailMessage:null)]);
+Clazz.superConstructor(this,AssertionError,["" + detailMessage,(Clazz.instanceOf(detailMessage,Throwable)?detailMessage:null)]);
 },"~O");
-Clazz.makeConstructor(c$,
-function(detailMessage){
-this.construct("" + detailMessage);
-},"~B");
-Clazz.makeConstructor(c$,
-function(detailMessage){
-this.construct("" + detailMessage);
-},"~N");
 
 c$=Clazz.declareType(java.lang,"ClassCircularityError",LinkageError);
 
@@ -2242,55 +2244,14 @@ this.bytesTransferred=0;
 Clazz.instantialize(this,arguments);
 },java.io,"InterruptedIOException",java.io.IOException);
 
-c$=Clazz.declareType(java.io,"ObjectStreamException",java.io.IOException);
-
-c$=Clazz.decorateAsClass(function(){
-this.classname=null;
-Clazz.instantialize(this,arguments);
-},java.io,"InvalidClassException",java.io.ObjectStreamException);
-Clazz.makeConstructor(c$,
-function(className,detailMessage){
-Clazz.superConstructor(this,java.io.InvalidClassException,[detailMessage]);
-this.classname=className;
-},"~S,~S");
-Clazz.defineMethod(c$,"getMessage",
-function(){
-var msg=Clazz.superCall(this,java.io.InvalidClassException,"getMessage",[]);
-if(this.classname!=null){
-msg=this.classname+';' + ' '+msg;
-}return msg;
-});
-
-c$=Clazz.declareType(java.io,"InvalidObjectException",java.io.ObjectStreamException);
-
-c$=Clazz.declareType(java.io,"NotActiveException",java.io.ObjectStreamException);
-
-c$=Clazz.declareType(java.io,"NotSerializableException",java.io.ObjectStreamException);
-
-c$=Clazz.decorateAsClass(function(){
-this.eof=false;
-this.length=0;
-Clazz.instantialize(this,arguments);
-},java.io,"OptionalDataException",java.io.ObjectStreamException);
-
-c$=Clazz.declareType(java.io,"StreamCorruptedException",java.io.ObjectStreamException);
-
 c$=Clazz.declareType(java.io,"SyncFailedException",java.io.IOException);
 
 c$=Clazz.declareType(java.io,"UnsupportedEncodingException",java.io.IOException);
 
 c$=Clazz.declareType(java.io,"UTFDataFormatException",java.io.IOException);
 
-c$=Clazz.decorateAsClass(function(){
-this.detail=null;
-Clazz.instantialize(this,arguments);
-},java.io,"WriteAbortedException",java.io.ObjectStreamException);
-Clazz.makeConstructor(c$,
-function(detailMessage,rootCause){
-Clazz.superConstructor(this,java.io.WriteAbortedException,[detailMessage]);
-this.detail=rootCause;
-this.initCause(rootCause);
-},"~S,Exception");
+// ignore ObjectStream exceptions
+
 Clazz.defineMethod(c$,"getMessage",
 function(){
 var msg=Clazz.superCall(this,java.io.WriteAbortedException,"getMessage",[]);
@@ -2334,11 +2295,9 @@ c$=Clazz.declareType(javautil,"NoSuchElementException",RuntimeException);
 c$=Clazz.declareType(javautil,"TooManyListenersException",Exception);
 
 c$=Clazz.declareType(java.lang,"Void");
-Clazz.defineStatics(c$,
-"TYPE",null);
-{
-java.lang.Void.TYPE=java.lang.Void;
-}Clazz.declareInterface(java.lang.reflect,"GenericDeclaration");
+c$.TYPE = c$;
+
+Clazz.declareInterface(java.lang.reflect,"GenericDeclaration");
 Clazz.declareInterface(java.lang.reflect,"AnnotatedElement");
 
 c$=Clazz.declareType(java.lang.reflect,"AccessibleObject",null,java.lang.reflect.AnnotatedElement);
@@ -2404,11 +2363,8 @@ return 0.0;
 c$.emptyArgs=c$.prototype.emptyArgs=new Array(0);
 Clazz.declareInterface(java.lang.reflect,"InvocationHandler");
 c$=Clazz.declareInterface(java.lang.reflect,"Member");
-Clazz.defineStatics(c$,
-"PUBLIC",0,
-"DECLARED",1);
-
 c$=Clazz.declareType(java.lang.reflect,"Modifier");
+
 Clazz.makeConstructor(c$,
 function(){
 });
@@ -2479,24 +2435,6 @@ if(sb.length>0){
 return sb.join(" ");
 }return"";
 },"~N");
-Clazz.defineStatics(c$,
-"PUBLIC",0x1,
-"PRIVATE",0x2,
-"PROTECTED",0x4,
-"STATIC",0x8,
-"FINAL",0x10,
-"SYNCHRONIZED",0x20,
-"VOLATILE",0x40,
-"TRANSIENT",0x80,
-"NATIVE",0x100,
-"INTERFACE",0x200,
-"ABSTRACT",0x400,
-"STRICT",0x800,
-"BRIDGE",0x40,
-"VARARGS",0x80,
-"SYNTHETIC",0x1000,
-"ANNOTATION",0x2000,
-"ENUM",0x4000);
 
 c$=Clazz.decorateAsClass(function(){
 this.clazz=null;

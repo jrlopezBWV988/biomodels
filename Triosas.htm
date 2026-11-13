@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/moderno.css">
+<script src="js/marco.js"></script>
 
 <link rel="stylesheet" type="text/css" href="biomodels.css">
 <script src="./jsmol/JSmol.min.js" type="text/javascript"></script>
@@ -39,7 +40,7 @@ $(document).ready(function(){
 			Jmol.jmolBr();
 			Jmol.jmolButton(DGli, "select *; colour cpk; spacefill 100%", "Esferas de Van der Walls");
 			Jmol.jmolBr();
-			Jmol.jmolCheckbox(DGli, "set spin x 0; set spin y 30; spin on", "spin off", "Rotaci&oacute;n ");
+			Jmol.jmolCheckbox(DGli, "set spinX 0; set spinY 30; spin on", "spin off", "Rotaci&oacute;n ");
 			Jmol.jmolBr();
 			Jmol.jmolButton(DGli, "select *; spacefill 25%; colour cpk; select C3; spacefill 28%; colour atoms [20,120,20]", "C2");
 	</script>
@@ -52,7 +53,7 @@ $(document).ready(function(){
 			Jmol.jmolBr();
 			Jmol.jmolButton(LGli, "select *; colour cpk; spacefill 100%", "Esferas de Van der Walls");
 			Jmol.jmolBr();
-			Jmol.jmolCheckbox(LGli, "set spin x 0; set spin y 30; spin on", "spin off", "Rotaci&oacute;n ");
+			Jmol.jmolCheckbox(LGli, "set spinX 0; set spinY 30; spin on", "spin off", "Rotaci&oacute;n ");
 			Jmol.jmolBr();
 			Jmol.jmolButton(LGli, "select *; spacefill 25%; colour cpk; select C3; spacefill 28%; colour atoms [20,120,20]", "C2");
 	</script>
@@ -64,7 +65,7 @@ $(document).ready(function(){
 			Jmol.jmolBr();
 			Jmol.jmolButton(DiH, "select *; colour cpk; spacefill 100%", "Esferas de Van der Walls");
 			Jmol.jmolBr();
-			Jmol.jmolCheckbox(DiH, "set spin x 0; set spin y 30; spin on", "spin off", "Rotación")
+			Jmol.jmolCheckbox(DiH, "set spinX 0; set spinY 30; spin on", "spin off", "Rotación")
 	</script>
 	</td>
 </TR>

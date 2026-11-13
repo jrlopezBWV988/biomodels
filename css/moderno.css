@@ -1,6 +1,6 @@
 /* Atlas de estructuras – capa de estilo moderna.
    Se carga en todas las páginas y respeta el HTML original
-   (marcos, tablas y controles JSmol). */
+   (tablas y controles JSmol). */
 
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
 
@@ -68,6 +68,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-
 hr { border: 0; border-top: 1px solid var(--line); margin: 20px 0; }
 
 img { max-width: 100%; height: auto; }
+/* JSmol 16 inserts a 0x0 helper image (src=".") inside each viewer; keep it invisible */
+[id$="_appletdiv"] > img[width="0"][height="0"] { width: 0 !important; height: 0 !important; visibility: hidden; }
 
 /* Mensaje de depuración de JSmol */
 #_Loader-status { display: none !important; }
@@ -341,20 +343,34 @@ html.con-marco body { padding-left: 228px !important; }
   overflow-y: auto;
   z-index: 50;
 }
+.marco-lateral a.marco-logo, .marco-lateral a.marco-logo:hover { display: block; background: none; padding: 0; }
 .marco-superior {
   position: sticky;
   top: 0;
   z-index: 40;
   margin: -24px -28px 22px -28px;
+  padding: 8px 24px;
+  box-shadow: 0 1px 0 var(--line);
 }
-html.con-marco body > .marco-superior { margin-left: -28px; }
+.marco-superior ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.marco-superior li { margin: 0; }
+.marco-superior a { padding: 3px 11px; }
 .marco-boton { display: none; }
 
 @media (max-width: 760px) {
   html.con-marco body { padding-left: 14px !important; }
   .marco-boton {
     display: block;
-    width: calc(100% + 28px);
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none;
     margin: -16px -14px 0;
     border-radius: 0;
     border: 0;

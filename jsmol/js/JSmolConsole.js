@@ -13,7 +13,7 @@
 // BH 6/1/2014 8:32:12 AM added Help button; better mouse/keypress handling
 // BH 1/5/2013 12:45:19 PM
 
-Jmol.Console = {
+;Jmol.Console = {
 	buttons:{},
 	buttonWidth:100,
 	click:function(id) {
@@ -183,6 +183,9 @@ Jmol.Console.JSConsole = function(appletConsole) {
 	Jmol.$html(id + "_inputdiv", '<textarea id="' + id + '_input" style="width:'+w+'px;height:'+h+'px"></textarea>');
 	Jmol.$html(id + "_outputdiv", '<textarea id="' + id + '_output" style="width:'+w+'px;height:'+(h*2)+'px"></textarea>');
 
+		Jmol.Cache.setDragDrop(this.applet, "console_output");
+		Jmol.Cache.setDragDrop(this.applet, "console_input");
+
 	Jmol.$bind("#" + id + "_input", "keydown keypress keyup", function(event) { console.input.keyEvent(event) });
 	Jmol.$bind("#" + id + "_input", "mousedown touchstart", function(event) { console.ignoreMouse=true });
 	Jmol.$bind("#" + id + "_output", "mousedown touchstart", function(event) { console.ignoreMouse=true });
@@ -261,7 +264,7 @@ Jmol.Console.Input = function(console) {
 			kcode=10; 
 		// keycode is deprecated, but is essential still
 		if (type == "keyup") { 
-			mode = (kcode == 38 || kcode == 40 ? 1 : this.console.appletConsole.processKey(kcode, 402/*java.awt.event.KeyEvent.KEY_RELEASED*/, isCtrl));
+			mode = (kcode == 38 || kcode == 40 ? 1 : this.console.appletConsole.processKey(kcode, 402, isCtrl));
 			if ((mode & 1) == 1)
 				ev.preventDefault();
 			return;
@@ -289,7 +292,7 @@ Jmol.Console.Input = function(console) {
 		default:
 			kcode = 0; // nothing to report
 		}					
-		mode = this.console.appletConsole.processKey(kcode, 401/*java.awt.event.KeyEvent.KEY_PRESSED*/, isCtrl);
+		mode = this.console.appletConsole.processKey(kcode, 401, isCtrl);
 		if (isCtrl && kcode == 10)
 			this.setText(this.getText() + "\n")
 		if (mode == 0 && ev.keyCode == 9) {
@@ -352,3 +355,4 @@ Jmol.Console.Button.prototype.html = function() {
 	return s;
 }
 
+;

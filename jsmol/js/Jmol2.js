@@ -134,7 +134,7 @@ function _jmolApplet(size, inlineModel, script, nameSuffix) {
 			Info[i] = Jmol.Info[i]
 		Info.jarFile || (Info.jarFile = _jmol.archivePath);
 		Info.jarPath || (Info.jarPath = _jmol.codebase);
-		Info.j2sPath || (Info.j2sPath = Info.jarPath + "/j2s");    
+		Info.j2sPath || (Info.j2sPath = Info.jarPath + "/../j2s"); // biomodels: use the full jsmol/j2s tree    
 		var sz = _jmolGetAppletSize(size);
 		Info.width || (Info.width = sz[0]);
 		Info.height || (Info.height = sz[1]);  
@@ -193,7 +193,7 @@ function jmolInitialize(codebaseDirectory, fileNameOrUseSignedApplet) {
 }
 
 function jmolSetDocument(doc) {
-	_jmol.currentDocument = doc;
+	_jmol.currentDocument = Jmol._document = doc;
 }
 
 function jmolSetAppletColor(boxbgcolor, boxfgcolor, progresscolor) {

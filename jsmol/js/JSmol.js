@@ -2,6 +2,9 @@
 // author: Bob Hanson, hansonr@stolaf.edu	4/16/2012
 // author: Takanori Nakane biochem_fan 6/12/2012
 
+// BH 2025.06.09 adjusing Math.round(container.width()) to not allow 0 return
+// BH 2022.12.16 adds key press listener for ModelKit
+// BH 2021.04.09 fix _cover(false) script in getAppletHtml() to be img onerror
 // BH 12/17/2015 4:43:05 PM adding Jmol._requestRepaint to allow for MSIE9 not having 3imationFrame
 // BH 12/13/2015 11:44:39 AM using requestAnimationFrame instead of setTimeout (fixes Chrome slowness)
 // BH 10/12/2015 1:15:39 PM fix for set echo image in JavaScript
@@ -202,7 +205,7 @@
 				t = "";
 			} else {
 				this._deferApplet = true;
-				t += '<script type="text/javascript">' + id + '._cover(false)</script>';
+				t += '<img width=0 height=0 src=. onerror=' + id + '._cover(false) >';
 			}
 			t += Jmol._getWrapper(this, false);
 			if (Info.addSelectionOptions)
@@ -243,10 +246,13 @@
 			Jmol._jsUnsetMouse(this._mouseInterface);
 			} catch (e) {}
 			//}
-			var w = Math.round(container.width());
-			var h = Math.round(container.height());
+			var w = Math.round(container.width()) || 100;
+			var h = Math.round(container.height()) || 100;
 			var canvas = document.createElement( 'canvas' );
+			canvas.tabIndex = 1;
+			canvas.outline = "none";
 			canvas.applet = this;
+			
 			this._canvas = canvas;
 			canvas.style.width = "100%";
 			canvas.style.height = "100%";
@@ -320,13 +326,13 @@
 			if (Jmol._version.indexOf("$Date: ") == 0)
 				Jmol._version = (Jmol._version.substring(7) + " -").split(" -")[0] + " (JSmol/j2s)"
 			var viewerOptions = Clazz._4Name("java.util.Hashtable").newInstance();
-			Jmol._setAppletParams(applet._availableParams, viewerOptions, applet.__Info, true);
+			Jmol._setAppletParams(applet._availableParams, viewerOptions, applet.__Info, Boolean.TRUE);
 			viewerOptions.put("appletReadyCallback","Jmol._readyCallback");
-			viewerOptions.put("applet", true);
+			viewerOptions.put("applet", Boolean.TRUE);
 			viewerOptions.put("name", applet._id);// + "_object");
 			viewerOptions.put("syncId", Jmol._syncId);
 			if (Jmol._isAsync)
-				viewerOptions.put("async", true);
+				viewerOptions.put("async", Boolean.TRUE);
 			if (applet._color) 
 				viewerOptions.put("bgcolor", applet._color);
 			if (applet._startupScript)
@@ -350,12 +356,16 @@
 					base[base.length - 1] = codePath;
 				codePath = base.join("/");
 			}
+			applet._j2sFullPath = codePath.substring(0, codePath.length-1);
 			viewerOptions.put("codePath", codePath);
 			Jmol._registerApplet(applet._id, applet);
 			try {
 				applet._newApplet(viewerOptions);
 			} catch (e) {
-				System.out.println((Jmol._isAsync ? "normal async abort from " : "") + e);
+				var s = (Jmol._isAsync ? "normal async abort? from " : "") + e;
+				if (Jmol._debugCode)
+					alert(s);
+				System.out.println(s);
 				return;
 			}
       
@@ -397,6 +407,13 @@
 			this._appletPanel.processMouseEvent(type,xym[0],xym[1],xym[2],System.currentTimeMillis());
 		}
 
+		proto._processKeyEvent = function(type, xym, ev) {
+			this._appletPanel.processKeyEvent({ getID: function() { return type; },
+							getKeyCode: function(){ return ev.keyCode; },
+							getModifiers: function() { return xym[2]; },
+							consume: function(){}});
+		}
+		
 		proto._resize = function() {
 			var s = "__resizeTimeout_" + this._id;
 			// only at end

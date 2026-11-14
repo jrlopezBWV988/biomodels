@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg preserveAspectRatio="xMidYMid" version="1.0" viewBox="0 0 252.4 132.5" xmlns="http://www.w3.org/2000/svg">
+ <g font-family="Arial" font-size="13.62px" font-weight="400" letter-spacing="0px" word-spacing="0px">
+  <text x="89.970901" y="46.031624" style="line-height:125%" xml:space="preserve"><tspan x="89.970901" y="46.031624"><tspan dx="0" dy="0" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400">N</tspan></tspan></text>
+  <text x="122.40227" y="50.216316" style="line-height:125%" xml:space="preserve"><tspan x="122.40227" y="50.216316"><tspan dx="0" dy="0" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400">S</tspan></tspan></text>
+  <text x="152.74129" y="103.57115" style="line-height:125%" xml:space="preserve"><tspan x="152.74129" y="103.57115" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400"><tspan dx="0" dy="0">O</tspan><tspan dx="10.325503" dy="0">P</tspan></tspan></text>
+  <text x="19.877293" y="46.031624" style="line-height:125%" xml:space="preserve"><tspan x="19.877293" y="46.031624"><tspan dx="0" dy="0" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400">N</tspan></tspan></text>
+  <text x="37.662235" y="76.370644" style="line-height:125%" xml:space="preserve"><tspan x="37.662235" y="76.370644"><tspan dx="0" dy="0" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400">N</tspan></tspan></text>
+  <text x="193.54205" y="103.57115" style="line-height:125%" xml:space="preserve"><tspan x="193.54205" y="103.57115" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400"><tspan dx="0" dy="0">O</tspan><tspan dx="9.2793303" dy="0">P</tspan><tspan dx="10.789523" dy="0">O</tspan></tspan></text>
+  <text x="172.61858" y="83.693855" style="line-height:125%" xml:space="preserve"><tspan x="172.61858" y="83.693855"><tspan dx="0" dy="0" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400">O</tspan></tspan></text>
+  <text x="213.41934" y="83.693855" style="line-height:125%" xml:space="preserve"><tspan x="213.41934" y="83.693855"><tspan dx="0" dy="0" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400">O</tspan></tspan></text>
+  <text x="172.61858" y="123.44844" style="line-height:125%" xml:space="preserve"><tspan x="172.61858" y="123.44844" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400"><tspan dx="0" dy="0">O</tspan><tspan dx="0" dy="0">H</tspan></tspan></text>
+  <text x="213.41934" y="123.44844" style="line-height:125%" xml:space="preserve"><tspan x="213.41934" y="123.44844" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400"><tspan dx="0" dy="0">O</tspan><tspan dx="0" dy="0">H</tspan></tspan></text>
+  <text x="37.662235" y="15.692598" style="line-height:125%" xml:space="preserve"><tspan x="37.662235" y="15.692598" fill="#000000" font-family="Arial" font-weight="400"><tspan dx="0" dy="0" font-size="13.62px">N</tspan><tspan dx="0" dy="0" font-size="13.62px">H</tspan><tspan dx="0" dy="3.13852" font-size="10.44px">2</tspan></tspan></text>
+ </g>
+ <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".85px">
+  <path d="m77.48 32.37 10.2 5.95"/>
+  <path d="m112.1 32.63-11.12 6.277"/>
+  <path d="m111.7 36.94-8.958 5.1"/>
+  <path d="m112.1 32.63 7.062 6.473"/>
+  <path d="m124.1 52.24-5.492 12.29"/>
+  <path d="m98.8 62.12 19.81 2.419"/>
+  <path d="m101.7 58.85 14.84 1.831"/>
+  <path d="m98.8 62.12-2.746-13.6"/>
+  <path d="m98.8 62.12-13.53 14.84"/>
+  <path d="m118.6 64.54 9.939 17.52"/>
+  <path d="m128.5 82.06 20.27 0.06539"/>
+  <path d="m148.8 82.12 4.512 8.042"/>
+  <path d="m165.5 99.52 6.408 0.06539"/>
+  <path d="m77.48 32.37-17.33 10.07"/>
+  <path d="m60.15 42.44-17.33-10.07"/>
+  <path d="m56.17 44.27-12.95-7.519"/>
+  <path d="m42.83 32.37-11.31 6.539"/>
+  <path d="m25.3 48.52v13.8"/>
+  <path d="m28.9 48.52v11.31"/>
+  <path d="m35.77 68.33-10.46-6.015"/>
+  <path d="m60.15 62.31-11.12 6.473"/>
+  <path d="m56.17 60.48-7.127 4.119"/>
+  <path d="m60.15 42.44v19.88"/>
+  <path d="m25.3 62.31-17.33 10.07"/>
+  <path d="m185.2 99.65h5.885"/>
+  <path d="m205.5 99.65h6.473"/>
+  <path d="m225.3 99.65h5.95"/>
+  <path d="m176.8 90.36v-4.642"/>
+  <path d="m180.5 90.36v-4.642"/>
+  <path d="m216.9 90.36v-4.642"/>
+  <path d="m220.5 90.36v-4.642"/>
+  <path d="m178.6 105.7v4.642"/>
+  <path d="m218.7 105.7v4.642"/>
+  <path d="m42.83 32.37v-14.06"/>
+ </g>
+ <text x="91.970901" y="40.031624" fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400" letter-spacing="0px" word-spacing="0px" style="line-height:125%" xml:space="preserve"><tspan x="91.970901" y="40.031624"><tspan fill="#000000" font-family="Arial" font-size="13.62px" font-weight="400"><tspan baseline-shift="super" font-size="65%">+</tspan></tspan></tspan></text>
+ <path d="m243.7 93.5 4.241 0.09258" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width=".8228px"/>
+</svg>

@@ -1,49 +1,185 @@
 <html>
- <head>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../css/moderno.css?v=20261113">
 <script src="../js/marco.js?v=20261113"></script>
 
- <title>IgG</title>
- <script src="../jsmol/JSmol.min.js?v=20261113"></script>
+<title>IgG</title>
+<script src="../jsmol/JSmol.min.js?v=20261113"></script>
 <script src="../jsmol/js/Jmol2.js?v=20261113b"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style>
+.tabla-igg { width: auto !important; margin: 0; }
+.visor-igg { vertical-align: top; text-align: center; width: 1%; }
+.visor-igg .botones-vista { display: flex; justify-content: center; gap: 8px; margin-top: 6px; }
+.visor-igg .botones-vista input[type="button"] { min-width: 140px; margin: 0; }
+#botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+.controles-igg { vertical-align: top; text-align: center; padding: 182px 4px 4px; width: 1%; white-space: nowrap; }
+.controles-igg .pila { display: flex; flex-direction: column; align-items: stretch; }
+.controles-igg input[type="button"] { margin: 3px; min-width: 64px; font-weight: 700; }
+/* Botones de cadena con el mismo color que aplican al modelo */
+.controles-igg input.b-h1 { background: #0046FF; color: #fff; border-color: #0030b0; }
+.controles-igg input.b-h2 { background: #00C8E6; color: #000; border-color: #0090a8; }
+.controles-igg input.b-l1 { background: #FFDC00; color: #000; border-color: #b89e00; }
+.controles-igg input.b-l2 { background: #00BE00; color: #000; border-color: #008a00; }
+.controles-igg input.b-h1:hover, .controles-igg input.b-h2:hover,
+.controles-igg input.b-l1:hover, .controles-igg input.b-l2:hover { filter: brightness(0.85); }
+/* Cadena resaltada: el botón queda marcado */
+.controles-igg input.activo { outline: 3px solid #13324a; outline-offset: 1px; }
+.texto-igg { vertical-align: top; }
+.texto-igg .columna { max-width: 460px; min-width: 300px; }
+.texto-igg p { margin: 0 0 10px; }
+.texto-igg ul { margin: 4px 0 10px; }
+/* Colores del texto: tonos legibles de los colores aplicados al modelo */
+.c-h1 { color: #0046FF; font-weight: 700; }
+.c-h2 { color: #0099b0; font-weight: 700; }
+.c-l1 { color: #b89e00; font-weight: 700; }
+.c-l2 { color: #009a00; font-weight: 700; }
+.c-inter { color: #DC1414; font-weight: 700; }
+.c-intra { color: #B400B4; font-weight: 700; }
+.c-vh { color: #C80000; font-weight: 700; }
+.c-vl { color: #FF6E6E; font-weight: 700; }
+.c-ch { color: #0040C8; font-weight: 700; }
+.c-cl { color: #5A9BFF; font-weight: 700; }
+.leyenda-gluc { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 4px 0 0; }
+.leyenda-gluc .mc { display: inline-block; width: 13px; height: 13px; border-radius: 3px; margin-right: 5px; vertical-align: -2px; border: 1px solid rgba(0,0,0,.25); }
+</style>
+<script>
+	// Modelo de IgG1 humana (Padlan, 1994): cadenas pesadas H e I (1-452), ligeras L y M (501-716)
+	// y oligosacáridos en la cadena C (1-9 unidos a H, 10-18 unidos a I). En la página:
+	// H1 = H, H2 = I, L1 = L (unida a H1) y L2 = M (unida a H2).
+	var cadenas = {
+		H1: { sel: ":H", color: "[0,70,255]" },
+		H2: { sel: ":I", color: "[0,200,230]" },
+		L1: { sel: ":L", color: "[255,220,0]" },
+		L2: { sel: ":M", color: "[0,190,0]" }
+	};
+	// Vista frontal de la «Y» (Fab arriba, Fc abajo) centrada en el centro de la caja de la molécula;
+	// el rotationRadius fijo garantiza la misma escala al girar o restaurar.
+	var vista = "set rotationRadius 86; moveto 0 {0 0 1} 0 100 0 0 {0.0 4.6 0.0} 86; ";
+	// Representación base: cartoon gris; oligosacáridos en varillas finas grises
+	var base = "select *; spacefill off; wireframe off; label off; cartoon on; color gray; "
+		+ "select :C; wireframe 0.15; color [150,150,150]; select *; ";
+	var estiloInicial = base + "background aliceblue; set spinX 0; set spinY 20; set spinZ 0; "
+		+ "isosurface superficie select(protein) ignore(not protein) color [245,245,245] vdw translucent 0.9; ";
+	// Puentes disulfuro (distancia S-S en el modelo):
+	// intercatenarios: H229-L715 e I229-M715 (pesada-ligera) y H235-I235, H238-I238 (bisagra)
+	var cysInter = "(229:H,715:L,229:I,715:M,235:H,235:I,238:H,238:I)";
+	// intracatenarios: uno por dominio (VH 22-96, CH1 153-209, CH2 270-330, CH3 376-434,
+	// VL 522-589, CL 638-697) y uno adicional en el CDR3 de la cadena pesada (105-110)
+	var cysIntra = "(cys and not " + cysInter + ")";
+	var resaltes = {
+		inter: "select " + cysInter + "; spacefill on; color [220,20,20]; select " + cysInter + " and *.SG; color [255,230,0]; select *; ",
+		intra: "select " + cysIntra + "; spacefill on; color [180,0,180]; select " + cysIntra + " and *.SG; color [255,230,0]; select *; ",
+		// Regiones variables (VH 1-126, VL 501-610) y constantes (CH 127-452, CL 611-716)
+		regiones: "select (:H,:I) and 1-126; color [200,0,0]; select (:H,:I) and 127-452; color [0,64,200]; "
+			+ "select (:L,:M) and 501-610; color [255,110,110]; select (:L,:M) and 611-716; color [90,155,255]; select *; ",
+		// Oligosacáridos en esferas con los colores SNFG; Asn297 (306 en el modelo) en varillas
+		glucidos: "select [NAG]; spacefill on; color [0,114,188]; select [MAN]; spacefill on; color [0,166,81]; "
+			+ "select [GAL]; spacefill on; color [255,212,0]; select [FUC]; spacefill on; color [237,28,36]; "
+			+ "select (306:H or 306:I); wireframe 0.3; color cpk; select *; "
+	};
+	var activas = {};
+	function pintar() {
+		var cmd = base;
+		for (var c in cadenas) if (activas[c]) cmd += "select " + cadenas[c].sel + " and protein; color " + cadenas[c].color + "; ";
+		Jmol.script(jmolApplet0, cmd + "select *; ");
+	}
+	function marcarCadenas() {
+		for (var c in cadenas) {
+			var b = document.getElementById("b" + c);
+			if (b) b.classList.toggle("activo", !!activas[c]);
+		}
+	}
+	// Los botones de cadena se combinan entre sí (pulsar de nuevo devuelve la cadena al gris)
+	function cadena(c) {
+		activas[c] = !activas[c];
+		marcarCadenas();
+		pintar();
+	}
+	// Los botones del texto muestran cada aspecto por separado y retiran el color de las cadenas
+	function resaltar(r) {
+		activas = {};
+		marcarCadenas();
+		Jmol.script(jmolApplet0, base + resaltes[r]);
+	}
+	var girando = false;
+	function rotacion(boton) {
+		girando = !girando;
+		Jmol.script(jmolApplet0, girando ? "spin on" : "spin off");
+		boton.value = girando ? "Detener rotación" : "Activar rotación";
+		boton.classList.toggle("activo", girando);
+	}
+	function imagenOriginal() {
+		activas = {};
+		marcarCadenas();
+		girando = false;
+		var b = document.getElementById("botonRotacion");
+		b.value = "Activar rotación";
+		b.classList.remove("activo");
+		Jmol.script(jmolApplet0, "spin off; " + base + vista);
+	}
+</script>
 </head>
 <body>
-<P>
 <font face="Tahoma">
-<TABLE border="0" cellspacing="5">
+<TABLE class="tabla-igg" border="0" cellspacing="5">
 <TR>
-	<TD valign="top">
-	<CENTER><form>
+	<TD class="visor-igg">
 	<script>
-		  jmolInitialize("../jsmol/js");
-		  jmolApplet(420, "load ../pdb/igg.pdb.gz; moveTo 0 0 -1000 0 12.0 100 0 -7; background aliceblue; select (atomno>=1) and (atomno<=3484); colour atoms [0,0,255];select (atomno>=3485) and (atomno<=6968); colour atoms [0,255,255]; select (atomno>=6969) and (atomno<=8575); colour atoms [0,255,0]; select (atomno>=8576) and (atomno<=10182); colour atoms [255,255,0]; select (atomno>=10183) and (atomno<=10402); colour atoms [255,0,0]; select all; spacefill on; spin on");
-		  jmolBr();
-		  jmolButton("moveTo 0 0 -1000 0 12.0 100 0 -7; background aliceblue; select (atomno>=1) and (atomno<=3484); colour atoms [0,0,255];select (atomno>=3485) and (atomno<=6968); colour atoms [0,255,255]; select (atomno>=6969) and (atomno<=8575); colour atoms [0,255,0]; select (atomno>=8576) and (atomno<=10182); colour atoms [255,255,0]; select (atomno>=10183) and (atomno<=10402); colour atoms [255,0,0]; select all; spacefill on; spin on", "imagen original");
+		jmolInitialize("../jsmol/js");
+		jmolSetParameter("UseCommandThread","true");
+		jmolApplet(500, "load ../pdb/igg.pdb.gz; " + estiloInicial + vista);
 	</script>
-	</form></CENTER>
+	<div class="botones-vista">
+		<input type="button" id="botonInicial" value="Imagen original" onclick="imagenOriginal()">
+		<input type="button" id="botonRotacion" value="Activar rotaci&oacute;n" onclick="rotacion(this)">
+	</div>
 	</TD>
-	<TD valign="top">
+	<TD class="controles-igg">
+		<div class="pila">
+			<input type="button" id="bH1" class="b-h1" value="H1" onclick="cadena('H1')">
+			<input type="button" id="bH2" class="b-h2" value="H2" onclick="cadena('H2')">
+			<input type="button" id="bL1" class="b-l1" value="L1" onclick="cadena('L1')">
+			<input type="button" id="bL2" class="b-l2" value="L2" onclick="cadena('L2')">
+		</div>
+	</TD>
+	<TD class="texto-igg"><div class="columna">
 	<CENTER><FONT COLOR="#3333CC"><B>Estructura de las IgG</B></FONT></CENTER>
 	<p>
-	Las IgG son tetr&aacute;meros formados por cuatro cadenas polipept&iacute;dicas: dos cadenas pesadas, <B><FONT COLOR="#3366FF">H1</FONT> y<FONT COLOR="#33FFFF"></B> H2</FONT>) y dos cadenas ligeras, <B><FONT COLOR="#FFFF00">L1</FONT></B> y <B><FONT COLOR="#33CC00">L2</FONT></B>).<BR>
-	Las cadenas H y las L se unen por puentes disulfuro intercatenarios. 
-	<BR>
-	Adem&aacute;s, existen puentes disulfuro intracatenarios que hacen que tanto las cadenas ligeras como las pesadas se plieguen en varios dominios:
-	<FONT SIZE="-1"><UL type="solid circle">
-		<LI>Los primeros 108 aa. de todas las cadenas son diferentes para cada anticuerpo y forman la <I><B>Regi&oacute;n Variable</B></I> (V<sub>H</sub> y V<sub>L</sub>). Este dominio contiene el sitio de uni&oacute;n con el ant&iacute;geno.</li>
-		<LI>El resto de aa. son id&eacute;nticos para todas las inmunoglobulinas de una clase (G, A, M, D o E), y forman la denominada <I><B>Regi&oacute;n Constante</B></I> (C<sub>H</sub> y C<sub>L</sub>).</li>
-	</UL>
-	</font>
+	Las IgG son tetr&aacute;meros formados por cuatro cadenas polipept&iacute;dicas: dos cadenas pesadas, <span class="c-h1">H1</span> y <span class="c-h2">H2</span>, y dos cadenas ligeras, <span class="c-l1">L1</span> y <span class="c-l2">L2</span>.
+	</p>
 	<p>
-	<script>
-		jmolButton("restrict backbone; spacefill off; select cys; color cpk; spacefill on; color ssbonds", "x");
-	</script>
-	Las ciste&iacute;nas que forman los puentes disulfuro se muestran aqu&iacute; en modelo espacial, superpuestas en el esqueleto pept&iacute;dico de las cuatro cadenas. 
-	<BR>
-	</TD>
+	<input type="button" value="x" onclick="resaltar('inter')">
+	Las cadenas H y las L se unen por <span class="c-inter">puentes disulfuro intercatenarios</span>: cada cadena ligera se une a una pesada, y las dos cadenas pesadas se unen entre s&iacute; en la regi&oacute;n bisagra.
+	</p>
+	<p>
+	<input type="button" value="x" onclick="resaltar('intra')">
+	Adem&aacute;s, existen <span class="c-intra">puentes disulfuro intracatenarios</span> que hacen que tanto las cadenas ligeras como las pesadas se plieguen en varios dominios (uno por dominio; en este modelo, la cadena pesada tiene otro adicional en su CDR3).
+	</p>
+	<p><FONT SIZE="-1">
+	Las ciste&iacute;nas que forman los puentes disulfuro se muestran en modelo espacial (azufre en amarillo), superpuestas en el esqueleto pept&iacute;dico de las cuatro cadenas.
+	</FONT></p>
+	<p>
+	<input type="button" value="x" onclick="resaltar('regiones')">
+	Cada cadena tiene una regi&oacute;n variable y una constante:
+	</p>
+	<FONT SIZE="-1"><UL type="solid circle">
+		<LI>Los aproximadamente 110 primeros aa. de todas las cadenas (110 en las ligeras y 126 en las pesadas de este modelo, cuyo CDR3 es largo) son diferentes para cada anticuerpo y forman la <I><B>Regi&oacute;n Variable</B></I> (<span class="c-vh">V<sub>H</sub></span> y <span class="c-vl">V<sub>L</sub></span>). Este dominio contiene el sitio de uni&oacute;n con el ant&iacute;geno.</LI>
+		<LI>El resto de aa. son id&eacute;nticos para todas las inmunoglobulinas de una clase (G, A, M, D o E), y forman la denominada <I><B>Regi&oacute;n Constante</B></I> (<span class="c-ch">C<sub>H</sub></span> y <span class="c-cl">C<sub>L</sub></span>).</LI>
+	</UL></FONT>
+	<p>
+	<input type="button" value="x" onclick="resaltar('glucidos')">
+	Las IgG son <B>glucoprote&iacute;nas</B>: cada cadena pesada lleva un oligosac&aacute;rido unido por enlace N-glucos&iacute;dico a la Asn297 del dominio C<sub>H</sub>2. Los dos oligosac&aacute;ridos ocupan el espacio entre los dominios C<sub>H</sub>2 del fragmento Fc y estabilizan su conformaci&oacute;n, necesaria para la uni&oacute;n a los receptores Fc&gamma; y al complemento (C1q). Son oligosac&aacute;ridos complejos biantenarios con un n&uacute;cleo de dos N-acetilglucosaminas y tres manosas, al que se a&ntilde;aden fucosa, N-acetilglucosamina y galactosa en proporciones variables. Esta variabilidad modula las funciones efectoras: por ejemplo, la ausencia de fucosa aumenta la afinidad por Fc&gamma;RIIIa y la citotoxicidad celular dependiente de anticuerpos.
+	</p>
+	<div class="leyenda-gluc"><FONT SIZE="-1">
+		<span><span class="mc" style="background:rgb(0,114,188)"></span>N-acetilglucosamina</span>
+		<span><span class="mc" style="background:rgb(0,166,81)"></span>Manosa</span>
+		<span><span class="mc" style="background:rgb(255,212,0)"></span>Galactosa</span>
+		<span><span class="mc" style="background:rgb(237,28,36)"></span>Fucosa</span>
+	</FONT></div>
+	</div></TD>
 </TR>
+</TABLE>
 </body>
 </html>

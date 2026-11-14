@@ -35,9 +35,9 @@
     { cat: "Glúcidos", items: [
       { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" }
     ]},
-    { t: "Oligopéptidos", href: "oligopeptidos.htm" },
     { t: "Vitaminas", href: "vitaminas.htm" },
     { cat: "Proteínas", items: [
+      { t: "Oligopéptidos", href: "oligopeptidos.htm" },
       { grupo: "Estructura Secundaria", items: [
         { t: "Hélice alfa", href: "proteinas/helicealfa.htm" },
         { t: "Hoja beta", href: "proteinas/hojabeta.htm" }

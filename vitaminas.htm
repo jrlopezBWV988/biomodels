@@ -17,6 +17,14 @@
 <style>
 .botones-modelo { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 500px; margin: 8px auto 0; }
 .botones-modelo input[type="button"] { margin: 0; }
+.menu-vitaminas { width: 440px; max-width: 100%; }
+.ficha { width: 440px; max-width: 100%; margin-top: 14px; }
+.ficha .caja-formula { background: #fff; border: 1px solid var(--line, #dbe2e9); border-radius: 10px; padding: 14px; height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
+.ficha .caja-formula a { display: block; width: 100%; height: 100%; }
+.ficha .caja-formula img { width: 100%; height: 100%; object-fit: contain; }
+.ficha h3 { margin: 12px 0 6px; font-size: 1.1em; color: #6633CC; }
+.ficha p { margin: 0 0 8px; line-height: 1.45; }
+.ficha .credito { font-size: 0.8em; font-style: italic; color: var(--muted, #5a6977); }
 .menu-vitaminas optgroup { font-weight: 700; color: #6633CC; }
 .menu-vitaminas option { font-weight: 400; color: #13324a; }
 /* Coenzima Q, al mismo nivel que los dos grupos: misma letra que sus títulos */
@@ -24,10 +32,217 @@
 .menu-vitaminas option.cabecera { font-weight: 600; color: #5a6977; }
 </style>
 <script>
-	// Carga la molécula elegida en el desplegable (los ficheros están en ./pdb/)
-	function cargar(fichero) {
-		if (fichero) Jmol.script(jmolApplet0, "load ./pdb/" + fichero + "; cpk on");
+	// Fórmula (SVG de Wikimedia Commons, guardado en images/formulas/) y descripción de cada molécula
+	var fichas = {
+	 "beta-caroteno.gz": {
+	  "svg": "Beta-Carotin.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Beta-Carotin.svg",
+	  "lic": "dominio público",
+	  "autor": "NEUROtiker",
+	  "texto": "Pigmento carotenoide de 40 carbonos presente en frutas y verduras (zanahoria, espinaca). Es una <b>provitamina A</b>: en el intestino la β-caroteno 15,15'-oxigenasa lo corta por el centro y da dos moléculas de retinal. Su largo sistema de dobles enlaces conjugados le da el color anaranjado y capacidad antioxidante."
+	 },
+	 "retinol.gz": {
+	  "svg": "All-trans-Retinol.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:All-trans-Retinol.svg",
+	  "lic": "dominio público",
+	  "autor": "NEUROtiker",
+	  "texto": "Forma alcohol de la <b>vitamina A</b>. Se almacena en el hígado como ésteres de retinilo y circula en el plasma unido a la proteína transportadora de retinol (RBP4). Se oxida a retinal (visión) y a ácido retinoico, que regula la expresión génica a través de los receptores nucleares RAR/RXR. Su déficit produce ceguera nocturna y xeroftalmía."
+	 },
+	 "All-trans-retinal.gz": {
+	  "svg": "All-trans-Retinal.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:All-trans-Retinal.svg",
+	  "lic": "dominio público",
+	  "autor": "NEUROtiker",
+	  "texto": "Aldehído de la vitamina A, formado por oxidación del retinol. En la retina es el producto de la absorción de la luz: el 11-<i>cis</i> retinal de la rodopsina se isomeriza a todo-<i>trans</i>, se separa de la opsina y se recicla de nuevo a 11-<i>cis</i> en el ciclo visual. También es el precursor del ácido retinoico."
+	 },
+	 "11-cis-retinal.gz": {
+	  "svg": "11-cis-Retinal.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:11-cis-Retinal.svg",
+	  "lic": "dominio público",
+	  "autor": "NEUROtiker",
+	  "texto": "Cromóforo de la rodopsina, unido a una lisina de la opsina mediante una base de Schiff. Al absorber un fotón se isomeriza a todo-<i>trans</i> retinal; este cambio de forma activa la opsina y es el paso inicial de la fototransducción en conos y bastones."
+	 },
+	 "Colecalciferol.gz": {
+	  "svg": "Cholecalciferol.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Cholecalciferol.svg",
+	  "lic": "dominio público",
+	  "autor": "Calvero",
+	  "texto": "<b>Vitamina D<sub>3</sub></b>. Se forma en la piel a partir del 7-dehidrocolesterol por acción de la radiación UVB, y también se obtiene de la dieta. Se hidroxila en el hígado (25-hidroxicolecalciferol, calcidiol) y en el riñón (1,25-dihidroxicolecalciferol, calcitriol), la forma activa, que actúa como hormona a través del receptor nuclear VDR y aumenta la absorción intestinal de calcio y fosfato. Su déficit causa raquitismo y osteomalacia."
+	 },
+	 "tocoferol.gz": {
+	  "svg": "Tocopherol_alpha-.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Tocopherol,_alpha-.svg",
+	  "lic": "dominio público",
+	  "autor": "Calvero",
+	  "texto": "El α-tocoferol es la principal forma de la <b>vitamina E</b> y el antioxidante liposoluble más importante de las membranas. El hidroxilo del anillo cromanol cede un átomo de hidrógeno a los radicales peroxilo de los lípidos e interrumpe la peroxidación lipídica; la cadena fitilo lo ancla en la bicapa. El radical tocoferoxilo resultante se regenera con ascorbato."
+	 },
+	 "Filoquinona.K1.gz": {
+	  "svg": "Phylloquinone_structure.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Phylloquinone_structure.svg",
+	  "lic": "dominio público",
+	  "autor": "Mysid",
+	  "texto": "<b>Vitamina K<sub>1</sub></b>, la forma vegetal (verduras de hoja verde): una 2-metil-1,4-naftoquinona con una cadena fitilo. Su forma reducida (hidroquinona) es el cofactor de la γ-glutamil carboxilasa, que convierte residuos de glutamato de los factores de coagulación II, VII, IX y X en γ-carboxiglutamato, capaz de unir Ca<sup>2+</sup>. Los anticoagulantes cumarínicos (warfarina) bloquean su reciclaje."
+	 },
+	 "Menadiona.K3.gz": {
+	  "svg": "Menadione.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Menadione.svg",
+	  "lic": "dominio público",
+	  "autor": "Хорев Сергей",
+	  "texto": "<b>Vitamina K<sub>3</sub></b>, un compuesto sintético: el anillo de naftoquinona sin cadena lateral. Es una provitamina que los tejidos convierten en menaquinona-4 añadiéndole una cadena isoprenoide. Las menaquinonas (vitamina K<sub>2</sub>) son las formas sintetizadas por las bacterias."
+	 },
+	 "CoQ.pdb.gz": {
+	  "svg": "Coenzyme_Q10.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Coenzyme_Q10.svg",
+	  "lic": "dominio público",
+	  "autor": "Roger Burger",
+	  "texto": "<b>Ubiquinona</b>: una benzoquinona con una cadena isoprenoide (10 unidades en humanos, CoQ<sub>10</sub>; el modelo 3D tiene una cadena más corta) que la mantiene en la membrana interna mitocondrial. Transporta electrones y protones desde los complejos I y II hasta el complejo III de la cadena respiratoria, reduciéndose a ubiquinol (QH<sub>2</sub>) a través de una semiquinona. No es una vitamina: el organismo la sintetiza."
+	 },
+	 "Tiamina.gz": {
+	  "svg": "Thiamine_v2.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Thiamine_v2.svg",
+	  "lic": "dominio público",
+	  "autor": "Innerstream",
+	  "texto": "<b>Vitamina B<sub>1</sub></b>: un anillo de pirimidina y otro de tiazolio unidos por un puente metileno. Su déficit produce el beriberi y, en el alcoholismo, la encefalopatía de Wernicke-Korsakoff."
+	 },
+	 "tiamina.pdb.gz": {
+	  "svg": "Thiamine_diphosphate_neutral.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Thiamine_diphosphate_neutral.svg",
+	  "lic": "CC0",
+	  "autor": "Michael D. Turnbull",
+	  "texto": "Forma coenzimática de la tiamina, obtenida por transferencia de un pirofosfato desde el ATP. Es la coenzima de las descarboxilaciones oxidativas de α-cetoácidos (complejos piruvato deshidrogenasa, α-cetoglutarato deshidrogenasa y de los cetoácidos ramificados) y de la transcetolasa. El C2 del anillo de tiazolio pierde un protón y forma un carbanión que ataca grupos carbonilo."
+	 },
+	 "Riboflavina.gz": {
+	  "svg": "Riboflavin_v2.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Riboflavin_v2.svg",
+	  "lic": "dominio público",
+	  "autor": "Innerstream",
+	  "texto": "<b>Vitamina B<sub>2</sub></b>: el anillo de isoaloxazina (7,8-dimetil) unido a ribitol. Es un compuesto amarillo y sensible a la luz, precursor de las coenzimas flavínicas FMN y FAD."
+	 },
+	 "fad.pdb.gz": {
+	  "svg": "FAD.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:FAD.svg",
+	  "lic": "dominio público",
+	  "autor": "NEUROtiker",
+	  "texto": "<b>Flavín adenín dinucleótido</b> (FMN + AMP; el modelo y la fórmula muestran la forma oxidada, FAD). Es el grupo prostético de las flavoproteínas (succinato deshidrogenasa, acil-CoA deshidrogenasas, dihidrolipoamida deshidrogenasa). El anillo de isoaloxazina acepta dos electrones y dos protones y forma FADH<sub>2</sub>; también puede transferir los electrones de uno en uno a través de una semiquinona."
+	 },
+	 "Niacina.gz": {
+	  "svg": "Niacin_structure.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Niacin_structure.svg",
+	  "lic": "dominio público",
+	  "autor": "Mysid",
+	  "texto": "<b>Vitamina B<sub>3</sub></b>: ácido nicotínico (también su amida, la nicotinamida). Es el precursor del NAD<sup>+</sup> y del NADP<sup>+</sup>; una parte puede sintetizarse a partir de triptófano (unos 60 mg de triptófano por cada mg de niacina). Su déficit produce la pelagra (dermatitis, diarrea y demencia)."
+	 },
+	 "NADH.gz": {
+	  "svg": "NADH.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:NADH.svg",
+	  "lic": "dominio público",
+	  "autor": "Innerstream",
+	  "texto": "<b>Nicotinamida adenina dinucleótido</b> en su forma reducida. El NAD<sup>+</sup> es la coenzima de muchas deshidrogenasas del catabolismo: acepta un ion hidruro en el C4 del anillo de nicotinamida y forma NADH, que cede luego los electrones al complejo I de la cadena respiratoria. El NAD<sup>+</sup> es también sustrato de las sirtuinas y de las PARP."
+	 },
+	 "NADPH.pdb.gz": {
+	  "svg": "NADPH.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:NADPH.svg",
+	  "lic": "dominio público",
+	  "autor": "Innerstream",
+	  "texto": "Igual que el NADH pero con un fosfato adicional en el 2' de la ribosa de la adenosina, lo que permite a las enzimas distinguirlos. El NADPH es el reductor de las biosíntesis (ácidos grasos, colesterol), de la regeneración del glutatión y de la NADPH oxidasa. Se produce sobre todo en la vía de las pentosas fosfato y por la enzima málica."
+	 },
+	 "Pantotenico.gz": {
+	  "svg": "Pantothenic_acid_skeletal_formula.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Pantothenic_acid_skeletal_formula.svg",
+	  "lic": "CC0",
+	  "autor": "Qohelet12",
+	  "texto": "<b>Vitamina B<sub>5</sub></b>: ácido pantoico unido por un enlace amida a β-alanina. Es el precursor de la coenzima A y del grupo 4'-fosfopanteteína de la proteína transportadora de acilos (ACP) de la ácido graso sintasa. Está en casi todos los alimentos, por lo que su déficit es raro."
+	 },
+	 "coa.pdb.gz": {
+	  "svg": "Coenzym_A.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Coenzym_A.svg",
+	  "lic": "dominio público",
+	  "autor": "NEUROtiker",
+	  "texto": "<b>Coenzima A</b>: 4'-fosfopanteteína (pantotenato y cisteamina) unida a 3'-fosfo-ADP. Su grupo tiol (–SH) terminal forma tioésteres de alta energía con grupos acilo, que así se activan para su transferencia o su oxidación."
+	 },
+	 "acetilcoa.pdb.gz": {
+	  "svg": "Acetyl-CoA-2D.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Acetyl-CoA-2D.svg",
+	  "lic": "dominio público",
+	  "autor": "Bryan Derksen",
+	  "texto": "Tioéster entre el grupo acetilo y el tiol de la coenzima A. Se forma a partir del piruvato (piruvato deshidrogenasa), de la β-oxidación de los ácidos grasos y del catabolismo de aminoácidos. Su grupo acetilo entra en el ciclo de Krebs al condensarse con oxalacetato; también es el precursor de ácidos grasos, colesterol y cuerpos cetónicos, y el donador de acetilos en la acetilación de proteínas."
+	 },
+	 "Piridoxamina.gz": {
+	  "svg": "Pyridoxamin.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Pyridoxamin.svg",
+	  "lic": "dominio público",
+	  "autor": "NEUROtiker",
+	  "texto": "Una de las tres formas de la <b>vitamina B<sub>6</sub></b> (piridoxina, piridoxal y piridoxamina), que se interconvierten en el organismo. Su forma fosforilada, la piridoxamina 5'-fosfato, es el intermediario que acepta y cede el grupo amino en las transaminaciones."
+	 },
+	 "Piridoxal.fosfato.gz": {
+	  "svg": "Pyridoxal-phosphate.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Pyridoxal-phosphate.svg",
+	  "lic": "dominio público",
+	  "autor": "Fvasconcellos",
+	  "texto": "Forma coenzimática de la vitamina B<sub>6</sub>. Su grupo aldehído forma una base de Schiff con una lisina de la enzima, que se intercambia por el grupo amino del aminoácido sustrato. Es la coenzima de las transaminasas y de las descarboxilasas de aminoácidos (síntesis de GABA, serotonina, dopamina e histamina), entre otras; en la glucógeno fosforilasa actúa su grupo fosfato."
+	 },
+	 "Biotina.gz": {
+	  "svg": "Biotin_skeletal.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Biotin_skeletal.svg",
+	  "lic": "dominio público",
+	  "autor": "Innerstream",
+	  "texto": "<b>Vitamina B<sub>7</sub></b>: un anillo de ureido fusionado con un tetrahidrotiofeno y una cadena de ácido valérico. Se une por un enlace amida a una lisina de las carboxilasas (piruvato carboxilasa, acetil-CoA carboxilasa, propionil-CoA carboxilasa), donde transporta CO<sub>2</sub> activado sobre un nitrógeno del anillo. La avidina de la clara de huevo cruda la secuestra."
+	 },
+	 "Tetrahidrofolato.gz": {
+	  "svg": "Tetrahydrofolic_acid.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Tetrahydrofolic_acid.svg",
+	  "lic": "dominio público",
+	  "autor": "Fvasconcellos",
+	  "texto": "Forma activa del <b>ácido fólico (vitamina B<sub>9</sub>)</b>: pteridina, ácido <i>p</i>-aminobenzoico y glutamato. La dihidrofolato reductasa lo reduce a tetrahidrofolato (diana del metotrexato). Transporta unidades de un carbono (formilo, metileno, metilo) sobre los nitrógenos N<sup>5</sup> y N<sup>10</sup> para la síntesis de purinas, timidilato y metionina. Su déficit causa anemia megaloblástica y, en el embarazo, defectos del tubo neural."
+	 },
+	 "Metilentetrahidrofolato.gz": {
+	  "svg": "5_10-methylenetetrahydrofolic_acid.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:5,10-methylenetetrahydrofolic_acid.svg",
+	  "lic": "dominio público",
+	  "autor": "Fvasconcellos",
+	  "texto": "Tetrahidrofolato con un puente metileno entre N<sup>5</sup> y N<sup>10</sup>, formado a partir de serina por la serina hidroximetiltransferasa. La timidilato sintasa lo usa para metilar el dUMP a dTMP, y el folato queda oxidado a dihidrofolato (esta enzima es la diana del 5-fluorouracilo). La metilentetrahidrofolato reductasa (MTHFR) lo reduce a 5-metiltetrahidrofolato."
+	 },
+	 "metilcobalamina.6Co.unido.gz": {
+	  "svg": "Mecobalamin.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Mecobalamin.svg",
+	  "lic": "dominio público",
+	  "autor": "Fvasconcellos",
+	  "texto": "<b>Vitamina B<sub>12</sub></b>: un anillo de corrina con un átomo de cobalto central, coordinado abajo por un dimetilbencimidazol y arriba por un metilo (metilcobalamina, la forma del modelo) o un 5'-desoxiadenosilo. Solo la sintetizan microorganismos y su absorción en el íleon requiere el factor intrínseco gástrico. La metilcobalamina es la coenzima de la metionina sintasa, y la adenosilcobalamina de la metilmalonil-CoA mutasa. Su déficit produce anemia megaloblástica (anemia perniciosa) y neuropatía."
+	 },
+	 "ascorbato.gz": {
+	  "svg": "Ascorbic_acid_structure.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Ascorbic_acid_structure.svg",
+	  "lic": "dominio público",
+	  "autor": "Stanislaw Gackowski",
+	  "texto": "<b>Vitamina C</b>. La mayoría de los mamíferos la sintetizan a partir de glucosa, pero los primates no, porque el gen de la gulonolactona oxidasa está inactivo. A pH fisiológico predomina el anión ascorbato (pK<sub>a</sub> ≈ 4,2); la fórmula y el modelo muestran el ácido. Es un reductor: mantiene el hierro de las prolil y lisil hidroxilasas del colágeno en estado ferroso (su déficit causa escorbuto), regenera la vitamina E y favorece la absorción del hierro."
+	 },
+	 "dehidroascorbato.gz": {
+	  "svg": "Dehydroascorbic_acid_2.svg",
+	  "page": "https://commons.wikimedia.org/wiki/File:Dehydroascorbic_acid_2.svg",
+	  "lic": "dominio público",
+	  "autor": "Stanislaw Gackowski",
+	  "texto": "Forma oxidada del ascorbato, que ha cedido dos electrones y dos protones (pasando por el radical ascorbilo). Entra en las células por los transportadores de glucosa GLUT y en su interior se reduce de nuevo a ascorbato con glutatión. Si no se reduce, se hidroliza de forma irreversible a ácido 2,3-dicetogulónico y se pierde su actividad vitamínica."
+	 }
+	};
+	function mostrarFicha(fichero) {
+		var f = fichas[fichero];
+		if (!f) return;
+		var op = document.querySelector('#menuMoleculas option[value="' + fichero + '"]');
+		var img = document.getElementById("formula");
+		img.src = "images/formulas/" + f.svg;
+		document.getElementById("enlaceFormula").href = img.src;
+		img.alt = "F\u00f3rmula de " + op.textContent.trim();
+		document.getElementById("nombreFicha").textContent = op.textContent.trim();
+		document.getElementById("textoFicha").innerHTML = f.texto;
+		document.getElementById("creditoFicha").innerHTML = 'F\u00f3rmula: <a href="' + f.page + '" target="_blank">Wikimedia Commons</a>, ' + f.autor + ' (' + f.lic + '). Pulsa sobre la f\u00f3rmula para ampliarla.';
 	}
+	// Carga la molécula elegida en el desplegable (los ficheros están en ./pdb/) y su ficha
+	function cargar(fichero) {
+		if (!fichero) return;
+		Jmol.script(jmolApplet0, "load ./pdb/" + fichero + "; cpk on");
+		mostrarFicha(fichero);
+	}
+	document.addEventListener("DOMContentLoaded", function () { mostrarFicha(document.getElementById("menuMoleculas").value); });
 </script>
 <body>
 <font face="Tahoma">
@@ -95,6 +310,12 @@
 			<option value="dehidroascorbato.gz">&nbsp;&nbsp;&nbsp;&nbsp;Dehidroascorbato</option>
 		</optgroup>
 		</select>
+		<div class="ficha">
+			<div class="caja-formula"><a id="enlaceFormula" href="images/formulas/All-trans-Retinol.svg" target="_blank" title="Ampliar la f&oacute;rmula"><img id="formula" src="images/formulas/All-trans-Retinol.svg" alt="F&oacute;rmula del retinol"></a></div>
+			<h3 id="nombreFicha">Retinol</h3>
+			<p id="textoFicha"></p>
+			<p class="credito" id="creditoFicha"></p>
+		</div>
 	</TD>
 </TR>
 </BODY>

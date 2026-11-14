@@ -15,8 +15,12 @@
 <script src="./jsmol/JSmol.min.js?v=20261113"></script>
 <script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
 <style>
+.botones-modelo { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 500px; margin: 8px auto 0; }
+.botones-modelo input[type="button"] { margin: 0; }
 .menu-vitaminas optgroup { font-weight: 700; color: #6633CC; }
 .menu-vitaminas option { font-weight: 400; color: #13324a; }
+/* Coenzima Q, al mismo nivel que los dos grupos: misma letra que sus títulos */
+.menu-vitaminas option.grupo { font-weight: 700; color: #6633CC; }
 .menu-vitaminas option.cabecera { font-weight: 600; color: #5a6977; }
 </style>
 <script>
@@ -38,8 +42,19 @@
 		  jmolInitialize("./jsmol/js");
 		  jmolSetParameter("UseCommandThread","true");
 		  jmolApplet(500, "load ./pdb/retinol.gz; cpk on; background aliceblue");
-		  jmolBr();
 	</script>
+	<div class="botones-modelo">
+	<script>
+		jmolButton("select *; spacefill 100%; isosurface off", "Esferas de Van der Waals");
+		jmolButton("select *; spacefill 25%; isosurface off", "Modelo de esferas y varillas");
+		jmolButton("select *; spacefill 25%; isosurface ignore(solvent) molecular; color isosurface translucent", "Modelo de esferas y varillas (superficie transparente)");
+	</script>
+	</div>
+	<div class="botones-modelo">
+	<script>
+		jmolCheckbox("set spinX 10; set spinY 10; spin on", "spin off", "Rotaci&oacute;n");
+	</script>
+	</div>
 	</form></CENTER>
 	</TD>
 	<TD valign=top>
@@ -56,7 +71,7 @@
 			<option value="Filoquinona.K1.gz">&nbsp;&nbsp;&nbsp;&nbsp;Filoquinona (K1)</option>
 			<option value="Menadiona.K3.gz">&nbsp;&nbsp;&nbsp;&nbsp;Menadiona (K3)</option>
 		</optgroup>
-			<option value="CoQ.pdb.gz">Coenzima Q</option>
+			<option value="CoQ.pdb.gz" class="grupo">Coenzima Q</option>
 		<optgroup label="VITAMINAS HIDROSOLUBLES">
 			<option value="Tiamina.gz">Tiamina (B1)</option>
 			<option value="tiamina.pdb.gz">&nbsp;&nbsp;&nbsp;&nbsp;Pirofosfato de tiamina</option>
@@ -80,26 +95,6 @@
 			<option value="dehidroascorbato.gz">&nbsp;&nbsp;&nbsp;&nbsp;Dehidroascorbato</option>
 		</optgroup>
 		</select>
-		<P>
-		<script>
-			jmolButton("select *; spacefill 100%;isosurface off", "x");
-		</script> Esferas de Van der Walls
-		<p>
-		<script>
-			jmolButton("select *; spacefill 25%; isosurface off", "x");
-		</script> Modelo de esferas y varillas
-		<P>
-		<script>
-			jmolButton("select *; spacefill 25%; isosurface ignore(solvent)molecular; color isosurface translucent", "x");
-		</script> Modelo de esferas y varillas (superfice transparente)
-		<P>
-		<script>
-			jmolButton("select *; spacefill off; isosurface off", "x");
-		</script> Modelo de varillas
-		<P>
-		<script>
-			jmolCheckbox("set spinX 10; set spinY 10; spin on", "spin off", "Rotaci&oacute;n")
-		</script> 	
 	</TD>
 </TR>
 </BODY>

@@ -17,7 +17,8 @@
 .botones-vista input[type="button"] { min-width: 140px; }
 #botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
 /* Botones de cadena con el mismo color que aplican al modelo */
-.botones-cadena input[type="button"] { min-width: 84px; font-weight: 700; }
+.botones-cadena input[type="button"] { min-width: 84px; font-weight: 700; margin: 3px 2px; }
+.texto-igg ul.botones-cadena { list-style: none; padding-left: 0; }
 .botones-cadena input.b-l { background: #00C800; color: #000; border-color: #008a00; }
 .botones-cadena input.b-h { background: #FF8C00; color: #000; border-color: #b86400; }
 .botones-cadena input.b-y { background: #DC00DC; color: #fff; border-color: #9a009a; }
@@ -33,7 +34,7 @@
 .c-l { color: #009a00; font-weight: 700; }
 .c-h { color: #CC6600; font-weight: 700; }
 .c-y { color: #C000C0; font-weight: 700; }
-.c-cys { color: #b89e00; font-weight: 700; }
+.c-ep { color: #960096; font-weight: 700; }
 .c-cdr { color: #990033; font-weight: 700; }
 /* Leyenda de los CDR */
 .leyenda-cdr { border-collapse: collapse; font-size: 13.5px; min-width: 150px; margin: 4px 0 12px; }
@@ -42,8 +43,6 @@
 .leyenda-cdr th:first-child { color: rgb(46,139,87); }
 .leyenda-cdr th:last-child { color: rgb(170,70,0); }
 .leyenda-cdr td { padding: 5px 12px 5px 2px; white-space: nowrap; vertical-align: middle; }
-.leyenda-cdr tr.resto td { border-top: 1px solid var(--line, #dbe2e9); padding-top: 8px; color: var(--muted, #5a6977); }
-.leyenda-cdr tr.antigeno td { color: var(--muted, #5a6977); }
 .leyenda-cdr .mc { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 8px; vertical-align: -2px; border: 1px solid rgba(0,0,0,.25); }
 </style>
 <script>
@@ -60,16 +59,14 @@
 	var base = "select *; spacefill off; wireframe off; label off; cartoon on; color gray; ";
 	var estiloInicial = base + "background aliceblue; set spinX 0; set spinY 20; set spinZ 0; "
 		+ "isosurface superficie select(protein) ignore(not protein) color [245,245,245] vdw translucent 0.9; ";
+	// Solo los CDR se colorean; el resto de la molécula queda en gris.
 	// CDR (numeración del fichero): L1 24-34, L2 50-56, L3 89-97; H1 31-35, H2 50-65, H3 98-105
-	var colorCDR = "select :L; color [46,139,87]; select :H; color [170,70,0]; select :Y; color [255,0,255]; "
-		+ "select :L and 24-34; color [0,255,0]; select :L and 50-56; color [0,255,255]; select :L and 89-97; color [255,255,255]; "
+	var colorCDR = "select :L and 24-34; color [0,255,0]; select :L and 50-56; color [0,255,255]; select :L and 89-97; color [255,255,255]; "
 		+ "select :H and 31-35; color [255,69,0]; select :H and 50-65; color [255,165,0]; select :H and 98-105; color [255,255,0]; select *; ";
 	// Átomos en contacto: a <= 4 Å de la otra molécula
 	var contactoAc = "((:L,:H) and within(4.0, :Y))";
 	var epitopo = "(:Y and within(4.0, (:L,:H)))";
 	var resaltes = {
-		esqueleto: "select :L; color [0,200,0]; select :H; color [255,140,0]; select :Y; color [220,0,220]; "
-			+ "select cys and (sidechain or *.CA); spacefill on; color [255,220,0]; select *; ",
 		cdr: colorCDR,
 		contactos: colorCDR + "select " + contactoAc + "; spacefill on; select *; ",
 		epitopo: colorCDR + "select " + contactoAc + "; spacefill on; select " + epitopo + "; spacefill on; color [150,0,150]; select *; "
@@ -129,11 +126,6 @@
 		jmolSetParameter("UseCommandThread","true");
 		jmolApplet(500, "load ../pdb/fab_lyso.pdb.gz; " + estiloInicial + vista);
 	</script>
-	<div class="fila-botones botones-cadena">
-		<input type="button" id="bL" class="b-l" value="Ligera" onclick="cadena('L')">
-		<input type="button" id="bH" class="b-h" value="Pesada" onclick="cadena('H')">
-		<input type="button" id="bY" class="b-y" value="Lisozima" onclick="cadena('Y')">
-	</div>
 	<div class="fila-botones botones-vista">
 		<input type="button" id="botonInicial" value="Imagen original" onclick="imagenOriginal()">
 		<input type="button" id="botonRotacion" value="Activar rotaci&oacute;n" onclick="rotacion(this)">
@@ -145,13 +137,12 @@
 	</div>
 	</TD>
 	<TD class="texto-igg"><div class="columna">
-	<ul>
-		<li>Cadenas <span class="c-l">Ligera</span> y <span class="c-h">Pesada</span> del Fragmento Fab</li>
-		<li><span class="c-y">Lisozima</span> (Ant&iacute;geno)</li>
+	<ul class="botones-cadena">
+		<li>Cadenas <input type="button" id="bL" class="b-l" value="Ligera" onclick="cadena('L')"> y <input type="button" id="bH" class="b-h" value="Pesada" onclick="cadena('H')"> del Fragmento Fab</li>
+		<li><input type="button" id="bY" class="b-y" value="Lisozima" onclick="cadena('Y')"> (Ant&iacute;geno)</li>
 	</ul>
 	<p>
-	<input type="button" value="x" onclick="resaltar('esqueleto')">
-	<FONT SIZE="-1">Esqueleto pept&iacute;dico (ciste&iacute;nas de los puentes disulfuro en <span class="c-cys">amarillo</span>). El ant&iacute;geno se une a los dominios variables del fragmento Fab.</FONT>
+	<FONT SIZE="-1">El ant&iacute;geno se une a los dominios variables del fragmento Fab.</FONT>
 	</p>
 	<p>
 	<input type="button" value="x" onclick="resaltar('cdr')">
@@ -172,20 +163,15 @@
 		<td><span class="mc" style="background:rgb(255,255,255)"></span>CDR<sub>3</sub></td>
 		<td><span class="mc" style="background:rgb(255,255,0)"></span>CDR<sub>3</sub></td>
 	</tr>
-	<tr class="resto">
-		<td><span class="mc" style="background:rgb(46,139,87)"></span>Resto</td>
-		<td><span class="mc" style="background:rgb(170,70,0)"></span>Resto</td>
-	</tr>
-	<tr class="antigeno"><td colspan="2"><span class="mc" style="background:rgb(255,0,255)"></span>Lisozima <span class="mc" style="background:rgb(150,0,150); margin-left:10px"></span>Ep&iacute;topo</td></tr>
 	</table>
 	<p>
 	<input type="button" value="x" onclick="resaltar('contactos')">
 	<FONT SIZE="-1">En las regiones CDR se encuentran los &aacute;tomos del anticuerpo que contactan con el
-	<input type="button" value="x" onclick="resaltar('epitopo')"> <span class="c-y">ep&iacute;topo</span>
+	<input type="button" value="x" onclick="resaltar('epitopo')"> <span class="c-ep">ep&iacute;topo</span>
 	del ant&iacute;geno (Lisozima). Los &aacute;tomos en contacto (a menos de 4 &Aring; de la otra mol&eacute;cula) se muestran en modelo espacial.</FONT>
 	</p>
 	<p><FONT SIZE="-1">
-	En este esquema se muestra la Lisozima en morado y las cadenas ligera y pesada del fragmento Fab en verde y marr&oacute;n. Los CDR y el ep&iacute;topo aparecen en colores.
+	En este esquema los CDR y el ep&iacute;topo aparecen en colores; el resto de la mol&eacute;cula se muestra en gris.
 	</FONT></p>
 	</div></TD>
 </TR>

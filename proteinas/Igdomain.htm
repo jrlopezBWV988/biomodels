@@ -1,50 +1,148 @@
 <html>
- <head>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../css/moderno.css?v=20261113">
 <script src="../js/marco.js?v=20261113"></script>
 
- <title>Dominio Inmunoglobulina</title>
+<title>Dominio Inmunoglobulina</title>
 <script src="../jsmol/JSmol.min.js?v=20261113"></script>
 <script src="../jsmol/js/Jmol2.js?v=20261113b"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style>
+.tabla-igg { width: auto !important; margin: 0; }
+.visor-igg { vertical-align: top; text-align: center; width: 1%; }
+.titulo-igg { font-size: 1.35em; font-weight: 700; color: #3333CC; margin: 0 0 6px; }
+.visor-igg .fila-botones { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.visor-igg .fila-botones input[type="button"] { margin: 0; }
+.botones-vista input[type="button"] { min-width: 140px; }
+#botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+/* Botones de estructura secundaria con el mismo color que aplican al modelo */
+.botones-cadena input[type="button"] { min-width: 96px; font-weight: 700; }
+.botones-cadena input.b-hoja { background: #FF9900; color: #000; border-color: #b86e00; }
+.botones-cadena input.b-helice { background: #F00080; color: #fff; border-color: #a80059; }
+.botones-cadena input.b-hoja:hover, .botones-cadena input.b-helice:hover { filter: brightness(0.85); }
+.botones-cadena input.activo { outline: 3px solid #13324a; outline-offset: 1px; }
+/* Nota sobre la estructura, en la columna del visor */
+.nota-modelo { width: 500px; margin: 12px auto 0; text-align: left; font-size: 0.85em; font-style: italic; line-height: 1.4; color: var(--muted, #5a6977); }
+.nota-modelo p { margin: 0 0 8px; }
+.texto-igg { vertical-align: top; padding-top: 34px; }
+.texto-igg .columna { max-width: 460px; min-width: 300px; }
+.texto-igg p { margin: 0 0 10px; }
+.c-helice { color: #F00080; font-weight: 700; }
+.c-hoja { color: #E08700; font-weight: 700; }
+.c-gris { color: #808080; font-weight: 700; }
+.c-intra { color: #B400B4; font-weight: 700; }
+.c-inter { color: #DC1414; font-weight: 700; }
+.c-empar { color: #006633; font-weight: 700; }
+.c-hidrof { color: #8080C0; font-weight: 700; }
+.c-polar { color: #0033FF; font-weight: 700; }
+.c-ss { color: #E08700; font-weight: 700; }
+</style>
+<script>
+	// Dominio constante de la cadena ligera kappa (residuos 105-214 de la cadena L de 1FDL)
+	var vista = "set rotationRadius 32; moveto 0 {-845 -481 233} 89.8 100 0 0 {-0.274 48.740 -9.339} 32; ";
+	var colores = { hoja: "[255,153,0]", helice: "[240,0,128]" };
+	var selecciones = { hoja: "sheet", helice: "helix" };
+	// Representación base: cartoon gris con superficie transparente, sin corte
+	var base = "slab off; select *; spacefill off; wireframe off; label off; cartoon on; color gray; isosurface superficie on; ";
+	var estiloInicial = "background aliceblue; set spinX 0; set spinY 20; set spinZ 0; "
+		+ "isosurface superficie select(protein) ignore(not protein) color [245,245,245] vdw translucent 0.9; " + base;
+	var estructura = "select helix; color [240,0,128]; select sheet; color [255,153,0]; select *; ";
+	var resaltes = {
+		esquematico: estructura,
+		// Cys134-Cys194: puente intracatenario; Cys214: puente con la cadena pesada (no incluida)
+		cisteinas: "select (134,194); spacefill on; color [180,0,180]; select 214; spacefill on; color [220,20,20]; "
+			+ "select cys and *.SG; color [255,230,0]; select *; ",
+		// Corte del modelo espacial: esqueleto (verde), cadenas laterales hidrófobas (lila),
+		// polares y cargadas (azul) y puente disulfuro Cys134-Cys194 (naranja)
+		seccion: "isosurface superficie off; cartoon off; select *; spacefill on; color [0,51,255]; "
+			+ "select hydrophobic and sidechain; color [153,153,204]; select backbone; color [0,102,51]; "
+			+ "select (134,194) and sidechain; color [255,153,0]; select *; slab 50; depth 10; slab on; "
+	};
+	var activas = {};
+	function pintar() {
+		var cmd = base;
+		for (var c in colores) if (activas[c]) cmd += "select " + selecciones[c] + "; color " + colores[c] + "; ";
+		Jmol.script(jmolApplet0, cmd + "select *; ");
+	}
+	function marcar() {
+		for (var c in colores) {
+			var b = document.getElementById("b-" + c);
+			if (b) b.classList.toggle("activo", !!activas[c]);
+		}
+	}
+	// Los botones de estructura secundaria se combinan entre sí
+	function elemento(c) {
+		activas[c] = !activas[c];
+		marcar();
+		pintar();
+	}
+	// Los botones del texto muestran cada aspecto por separado
+	function resaltar(r) {
+		activas = {};
+		marcar();
+		Jmol.script(jmolApplet0, base + resaltes[r]);
+	}
+	var girando = false;
+	function rotacion(boton) {
+		girando = !girando;
+		Jmol.script(jmolApplet0, girando ? "spin on" : "spin off");
+		boton.value = girando ? "Detener rotación" : "Activar rotación";
+		boton.classList.toggle("activo", girando);
+	}
+	function imagenOriginal() {
+		activas = {};
+		marcar();
+		girando = false;
+		var b = document.getElementById("botonRotacion");
+		b.value = "Activar rotación";
+		b.classList.remove("activo");
+		Jmol.script(jmolApplet0, "spin off; " + base + vista);
+	}
+</script>
 </head>
 <body>
 <font face="Tahoma">
-<TABLE border="0" cellspacing="10">
+<TABLE class="tabla-igg" border="0" cellspacing="5">
 <TR>
-	<TD vailgn="top">
-	<CENTER><form>
+	<TD class="visor-igg">
+	<div class="titulo-igg">Plegamiento de inmunoglobulina (C<sub>L</sub>)</div>
 	<script>
-		  jmolInitialize("../jsmol/js");
-		  jmolApplet(420, "load ../pdb/iggdomain.pdb.gz; select *;moveto 0 -845 -481 233 89.8; background aliceblue;spacefill on;colour structure");
-		  jmolBr();
-		  jmolButton("moveto 2 -845 -481 233 89.8; select *;background aliceblue;spacefill on;colour structure;slab off", "Imagen original");  
+		jmolInitialize("../jsmol/js");
+		jmolSetParameter("UseCommandThread","true");
+		jmolApplet(500, "load ../pdb/iggdomain.pdb.gz; " + estiloInicial + vista);
 	</script>
-	</form></CENTER>
+	<div class="fila-botones botones-cadena">
+		<input type="button" id="b-hoja" class="b-hoja" value="Hoja &beta;" onclick="elemento('hoja')">
+		<input type="button" id="b-helice" class="b-helice" value="H&eacute;lice &alpha;" onclick="elemento('helice')">
+	</div>
+	<div class="fila-botones botones-vista">
+		<input type="button" id="botonInicial" value="Imagen original" onclick="imagenOriginal()">
+		<input type="button" id="botonRotacion" value="Activar rotaci&oacute;n" onclick="rotacion(this)">
+	</div>
+	<div class="nota-modelo">
+		<p>
+		Dominio constante de la cadena ligera &kappa; (residuos 105-214) del fragmento Fab del anticuerpo D1.3, tomado de su complejo con lisozima resuelto por difracci&oacute;n de rayos X a 2,5 &Aring; (PDB <a href="https://www.rcsb.org/structure/1FDL" target="_blank">1FDL</a>; Fischmann et al., <a href="https://doi.org/10.1016/s0021-9258(18)98782-x" target="_blank">J. Biol. Chem. 266:12915-12920, 1991</a>).
+		</p>
+	</div>
 	</TD>
-	<TD valign="top">
-	<CENTER><FONT COLOR="#3333CC"><B>Plegamiento de inmunoglobulina (C<sub>L</sub>)</B></FONT></CENTER>
-	Los dominios constantes de las Ig tienen una estructura supersecundaria caracteristica conocida como "plegamiento de inmunoglobulina".(<FONT color="#F00080">H&eacute;lice Alfa</FONT>, <FONT color="#FF9900">Hoja Beta</FONT>, y <FONT color="#808080">Sin Estructura secundaria Definida</FONT>)
-	<form>
-	<script>
-		  jmolButton("select *; spacefill off; wireframe off; cartoons on; colour structure; slab off", "Modelo esquem&aacute;tico");
-		  jmolBr();
-		  jmolBr();
-		  jmolButton("select *;spacefill off; wireframe off; cartoons on; colour structure; select cys; spacefill on; colour cpk; slab off", "Ciste&iacute;nas");
-		  jmolBr();
-		  jmolBr();
-		  jmolHtml("El Dominio CL tiene  tres residuos de Cys. Dos de ellos forman un puente disulfuro intracatenario.El tercero forma un puente disulfuro con la regi&oacute;n constante de la cadena pesada.");
-		  jmolBr();
-		  jmolBr();
-		  jmolButton("select *;spacefill on; wireframe off; slab 50;depth 10;slab on; select buried; colour grey;select surface; colour blue; select backbone; colour green; select (Cys134,Cys194);colour orange", "Secci&oacute;n");
-	</script>
-	</form>
-	Los esqueletos pept&iacute;dicos de las hojas beta forman un "<FONT COLOR="#006633"><B>emparedado</B></FONT>" que contiene los residuos 
-	<FONT COLOR="#9999CC"><B><I>hidr&oacute;fobos</I></B></FONT> de la mol&eacute;cula. Los residuos <FONT COLOR="#0033FF"><I><B>polares y cargados</B></I></FONT> se disponen hacia la superficie, en contacto con el solvente. El <FONT COLOR="#FF9900"><I><B>puente disulfuro</B></I></FONT> queda enterrado en el n&uacute;cleo hidr&oacute;fobo. 
-	
-	</TD>
+	<TD class="texto-igg"><div class="columna">
+	<p>
+	Los dominios constantes de las Ig tienen una estructura supersecundaria caracter&iacute;stica conocida como "plegamiento de inmunoglobulina" (<span class="c-helice">H&eacute;lice Alfa</span>, <span class="c-hoja">Hoja Beta</span> y <span class="c-gris">Sin Estructura secundaria Definida</span>).
+	</p>
+	<p>
+	<input type="button" value="x" onclick="resaltar('esquematico')">
+	Modelo esquem&aacute;tico.
+	</p>
+	<p>
+	<input type="button" value="x" onclick="resaltar('cisteinas')">
+	El dominio C<sub>L</sub> tiene tres residuos de Cys. Dos de ellos (Cys134 y Cys194) forman un <span class="c-intra">puente disulfuro intracatenario</span>. El tercero (Cys214) forma un <span class="c-inter">puente disulfuro</span> con la regi&oacute;n constante de la cadena pesada. (Azufre en amarillo.)
+	</p>
+	<p>
+	<input type="button" value="x" onclick="resaltar('seccion')">
+	Secci&oacute;n: los esqueletos pept&iacute;dicos de las hojas beta forman un "<span class="c-empar">emparedado</span>" que contiene los residuos <I><span class="c-hidrof">hidr&oacute;fobos</span></I> de la mol&eacute;cula. Los residuos <I><span class="c-polar">polares y cargados</span></I> se disponen hacia la superficie, en contacto con el solvente. El <I><span class="c-ss">puente disulfuro</span></I> queda enterrado en el n&uacute;cleo hidr&oacute;fobo.
+	</p>
+	</div></TD>
 </TR>
 </TABLE>
 </body>

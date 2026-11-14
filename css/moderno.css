@@ -308,11 +308,11 @@ font[color="#00FF00" i], font[color="#FFFFFF" i], font[color="#CCCCFF" i] {
    Portada (atlas.htm)
    ====================================================== */
 body.portada img[src*="jr.foto"] {
-  width: 161px !important;
-  height: 200px !important;
+  width: 97px !important;
+  height: 120px !important;
   object-fit: cover;
   border-radius: 0;
-  margin: 0 22px 12px 0;
+  margin: 0 18px 8px 0;
   box-shadow: var(--shadow);
 }
 body.portada img[src*="JSmol_logo"] { margin-top: 10px; opacity: .9; }

@@ -15,3 +15,6 @@ Autor y mantenimiento: José Ramón López López, Bioquímica y Biología Molec
 - `css/moderno.css`: hoja de estilo común; se carga en todas las páginas.
 - `js/marco.js`: genera el índice lateral, los submenús de glúcidos, hemoglobina e inmunoglobulinas y el resaltado de la página activa. Para añadir o cambiar un enlace del índice, se edita la lista `MENU` (o `SUBMENUS`) de este archivo.
 - `images/`: logotipos y fotografía.
+- `sitemap.xml`: lista de las páginas de contenido para los buscadores (se envía desde Google Search Console). Al añadir una página nueva, se añade también aquí.
+- Cada página de contenido lleva en su `<head>` `lang="es"`, título, descripción (`meta description`), dirección canónica y etiquetas Open Graph; las páginas con poco texto propio tienen al pie un párrafo descriptivo (`p.descripcion-pagina`).
+- Contador de visitas: `js/marco.js` carga GoatCounter (sin cookies) solo en la web publicada; las estadísticas están en https://biomodels.goatcounter.com.

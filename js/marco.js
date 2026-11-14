@@ -2,7 +2,8 @@
    Cada página carga este script en su <head>. El script añade:
    - el índice lateral fijo a la izquierda (en el móvil, desplegable con el botón «Índice»);
    - el submenú superior en los apartados que lo tienen (glúcidos, hemoglobina e inmunoglobulinas);
-   - el resaltado de la página activa.
+   - el resaltado de la página activa;
+   - el contador de visitas (GoatCounter).
    El menú se define una sola vez, aquí abajo, en MENU y SUBMENUS. */
 (function () {
   "use strict";
@@ -22,6 +23,16 @@
   // Carpeta raíz del sitio, deducida de la dirección de este mismo script (…/js/marco.js).
   var yo = document.currentScript || document.querySelector('script[src*="js/marco.js"]');
   var RAIZ = yo.src.replace(/js\/marco\.js(\?.*)?$/, "");
+
+  // Contador de visitas (GoatCounter, sin cookies). Solo cuenta en la web publicada,
+  // no en copias locales. Las estadísticas están en https://biomodels.goatcounter.com
+  if (location.hostname === "jrlopezbwv988.github.io") {
+    var gc = document.createElement("script");
+    gc.async = true;
+    gc.src = "https://gc.zgo.at/count.js";
+    gc.setAttribute("data-goatcounter", "https://biomodels.goatcounter.com/count");
+    document.head.appendChild(gc);
+  }
 
   // ---------------------------------------------------------------
   // Índice lateral. Rutas relativas a la raíz del sitio.

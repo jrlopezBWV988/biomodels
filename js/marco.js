@@ -31,11 +31,10 @@
   var MENU = [
     { t: "Inicio", href: "atlas.htm" },
     { t: "Aminoácidos", href: "aminoacidos.htm" },
-    { t: "Coenzimas", href: "coenzimas.htm" },
     { cat: "Glúcidos", items: [
       { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" }
     ]},
-    { t: "Vitaminas", href: "vitaminas.htm" },
+    { t: "Vitaminas y Coenzimas", href: "vitaminas.htm" },
     { cat: "Proteínas", items: [
       { t: "Oligopéptidos", href: "oligopeptidos.htm" },
       { grupo: "Estructura Secundaria", items: [

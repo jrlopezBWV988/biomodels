@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="css/moderno.css?v=20261113">
 <script src="js/marco.js?v=20261113"></script>
 
-<TITLE>Vitaminas</TITLE>
+<TITLE>Vitaminas y Coenzimas</TITLE>
 <META NAME="Generator" CONTENT="EditPlus 1.2">
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
@@ -14,13 +14,24 @@
 </HEAD>
 <script src="./jsmol/JSmol.min.js?v=20261113"></script>
 <script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
+<style>
+.menu-vitaminas optgroup { font-weight: 700; color: #6633CC; }
+.menu-vitaminas option { font-weight: 400; color: #13324a; }
+.menu-vitaminas option.cabecera { font-weight: 600; color: #5a6977; }
+</style>
+<script>
+	// Carga la molécula elegida en el desplegable (los ficheros están en ./pdb/)
+	function cargar(fichero) {
+		if (fichero) Jmol.script(jmolApplet0, "load ./pdb/" + fichero + "; cpk on");
+	}
+</script>
 <body>
 <font face="Tahoma">
 <TABLE border="0" cellspacing="5">
 <TR>
 	<TD>
 	<CENTER>
-	<FONT SIZE="+2" COLOR="#6633CC"><B>Vitaminas</B></FONT>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Vitaminas y Coenzimas</B></FONT>
 	<BR>
 	<form>
 	<script>
@@ -32,30 +43,43 @@
 	</form></CENTER>
 	</TD>
 	<TD valign=top>
-		<script>
-	      jmolMenu([
-	        ["load ./pdb/retinol.gz; cpk on", "Retinol (A)", "selected"],
-			["load ./pdb/All-trans-retinal.gz; cpk on", "All-trans retinal"],
-			["load ./pdb/11-cis-retinal.gz; cpk on", "11-cis retinal"],
-			["load ./pdb/beta-caroteno.gz; cpk on", "beta-caroteno"],
-			["load ./pdb/Tiamina.gz; cpk on", "Tiamina (B1)"],
-			["load ./pdb/Riboflavina.gz; cpk on", "Riboflavina (B2)"],
-			["load ./pdb/Niacina.gz; cpk on", "Niacina (B3)"],
-			["load ./pdb/Pantotenico.gz; cpk on", "Acido Pantot&eacute;nico (B5)"],
-			["load ./pdb/Piridoxamina.gz; cpk on", "Piridoxamina (B6)"],
-			["load ./pdb/Piridoxal.fosfato.gz; cpk on", "Piridoxal fosfato"],
-			["load ./pdb/Biotina.gz; cpk on", "Biotina (B7)"],
-			["load ./pdb/Tetrahidrofolato.gz; cpk on", "Tetrahidrofolato (B9)"],
-			["load ./pdb/Metilentetrahidrofolato.gz; cpk on", "N<sup>5</sup>-N<sup>10</sup>-metilen Tetrahidrofolato"],
-			["load ./pdb/metilcobalamina.6Co.unido.gz; cpk on", "Cobalamina (B12)"],
-			["load ./pdb/ascorbato.gz; cpk on", "Ascorbato (C)"],
-			["load ./pdb/dehidroascorbato.gz; cpk on", "Dehidroascorbato"],
-			["load ./pdb/Colecalciferol.gz; cpk on", "Colecalciferol (D)"],
-			["load ./pdb/tocoferol.gz; cpk on", "Tocoferol (E)"],
-			["load ./pdb/Filoquinona.K1.gz; cpk on", "Filoquinona (K1)"],
-			["load ./pdb/Menadiona.K3.gz; cpk on", "Menadiona (K3)"]
-		]);
-		</script>
+		<select id="menuMoleculas" class="menu-vitaminas" onchange="cargar(this.value)" aria-label="Molécula">
+		<optgroup label="VITAMINAS LIPOSOLUBLES">
+			<option disabled class="cabecera">Vitamina A</option>
+			<option value="beta-caroteno.gz">&nbsp;&nbsp;&nbsp;&nbsp;β-caroteno</option>
+			<option value="retinol.gz" selected>&nbsp;&nbsp;&nbsp;&nbsp;Retinol</option>
+			<option value="All-trans-retinal.gz">&nbsp;&nbsp;&nbsp;&nbsp;All-trans retinal</option>
+			<option value="11-cis-retinal.gz">&nbsp;&nbsp;&nbsp;&nbsp;11-cis retinal</option>
+			<option value="Colecalciferol.gz">Colecalciferol (D)</option>
+			<option value="tocoferol.gz">Tocoferol (E)</option>
+			<option disabled class="cabecera">Vitamina K</option>
+			<option value="Filoquinona.K1.gz">&nbsp;&nbsp;&nbsp;&nbsp;Filoquinona (K1)</option>
+			<option value="Menadiona.K3.gz">&nbsp;&nbsp;&nbsp;&nbsp;Menadiona (K3)</option>
+		</optgroup>
+			<option value="CoQ.pdb.gz">Coenzima Q</option>
+		<optgroup label="VITAMINAS HIDROSOLUBLES">
+			<option value="Tiamina.gz">Tiamina (B1)</option>
+			<option value="tiamina.pdb.gz">&nbsp;&nbsp;&nbsp;&nbsp;Pirofosfato de tiamina</option>
+			<option value="Riboflavina.gz">Riboflavina (B2)</option>
+			<option value="fad.pdb.gz">&nbsp;&nbsp;&nbsp;&nbsp;FADH</option>
+			<option value="Niacina.gz">Niacina (B3)</option>
+			<option value="NADH.gz">&nbsp;&nbsp;&nbsp;&nbsp;NADH</option>
+			<option value="NADPH.pdb.gz">&nbsp;&nbsp;&nbsp;&nbsp;NADPH</option>
+			<option value="Pantotenico.gz">Acido Pantoténico (B5)</option>
+			<option value="coa.pdb.gz">&nbsp;&nbsp;&nbsp;&nbsp;CoA</option>
+			<option value="acetilcoa.pdb.gz">&nbsp;&nbsp;&nbsp;&nbsp;Acetil-CoA</option>
+			<option disabled class="cabecera">Vitamina B6</option>
+			<option value="Piridoxamina.gz">&nbsp;&nbsp;&nbsp;&nbsp;Piridoxamina (B6)</option>
+			<option value="Piridoxal.fosfato.gz">&nbsp;&nbsp;&nbsp;&nbsp;Piridoxal fosfato</option>
+			<option value="Biotina.gz">Biotina (B7)</option>
+			<option value="Tetrahidrofolato.gz">Tetrahidrofolato (B9)</option>
+			<option value="Metilentetrahidrofolato.gz">&nbsp;&nbsp;&nbsp;&nbsp;N⁵-N¹⁰-metilen Tetrahidrofolato</option>
+			<option value="metilcobalamina.6Co.unido.gz">Cobalamina (B12)</option>
+			<option disabled class="cabecera">Vitamina C</option>
+			<option value="ascorbato.gz">&nbsp;&nbsp;&nbsp;&nbsp;Ascorbato</option>
+			<option value="dehidroascorbato.gz">&nbsp;&nbsp;&nbsp;&nbsp;Dehidroascorbato</option>
+		</optgroup>
+		</select>
 		<P>
 		<script>
 			jmolButton("select *; spacefill 100%;isosurface off", "x");

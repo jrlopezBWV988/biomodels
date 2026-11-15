@@ -221,11 +221,100 @@
       body.insertBefore(barra, primero);
     }
 
+    // Ayuda del ratón (solo en las páginas con modelos JSmol)
+    if (document.querySelector('script[src*="jsmol/"]')) montarAyudaRaton(body);
+
     // Mantiene visible en el índice el enlace activo
     var activo = aside.querySelector("a.activo");
     if (activo && activo.scrollIntoView && activo.getBoundingClientRect().bottom > window.innerHeight) {
       activo.scrollIntoView({ block: "center" });
     }
+  }
+
+  // ---------------------------------------------------------------
+  // Ayuda del ratón: botón fijo en la esquina inferior derecha que abre
+  // una ventana pequeña con el uso del ratón en los modelos JSmol.
+  // Se cierra con el mismo botón, con la «×», con Esc o al hacer clic fuera.
+  // ---------------------------------------------------------------
+  var AYUDA_RATON = [
+    ["Girar el modelo", "Arrastrar con el botón izquierdo"],
+    ["Girar en el plano de la pantalla", "Mayús + arrastrar en horizontal"],
+    ["Acercar o alejar (zoom)", "Rueda del ratón, o Mayús + arrastrar en vertical"],
+    ["Desplazar el modelo", "Ctrl + arrastrar con el botón derecho, o Ctrl + Alt + arrastrar con el izquierdo"],
+    ["Abrir el menú de JSmol", "Clic con el botón derecho, o Ctrl + clic"],
+    ["Volver a la orientación inicial", "Mayús + doble clic en una zona vacía del modelo"]
+  ];
+
+  var ICONO_RATON =
+    '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">' +
+    '<rect x="6" y="2.5" width="12" height="19" rx="6" fill="none" stroke="currentColor" stroke-width="1.8"/>' +
+    '<line x1="12" y1="2.5" x2="12" y2="10" stroke="currentColor" stroke-width="1.8"/>' +
+    '<line x1="6" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1.8"/>' +
+    '<rect x="11" y="5" width="2" height="3" rx="1" fill="currentColor"/></svg>';
+
+  function montarAyudaRaton(body) {
+    var boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "raton-boton";
+    boton.innerHTML = ICONO_RATON;
+    boton.title = "Uso del ratón en los modelos 3D";
+    boton.setAttribute("aria-label", "Uso del ratón en los modelos 3D");
+    boton.setAttribute("aria-controls", "raton-ayuda");
+    boton.setAttribute("aria-expanded", "false");
+
+    var panel = document.createElement("div");
+    panel.className = "raton-ayuda";
+    panel.id = "raton-ayuda";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-labelledby", "raton-ayuda-titulo");
+    panel.hidden = true;
+
+    var cabecera = document.createElement("div");
+    cabecera.className = "raton-ayuda-cabecera";
+    var titulo = document.createElement("strong");
+    titulo.id = "raton-ayuda-titulo";
+    titulo.textContent = "Uso del ratón en los modelos 3D";
+    var cerrar = document.createElement("button");
+    cerrar.type = "button";
+    cerrar.className = "raton-cerrar";
+    cerrar.setAttribute("aria-label", "Cerrar");
+    cerrar.textContent = "×";
+    cabecera.appendChild(titulo);
+    cabecera.appendChild(cerrar);
+    panel.appendChild(cabecera);
+
+    var dl = document.createElement("dl");
+    AYUDA_RATON.forEach(function (fila) {
+      var dt = document.createElement("dt");
+      dt.textContent = fila[0];
+      var dd = document.createElement("dd");
+      dd.textContent = fila[1];
+      dl.appendChild(dt);
+      dl.appendChild(dd);
+    });
+    panel.appendChild(dl);
+
+    var nota = document.createElement("p");
+    nota.className = "raton-nota";
+    nota.textContent = "En pantallas táctiles: un dedo gira el modelo y pellizcar con dos dedos lo acerca o aleja. " +
+      "En Mac, Ctrl + clic equivale al botón derecho.";
+    panel.appendChild(nota);
+
+    function abrir(si) {
+      panel.hidden = !si;
+      boton.setAttribute("aria-expanded", si ? "true" : "false");
+    }
+    boton.addEventListener("click", function () { abrir(panel.hidden); });
+    cerrar.addEventListener("click", function () { abrir(false); boton.focus(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !panel.hidden) { abrir(false); boton.focus(); }
+    });
+    document.addEventListener("click", function (e) {
+      if (!panel.hidden && !panel.contains(e.target) && !boton.contains(e.target)) abrir(false);
+    });
+
+    body.appendChild(panel);
+    body.appendChild(boton);
   }
 
   if (document.readyState === "loading") {

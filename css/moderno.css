@@ -400,30 +400,39 @@ html.con-marco body { padding-left: 228px !important; }
 /* Texto descriptivo al pie de las páginas con poco texto propio */
 .descripcion-pagina { max-width: 760px; margin: 24px 0 8px; font-size: .95em; line-height: 1.5; color: var(--muted); }
 
-/* ---------- Ayuda del ratón (botón fijo creado por js/marco.js) ---------- */
+/* ---------- Ayuda del ratón (botón creado por js/marco.js) ----------
+   En pantalla ancha va junto al escudo, en la cabecera del índice;
+   en pantalla estrecha, a la derecha de la barra «Índice». */
+.marco-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 8px 10px 0;
+}
+.nav-lateral .marco-cabecera img[src*="LogoUva"] { margin-bottom: 0; }
 .raton-boton {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 9800;
-  width: 46px;
-  height: 46px;
+  flex: none;
+  width: 42px;
+  height: 42px;
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid var(--accent);
-  background: var(--surface);
-  color: var(--accent-strong);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--nav-accent);
+  background: transparent;
+  color: var(--nav-accent);
+  box-shadow: none;
+  cursor: pointer;
 }
-.raton-boton[aria-expanded="true"] { background: var(--accent); color: #fff; }
+.raton-boton:hover { background: var(--nav-hover); color: #fff; }
+.raton-boton[aria-expanded="true"] { background: var(--nav-accent); border-color: var(--nav-accent); color: var(--nav-bg); }
 .raton-ayuda {
   position: fixed;
-  right: 18px;
-  bottom: 74px;
+  left: 212px;
+  top: 12px;
   z-index: 9800;
   box-sizing: border-box;
   width: 340px;
@@ -469,5 +478,24 @@ html.con-marco body { padding-left: 228px !important; }
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 12.5px;
+}
+@media (max-width: 760px) {
+  /* El botón se sitúa sobre el extremo derecho de la barra «Índice» */
+  .raton-boton {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 60;
+    width: 36px;
+    height: 36px;
+  }
+  .raton-ayuda {
+    position: fixed;
+    left: 10px;
+    right: auto;
+    top: 52px;
+    max-width: none;
+    max-height: calc(100vh - 64px);
+  }
 }
 @media print { .raton-boton, .raton-ayuda { display: none !important; } }

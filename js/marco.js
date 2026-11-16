@@ -194,7 +194,11 @@
     img.alt = "Universidad de Valladolid";
     img.width = 100;
     logo.appendChild(img);
-    aside.appendChild(logo);
+    // Cabecera del índice: escudo y, en las páginas con modelos, el botón del ratón
+    var cabecera = document.createElement("div");
+    cabecera.className = "marco-cabecera";
+    cabecera.appendChild(logo);
+    aside.appendChild(cabecera);
     var menu = document.createElement("div");
     menu.className = "menu";
     menu.appendChild(lista(MENU, "nivel1"));
@@ -232,7 +236,7 @@
     }
 
     // Ayuda del ratón (solo en las páginas con modelos JSmol)
-    if (document.querySelector('script[src*="jsmol/"]')) montarAyudaRaton(body);
+    if (document.querySelector('script[src*="jsmol/"]')) montarAyudaRaton(body, cabecera, boton);
 
     // Mantiene visible en el índice el enlace activo
     var activo = aside.querySelector("a.activo");
@@ -242,8 +246,10 @@
   }
 
   // ---------------------------------------------------------------
-  // Ayuda del ratón: botón fijo en la esquina inferior derecha que abre
-  // una ventana pequeña con el uso del ratón en los modelos JSmol.
+  // Ayuda del ratón: botón junto al escudo de la UVa, en la cabecera del índice,
+  // que abre una ventana pequeña con el uso del ratón en los modelos JSmol.
+  // En pantallas estrechas, donde el índice está plegado, el botón pasa a la
+  // barra «Índice» de la parte superior para que siga a la vista.
   // Se cierra con el mismo botón, con la «×», con Esc o al hacer clic fuera.
   // ---------------------------------------------------------------
   var AYUDA_RATON = [
@@ -262,7 +268,8 @@
     '<line x1="6" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1.8"/>' +
     '<rect x="11" y="5" width="2" height="3" rx="1" fill="currentColor"/></svg>';
 
-  function montarAyudaRaton(body) {
+  function montarAyudaRaton(body, cabeceraIndice, botonIndice) {
+    var estrecha = window.matchMedia("(max-width: 760px)");
     var boton = document.createElement("button");
     boton.type = "button";
     boton.className = "raton-boton";
@@ -311,6 +318,9 @@
     panel.appendChild(nota);
 
     function abrir(si) {
+      // En el móvil algunas páginas son más anchas que la pantalla; la ventana
+      // se ajusta al ancho visible para que no quede cortada por la derecha.
+      panel.style.width = estrecha.matches ? (document.documentElement.clientWidth - 20) + "px" : "";
       panel.hidden = !si;
       boton.setAttribute("aria-expanded", si ? "true" : "false");
     }
@@ -324,7 +334,18 @@
     });
 
     body.appendChild(panel);
-    body.appendChild(boton);
+
+    // Coloca el botón según el ancho de la pantalla (mismo límite que el CSS).
+    function colocar() {
+      if (estrecha.matches) {
+        botonIndice.parentNode.insertBefore(boton, botonIndice.nextSibling);
+      } else {
+        cabeceraIndice.appendChild(boton);
+      }
+    }
+    colocar();
+    if (estrecha.addEventListener) estrecha.addEventListener("change", colocar);
+    else if (estrecha.addListener) estrecha.addListener(colocar);
   }
 
   if (document.readyState === "loading") {

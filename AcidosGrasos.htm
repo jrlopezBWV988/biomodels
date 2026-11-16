@@ -3,13 +3,135 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
 <link rel="stylesheet" href="css/moderno.css?v=20261116">
 <script src="js/marco.js?v=20261116"></script>
-<title>Ácidos grasos | Atlas de estructuras</title>
+<title>Ácidos grasos saturados e insaturados | Atlas de estructuras</title>
+<meta name="description" content="Tablas de ácidos grasos saturados (nombre trivial, nombre IUPAC y C:D) e insaturados (posición y configuración de los dobles enlaces, C:D y serie ω), con modelos de esferas y fórmulas de los ácidos esteárico y oleico.">
+<link rel="canonical" href="https://jrlopezbwv988.github.io/biomodels/AcidosGrasos.htm">
+<meta property="og:title" content="Ácidos grasos saturados e insaturados">
+<meta property="og:description" content="Nomenclatura de los ácidos grasos saturados e insaturados: nombre trivial, IUPAC, posición de los dobles enlaces y serie ω.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jrlopezbwv988.github.io/biomodels/AcidosGrasos.htm">
+<meta property="og:locale" content="es_ES">
+<style>
+.ag { display: flex; flex-wrap: wrap; gap: 22px 26px; align-items: flex-start; max-width: 1200px; }
+.ag-col { box-sizing: border-box; min-width: 0; }
+.ag-sat { flex: 1 1 400px; max-width: 470px; background: #F2F8EE; border-radius: 10px; padding: 18px 18px 22px; }
+.ag-ins { flex: 1.5 1 560px; padding: 18px 0 0; }
+.ag h2 { margin: 0 0 12px; font-size: 1.2em; font-weight: 600; color: #6633CC; text-align: center; }
+.ag-ins h2 { margin-bottom: 4px; }
+.ag-tipos { list-style: none; margin: 0 auto 10px; padding: 0; width: max-content; max-width: 100%; font-style: italic; }
+.ag-tipos li { margin: 2px 0; }
+.ag-tipos li::before { content: "\2713"; display: inline-block; width: 1.4em; font-style: normal; font-weight: 600; }
+.ag-figuras { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 20px; margin: 0 0 16px; }
+.ag-figuras img { display: block; height: auto; max-width: 100%; }
+.ag-sat .ag-figuras { flex-direction: column; gap: 10px; }
+.img-est-esferas { width: 230px; }
+.img-est-formula { width: 100%; }
+.img-ole-esferas { width: 250px; }
+.img-ole-formula { width: 200px; }
+.tabla-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.tabla-ag { border-collapse: collapse; width: 100%; font-size: 12.5px; line-height: 1.3; background: #fff; color: #202122; }
+.tabla-ag th, .tabla-ag td { border: 1px solid #A2A9B1; padding: 3px 6px; text-align: left; vertical-align: middle; }
+.tabla-ag th { background: #EAECF0; font-weight: 400; text-align: center; }
+.tabla-ag a { color: #0645AD; }
+.tabla-ag a:hover { color: #0B0080; text-decoration: underline; }
+.tabla-ag a.clave { color: #FF0000; font-weight: 700; }
+.tabla-ag .azul { color: #0645AD; }
+.tabla-ag sup { font-size: .72em; line-height: 0; }
+.tabla-ins td:nth-child(3), .tabla-ins td:nth-child(4) { white-space: nowrap; text-align: center; }
+.tabla-sat td:nth-child(3) { white-space: nowrap; }
+.f-gris { background: #F8F9FA; }
+.f-verde { background: #C5E0B4; }
+.f-verde-osc { background: #548235; }
+.f-azul { background: #BDD7EE; }
+.f-azul-osc { background: #8FAADC; }
+.f-naranja { background: #FBE5D6; }
+.f-naranja-osc { background: #F4B183; }
+.tabla-ag td[class$="-osc"] a { color: #fff; font-weight: 700; }
+@media (max-width: 640px) {
+  .ag-sat { padding: 14px 10px 16px; }
+  table.tabla-ag { font-size: 12px; }
+}
+</style>
 </head>
 <body>
-<h2 style="color:#6633CC">Ácidos grasos</h2>
-<p>Página en preparación.</p>
+
+<div class="ag">
+  <section class="ag-col ag-sat" aria-labelledby="t-sat">
+    <h2 id="t-sat">Saturados (sin dobles enlaces)</h2>
+    <div class="ag-figuras">
+      <img class="img-est-esferas" src="images/acidosgrasos/estearico_esferas.png" width="345" height="108" alt="Modelo de esferas de un ácido graso saturado (ácido esteárico)">
+      <img class="img-est-formula" src="images/acidosgrasos/estearico_formula.png" width="1920" height="257" alt="Fórmula del ácido esteárico, CH3-(CH2)16-COOH">
+    </div>
+    <div class="tabla-scroll">
+<table class="tabla-ag tabla-sat">
+<thead><tr><th>nombre trivial</th><th>nombre IUPAC</th><th></th></tr></thead>
+<tbody>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_propi%C3%B3nico" target="_blank" rel="noopener">Ácido propiónico</a></td><td>Ácido propanoico</td><td>C3:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_but%C3%ADrico" target="_blank" rel="noopener">Ácido butírico</a></td><td>Ácido butanoico</td><td>C4:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_val%C3%A9rico" target="_blank" rel="noopener">Ácido valérico</a></td><td>Ácido pentanoico</td><td>C5:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_caproico" target="_blank" rel="noopener">Ácido caproico</a></td><td>Ácido hexanoico</td><td>C6:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_heptanoico" target="_blank" rel="noopener">Ácido enántico</a></td><td>Ácido heptanoico</td><td>C7:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_capr%C3%ADlico" target="_blank" rel="noopener">Ácido caprílico</a></td><td>Ácido octanoico</td><td>C8:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_nonanoico" target="_blank" rel="noopener">Ácido pelargónico</a></td><td>Ácido nonanoico</td><td>C9:0</td></tr>
+<tr><td><a href="https://en.wikipedia.org/wiki/Capric_acid" target="_blank" rel="noopener">Ácido cáprico</a></td><td>Ácido decanoico</td><td>C10:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_l%C3%A1urico" target="_blank" rel="noopener">Ácido láurico</a></td><td>Ácido dodecanoico</td><td>C12:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_mir%C3%ADstico" target="_blank" rel="noopener">Ácido mirístico</a></td><td>Ácido tetradecanoico</td><td>C14:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_palm%C3%ADtico" target="_blank" rel="noopener">Ácido palmítico</a></td><td>Ácido hexadecanoico</td><td>C16:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_heptadecanoico" target="_blank" rel="noopener">Ácido margárico</a></td><td>Ácido heptadecanoico</td><td>C17:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_este%C3%A1rico" target="_blank" rel="noopener">Ácido esteárico</a></td><td>Ácido octadecanoico</td><td>C18:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_araqu%C3%ADdico" target="_blank" rel="noopener">Ácido araquídico</a></td><td>Ácido eicosanoico</td><td>C20:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_beh%C3%A9nico" target="_blank" rel="noopener">Ácido behénico</a></td><td>Ácido docosanoico</td><td>C22:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_lignoc%C3%A9rico" target="_blank" rel="noopener">Ácido lignocérico</a></td><td>Ácido tetracosanoico</td><td>C24:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_cer%C3%B3tico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido cerótico</a></td><td>Ácido hexacosanoico</td><td>C26:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_mont%C3%A1nico" target="_blank" rel="noopener">Ácido montánico</a></td><td>Ácido octacosanoico</td><td>C28:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/wiki/%C3%81cido_mel%C3%ADsico" target="_blank" rel="noopener">Ácido melísico</a></td><td>Ácido triacontanoico</td><td>C30:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_laceroico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido laceroico</a></td><td>Ácido dotriacontanoico</td><td>C32:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_g%C3%A9dico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido gédico</a></td><td>Ácido tetratriacontanoico</td><td>C34:0</td></tr>
+<tr><td><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_ceropl%C3%A1stico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido ceroplástico</a></td><td>Ácido pentatriacontanoico</td><td>C35:0</td></tr>
+</tbody>
+</table>
+    </div>
+  </section>
+
+  <section class="ag-col ag-ins" aria-labelledby="t-ins">
+    <h2 id="t-ins">Insaturados (con dobles enlaces)</h2>
+    <ul class="ag-tipos">
+      <li>Monoinsaturados</li>
+      <li>Poliinsaturados (PUFAs)</li>
+    </ul>
+    <div class="ag-figuras">
+      <img class="img-ole-esferas" src="images/acidosgrasos/oleico_esferas.png" width="250" height="111" alt="Modelo de esferas del ácido oleico, con el codo que introduce el doble enlace cis">
+      <img class="img-ole-formula" src="images/acidosgrasos/oleico_formula.svg" width="255" height="154" alt="Fórmula del ácido oleico con el doble enlace cis señalado en verde">
+    </div>
+    <div class="tabla-scroll">
+<table class="tabla-ag tabla-ins">
+<thead><tr><th>nombre trivial</th><th>Δ<i><sup>x</sup></i></th><th><i>C</i>:<i>D</i></th><th><i>ω</i>−<i>x</i></th></tr></thead>
+<tbody>
+<tr><td class="f-gris"><a href="https://es.wikipedia.org/wiki/%C3%81cido_miristoleico" target="_blank" rel="noopener">Ácido miristoleico</a></td><td class="f-gris"><i>cis</i>-Δ<sup>9</sup></td><td class="f-gris">C14:1</td><td class="f-gris"><i>ω</i>−5</td></tr>
+<tr><td class="f-gris"><a href="https://es.wikipedia.org/wiki/%C3%81cido_palmitoleico" target="_blank" rel="noopener">Ácido palmitoleico</a></td><td class="f-gris"><i>cis</i>-Δ<sup>9</sup></td><td class="f-gris">C16:1</td><td class="f-gris"><i>ω</i>−7</td></tr>
+<tr><td class="f-gris"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_sapi%C3%A9nico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido sapiénico</a></td><td class="f-gris"><i>cis</i>-Δ<sup>6</sup></td><td class="f-gris">C16:1</td><td class="f-gris"><i>ω</i>−10</td></tr>
+<tr><td class="f-verde"><a href="https://es.wikipedia.org/wiki/%C3%81cido_oleico" target="_blank" rel="noopener" class="clave">Ácido oleico</a></td><td class="f-verde"><i>cis</i>-Δ<sup>9</sup></td><td class="f-verde">C18:1</td><td class="f-verde-osc"><a href="https://en.wikipedia.org/wiki/Omega-9_fatty_acid" target="_blank" rel="noopener"><i>ω</i>−9</a></td></tr>
+<tr><td class="f-azul"><a href="https://es.wikipedia.org/wiki/%C3%81cido_linoleico" target="_blank" rel="noopener" class="clave">Ácido linoleico</a></td><td class="f-azul"><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup></td><td class="f-azul">C18:2</td><td class="f-azul-osc"><a href="https://en.wikipedia.org/wiki/Omega-6_fatty_acid" target="_blank" rel="noopener"><i>ω</i>−6</a></td></tr>
+<tr><td class="f-azul"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_linoel%C3%A1idico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido linoeláidico</a></td><td class="f-azul"><i>trans</i>,<wbr><i>trans</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup></td><td class="f-azul">C18:2</td><td class="f-azul">ω<span class="azul">−6</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_alfa-linol%C3%A9nico" target="_blank" rel="noopener" class="clave">Ácido α-Linolénico</a><b> </b>(ALA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup></td><td class="f-naranja">C18:3</td><td class="f-naranja-osc"><a href="https://en.wikipedia.org/wiki/Omega-3_fatty_acid" target="_blank" rel="noopener">ω−3</a></td></tr>
+<tr><td class="f-azul"><a href="https://es.wikipedia.org/wiki/%C3%81cido_gamma-linol%C3%A9nico" target="_blank" rel="noopener">Ácido γ-Linolénico</a> (GLA)</td><td class="f-azul"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>6</sup>,<wbr>Δ<sup>9</sup>,<wbr>Δ<sup>12</sup></td><td class="f-azul">C18:3</td><td class="f-azul">ω<span class="azul">−6</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_estearid%C3%B3nico" target="_blank" rel="noopener">Ácido estearidónico</a> (SDA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>6</sup>,<wbr>Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup></td><td class="f-naranja">C18:4</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-gris"><a href="https://es.wikipedia.org/wiki/%C3%81cido_pun%C3%ADcico" target="_blank" rel="noopener">Ácido punícico</a></td><td class="f-gris"><i>cis</i>,<wbr><i>tra</i><i>n</i><i>s</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>13</sup></td><td class="f-gris">C18:3</td><td class="f-gris">ω−5</td></tr>
+<tr><td class="f-verde"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_eicosenoico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido eicosenoico</a></td><td class="f-verde"><i>cis</i>-Δ<sup>11</sup></td><td class="f-verde">C20:1</td><td class="f-verde">ω<span class="azul">−9</span></td></tr>
+<tr><td class="f-azul"><a href="https://es.wikipedia.org/wiki/%C3%81cido_araquid%C3%B3nico" target="_blank" rel="noopener">Ácido araquidónico</a></td><td class="f-azul"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>5</sup>,<wbr>Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup></td><td class="f-azul">C20:4</td><td class="f-azul">ω<span class="azul">−6</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_eicosatetraenoico" target="_blank" rel="noopener">Ácido eicosatetraenoico</a> (ETA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup>,<wbr>Δ<sup>17</sup></td><td class="f-naranja">C20:4</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_eicosapentaenoico" target="_blank" rel="noopener">Ácido eicosapentaenoico</a> (EPA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>5</sup>,<wbr>Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup>,<wbr>Δ<sup>17</sup></td><td class="f-naranja">C20:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_docosapentaenoico" target="_blank" rel="noopener">Ácido docosapentaenoico</a> (DPA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>7</sup>,<wbr>Δ<sup>10</sup>,<wbr>Δ<sup>13</sup>,<wbr>Δ<sup>16</sup>,<wbr>Δ<sup>19</sup></td><td class="f-naranja">C22:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_docosahexaenoico" target="_blank" rel="noopener">Ácido docosahexaenoico</a> (DHA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>4</sup>,<wbr>Δ<sup>7</sup>,<wbr>Δ<sup>10</sup>,<wbr>Δ<sup>13</sup>,<wbr>Δ<sup>16</sup>,<wbr>Δ<sup>19</sup></td><td class="f-naranja">C22:6</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-verde"><a href="https://es.wikipedia.org/wiki/%C3%81cido_nerv%C3%B3nico" target="_blank" rel="noopener">Ácido nervónico</a></td><td class="f-verde"><i>cis</i>-Δ<sup>15</sup></td><td class="f-verde">C24:1</td><td class="f-verde">ω<span class="azul">−9</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_tetracosapentaenoico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido tetracosapentaenoico</a></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup>,<wbr>Δ<sup>18</sup>,<wbr>Δ<sup>21</sup></td><td class="f-naranja">C24:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+</tbody>
+</table>
+    </div>
+  </section>
+</div>
+
 </body>
 </html>

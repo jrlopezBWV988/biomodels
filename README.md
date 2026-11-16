@@ -1,6 +1,6 @@
 # Atlas de estructuras moleculares
 
-Web docente de estructuras moleculares en 3D (aminoácidos, coenzimas, glúcidos, oligopéptidos, vitaminas, proteínas, ácidos nucleicos y ribosoma), visualizadas con [JSmol](http://jmol.sourceforge.net/).
+Web docente de estructuras moleculares en 3D (aminoácidos, coenzimas, glúcidos, lípidos, oligopéptidos, vitaminas, proteínas, ácidos nucleicos y ribosoma), visualizadas con [JSmol](http://jmol.sourceforge.net/).
 
 Autor y mantenimiento: José Ramón López López, Bioquímica y Biología Molecular, Universidad de Valladolid.
 

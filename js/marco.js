@@ -1,7 +1,7 @@
 /* Atlas de estructuras – navegación sin marcos.
    Cada página carga este script en su <head>. El script añade:
    - el índice lateral fijo a la izquierda (en el móvil, desplegable con el botón «Índice»);
-   - el submenú superior en los apartados que lo tienen (glúcidos, hemoglobina e inmunoglobulinas);
+   - el submenú superior en los apartados que lo tienen (glúcidos, lípidos, hemoglobina e inmunoglobulinas);
    - el resaltado de la página activa;
    - el contador de visitas (GoatCounter).
    El menú se define una sola vez, aquí abajo, en MENU y SUBMENUS. */
@@ -45,6 +45,7 @@
     { cat: "Glúcidos", items: [
       { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" }
     ]},
+    { t: "Lípidos", href: "Lipidos.htm", sub: "lipidos" },
     { t: "Vitaminas y Coenzimas", href: "vitaminas.htm" },
     { cat: "Proteínas", items: [
       { t: "Oligopéptidos", href: "oligopeptidos.htm" },
@@ -91,6 +92,15 @@
         { t: "Tetrosas", href: "Tetrosas.htm" },
         { t: "Cetopentosas", href: "Cetopentosas.htm" },
         { t: "Cetohexosas", href: "Cetohexosas.htm" }
+      ]
+    },
+    lipidos: {
+      paginas: ["Lipidos.htm"],
+      enlaces: [
+        { t: "Ácidos grasos", href: "AcidosGrasos.htm" },
+        { t: "Triacilgliceroles", href: "Triacilgliceroles.htm" },
+        { t: "Fosfolípidos", href: "Fosfolipidos.htm" },
+        { t: "Isoprenoides", href: "Isoprenoides.htm" }
       ]
     },
     globinas: {

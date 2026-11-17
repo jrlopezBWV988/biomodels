@@ -97,6 +97,7 @@
     lipidos: {
       paginas: ["Lipidos.htm"],
       enlaces: [
+        { t: "Membranas", href: "Lipidos.htm" },
         { t: "Ácidos grasos", href: "AcidosGrasos.htm" },
         { t: "Triacilgliceroles", href: "Triacilgliceroles.htm" },
         { t: "Fosfolípidos", href: "Fosfolipidos.htm" },

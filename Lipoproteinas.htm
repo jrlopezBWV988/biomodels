@@ -45,26 +45,24 @@
 	// consecutivas del cinturón (lámina AA3 del fichero depositado).
 	var NTD = "38-1010:A";
 	var INSERCIONES = "1186-1275:A,1288-1355:A,2016-2049:A,2063-2754:A,3122-3166:A,3175-3336:A,3669-3698:A,3712-3881:A,4059-4551:A";
-	var R3527 = "3527:A";
 	var colores = {
-		ntd: "[40,90,200]", cinturon: "[235,140,20]", ins: "[60,160,90]", arg: "magenta",
+		ntd: "[40,90,200]", cinturon: "[235,140,20]", ins: "[60,160,90]",
 		cab: "[150,190,230]", col: "[245,232,190]", nuc: "[225,175,40]", gris: "[205,205,205]"
 	};
 	var proteinaColor = "select :A; cartoon on; color " + colores.cinturon + "; "
 		+ "select " + NTD + "; color " + colores.ntd + "; "
 		+ "select " + INSERCIONES + "; color " + colores.ins + "; ";
-	var arginina = "select " + R3527 + " and not backbone or " + R3527 + ".CA; spacefill 2.0; color " + colores.arg + "; ";
 	var limpiar = "slab off; select *; spacefill off; wireframe off; cartoon off; label off; ";
 	var cabezas = "select [CAB]; spacefill 3.4; color " + colores.cab + "; ";
 	var colas = "select [COL]; spacefill 3.2; color " + colores.col + "; ";
 	var nucleo = "select [NUC]; spacefill 3.6; color " + colores.nuc + "; ";
-	var vista = "set rotationRadius 125; moveto 0 {1 0 0} 0 100 0 0 {239.65 252.81 239.15} 125; ";
+	var vista = "set rotationRadius 125; moveto 0 {1 0 0} 0 100 0 0 {249.22 246.90 238.81} 125; ";
 	var escenas = {
-		completa: limpiar + proteinaColor + arginina + cabezas + colas,
-		apoB:     limpiar + proteinaColor + arginina,
+		completa: limpiar + proteinaColor + cabezas + colas,
+		apoB:     limpiar + proteinaColor,
 		cinturon: limpiar + "select :A; cartoon on; color " + colores.gris + "; "
-			+ "select 1011-4563:A and not (" + INSERCIONES + "); color " + colores.cinturon + "; " + arginina,
-		corte:    limpiar + proteinaColor + arginina + cabezas + colas + nucleo + "slab on; slab 50; "
+			+ "select 1011-4563:A and not (" + INSERCIONES + "); color " + colores.cinturon + "; ",
+		corte:    limpiar + proteinaColor + cabezas + colas + nucleo + "slab on; slab 50; "
 	};
 	var inicial = "background white; set cartoonFancy false; set antialiasDisplay true; "
 		+ "set zShade false; select *; " + escenas.completa + vista + "select none; ";
@@ -98,33 +96,30 @@
       <span style="--c:#285ac8">Dominio N-terminal</span>
       <span style="--c:#eb8c14">Cinturón β</span>
       <span style="--c:#3ca05a">Inserciones</span>
-      <span style="--c:#ff00ff">Arg3527</span>
       <span style="--c:#96bee6">Cabezas polares</span>
       <span style="--c:#f5e8be">Colas</span>
       <span style="--c:#e1af28">Núcleo</span>
     </div>
     <div class="como-se-hizo">
       <h3>Cómo se ha hecho el modelo</h3>
-      <p>La proteína procede del modelo completo de la apoB100 de la LDL humana (PDB 9EA7), obtenido combinando criomicroscopía electrónica, AlphaFold2 y refinamiento por dinámica molecular (Berndsen y Cassidy, 2025). Para aligerar el visor se conservaron solo los átomos de la cadena principal (N, Cα, C y O) y la cadena lateral completa de la Arg3527; la estructura secundaria es la del fichero depositado.</p>
+      <p>La proteína procede del modelo completo de la apoB100 de la LDL humana (PDB 9EA7), obtenido combinando criomicroscopía electrónica, AlphaFold2 y refinamiento por dinámica molecular (Berndsen y Cassidy, 2025). Para aligerar el visor se conservaron solo los átomos de la cadena principal (N, Cα, C y O); la estructura secundaria es la del fichero depositado.</p>
       <p>El dominio N-terminal sigue los límites de los autores (residuos 28–1010; el modelo empieza en el 38). Las hebras del cinturón son las de la gran lámina β anotada en 9EA7. Como inserciones se tomaron los tramos de 25 residuos o más entre dos hebras consecutivas del cinturón: salen nueve, de 90, 68, 34, 692, 45, 162, 30, 170 y 493 residuos, próximos a los tamaños publicados, aunque sus límites son aproximados.</p>
-      <p>La parte lipídica es un esquema, no una estructura: 9EA7 no contiene lípidos. Se ajustó por mínimos cuadrados un elipsoide a los Cα de las hebras del cinturón (20,6 × 17,8 × 16,7 nm). Sobre su superficie se colocaron esferas separadas al menos 6,5 Å que representan las cabezas polares, y se eliminaron las que quedaban a menos de 4 Å de algún átomo del modelo completo de la proteína. Bajo ellas, una capa de unos 2 nm representa las colas, y el resto del volumen, el núcleo; estas esferas interiores ocupan una red de 7 Å desplazada al azar para que no parezca un cristal. Cada esfera es un pseudoátomo, no una molécula: su número y posición no reflejan la composición de la partícula.</p>
+      <p>La parte lipídica es un esquema, no una estructura: 9EA7 no contiene lípidos. Su forma procede del mapa de criomicroscopía de la partícula completa (EMD-47801): se suavizó el mapa, se tomó su envolvente a un nivel de contorno bajo y se restaron los vóxeles situados a menos de 4 Å de algún átomo del modelo completo de la proteína. Lo que queda es el volumen lipídico, unas 18 nm de diámetro equivalente. Las esferas de su superficie, separadas al menos 6,5 Å, representan las cabezas polares; por debajo, una capa de unos 2 nm representa las colas, y el resto del volumen, el núcleo. Las esferas interiores ocupan una red de 7 Å desplazada al azar para que no parezca un cristal. Cada esfera es un pseudoátomo, no una molécula: su número y posición no reflejan la composición de la partícula. Como el mapa tiene una resolución local de 6–14 Å, el contacto entre proteína y lípido que se ve es compatible con el mapa a esa resolución, pero no muestra contactos moleculares concretos.</p>
     </div>
   </div>
 
   <div class="col-texto">
     <h3>Una sola proteína alrededor de la partícula</h3>
-    <p>La LDL tiene una monocapa de fosfolípidos y colesterol libre, con la apoB100 integrada, que rodea un núcleo de triacilgliceroles y ésteres de colesterol. La LDL es pobre en triacilgliceroles y rica en ésteres de colesterol (Berndsen y Cassidy, 2025). La partícula del modelo es semidiscoidal, de unos 17 × 20 nm, en el intervalo de las LDL pequeñas y densas.</p>
+    <p>La LDL tiene una monocapa de fosfolípidos y colesterol libre, con la apoB100 integrada, que rodea un núcleo de triacilgliceroles y ésteres de colesterol. La LDL es pobre en triacilgliceroles y rica en ésteres de colesterol (Berndsen y Cassidy, 2025). La partícula del modelo es semidiscoidal, con rasgos poligonales: una cara abombada y otra más plana, de unos 17 × 20 nm, en el intervalo de las LDL pequeñas y densas.</p>
     <ul>
       <li><b>Dominio N-terminal (residuos 28–1010).</b> Globular, formado por un barril β (28–319), un haz de hélices (320–634) y una base (635–1010).</li>
       <li><b>Cinturón β.</b> Una lámina β anfipática continua de unos 61 nm de largo y 4 nm de ancho, con 120 hebras, que abraza la partícula como un cinturón. Una cara de la lámina mira a los lípidos y la otra, al agua.</li>
-      <li><b>Inserciones.</b> Nueve segmentos interpuestos entre hebras del cinturón se extienden sobre la superficie lipídica a ambos lados y refuerzan la estructura. Las mayores son la 4 (695 residuos) y la 9 (493 residuos), en el extremo C-terminal del cinturón.</li>
-      <li><b>Unión al receptor de LDL.</b> El dominio en hélice β del receptor se une al dominio N-terminal de la apoB100, y varios de sus módulos de unión de ligando se unen a zonas básicas repartidas a lo largo del cinturón (Reimund et al., 2025). La Arg3527, en el cinturón, formaría parte del sitio de unión. Su mutación R3527Q (R3500Q en la numeración de la proteína madura) es la variante más frecuente de hipercolesterolemia familiar y reduce la afinidad por el receptor (Berndsen y Cassidy, 2025).</li>
+      <li><b>Inserciones.</b> Nueve segmentos interpuestos entre hebras del cinturón se extienden sobre la superficie lipídica, a ambos lados del cinturón, y refuerzan la estructura mediante contactos a larga distancia. Las mayores son la 4 (695 residuos) y la 9 (493 residuos), en el extremo C-terminal del cinturón: cada una es el principal dominio estructural de una de las dos caras de la partícula. Los extremos de ambas están peor resueltos en el mapa, y la inserción 6 es la peor resuelta de todas: podría estar poco asociada a la superficie lipídica.</li>
     </ul>
     <p>El botón «Corte» elimina la mitad delantera de la escena para mostrar las capas: cabezas polares en la superficie, colas debajo y el núcleo apolar en el centro.</p>
     <h3>Referencias</h3>
     <ul class="referencias">
       <li>Berndsen ZT, Cassidy CK. (2025). The structure of apolipoprotein B100 from human low-density lipoprotein. <i>Nature</i> 638: 836–843. <a href="https://doi.org/10.1038/s41586-024-08467-w">https://doi.org/10.1038/s41586-024-08467-w</a></li>
-      <li>Reimund M, Dearborn AD, Graziano G, Lei H, Ciancone AM, Kumar A, Holewinski R, Neufeld EB, O’Reilly FJ, Remaley AT, Marcotrigiano J. (2025). Structure of apolipoprotein B100 bound to the low-density lipoprotein receptor. <i>Nature</i> 638: 829–835. <a href="https://doi.org/10.1038/s41586-024-08223-0">https://doi.org/10.1038/s41586-024-08223-0</a></li>
       <li>Modelo atómico: PDB <a href="https://www.rcsb.org/structure/9EA7">9EA7</a>; mapa de criomicroscopía: EMDB <a href="https://www.ebi.ac.uk/emdb/EMD-47801">EMD-47801</a>.</li>
     </ul>
   </div>

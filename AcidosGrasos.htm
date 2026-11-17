@@ -26,7 +26,9 @@
 .ag-figuras { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 20px; margin: 0 0 16px; }
 .ag-figuras img, .ag-figuras video { display: block; height: auto; max-width: 100%; }
 .ag-sat .ag-figuras { flex-direction: column; gap: 10px; }
-.vid-esferas { width: 260px; mix-blend-mode: multiply; }
+.ag-video { margin: 0; width: 250px; max-width: 100%; }
+.vid-esferas { width: 100%; mix-blend-mode: multiply; cursor: pointer; }
+.ag-video figcaption { margin-top: 4px; font-size: 12.5px; line-height: 1.35; color: #444; text-align: center; }
 .img-est-formula { width: 100%; }
 .img-dha-formula { width: 180px; }
 .tabla-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -63,10 +65,13 @@ table.tabla-ag { border-collapse: collapse; width: 100%; font-size: 12.5px; line
   <section class="ag-col ag-sat" aria-labelledby="t-sat">
     <h2 id="t-sat">Saturados (sin dobles enlaces)</h2>
     <div class="ag-figuras">
-      <video class="vid-esferas" autoplay loop muted playsinline preload="auto" width="540" height="540" poster="videos/palmitato_agua.jpg" aria-label="Animación del modelo de esferas del palmitato (ácido palmítico ionizado) en agua, obtenida por dinámica molecular">
+      <figure class="ag-video">
+      <video class="vid-esferas" autoplay loop muted playsinline preload="auto" tabindex="0" title="Pulse sobre la animación para detenerla o reanudarla" width="572" height="540" poster="videos/palmitato_agua.jpg" aria-label="Animación del modelo de esferas del palmitato (ácido palmítico ionizado) en agua, obtenida por dinámica molecular">
         <source src="videos/palmitato_agua.mp4" type="video/mp4">
         <a href="videos/palmitato_agua.mp4">Descargar el vídeo del palmitato (MP4)</a>
       </video>
+      <figcaption>Modelo de esferas del <b>ácido palmítico</b> (C16:0) en agua, ionizado como palmitato, obtenido por dinámica molecular: la cadena saturada se mantiene casi extendida y solo se dobla ocasionalmente.</figcaption>
+      </figure>
       <img class="img-est-formula" src="images/acidosgrasos/palmitico_formula.svg" width="1498" height="257" alt="Fórmula del ácido palmítico, CH3-(CH2)14-COOH">
     </div>
     <div class="tabla-scroll">
@@ -107,10 +112,13 @@ table.tabla-ag { border-collapse: collapse; width: 100%; font-size: 12.5px; line
       <li>Poliinsaturados (PUFAs)</li>
     </ul>
     <div class="ag-figuras">
-      <video class="vid-esferas" autoplay loop muted playsinline preload="auto" width="540" height="540" poster="videos/dha_agua.jpg" aria-label="Animación del modelo de esferas del DHA ionizado en agua, obtenida por dinámica molecular, con los carbonos de los dobles enlaces en verde">
+      <figure class="ag-video">
+      <video class="vid-esferas" autoplay loop muted playsinline preload="auto" tabindex="0" title="Pulse sobre la animación para detenerla o reanudarla" width="530" height="540" poster="videos/dha_agua.jpg" aria-label="Animación del modelo de esferas del DHA ionizado en agua, obtenida por dinámica molecular, con los carbonos de los dobles enlaces en verde">
         <source src="videos/dha_agua.mp4" type="video/mp4">
         <a href="videos/dha_agua.mp4">Descargar el vídeo del DHA (MP4)</a>
       </video>
+      <figcaption>Modelo de esferas del <b>ácido docosahexaenoico (DHA)</b> (C22:6, <i>ω</i>−3) en agua, ionizado, obtenido por dinámica molecular: los carbonos de sus seis dobles enlaces <i>cis</i> (en verde) hacen que la cadena se pliegue continuamente.</figcaption>
+      </figure>
       <img class="img-dha-formula" src="images/acidosgrasos/dha_formula.svg" width="127" height="169" alt="Fórmula del ácido docosahexaenoico (DHA, C22:6, ω−3) con los seis dobles enlaces cis señalados en verde">
     </div>
     <div class="tabla-scroll">
@@ -141,5 +149,18 @@ table.tabla-ag { border-collapse: collapse; width: 100%; font-size: 12.5px; line
   </section>
 </div>
 
+<script>
+// Pulsar (o Intro/espacio) detiene o reanuda cada animación; con «reducir movimiento» empiezan detenidas.
+document.querySelectorAll('video.vid-esferas').forEach(function (v) {
+  function alternar() { if (v.paused) { v.play(); } else { v.pause(); } }
+  v.addEventListener('click', alternar);
+  v.addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); alternar(); }
+  });
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    v.removeAttribute('autoplay'); v.pause();
+  }
+});
+</script>
 </body>
 </html>

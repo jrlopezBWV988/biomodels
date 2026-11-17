@@ -2,6 +2,8 @@
 
 Web docente de estructuras moleculares en 3D (aminoácidos, coenzimas, glúcidos, lípidos, oligopéptidos, vitaminas, proteínas, ácidos nucleicos y ribosoma), visualizadas con [JSmol](http://jmol.sourceforge.net/).
 
+Dirección pública: https://biomodels.es (dominio propio servido por GitHub Pages; el archivo `CNAME` lo fija).
+
 Autor y mantenimiento: José Ramón López López, Bioquímica y Biología Molecular, Universidad de Valladolid.
 
 ## Estructura

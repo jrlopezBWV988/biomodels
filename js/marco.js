@@ -26,7 +26,7 @@
 
   // Contador de visitas (GoatCounter, sin cookies). Solo cuenta en la web publicada,
   // no en copias locales. Las estadísticas están en https://biomodels.goatcounter.com
-  if (location.hostname === "jrlopezbwv988.github.io") {
+  if (location.hostname === "biomodels.es" || location.hostname === "www.biomodels.es" || location.hostname === "jrlopezbwv988.github.io") {
     var gc = document.createElement("script");
     gc.async = true;
     gc.src = "https://gc.zgo.at/count.js";

@@ -74,7 +74,8 @@
       { t: "RNA de transferencia", href: "tRNA.htm" }
     ]},
     { cat: "Macroestructuras", items: [
-      { t: "Ribosomas", href: "ribosoma.htm" }
+      { t: "Ribosomas", href: "ribosoma.htm" },
+      { t: "Lipoproteínas", href: "Lipoproteinas.htm" }
     ]}
   ];
 
@@ -101,8 +102,7 @@
         { t: "Triacilgliceroles", href: "Triacilgliceroles.htm" },
         { t: "Fosfolípidos", href: "Fosfolipidos.htm" },
         { t: "Membranas", href: "Lipidos.htm" },
-        { t: "Isoprenoides", href: "Isoprenoides.htm" },
-        { t: "Lipoproteínas", href: "Lipoproteinas.htm" }
+        { t: "Isoprenoides", href: "Isoprenoides.htm" }
       ]
     },
     globinas: {

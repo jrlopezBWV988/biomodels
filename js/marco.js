@@ -45,7 +45,7 @@
     { cat: "Glúcidos", items: [
       { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" }
     ]},
-    { t: "Lípidos", href: "Lipidos.htm", sub: "lipidos" },
+    { t: "Lípidos", href: "AcidosGrasos.htm", sub: "lipidos" },
     { t: "Vitaminas y Coenzimas", href: "vitaminas.htm" },
     { cat: "Proteínas", items: [
       { t: "Oligopéptidos", href: "oligopeptidos.htm" },
@@ -97,10 +97,10 @@
     lipidos: {
       paginas: ["Lipidos.htm"],
       enlaces: [
-        { t: "Membranas", href: "Lipidos.htm" },
         { t: "Ácidos grasos", href: "AcidosGrasos.htm" },
         { t: "Triacilgliceroles", href: "Triacilgliceroles.htm" },
         { t: "Fosfolípidos", href: "Fosfolipidos.htm" },
+        { t: "Membranas", href: "Lipidos.htm" },
         { t: "Isoprenoides", href: "Isoprenoides.htm" }
       ]
     },

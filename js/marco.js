@@ -75,7 +75,8 @@
     ]},
     { cat: "Macroestructuras", items: [
       { t: "Ribosomas", href: "ribosoma.htm" },
-      { t: "Lipoproteínas", href: "Lipoproteinas.htm" }
+      { t: "Lipoproteínas", href: "Lipoproteinas.htm" },
+      { t: "Piruvato Deshidrogenasa", href: "PiruvatoDH.htm" }
     ]}
   ];
 

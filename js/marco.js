@@ -101,7 +101,8 @@
         { t: "Triacilgliceroles", href: "Triacilgliceroles.htm" },
         { t: "Fosfolípidos", href: "Fosfolipidos.htm" },
         { t: "Membranas", href: "Lipidos.htm" },
-        { t: "Isoprenoides", href: "Isoprenoides.htm" }
+        { t: "Isoprenoides", href: "Isoprenoides.htm" },
+        { t: "Lipoproteínas", href: "Lipoproteinas.htm" }
       ]
     },
     globinas: {

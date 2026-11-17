@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css?v=20261116">
+<script src="js/marco.js?v=20261117b"></script>
+
+<title>Lipoproteínas: esquema 3D de una partícula LDL con la apoB100 | Atlas de estructuras</title>
+<meta name="description" content="Modelo 3D simplificado de una lipoproteína de baja densidad (LDL): la apolipoproteína B100 (PDB 9EA7), con su dominio N-terminal, el cinturón β y las inserciones, rodeando una monocapa de fosfolípidos y colesterol y un núcleo de ésteres de colesterol.">
+<link rel="canonical" href="https://biomodels.es/Lipoproteinas.htm">
+<meta property="og:title" content="Lipoproteínas: esquema 3D de una partícula LDL con la apoB100">
+<meta property="og:description" content="Modelo 3D simplificado de una partícula LDL construido sobre la estructura de la apolipoproteína B100 (PDB 9EA7).">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/Lipoproteinas.htm">
+<meta property="og:locale" content="es_ES">
+<style>
+.ldl { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-start; max-width: 1180px; }
+.ldl .col-visor { flex: 0 1 540px; min-width: 280px; }
+.ldl .col-texto { flex: 1 1 380px; min-width: 280px; line-height: 1.5; }
+.ldl h2 { margin: 0 0 10px; font-size: 1.25em; color: #6633CC; }
+.ldl h3 { margin: 0 0 8px; font-size: 1.1em; color: #6633CC; }
+.ldl .col-texto ul { padding-left: 1.2em; }
+.ldl .col-texto li { margin-bottom: 6px; }
+.controles-ldl { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 8px 0 4px; align-items: center; }
+.controles-ldl input[type="button"] { margin: 0 !important; }
+.controles-ldl label { margin-left: 4px; white-space: nowrap; }
+.leyenda-ldl { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 6px 0 0; font-size: 0.95em; font-weight: 700; }
+.leyenda-ldl span::before { content: ""; display: inline-block; width: 0.85em; height: 0.85em; margin-right: 5px; border-radius: 50%; background: var(--c); vertical-align: -0.08em; border: 1px solid rgba(0,0,0,.25); }
+.como-se-hizo { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line, #dbe2e9); font-size: 0.86em; font-style: italic; line-height: 1.45; color: #444; }
+.como-se-hizo h3 { margin: 0 0 6px; font-size: 1.05em; color: #6633CC; }
+.como-se-hizo p { margin: 0 0 7px; }
+.referencias { font-size: 0.9em; }
+.referencias li { margin-bottom: 4px; }
+</style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="./jsmol/JSmol.min.js?v=20261113"></script>
+<script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
+<script>
+	// Regiones de la apoB100 (numeración de 9EA7, que incluye el péptido señal de 27 residuos).
+	// NTD según Berndsen y Cassidy (2025): 28-1010 (el modelo empieza en el residuo 38).
+	// Cinturón β: resto de la cadena. Inserciones: tramos de 25 residuos o más entre hebras
+	// consecutivas del cinturón (lámina AA3 del fichero depositado).
+	var NTD = "38-1010:A";
+	var INSERCIONES = "1186-1275:A,1288-1355:A,2016-2049:A,2063-2754:A,3122-3166:A,3175-3336:A,3669-3698:A,3712-3881:A,4059-4551:A";
+	var R3527 = "3527:A";
+	var colores = {
+		ntd: "[40,90,200]", cinturon: "[235,140,20]", ins: "[60,160,90]", arg: "magenta",
+		cab: "[150,190,230]", col: "[245,232,190]", nuc: "[225,175,40]", gris: "[205,205,205]"
+	};
+	var proteinaColor = "select :A; cartoon on; color " + colores.cinturon + "; "
+		+ "select " + NTD + "; color " + colores.ntd + "; "
+		+ "select " + INSERCIONES + "; color " + colores.ins + "; ";
+	var arginina = "select " + R3527 + " and not backbone or " + R3527 + ".CA; spacefill 2.0; color " + colores.arg + "; ";
+	var limpiar = "slab off; select *; spacefill off; wireframe off; cartoon off; label off; ";
+	var cabezas = "select [CAB]; spacefill 3.4; color " + colores.cab + "; ";
+	var colas = "select [COL]; spacefill 3.2; color " + colores.col + "; ";
+	var nucleo = "select [NUC]; spacefill 3.6; color " + colores.nuc + "; ";
+	var vista = "set rotationRadius 125; moveto 0 {1 0 0} 0 100 0 0 {239.65 252.81 239.15} 125; ";
+	var escenas = {
+		completa: limpiar + proteinaColor + arginina + cabezas + colas,
+		apoB:     limpiar + proteinaColor + arginina,
+		cinturon: limpiar + "select :A; cartoon on; color " + colores.gris + "; "
+			+ "select 1011-4563:A and not (" + INSERCIONES + "); color " + colores.cinturon + "; " + arginina,
+		corte:    limpiar + proteinaColor + arginina + cabezas + colas + nucleo + "slab on; slab 50; "
+	};
+	var inicial = "background white; set cartoonFancy false; set antialiasDisplay true; "
+		+ "set zShade false; select *; " + escenas.completa + vista + "select none; ";
+	function escena(e) { Jmol.script(jmolApplet0, escenas[e] + "select none; "); }
+	function vistaInicial() {
+		Jmol.script(jmolApplet0, "spin off; " + escenas.completa + vista + "select none; ");
+		var r = document.getElementById("rotacion"); if (r) r.checked = false;
+	}
+</script>
+</head>
+<body>
+
+<div class="ldl">
+  <div class="col-visor">
+    <h2>Partícula LDL y apolipoproteína B100</h2>
+    <script>
+      jmolInitialize("./jsmol/js");
+      jmolSetParameter("UseCommandThread", "true");
+      // En pantallas estrechas el visor se ajusta al ancho disponible.
+      jmolApplet(Math.max(280, Math.min(520, document.documentElement.clientWidth - 32)), "load ./pdb/LDL_9EA7_esquema.pdb.gz; " + inicial);
+    </script>
+    <div class="controles-ldl">
+      <input type="button" value="Partícula completa" onclick="escena('completa')">
+      <input type="button" value="Solo apoB100" onclick="escena('apoB')">
+      <input type="button" value="Cinturón β" onclick="escena('cinturon')">
+      <input type="button" value="Corte" onclick="escena('corte')">
+      <input type="button" value="Vista inicial" onclick="vistaInicial()">
+      <label><input type="checkbox" id="rotacion" onclick="Jmol.script(jmolApplet0, this.checked ? 'set spinY 15; spin on' : 'spin off')"> Rotación</label>
+    </div>
+    <div class="leyenda-ldl">
+      <span style="--c:#285ac8">Dominio N-terminal</span>
+      <span style="--c:#eb8c14">Cinturón β</span>
+      <span style="--c:#3ca05a">Inserciones</span>
+      <span style="--c:#ff00ff">Arg3527</span>
+      <span style="--c:#96bee6">Cabezas polares</span>
+      <span style="--c:#f5e8be">Colas</span>
+      <span style="--c:#e1af28">Núcleo</span>
+    </div>
+    <div class="como-se-hizo">
+      <h3>Cómo se ha hecho el modelo</h3>
+      <p>La proteína procede del modelo completo de la apoB100 de la LDL humana (PDB 9EA7), obtenido combinando criomicroscopía electrónica, AlphaFold2 y refinamiento por dinámica molecular (Berndsen y Cassidy, 2025). Para aligerar el visor se conservaron solo los átomos de la cadena principal (N, Cα, C y O) y la cadena lateral completa de la Arg3527; la estructura secundaria es la del fichero depositado.</p>
+      <p>El dominio N-terminal sigue los límites de los autores (residuos 28–1010; el modelo empieza en el 38). Las hebras del cinturón son las de la gran lámina β anotada en 9EA7. Como inserciones se tomaron los tramos de 25 residuos o más entre dos hebras consecutivas del cinturón: salen nueve, de 90, 68, 34, 692, 45, 162, 30, 170 y 493 residuos, próximos a los tamaños publicados, aunque sus límites son aproximados.</p>
+      <p>La parte lipídica es un esquema, no una estructura: 9EA7 no contiene lípidos. Se ajustó por mínimos cuadrados un elipsoide a los Cα de las hebras del cinturón (20,6 × 17,8 × 16,7 nm). Sobre su superficie se colocaron esferas separadas al menos 6,5 Å que representan las cabezas polares, y se eliminaron las que quedaban a menos de 4 Å de algún átomo del modelo completo de la proteína. Bajo ellas, una capa de unos 2 nm representa las colas, y el resto del volumen, el núcleo; estas esferas interiores ocupan una red de 7 Å desplazada al azar para que no parezca un cristal. Cada esfera es un pseudoátomo, no una molécula: su número y posición no reflejan la composición de la partícula.</p>
+    </div>
+  </div>
+
+  <div class="col-texto">
+    <h3>Una sola proteína alrededor de la partícula</h3>
+    <p>La LDL tiene una monocapa de fosfolípidos y colesterol libre, con la apoB100 integrada, que rodea un núcleo de triacilgliceroles y ésteres de colesterol. La LDL es pobre en triacilgliceroles y rica en ésteres de colesterol (Berndsen y Cassidy, 2025). La partícula del modelo es semidiscoidal, de unos 17 × 20 nm, en el intervalo de las LDL pequeñas y densas.</p>
+    <ul>
+      <li><b>Dominio N-terminal (residuos 28–1010).</b> Globular, formado por un barril β (28–319), un haz de hélices (320–634) y una base (635–1010).</li>
+      <li><b>Cinturón β.</b> Una lámina β anfipática continua de unos 61 nm de largo y 4 nm de ancho, con 120 hebras, que abraza la partícula como un cinturón. Una cara de la lámina mira a los lípidos y la otra, al agua.</li>
+      <li><b>Inserciones.</b> Nueve segmentos interpuestos entre hebras del cinturón se extienden sobre la superficie lipídica a ambos lados y refuerzan la estructura. Las mayores son la 4 (695 residuos) y la 9 (493 residuos), en el extremo C-terminal del cinturón.</li>
+      <li><b>Unión al receptor de LDL.</b> El dominio en hélice β del receptor se une al dominio N-terminal de la apoB100, y varios de sus módulos de unión de ligando se unen a zonas básicas repartidas a lo largo del cinturón (Reimund et al., 2025). La Arg3527, en el cinturón, formaría parte del sitio de unión. Su mutación R3527Q (R3500Q en la numeración de la proteína madura) es la variante más frecuente de hipercolesterolemia familiar y reduce la afinidad por el receptor (Berndsen y Cassidy, 2025).</li>
+    </ul>
+    <p>El botón «Corte» elimina la mitad delantera de la escena para mostrar las capas: cabezas polares en la superficie, colas debajo y el núcleo apolar en el centro.</p>
+    <h3>Referencias</h3>
+    <ul class="referencias">
+      <li>Berndsen ZT, Cassidy CK. (2025). The structure of apolipoprotein B100 from human low-density lipoprotein. <i>Nature</i> 638: 836–843. <a href="https://doi.org/10.1038/s41586-024-08467-w">https://doi.org/10.1038/s41586-024-08467-w</a></li>
+      <li>Reimund M, Dearborn AD, Graziano G, Lei H, Ciancone AM, Kumar A, Holewinski R, Neufeld EB, O’Reilly FJ, Remaley AT, Marcotrigiano J. (2025). Structure of apolipoprotein B100 bound to the low-density lipoprotein receptor. <i>Nature</i> 638: 829–835. <a href="https://doi.org/10.1038/s41586-024-08223-0">https://doi.org/10.1038/s41586-024-08223-0</a></li>
+      <li>Modelo atómico: PDB <a href="https://www.rcsb.org/structure/9EA7">9EA7</a>; mapa de criomicroscopía: EMDB <a href="https://www.ebi.ac.uk/emdb/EMD-47801">EMD-47801</a>.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

@@ -22,6 +22,8 @@
 .hoja { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-start; max-width: 1180px; }
 .hoja .col-visor { flex: 0 1 540px; min-width: 280px; text-align: center; }
 .hoja .col-texto { flex: 1 1 380px; min-width: 280px; line-height: 1.5; }
+/* Con las dos columnas lado a lado, el visor queda fijo y cada columna se desplaza por separado */
+.hoja.lado .col-visor { position: sticky; top: 8px; max-height: calc(100vh - 16px); overflow-y: auto; }
 .hoja h1 { margin: 0 0 10px; font-size: 1.6em; color: #3333CC; text-align: center; }
 .hoja .col-visor .fila-botones { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .hoja .col-visor .fila-botones input[type="button"] { margin: 0; min-width: 140px; }
@@ -66,7 +68,10 @@
 			// En la vista de canto se ocultan los H para que se distingan las cadenas laterales
 			ocultarH: true,
 			abajo:  "(resno=42 or resno=44 or resno=46 or resno=50 or resno=52)",
-			secuencia: { inicio: "Ac&ndash;", fin: "&ndash;NHCH<sub>3</sub>", residuos: [
+			// El fragmento lleva los extremos bloqueados (ACE, NME), que no se muestran; en su lugar, una línea de puntos
+			// sigue el recorrido real de la cadena de la lisozima (residuos 39–41 y 55–57 de 1HEL) para indicar que continúa
+			extraInicial: "hide group=ACE or group=NME; draw ini0 width 0.25 {7.67 13.99 14.37} color [110,110,110]; draw ini1 width 0.25 {7.83 13.47 14.42} color [110,110,110]; draw ini2 width 0.25 {7.57 13.06 14.31} color [110,110,110]; draw ini3 width 0.25 {7.20 12.67 14.16} color [110,110,110]; draw ini4 width 0.25 {6.83 12.32 14.01} color [110,110,110]; draw ini5 width 0.25 {6.35 12.51 13.83} color [110,110,110]; draw ini6 width 0.25 {5.87 12.71 13.66} color [110,110,110]; draw ini7 width 0.25 {5.41 12.86 13.70} color [110,110,110]; draw ini8 width 0.25 {4.97 12.95 14.02} color [110,110,110]; draw ini9 width 0.25 {4.54 13.04 14.35} color [110,110,110]; draw ini10 width 0.25 {4.07 13.20 14.12} color [110,110,110]; draw ini11 width 0.25 {3.61 13.37 13.88} color [110,110,110]; draw ini12 width 0.25 {3.23 13.54 13.59} color [110,110,110]; draw ini13 width 0.25 {3.31 13.75 13.09} color [110,110,110]; draw ini14 width 0.25 {3.39 13.95 12.58} color [110,110,110]; draw ini15 width 0.25 {3.56 14.28 12.28} color [110,110,110]; draw ini16 width 0.25 {3.83 14.75 12.22} color [110,110,110]; draw ini17 width 0.25 {4.10 15.22 12.14} color [110,110,110]; draw ini18 width 0.25 {4.16 15.40 11.63} color [110,110,110]; draw ini19 width 0.25 {4.22 15.59 11.12} color [110,110,110]; draw fin0 width 0.25 {3.30 16.52 16.74} color [110,110,110]; draw fin1 width 0.25 {2.80 16.46 16.52} color [110,110,110]; draw fin2 width 0.25 {2.52 16.79 16.22} color [110,110,110]; draw fin3 width 0.25 {2.27 17.17 15.90} color [110,110,110]; draw fin4 width 0.25 {2.07 17.58 15.76} color [110,110,110]; draw fin5 width 0.25 {2.00 18.06 16.02} color [110,110,110]; draw fin6 width 0.25 {1.93 18.54 16.28} color [110,110,110]; draw fin7 width 0.25 {1.86 18.73 16.70} color [110,110,110]; draw fin8 width 0.25 {1.81 18.70 17.24} color [110,110,110]; draw fin9 width 0.25 {1.75 18.75 17.75} color [110,110,110]; draw fin10 width 0.25 {1.69 19.20 18.05} color [110,110,110]; draw fin11 width 0.25 {1.62 19.66 18.35} color [110,110,110]; draw fin12 width 0.25 {1.81 19.93 18.66} color [110,110,110]; draw fin13 width 0.25 {2.23 20.04 19.00} color [110,110,110]; draw fin14 width 0.25 {2.66 20.15 19.33} color [110,110,110]; draw fin15 width 0.25 {3.10 19.92 19.33} color [110,110,110]; draw fin16 width 0.25 {3.55 19.61 19.25} color [110,110,110]; draw fin17 width 0.25 {4.01 19.49 19.32} color [110,110,110]; draw fin18 width 0.25 {4.48 19.60 19.58} color [110,110,110]; draw fin19 width 0.25 {4.94 19.71 19.85} color [110,110,110]; ",
+			secuencia: { inicio: "&middot;&middot;&middot;&ndash;", fin: "&ndash;&middot;&middot;&middot;", residuos: [
 				["Ala", 42], ["Thr", 43], ["Asn", 44], ["Arg", 45], ["Asn", 46], ["Thr", 47], ["Asp", 48],
 				["Gly", 49], ["Ser", 50], ["Thr", 51], ["Asp", 52], ["Tyr", 53], ["Gly", 54]] }
 		},
@@ -89,7 +94,7 @@
 		return "reset; center " + m.centro + "; moveto 0 " + m[o] + " " + Math.round((zoom || 1) * m.zoom) + "; ";
 	}
 	function inicial() {
-		return "background aliceblue; set showHydrogens true; select *; hbonds off; cartoons off; wireframe off; spacefill on; color cpk; " + orientar("frontal") + "set spinX 0; set spinY 20; set spinZ 0; spin on";
+		return "background aliceblue; set showHydrogens true; " + (modelos[actual].extraInicial || "") + "select *; hbonds off; cartoons off; wireframe off; spacefill on; color cpk; " + orientar("frontal") + "set spinX 0; set spinY 20; set spinZ 0; spin on";
 	}
 	var GIRO = "set spinX 0; set spinY 20; set spinZ 0; ";
 	// Representaciones; las orientaciones se piden por nombre y se resuelven para el modelo activo
@@ -192,7 +197,7 @@
 		<p><b>¿Por qué «plegada»?</b> La hoja no es plana: vista de canto tiene forma de <b>acordeón</b> o de papel plegado. Cada enlace peptídico es un plano rígido, y dos planos consecutivos se unen en un C&alpha; formando un ángulo. Así, los C&alpha; ocupan alternativamente las crestas y los valles de los <b>dobleces</b>. La cadena lateral de cada aminoácido sale de su C&alpha; casi perpendicular a la hoja y, como los dobleces alternan, las cadenas laterales también alternan: una <b>por encima</b> del plano, la siguiente <b>por debajo</b>, y así sucesivamente. Dos aminoácidos consecutivos quedan a 3,5&nbsp;&Aring; a lo largo de la cadena, en caras opuestas; los que están en la misma cara se repiten cada 7&nbsp;&Aring;.</p>
 
 		<div class="modelo" data-modelo="antiparalela">
-			<p>El modelo es una <b>horquilla β</b> de la lisozima de clara de huevo de gallina (<a href="https://www.rcsb.org/structure/1HEL" target="_blank" rel="noopener">PDB 1HEL</a>, residuos 42&ndash;54): dos cadenas β (43&ndash;46 y 50&ndash;53) unidas por un giro de tres residuos (47&ndash;49) forman la hoja antiparalela más sencilla posible. Los extremos se han bloqueado con un grupo acetilo y otro N-metilamida, tomados de los residuos 41 y 55, para que el fragmento no tenga cargas terminales artificiales, y se han añadido los hidrógenos a pH 7.</p>
+			<p>El modelo es una <b>horquilla β</b> de la lisozima de clara de huevo de gallina (<a href="https://www.rcsb.org/structure/1HEL" target="_blank" rel="noopener">PDB 1HEL</a>, residuos 42&ndash;54): dos cadenas β (43&ndash;46 y 50&ndash;53) unidas por un giro de tres residuos (47&ndash;49) forman la hoja antiparalela más sencilla posible. Es solo un fragmento de la proteína: las <b>líneas de puntos</b> del principio y del final siguen el recorrido real de la cadena de la lisozima, que continúa por ambos lados. Se han añadido los hidrógenos a pH 7, con los extremos tratados como enlaces peptídicos y no como extremos amino y carboxilo libres.</p>
 			<table class="medidas">
 				<thead><tr><th>Medida</th><th>Hoja &beta; antiparalela t&iacute;pica</th><th>Este modelo</th></tr></thead>
 				<tbody>
@@ -256,5 +261,16 @@
 	</div>
 </div>
 </font>
+<script>
+	// Activa el desplazamiento independiente solo cuando las dos columnas están lado a lado
+	function columnasLado() {
+		var h = document.querySelector(".hoja");
+		var v = h.querySelector(".col-visor").getBoundingClientRect();
+		var t = h.querySelector(".col-texto").getBoundingClientRect();
+		h.classList.toggle("lado", t.left >= v.right);
+	}
+	window.addEventListener("resize", columnasLado);
+	columnasLado();
+</script>
 </BODY>
 </HTML>

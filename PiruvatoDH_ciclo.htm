@@ -38,18 +38,11 @@
 .controles-texto input[type="button"] { margin: 0 !important; }
 .pie-esquema { margin: 0 0 8px; font-size: 0.9em; color: #444; }
 .esquema-pdc { width: 100%; max-width: 520px; height: auto; display: block; margin: 6px 0 4px; }
-.como-se-hizo { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line, #dbe2e9); font-size: 0.86em; font-style: italic; line-height: 1.45; color: #444; }
-.como-se-hizo h3 { margin: 0 0 6px; font-size: 1.05em; color: #6633CC; }
-.como-se-hizo p { margin: 0 0 7px; }
 .referencias { font-size: 0.9em; }
 .referencias li { margin-bottom: 4px; }
 .leyenda-u { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 3px 14px; font-size: 0.88em; }
 .leyenda-u li { display: flex; align-items: center; gap: 5px; }
 .leyenda-u span { display: inline-block; width: 13px; height: 13px; border-radius: 3px; border: 1px solid #888; }
-@media (min-width: 1000px) {
-  .pdc { flex-wrap: nowrap; height: calc(100vh - 110px); }
-  .pdc .col-visor, .pdc .col-texto { height: 100%; overflow-y: auto; overscroll-behavior: contain; padding-right: 10px; }
-}
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
@@ -84,7 +77,8 @@
 		+ "select :L and (resno=259 and not backbone or [LPA]); spacefill 1.5; color " + C.lys + "; select :L and [LPA] and _S; color [255,240,60]; "
 		+ "select (:A or :B or :C) and resno=620 and sidechain; spacefill on; color [255,120,0]; "
 		+ "select (:I or :J) and (resno=45 or resno=50) and sidechain; spacefill on; color [255,240,60]; ";
-	var vistaM = "moveto 0 {0 0 1} 0; zoom 100; ";
+	// Orientación inicial elegida para ver a la vez E1 (arriba), E3 (centro) y E2/E3BP (abajo).
+	var vistaM = "moveto 0 {0 0 1} 0; zoom 100; rotate y -65; rotate x -5; rotate z 5; zoom 125; ";
 
 	var CARGA_M = "load ./pdb/PDC_modulo.pdb.gz; ";
 	var ini = "background white; set antialiasDisplay true; set zShade false; set cartoonFancy false; ";
@@ -155,10 +149,6 @@
       <li><span style="background:#fff03c"></span>Cys45/Cys50 de E3</li>
       <li><span style="background:#00c8ff"></span>Serinas de E1α</li>
     </ul>
-    <div class="como-se-hizo">
-      <h3>Cómo se ha hecho el modelo</h3>
-      <p>La unidad catalítica se ha recortado del modelo del <a href="PiruvatoDH.htm">complejo completo</a>, construido con estructuras humanas: núcleo de E2 (PDB 6CT0), E1 con tiamina difosfato (1NI4), E3 con FAD unido al dominio de E3BP que lo fija (1ZY8) y dominio lipoílo (1FYC). La posición del PSBD sobre E1 procede del complejo bacteriano 1W85. Se muestran la cadena principal, los cofactores y algunos residuos clave. Solo se dibuja el dominio lipoílo que se desplaza; sus tres posiciones, los conectores y el brazo de lipoamida (Lys259 y el grupo lipoílo como seudoátomos) son ilustrativos.</p>
-    </div>
   </div>
 
   <div class="col-texto">

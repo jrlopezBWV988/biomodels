@@ -42,6 +42,7 @@
 .medidas th, .medidas td { border: 1px solid var(--line, #d5dee6); padding: 4px 8px; text-align: left; vertical-align: top; }
 .medidas thead th { background: var(--surface-soft, #eef4f8); }
 .medidas td:not(:first-child) { white-space: nowrap; }
+.nota-tornillo { font-size: 0.8em; }
 .nota-medidas { font-size: 0.8em; color: var(--muted, #5a6977); margin: 0 0 16px !important; }
 </style>
 <script>
@@ -191,6 +192,8 @@
 		<div class="vista"><button type="button" onclick="ver(1)">Esferas y varillas</button>
 			<button type="button" onclick="ver(2)">Vista superior</button>
 			<button type="button" onclick="verTornillo()">Avance de tornillo</button></div>
+		<p class="nota-tornillo"><b>Avance de tornillo.</b> La h&eacute;lice se ve a lo largo de su eje, con el extremo carboxilo hacia el observador, y gira en sentido horario mientras se aleja: avanza hacia el fondo de la pantalla como un tornillo normal al apretarlo. Ese comportamiento es lo que define una h&eacute;lice <b>dextrorsa</b> (regla de la mano derecha: si los dedos de la mano derecha siguen el giro de la cadena, el pulgar se&ntilde;ala el sentido de avance). No depende del extremo que se mire: vista desde el amino terminal, la h&eacute;lice tambi&eacute;n se alejar&iacute;a al girar en sentido horario.</p>
+		<p class="nota-tornillo">Si la h&eacute;lice fuera <b>sinistrorsa</b> (su imagen especular), al girar en sentido horario avanzar&iacute;a hacia el observador, como un tornillo de rosca izquierda, y para alejarse tendr&iacute;a que girar en sentido antihorario. Con L-amino&aacute;cidos la h&eacute;lice alfa sinistrorsa es muy poco frecuente, porque las cadenas laterales chocar&iacute;an con el esqueleto pept&iacute;dico; solo aparece en tramos muy cortos.</p>
 		<div class="vista"><button type="button" onclick="ver(3)">Puentes de hidr&oacute;geno</button></div>
 		<p>Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH aparecen como l&iacute;neas de trazos.</p>
 		<div class="vista"><button type="button" onclick="ver(4)">x</button>

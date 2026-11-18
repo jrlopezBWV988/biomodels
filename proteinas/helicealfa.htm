@@ -20,16 +20,22 @@
 <META NAME="Generator" CONTENT="Microsoft FrontPage 4.0">
 <META NAME="Author" CONTENT="Jose Ramon Lopez Lopez">
 <style>
-.tabla-helice { width: auto !important; }
-.visor-helice { vertical-align: top; text-align: center; }
-.visor-helice .fila-botones { display: flex; justify-content: center; gap: 8px; margin-top: 8px; }
-.visor-helice .fila-botones input[type="button"] { margin: 0; min-width: 140px; }
+.helice { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-start; max-width: 1180px; }
+.helice .col-visor { flex: 0 1 540px; min-width: 280px; text-align: center; }
+.helice .col-texto { flex: 1 1 380px; min-width: 280px; line-height: 1.5; }
+.helice h1 { margin: 0 0 10px; font-size: 1.6em; color: #3333CC; text-align: left; }
+.helice .col-visor .fila-botones { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.helice .col-visor .fila-botones input[type="button"] { margin: 0; min-width: 140px; }
 #botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
-.texto-helice { vertical-align: top; min-width: 380px; }
-.texto-helice button { margin: 3px 2px; }
-.fila-n { white-space: nowrap; }
-.secuencia { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px; width: 520px; margin: 10px auto 0; }
-.secuencia button { margin: 0; padding: 4px 7px; min-width: 0; font-size: 0.85em; }
+.col-texto p { margin: 0 0 12px; }
+.col-texto .descripcion { margin: 0 0 16px; }
+.col-texto .vista { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0 0 12px; }
+.col-texto .vista button, .col-texto .fila-n button { margin: 0; }
+.col-texto .vista span { flex: 1 1 180px; }
+.col-texto .fila-n { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+.secuencia { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px; max-width: 520px; margin: 10px auto 0; }
+.secuencia button { margin: 0; padding: 3px 6px; min-width: 2.9em; font-size: 0.85em; line-height: 1.15; }
+.secuencia button .num { display: block; font-size: 0.78em; font-weight: 400; opacity: 0.75; }
 .secuencia button.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
 .secuencia .extremo { font-size: 0.85em; color: var(--muted, #5a6977); }
 </style>
@@ -98,61 +104,59 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </HEAD>
 <BODY BGCOLOR="#FFFFFF">
-<TABLE class="tabla-helice" border="0" cellspacing="5">
-<TR>
-	<TD class="visor-helice">
-	<script>
-		jmolInitialize("../jsmol/js");
-		jmolApplet(520, "load ../pdb/alfa.pdb.gz?v=20261118v; " + inicial);
-	</script>
-	<div class="fila-botones">
-		<input type="button" id="botonInicial" value="Imagen original" onclick="imagenOriginal()">
-		<input type="button" id="botonRotacion" class="activo" value="Detener rotaci&oacute;n" onclick="rotacion()">
+<div class="helice">
+	<div class="col-visor">
+		<h1>H&eacute;lice alfa</h1>
+		<script>
+			jmolInitialize("../jsmol/js");
+			// En pantallas estrechas el visor se ajusta al ancho disponible
+			var lado = Math.max(280, Math.min(520, document.documentElement.clientWidth - 32));
+			jmolApplet([lado, lado], "load ../pdb/alfa.pdb.gz?v=20261118v; " + inicial);
+		</script>
+		<div class="fila-botones">
+			<input type="button" id="botonInicial" value="Imagen original" onclick="imagenOriginal()">
+			<input type="button" id="botonRotacion" class="activo" value="Detener rotaci&oacute;n" onclick="rotacion()">
+		</div>
+		<div class="secuencia">
+			<span class="extremo">H<sub>3</sub>N<sup>+</sup>&ndash;</span>
+			<button type="button" onclick="residuo(1, this)">Ser<span class="num">1</span></button>
+			<button type="button" onclick="residuo(2, this)">Glu<span class="num">2</span></button>
+			<button type="button" onclick="residuo(3, this)">Ala<span class="num">3</span></button>
+			<button type="button" onclick="residuo(4, this)">Ala<span class="num">4</span></button>
+			<button type="button" onclick="residuo(5, this)">Ile<span class="num">5</span></button>
+			<button type="button" onclick="residuo(6, this)">Asn<span class="num">6</span></button>
+			<button type="button" onclick="residuo(7, this)">Arg<span class="num">7</span></button>
+			<button type="button" onclick="residuo(8, this)">Gln<span class="num">8</span></button>
+			<button type="button" onclick="residuo(9, this)">Ile<span class="num">9</span></button>
+			<button type="button" onclick="residuo(10, this)">Asn<span class="num">10</span></button>
+			<button type="button" onclick="residuo(11, this)">Leu<span class="num">11</span></button>
+			<button type="button" onclick="residuo(12, this)">Glu<span class="num">12</span></button>
+			<button type="button" onclick="residuo(13, this)">Leu<span class="num">13</span></button>
+			<button type="button" onclick="residuo(14, this)">Tyr<span class="num">14</span></button>
+			<button type="button" onclick="residuo(15, this)">Ala<span class="num">15</span></button>
+			<span class="extremo">&ndash;COO<sup>&minus;</sup></span>
+		</div>
 	</div>
-	<div class="secuencia">
-		<span class="extremo">H<sub>3</sub>N<sup>+</sup>&ndash;</span>
-		<button type="button" title="Ser 1" onclick="residuo(1, this)">Ser</button>
-		<button type="button" title="Glu 2" onclick="residuo(2, this)">Glu</button>
-		<button type="button" title="Ala 3" onclick="residuo(3, this)">Ala</button>
-		<button type="button" title="Ala 4" onclick="residuo(4, this)">Ala</button>
-		<button type="button" title="Ile 5" onclick="residuo(5, this)">Ile</button>
-		<button type="button" title="Asn 6" onclick="residuo(6, this)">Asn</button>
-		<button type="button" title="Arg 7" onclick="residuo(7, this)">Arg</button>
-		<button type="button" title="Gln 8" onclick="residuo(8, this)">Gln</button>
-		<button type="button" title="Ile 9" onclick="residuo(9, this)">Ile</button>
-		<button type="button" title="Asn 10" onclick="residuo(10, this)">Asn</button>
-		<button type="button" title="Leu 11" onclick="residuo(11, this)">Leu</button>
-		<button type="button" title="Glu 12" onclick="residuo(12, this)">Glu</button>
-		<button type="button" title="Leu 13" onclick="residuo(13, this)">Leu</button>
-		<button type="button" title="Tyr 14" onclick="residuo(14, this)">Tyr</button>
-		<button type="button" title="Ala 15" onclick="residuo(15, this)">Ala</button>
-		<span class="extremo">&ndash;COO<sup>&minus;</sup></span>
+	<div class="col-texto">
+		<p class="descripcion">La hélice alfa es una estructura secundaria de las proteínas en la que la cadena polipeptídica se enrolla en una hélice dextrorsa. Se estabiliza mediante puentes de hidrógeno entre el grupo CO de cada aminoácido y el NH del aminoácido situado cuatro posiciones más adelante. El modelo 3D permite ver estos puentes y compararlo con la representación convencional. En <a href="https://www.youtube.com/watch?v=_YWpAI1LOKk&amp;t=3s" target="_blank" rel="noopener">este v&iacute;deo</a> Linus Pauling cuenta c&oacute;mo se le ocurri&oacute; la estructura de la h&eacute;lice alfa.</p>
+		<div class="vista"><button type="button" onclick="ver(0)">Esqueleto Pept&iacute;dico</button></div>
+		<div class="vista"><button type="button" onclick="ver(1)">Esferas y varillas</button>
+			<button type="button" onclick="ver(2)">Vista superior</button></div>
+		<div class="vista"><button type="button" onclick="ver(3)">Puentes de hidr&oacute;geno</button></div>
+		<p>Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH aparecen como l&iacute;neas de trazos.</p>
+		<div class="vista"><button type="button" onclick="ver(4)">x</button>
+			<span>Los puentes de hidrogenos se establecen entre el CO del aminoacido n y el NH del carbono n+4</span></div>
+		<div class="fila-n">
+			<button type="button" onclick="ver(5)">n</button>
+			<button type="button" onclick="ver(6)">n+1</button>
+			<button type="button" onclick="ver(7)">n+2</button>
+			<button type="button" onclick="ver(8)">n+3</button>
+			<button type="button" onclick="ver(9)">n+4</button>
+		</div>
+		<div class="vista"><button type="button" onclick="ver(10)">x</button>
+			<span>Representaci&oacute;n convencional</span></div>
 	</div>
-	</TD>
-	<TD class="texto-helice">
-	<FONT SIZE="+3" COLOR="#3333CC"><B>H&eacute;lice alfa</B><Br></FONT>
-	<P>
-	<button type="button" onclick="ver(0)">Esqueleto Pept&iacute;dico</button>
-	<P>
-	<button type="button" onclick="ver(1)">Esferas y varillas</button>
-	<BR>
-	<button type="button" onclick="ver(2)">Vista superior</button>
-	<P>
-	<button type="button" onclick="ver(3)">Puentes de hidr&oacute;geno</button>
-	<BR>
-	Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH aparecen como l&iacute;neas de trazos.
-	<P>
-	<button type="button" onclick="ver(4)">x</button>
-	Los puentes de hidrogenos se establecen entre el CO del aminoacido n y el NH del carbono n+4
-	<BR>
-	<span class="fila-n"><button type="button" onclick="ver(5)">n</button> <button type="button" onclick="ver(6)">n+1</button> <button type="button" onclick="ver(7)">n+2</button> <button type="button" onclick="ver(8)">n+3</button> <button type="button" onclick="ver(9)">n+4</button></span>
-	<P>
-	<button type="button" onclick="ver(10)">x</button>
-	Representaci&oacute;n convencional
-	</TD>
-</TR>
-</TABLE>
+</div>
 </font>
-<p class="descripcion-pagina">La hélice alfa es una estructura secundaria de las proteínas en la que la cadena polipeptídica se enrolla en una hélice dextrorsa. Se estabiliza mediante puentes de hidrógeno entre el grupo CO de cada aminoácido y el NH del aminoácido situado cuatro posiciones más adelante. El modelo 3D permite ver estos puentes y compararlo con la representación convencional.</p>
 </BODY>
 </HTML>

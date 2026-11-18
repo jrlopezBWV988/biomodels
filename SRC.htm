@@ -30,7 +30,13 @@
 .controles-src input.b-sh3:hover { filter: brightness(0.85); }
 .leyenda-src { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; font-size: 1.25em; font-weight: 700; line-height: 1.3; }
 .mecanismo-src { text-align: center; padding-top: 12px; }
-.mecanismo-src img { width: 100%; max-width: 720px; height: auto; }
+.mecanismo-src img { width: 100%; max-width: 980px; height: auto; }
+.texto-src { max-width: 980px; line-height: 1.5; }
+.texto-src h2 { color: #6633CC; font-size: 1.25em; margin: 18px 0 6px; }
+.texto-src h3 { color: #6633CC; font-size: 1.05em; margin: 14px 0 4px; }
+.texto-src p { margin: 6px 0; }
+.texto-src .referencias { font-size: 0.9em; padding-left: 1.2em; }
+.texto-src .referencias li { margin-bottom: 4px; }
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
@@ -90,7 +96,7 @@
 <TR>
 	<TD class="cabecera-src">
 	<CENTER>
-	<FONT SIZE="+2" COLOR="#6633CC"><B>cSrc Inactiva</B></FONT>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Tirosina quinasa Src Inactiva</B></FONT>
 	<BR>
 	<script>
 		  jmolInitialize("./jsmol/js");
@@ -115,7 +121,7 @@
 	</TD>
 	<TD class="cabecera-src">
 	<CENTER>
-	<FONT SIZE="+2" COLOR="#6633CC"><B>cSrc Activa</B></FONT>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Tirosina quinasa Src Activa</B></FONT>
 	<BR>
 	<script>
 		  jmolApplet(420, "load ./pdb/1Y57.pdb.gz; " + estiloInicial + vista[1]);
@@ -125,11 +131,29 @@
 </TR>
 <TR>
 	<TD colspan="3" class="mecanismo-src">
-		<img src="./images/Src.Mecanismo.png" alt="Mecanismo de activaci&oacute;n de Src">
+		<img src="./images/Src.Mecanismo.png?v=20261118" alt="Esquema de activaci&oacute;n de Src: una fosfatasa retira el fosfato de Y527 (interruptor con tapa) y la fosforilaci&oacute;n de Y416 por una quinasa aumenta la actividad hasta el m&aacute;ximo (regulador de intensidad)">
 	</TD>
 </TR>
 </TABLE>
 <BR>
-<p class="descripcion-pagina">Comparación en 3D de la tirosina quinasa c-Src en su forma inactiva (PDB 2SRC) y en su forma activa (PDB 1Y57). En la forma inactiva, la tirosina 527 fosforilada se une al dominio SH2 y el dominio SH3 se une a la hélice de poliprolina II (PPII) del conector, lo que mantiene cerrado el dominio quinasa. La fosforilación de la tirosina 416, en el bucle de activación, acompaña a la forma activa.</p>
+<div class="texto-src">
+<h2>Src: un interruptor “con tapa” y “regulador de intensidad”</h2>
+<p>La figura resume cómo se regula la tirosina quinasa Src a través de sus dominios SH3, SH2 y quinasa (SH1) y de dos tirosinas reguladoras (numeración de Src de pollo; Y419 e Y530 en la proteína humana). En la forma inactiva (OFF) la pY527 (fosforilada por la quinasa Csk) se une al dominio SH2 de la propia molécula y el dominio SH3 se une a la hélice de poliprolina II (PPII) del conector SH2–quinasa. Estas dos <em><strong>interacciones <u>intramoleculares</u></strong></em> forman una abrazadera que lo mantiene en una <em><strong>conformación cerrada</strong></em> e <em><strong><u>inactiva</u></strong></em> (<a target="_blank" rel="noopener" href="https://doi.org/10.1038/385595a0">Xu et al., 1997</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.phrs.2015.01.003">Roskoski, 2015</a>).</p>
+<h3>Los modelos 3D</h3>
+<p>El modelo inactivo (PDB 2SRC) contiene la pY527 unida al dominio SH2 (<a target="_blank" rel="noopener" href="https://doi.org/10.1038/385595a0">Xu et al., 1997</a>). En el modelo activo (PDB 1Y57), la Y527 no está fosforilada, el dominio SH2 se ha separado de la cola C-terminal y el dominio quinasa adopta una conformación activa; la Y416 tampoco está fosforilada, de modo que la estructura corresponde a la etapa central del esquema (ON) (<a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.str.2005.03.012">Cowan-Jacob et al., 2005</a>), aunque el dominio SH3 sigue unido a la PPII del conector. En la célula, el SH3 puede liberarse y unirse a secuencias PPII de receptores activados o de sus proteínas asociadas, mientras el SH2 se une a sus fosfotirosinas. Así se desplazan las interacciones inhibidoras y Src queda reclutada junto a sus sustratos (<a target="_blank" rel="noopener" href="https://doi.org/10.1080/10409238.2018.1495173">Shah et al., 2018</a>).</p>
+<h3>Interruptor “con tapa”: el «<em>priming</em>» por fosfatasas</h3>
+<p>Src se comporta como un interruptor protegido por una tapa: mientras la pY527 mantiene la molécula cerrada, la quinasa permanece apagada. La desfosforilación de pY527 por una fosfatasa abre la tapa («priming») y deja el interruptor en posición ON, con actividad basal, pero aún no máxima. Entre las fosfatasas que desempeñan este papel figuran las citosólicas <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PTPN1">PTP1B</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PTPN6">SHP-1</a> y <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PTPN11">SHP-2</a> y las transmembrana <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PTPRC">CD45</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PTPRA">PTPα</a> y <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PTPRE">PTPε</a> (<a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.bbrc.2005.03.012">Roskoski, 2005</a>).</p>
+<h3>Regulador de intensidad («<em>dimmer</em>»): la fosforilación de Y416</h3>
+<p>Una vez abierta la tapa, la fosforilación de la tirosina 416 del dominio quinasa actúa como el mando de un regulador de intensidad (dimmer). La Y416 se fosforila por autofosforilación en trans, por otra molécula de Src (<a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.bbrc.2005.03.012">Roskoski, 2005</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.phrs.2015.01.003">Roskoski, 2015</a>). La pY416 estabiliza el dominio quinasa en una conformación abierta, que ordena el centro catalítico y permite el acceso del sustrato, y lleva la quinasa a su máxima actividad sobre sus dianas (<a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.phrs.2015.01.003">Roskoski, 2015</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1080/10409238.2018.1495173">Shah et al., 2018</a>). Muchas otras quinasas se regulan del mismo modo: El receptor de insulina se autofosforila en trans en Y1158, Y1162 e Y1163; MEK fosforila a la MAP quinasa ERK2 en T183 e Y185 y la quinasa dependiente de AMPc (PKA) requiere la fosforilación de T197 (<a target="_blank" rel="noopener" href="https://doi.org/10.1146/annurev-biochem-052410-090317">Endicott et al., 2012</a>).</p>
+<h3>Referencias</h3>
+<ul class="referencias">
+<li>Cowan-Jacob SW, Fendrich G, Manley PW, Jahnke W, Fabbro D, Liebetanz J, Meyer T. (2005). The crystal structure of a c-Src complex in an active conformation suggests possible steps in c-Src activation. <i>Structure</i> 13: 861–871. <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.str.2005.03.012">https://doi.org/10.1016/j.str.2005.03.012</a>. Coordenadas: entrada PDB <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/1Y57">1Y57</a>.</li>
+<li>Endicott JA, Noble ME, Johnson LN. (2012). The structural basis for control of eukaryotic protein kinases. <i>Annu Rev Biochem</i> 81: 587–613. <a target="_blank" rel="noopener" href="https://doi.org/10.1146/annurev-biochem-052410-090317">https://doi.org/10.1146/annurev-biochem-052410-090317</a></li>
+<li>Roskoski R Jr. (2005). Src kinase regulation by phosphorylation and dephosphorylation. <i>Biochem Biophys Res Commun</i> 331: 1–14. <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.bbrc.2005.03.012">https://doi.org/10.1016/j.bbrc.2005.03.012</a></li>
+<li>Roskoski R Jr. (2015). Src protein-tyrosine kinase structure, mechanism, and small molecule inhibitors. <i>Pharmacol Res</i> 94: 9–25. <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.phrs.2015.01.003">https://doi.org/10.1016/j.phrs.2015.01.003</a></li>
+<li>Shah NH, Amacher JF, Nocka LM, Kuriyan J. (2018). The Src module: an ancient scaffold in the evolution of cytoplasmic tyrosine kinases. <i>Crit Rev Biochem Mol Biol</i> 53: 535–563. <a target="_blank" rel="noopener" href="https://doi.org/10.1080/10409238.2018.1495173">https://doi.org/10.1080/10409238.2018.1495173</a></li>
+<li>Xu W, Harrison SC, Eck MJ. (1997). Three-dimensional structure of the tyrosine kinase c-Src. <i>Nature</i> 385: 595–602. <a target="_blank" rel="noopener" href="https://doi.org/10.1038/385595a0">https://doi.org/10.1038/385595a0</a>. Coordenadas: entrada PDB <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/2SRC">2SRC</a>.</li>
+</ul>
+</div>
 </BODY>
 </HTML>

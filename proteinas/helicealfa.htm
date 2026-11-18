@@ -73,7 +73,33 @@
 		b.classList.toggle("activo", girando);
 	}
 	// Cada vista fija su orientación y su eje de giro; si no los indica, conserva los actuales
+	// Avance de tornillo: giro horario (visto desde el observador) combinado con una reducción
+	// progresiva del zoom, de modo que la hélice parece enroscarse hacia el fondo de la pantalla
+	var tornillo = null, modoTornillo = false, zoomTornillo = 230;
+	function pasoTornillo() {
+		zoomTornillo *= 0.996;
+		if (zoomTornillo < 70) zoomTornillo = 230;
+		Jmol.script(jmolApplet0, "rotate z -2; zoom " + zoomTornillo.toFixed(1));
+	}
+	function arrancarTornillo() {
+		if (!tornillo) tornillo = setInterval(pasoTornillo, 40);
+	}
+	function pararTornillo() {
+		if (tornillo) { clearInterval(tornillo); tornillo = null; }
+	}
+	function verTornillo() {
+		pararTornillo();
+		modoTornillo = true;
+		girando = true;
+		zoomTornillo = 230;
+		Jmol.script(jmolApplet0, "spin off; reset; center {0 0 0}; rotate x 90; zoom 230; " + vistas[2].s);
+		limpiarSecuencia();
+		marcarRotacion();
+		arrancarTornillo();
+	}
 	function ver(i) {
+		pararTornillo();
+		modoTornillo = false;
 		var v = vistas[i];
 		if (v.eje) ejeActual = v.eje;
 		girando = v.giro;
@@ -84,7 +110,11 @@
 	}
 	function rotacion() {
 		girando = !girando;
-		Jmol.script(jmolApplet0, girando ? ejes[ejeActual] + "spin on" : "spin off");
+		if (modoTornillo) {
+			if (girando) arrancarTornillo(); else pararTornillo();
+		} else {
+			Jmol.script(jmolApplet0, girando ? ejes[ejeActual] + "spin on" : "spin off");
+		}
 		marcarRotacion();
 	}
 	// Resalta un aminoácido en colores CPK y deja el resto en gris claro, sin cambiar la vista
@@ -97,6 +127,8 @@
 		document.querySelectorAll(".secuencia button").forEach(function (b) { b.classList.remove("activo"); });
 	}
 	function imagenOriginal() {
+		pararTornillo();
+		modoTornillo = false;
 		ejeActual = "y";
 		girando = true;
 		Jmol.script(jmolApplet0, "spin off; " + inicial);
@@ -157,7 +189,8 @@
 		<p class="nota-medidas">Valores t&iacute;picos: <a href="https://en.wikipedia.org/wiki/Alpha_helix" target="_blank" rel="noopener">Wikipedia, Alpha helix</a>. Valores del modelo calculados sobre las coordenadas de esta p&aacute;gina, con el eje de la h&eacute;lice ajustado a los C&alpha;.</p>
 		<div class="vista"><button type="button" onclick="ver(0)">Esqueleto Pept&iacute;dico</button></div>
 		<div class="vista"><button type="button" onclick="ver(1)">Esferas y varillas</button>
-			<button type="button" onclick="ver(2)">Vista superior</button></div>
+			<button type="button" onclick="ver(2)">Vista superior</button>
+			<button type="button" onclick="verTornillo()">Avance de tornillo</button></div>
 		<div class="vista"><button type="button" onclick="ver(3)">Puentes de hidr&oacute;geno</button></div>
 		<p>Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH aparecen como l&iacute;neas de trazos.</p>
 		<div class="vista"><button type="button" onclick="ver(4)">x</button>

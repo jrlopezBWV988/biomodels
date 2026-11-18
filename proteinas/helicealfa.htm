@@ -23,7 +23,7 @@
 .helice { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-start; max-width: 1180px; }
 .helice .col-visor { flex: 0 1 540px; min-width: 280px; text-align: center; }
 .helice .col-texto { flex: 1 1 380px; min-width: 280px; line-height: 1.5; }
-.helice h1 { margin: 0 0 10px; font-size: 1.6em; color: #3333CC; text-align: left; }
+.helice h1 { margin: 0 0 10px; font-size: 1.6em; color: #3333CC; text-align: center; }
 .helice .col-visor .fila-botones { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .helice .col-visor .fila-botones input[type="button"] { margin: 0; min-width: 140px; }
 #botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -38,6 +38,11 @@
 .secuencia button .num { display: block; font-size: 0.78em; font-weight: 400; opacity: 0.75; }
 .secuencia button.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
 .secuencia .extremo { font-size: 0.85em; color: var(--muted, #5a6977); }
+.medidas { border-collapse: collapse; margin: 0 0 6px; font-size: 0.9em; }
+.medidas th, .medidas td { border: 1px solid var(--line, #d5dee6); padding: 4px 8px; text-align: left; vertical-align: top; }
+.medidas thead th { background: var(--surface-soft, #eef4f8); }
+.medidas td:not(:first-child) { white-space: nowrap; }
+.nota-medidas { font-size: 0.8em; color: var(--muted, #5a6977); margin: 0 0 16px !important; }
 </style>
 <script>
 	// Giro horario visto desde el extremo C-terminal, como corresponde a una hélice dextrorsa
@@ -138,7 +143,18 @@
 		</div>
 	</div>
 	<div class="col-texto">
-		<p class="descripcion">La hélice alfa es una estructura secundaria de las proteínas en la que la cadena polipeptídica se enrolla en una hélice dextrorsa. Se estabiliza mediante puentes de hidrógeno entre el grupo CO de cada aminoácido y el NH del aminoácido situado cuatro posiciones más adelante. El modelo 3D permite ver estos puentes y compararlo con la representación convencional. En <a href="https://www.youtube.com/watch?v=_YWpAI1LOKk&amp;t=3s" target="_blank" rel="noopener">este v&iacute;deo</a> Linus Pauling cuenta c&oacute;mo se le ocurri&oacute; la estructura de la h&eacute;lice alfa.</p>
+		<p class="descripcion">La hélice alfa es una estructura secundaria de las proteínas en la que la cadena polipeptídica se enrolla en una hélice dextrorsa. Se estabiliza mediante puentes de hidrógeno entre el grupo CO de cada aminoácido y el NH del aminoácido situado cuatro posiciones más adelante. El modelo 3D permite ver estos puentes y compararlo con la representación convencional. En <a href="https://www.youtube.com/watch?v=_YWpAI1LOKk&amp;t=3s" target="_blank" rel="noopener">este v&iacute;deo</a> <b>Linus Pauling</b> cuenta c&oacute;mo se le ocurri&oacute; la estructura de la h&eacute;lice alfa.</p>
+		<table class="medidas">
+			<thead><tr><th>Medida</th><th>H&eacute;lice &alpha; t&iacute;pica</th><th>Este modelo</th></tr></thead>
+			<tbody>
+				<tr><td>Sentido de giro</td><td>dextrorsa</td><td>dextrorsa</td></tr>
+				<tr><td>Amino&aacute;cidos por vuelta</td><td>3,6</td><td>3,59</td></tr>
+				<tr><td>Giro por amino&aacute;cido</td><td>100&deg;</td><td>100&deg;</td></tr>
+				<tr><td>Avance por amino&aacute;cido</td><td>1,5 &Aring;</td><td>1,53 &Aring;</td></tr>
+				<tr><td>Paso (avance por vuelta)</td><td>5,4 &Aring;</td><td>5,49 &Aring;</td></tr>
+			</tbody>
+		</table>
+		<p class="nota-medidas">Valores t&iacute;picos: <a href="https://en.wikipedia.org/wiki/Alpha_helix" target="_blank" rel="noopener">Wikipedia, Alpha helix</a>. Valores del modelo calculados sobre las coordenadas de esta p&aacute;gina, con el eje de la h&eacute;lice ajustado a los C&alpha;.</p>
 		<div class="vista"><button type="button" onclick="ver(0)">Esqueleto Pept&iacute;dico</button></div>
 		<div class="vista"><button type="button" onclick="ver(1)">Esferas y varillas</button>
 			<button type="button" onclick="ver(2)">Vista superior</button></div>

@@ -20,7 +20,8 @@
 .ribo .tarjeta-visor { margin-top: 10px; }
 .ribo .col-texto { flex: 1 1 380px; min-width: 280px; line-height: 1.55; }
 .ribo h2 { margin: 0 0 10px; font-size: 1.25em; color: var(--title); }
-.ribo .intro { margin: 0 0 14px; }
+.referencias { font-size: 0.9em; padding-left: 1.2em; }
+.referencias li { margin-bottom: 4px; }
 .tarjeta { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--c, var(--accent)); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px 16px; margin: 0 0 14px; }
 .tarjeta h3 { margin: 0 0 8px; font-size: 1.1em; color: var(--c, var(--title)); }
 .tarjeta p { margin: 6px 0; }
@@ -59,7 +60,7 @@ document.addEventListener("click", function (e) {
 
 <div class="ribo">
   <div class="col-visor">
-    <h2>Estructura del ribosoma</h2>
+    <h2>Ribosoma 70S de <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Thermus_thermophilus"><i>Thermus thermophilus</i></a></h2>
     <script>
       jmolInitialize("./jsmol/js");
       jmolSetParameter("UseCommandThread", "true");
@@ -99,9 +100,6 @@ document.addEventListener("click", function (e) {
   </div>
 
   <div class="col-texto">
-    <p class="intro">Se muestra la estructura del ribosoma 70S de la bacteria
-    <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Thermus_thermophilus"><i><b>Thermus thermophilus</b></i></a>.</p>
-
     <div class="tarjeta" style="--c:#1d7a2e">
       <h3>Subunidad 30S</h3>
       <div class="boton-principal"><script>
@@ -201,6 +199,13 @@ document.addEventListener("click", function (e) {
       <p>El resto de las mol&eacute;culas se muestran en gris
       <span class="muestra" style="--m:gainsboro"></span>.</p>
     </div>
+    <h3>Referencias</h3>
+    <ul class="referencias">
+      <li>Korostelev A, Trakhanov S, Asahara H, Laurberg M, Lancaster L, Noller HF. (2007). Interactions and dynamics of the Shine–Dalgarno helix in the 70S ribosome. <i>Proc Natl Acad Sci USA</i> 104: 16840–16843. <a href="https://doi.org/10.1073/pnas.0707850104">https://doi.org/10.1073/pnas.0707850104</a>. Coordenadas mostradas: entradas PDB 2QNH (30S, tRNAs y mRNA) y 1VSP (50S), consolidadas en la entrada <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/4V4J">4V4J</a>.</li>
+      <li>Yusupov MM, Yusupova GZ, Baucom A, Lieberman K, Earnest TN, Cate JHD, Noller HF. (2001). Crystal structure of the ribosome at 5.5 Å resolution. <i>Science</i> 292: 883–896. <a href="https://doi.org/10.1126/science.1060089">https://doi.org/10.1126/science.1060089</a></li>
+      <li>Selmer M, Dunham CM, Murphy FV, Weixlbaumer A, Petry S, Kelley AC, Weir JR, Ramakrishnan V. (2006). Structure of the 70S ribosome complexed with mRNA and tRNA. <i>Science</i> 313: 1935–1942. <a href="https://doi.org/10.1126/science.1131127">https://doi.org/10.1126/science.1131127</a></li>
+      <li>Schmeing TM, Ramakrishnan V. (2009). What recent ribosome structures have revealed about the mechanism of translation. <i>Nature</i> 461: 1234–1242. <a href="https://doi.org/10.1038/nature08403">https://doi.org/10.1038/nature08403</a></li>
+    </ul>
   </div>
 </div>
 </body>

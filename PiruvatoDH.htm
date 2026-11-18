@@ -154,7 +154,6 @@
 
 <div class="pdc">
   <div class="col-visor">
-    <h2>Complejo piruvato deshidrogenasa humano</h2>
     <div id="visor">
     <script>
       jmolInitialize("./jsmol/js");
@@ -210,43 +209,23 @@
     </div>
     <div class="como-se-hizo">
       <h3>Cómo se ha hecho el modelo</h3>
-      <p>Las piezas son estructuras humanas: el núcleo de 60 dominios catalíticos de E2 (PDB 6CT0, criomicroscopía electrónica, generado con la simetría icosaédrica depositada), E1 α<sub>2</sub>β<sub>2</sub> con tiamina difosfato (1NI4), el dímero de E3 con FAD unido al dominio de E3BP que lo fija (1ZY8) y el dominio lipoílo interno de E2 (1FYC, RMN). No hay estructura humana de E1 unida al dominio periférico de E2 (PSBD): ese dominio y su posición se tomaron del complejo bacteriano de <i>Geobacillus stearothermophilus</i> (1W85), superponiendo la E1 bacteriana sobre la humana (1,2 Å de desviación en 908 Cα).</p>
-      <p>La disposición es un esquema: se colocaron 20 E1 sobre los ejes ternarios y 12 E3 sobre los ejes quinarios del núcleo, con el mismo hueco para todas, y se colorearon como E3BP 12 subunidades del núcleo, una por cara pentagonal, para anclar las E3. En el complejo real las enzimas periféricas son móviles, su número varía y E3BP no ocupa posiciones idénticas a E2. Cada cadena de E2 tiene sus dos dominios lipoílo (ambos con el plegamiento de 1FYC) y su PSBD, aunque solo 20 PSBD están unidos a E1; cada cadena de E3BP tiene un dominio lipoílo. Las posiciones de los dominios libres, los conectores y el brazo de lipoamida (Lys259 y el grupo lipoílo como seudoátomos) son ilustrativos; en la unidad catalítica solo se muestra el dominio lipoílo que se desplaza. El complejo completo muestra solo los Cα; la unidad catalítica, la cadena principal, los cofactores y algunos residuos clave.</p>
+      <p>Las piezas son estructuras humanas: núcleo de 60 dominios catalíticos de E2 (PDB 6CT0), E1 con tiamina difosfato (1NI4), E3 con FAD unido al dominio de E3BP (1ZY8) y dominio lipoílo (1FYC). La unión de E1 al PSBD se tomó del complejo bacteriano 1W85, superpuesto sobre la E1 humana (1,2 Å en 908 Cα).</p>
+      <p>La disposición es un esquema: 20 E1 sobre los ejes ternarios, 12 E3 sobre los quinarios y 12 cadenas del núcleo coloreadas como E3BP. Cada cadena tiene todos sus dominios, aunque solo 20 PSBD están unidos a E1; las posiciones de los dominios libres y los conectores son ilustrativas. Solo se muestran los Cα.</p>
     </div>
   </div>
 
   <div class="col-texto">
+    <h2>Complejo piruvato deshidrogenasa humano</h2>
     <h3>Tres enzimas y un brazo móvil</h3>
     <p>El complejo piruvato deshidrogenasa, en la matriz mitocondrial, convierte el piruvato en acetil-CoA: piruvato + CoA + NAD<sup>+</sup> → acetil-CoA + CO<sub>2</sub> + NADH. Es una gran partícula formada por un núcleo de E2 y E3BP, al que se unen las enzimas E1 y E3 (<a href="https://doi.org/10.1074/jbc.R114.563148">Patel et al., 2014</a>). El núcleo de este modelo, construido con 6CT0, mide unos 24 nm de diámetro.</p>
-    <svg class="esquema-pdc" viewBox="0 0 520 210" role="img" aria-label="Esquema de las tres reacciones del complejo piruvato deshidrogenasa">
-      <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#444"/></marker></defs>
-      <g font-family="Tahoma, Verdana, sans-serif" font-size="13" text-anchor="middle">
-        <circle cx="90" cy="105" r="44" fill="#c81e1e"/><text x="90" y="101" fill="#fff" font-weight="700">E1</text><text x="90" y="118" fill="#fff" font-size="11">ThDP</text>
-        <circle cx="260" cy="105" r="44" fill="#1e50b4"/><text x="260" y="101" fill="#fff" font-weight="700">E2</text><text x="260" y="118" fill="#fff" font-size="11">lipoílo</text>
-        <circle cx="430" cy="105" r="44" fill="#28963c"/><text x="430" y="101" fill="#fff" font-weight="700">E3</text><text x="430" y="118" fill="#fff" font-size="11">FAD</text>
-        <text x="90" y="24">Piruvato</text><line x1="90" y1="31" x2="90" y2="58" stroke="#444" stroke-width="1.6" marker-end="url(#fl)"/>
-        <line x1="90" y1="150" x2="90" y2="176" stroke="#444" stroke-width="1.6" marker-end="url(#fl)"/><text x="90" y="194">CO<tspan dy="4" font-size="10">2</tspan></text>
-        <path d="M136,96 L212,96" stroke="#4a8fe0" stroke-width="2.4" fill="none" marker-end="url(#fl)"/>
-        <text x="175" y="86" font-size="11" fill="#1e50b4">acetil-lipoamida</text>
-        <text x="260" y="24">CoA</text><line x1="260" y1="31" x2="260" y2="58" stroke="#444" stroke-width="1.6" marker-end="url(#fl)"/>
-        <line x1="260" y1="150" x2="260" y2="176" stroke="#444" stroke-width="1.6" marker-end="url(#fl)"/><text x="260" y="194">Acetil-CoA</text>
-        <path d="M306,96 L382,96" stroke="#4a8fe0" stroke-width="2.4" fill="none" marker-end="url(#fl)"/>
-        <text x="345" y="86" font-size="11" fill="#1e50b4">dihidrolipoamida</text>
-        <path d="M384,118 C340,150 220,150 136,118" stroke="#4a8fe0" stroke-width="2" stroke-dasharray="5 4" fill="none" marker-end="url(#fl)"/>
-        <text x="168" y="156" font-size="11" fill="#1e50b4">lipoamida oxidada</text>
-        <text x="430" y="24">NAD<tspan dy="-5" font-size="10">+</tspan></text><line x1="430" y1="31" x2="430" y2="58" stroke="#444" stroke-width="1.6" marker-end="url(#fl)"/>
-        <line x1="430" y1="150" x2="430" y2="176" stroke="#444" stroke-width="1.6" marker-end="url(#fl)"/><text x="430" y="194">NADH + H<tspan dy="-5" font-size="10">+</tspan></text>
-      </g>
-    </svg>
-    <p class="pie-esquema">Cada enzima tiene su color, el mismo que en el visor. Las flechas azul claro son el brazo lipoílo de E2, que lleva los intermediarios de un centro activo a otro.</p>
+    <img class="esquema-pdc" src="images/PDH_reaccion.png?v=20261118" width="1100" height="712" alt="Esquema de las tres reacciones del complejo piruvato deshidrogenasa: E1 con pirofosfato de tiamina descarboxila el piruvato y libera CO2; la acetil-lipoamida pasa a E2, que libera acetil-CoA; la dihidrolipoamida pasa a E3, que con FAD reduce el NAD+ a NADH, y la lipoamida oxidada vuelve a E1.">
+    <p class="pie-esquema">Cada enzima tiene su color, el mismo que en el visor. Las flechas azules siguen al brazo lipoílo de E2, que lleva los intermediarios de un centro activo a otro.</p>
     <ul>
       <li><b>E1, piruvato deshidrogenasa (α<sub>2</sub>β<sub>2</sub>).</b> Con tiamina difosfato (ThDP), descarboxila el piruvato y transfiere el grupo acetilo a la lipoamida de E2, que queda acetilada y reducida.</li>
-      <li><b>E2, dihidrolipoamida acetiltransferasa.</b> Transfiere el acetilo a la CoA y libera acetil-CoA. Sus dominios catalíticos forman el núcleo; cada cadena humana tiene, desde el extremo N-terminal, dos dominios lipoílo (lisinas lipoiladas 132 y 259), un dominio de unión periférico (PSBD) y el dominio catalítico, unidos por conectores flexibles (<a href="https://www.uniprot.org/uniprotkb/P10515/entry">UniProt P10515</a>).</li>
+      <li><b>E2, dihidrolipoamida acetiltransferasa.</b> Transfiere el acetilo a la CoA y libera acetil-CoA. Sus dominios catalíticos forman el núcleo; cada cadena humana tiene, desde el extremo N-terminal, dos dominios lipoílo (lisinas lipoiladas 132 y 259), un dominio de unión periférico (PSBD) y el dominio catalítico, unidos por conectores tan flexibles que no aparecen en las estructuras cristalinas ni de criomicroscopía; UniProt los anota como regiones desordenadas (<a href="https://www.uniprot.org/uniprotkb/P10515/entry">UniProt P10515</a>).</li>
       <li><b>E3, dihidrolipoamida deshidrogenasa.</b> Reoxida la dihidrolipoamida con el FAD y su par de cisteínas redox; el FADH<sub>2</sub> cede los electrones al NAD<sup>+</sup>. En el complejo humano, E3 no se une a E2 sino a E3BP (<a href="https://doi.org/10.1074/jbc.M507850200">Ciszak et al., 2006</a>).</li>
-      <li><b>E3BP, proteína de unión a E3 (proteína X, gen <i>PDHX</i>).</b> Es homóloga de E2 y tiene su misma organización, pero no tiene actividad catalítica. Su dominio C-terminal se integra en el núcleo junto a los de E2 (unas 48 cadenas de E2 y 12 de E3BP); su dominio de unión a E3 fija un dímero de E3, y tiene un dominio lipoílo (Lys97) unido por conectores flexibles. Sin E3BP, E3 no queda anclada y el complejo pierde actividad aunque E1, E2 y E3 sean normales: es la deficiencia de E3BP (<a href="https://www.uniprot.org/uniprotkb/O00330/entry">UniProt O00330</a>).</li>
+      <li><b>E3BP, proteína de unión a E3 (proteína X, gen <i>PDHX</i>).</b> Es homóloga de E2 y tiene su misma organización, pero no tiene actividad catalítica. Su dominio C-terminal se integra en el núcleo junto a los de E2 (unas 48 cadenas de E2 y 12 de E3BP); su dominio de unión a E3 fija un dímero de E3, y tiene un dominio lipoílo (Lys97) unido por conectores igual de flexibles, que tampoco aparecen en las estructuras. Sin E3BP, E3 no queda anclada y el complejo pierde actividad aunque E1, E2 y E3 sean normales: es la deficiencia de E3BP (<a href="https://www.uniprot.org/uniprotkb/O00330/entry">UniProt O00330</a>).</li>
     </ul>
-    <h3>El brazo de lipoamida y la regulación</h3>
-    <p>El recorrido del brazo de lipoamida entre los centros activos de E1, E2 y E3, y la inactivación del complejo por fosforilación de E1, se explican con una unidad catalítica del complejo en una página aparte: <a href="PiruvatoDH_ciclo.htm">Brazo de lipoamida y regulación</a>.</p>
     <h3>Referencias</h3>
     <ul class="referencias">
       <li>Ciszak EM, Korotchkina LG, Dominiak PM, Sidhu S, Patel MS. (2003). Structural basis for flip-flop action of thiamin pyrophosphate-dependent enzymes revealed by human pyruvate dehydrogenase. <i>J Biol Chem</i> 278: 21240–21246. <a href="https://doi.org/10.1074/jbc.M300339200">https://doi.org/10.1074/jbc.M300339200</a></li>

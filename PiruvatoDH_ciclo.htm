@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css?v=20261116">
+<script src="js/marco.js?v=20261118"></script>
+
+<title>Complejo piruvato deshidrogenasa: brazo de lipoamida y regulación | Atlas de estructuras</title>
+<meta name="description" content="Unidad catalítica del complejo piruvato deshidrogenasa humano: recorrido del dominio lipoílo entre los centros activos de E1, E2 y E3, y serinas de E1α fosforiladas por las PDK.">
+<link rel="canonical" href="https://biomodels.es/PiruvatoDH_ciclo.htm">
+<meta property="og:title" content="Complejo piruvato deshidrogenasa: brazo de lipoamida y regulación">
+<meta property="og:description" content="Recorrido del brazo de lipoamida entre E1, E2 y E3, y regulación del complejo por fosforilación de E1α.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/PiruvatoDH_ciclo.htm">
+<meta property="og:locale" content="es_ES">
+<style>
+.pdc { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-start; max-width: 1180px; }
+.pdc .col-visor { flex: 0 1 540px; min-width: 280px; }
+.pdc .col-texto { flex: 1 1 380px; min-width: 280px; line-height: 1.5; }
+.pdc h2 { margin: 0 0 10px; font-size: 1.25em; color: #6633CC; }
+.pdc h3 { margin: 14px 0 8px; font-size: 1.1em; color: #6633CC; }
+.pdc .col-texto h3:first-child { margin-top: 0; }
+.pdc .col-texto ul { padding-left: 1.2em; }
+.pdc .col-texto li { margin-bottom: 6px; }
+.grupo-pdc { margin: 8px 0 2px; font-weight: 700; color: #333; font-size: 0.95em; }
+.controles-pdc { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 4px 0 4px; align-items: center; }
+.controles-pdc input[type="button"] { margin: 0 !important; }
+.controles-pdc label { margin-left: 4px; white-space: nowrap; }
+.miembros { margin: 4px 0 0; }
+.fila-m { display: flex; gap: 6px; margin: 0 0 6px; align-items: flex-start; }
+.fila-m .partes { display: flex; flex-wrap: wrap; gap: 4px 6px; flex: 1 1 auto; min-width: 0; }
+.fila-m input[type="button"] { margin: 0 !important; }
+.fila-m .principal { flex: 0 0 auto; }
+.fila-m .principal { background: var(--b) !important; color: var(--t) !important; border-color: var(--b) !important; font-weight: 700; min-width: 4.2em; }
+.fila-m .parte { border-left: 6px solid var(--b) !important; }
+.controles-texto { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 4px 0 10px; }
+.controles-texto input[type="button"] { margin: 0 !important; }
+.pie-esquema { margin: 0 0 8px; font-size: 0.9em; color: #444; }
+.esquema-pdc { width: 100%; max-width: 520px; height: auto; display: block; margin: 6px 0 4px; }
+.como-se-hizo { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line, #dbe2e9); font-size: 0.86em; font-style: italic; line-height: 1.45; color: #444; }
+.como-se-hizo h3 { margin: 0 0 6px; font-size: 1.05em; color: #6633CC; }
+.como-se-hizo p { margin: 0 0 7px; }
+.referencias { font-size: 0.9em; }
+.referencias li { margin-bottom: 4px; }
+.leyenda-u { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 3px 14px; font-size: 0.88em; }
+.leyenda-u li { display: flex; align-items: center; gap: 5px; }
+.leyenda-u span { display: inline-block; width: 13px; height: 13px; border-radius: 3px; border: 1px solid #888; }
+</style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="./jsmol/JSmol.min.js?v=20261113"></script>
+<script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
+<script>
+	// Una gama de color por proteína: E1 rojos, E2 azules, E3 verdes, E3BP violetas.
+	var C = {
+		e1a: "[200,30,30]", e1b: "[245,140,140]",
+		e2: "[30,80,180]", psbd: "[70,140,230]", lipoil: "[130,190,255]", conector: "[70,100,160]",
+		e3a: "[30,130,50]", e3b: "[120,200,120]",
+		e3bp: "[125,60,170]", e3bd: "[185,125,225]", lipoil_bp: "[220,190,245]", conector_bp: "[130,90,170]",
+		lys: "[255,200,0]", lys_bp: "[255,200,0]", palido: "[236,236,236]"
+	};
+	// ---------------------------------------------------------------
+	// Fichero 2: unidad catalítica (cadena principal, cofactores y
+	// residuos clave). Modelo 1: dominio lipoílo en E1; 2: en E2; 3: en E3.
+	// Cadenas: A = E2 que lleva el PSBD unido a E1; B = E3BP; C = E2;
+	// D, F = E1α; E, G = E1β; H = PSBD; I, J = E3; K = dominio de E3BP que une E3;
+	// L = dominio lipoílo con el brazo; M, N = conectores de E2; O = conector de E3BP.
+	// ---------------------------------------------------------------
+	var colorModulo = "select *; spacefill off; backbone off; cartoon only; "
+		+ "select :A or :C; color cartoon " + C.e2 + "; select :H; color cartoon " + C.psbd + "; "
+		+ "select :L; color cartoon " + C.lipoil + "; "
+		+ "select :B; color cartoon " + C.e3bp + "; select :K; color cartoon " + C.e3bd + "; "
+		+ "select :D or :F; color cartoon " + C.e1a + "; select :E or :G; color cartoon " + C.e1b + "; "
+		+ "select :I; color cartoon " + C.e3a + "; select :J; color cartoon " + C.e3b + "; "
+		+ "select :M or :N; cartoon off; backbone 0.8; color " + C.conector + "; "
+		+ "select :O; cartoon off; backbone 0.8; color " + C.conector_bp + "; "
+		+ "select [TPP] or [FAD]; spacefill on; color cpk; "
+		+ "select :L and (resno=259 and not backbone or [LPA]); spacefill 1.5; color " + C.lys + "; select :L and [LPA] and _S; color [255,240,60]; "
+		+ "select (:A or :B or :C) and resno=620 and sidechain; spacefill on; color [255,120,0]; "
+		+ "select (:I or :J) and (resno=45 or resno=50) and sidechain; spacefill on; color [255,240,60]; ";
+	var vistaM = "moveto 0 {0 0 1} 0; zoom 100; ";
+
+	var CARGA_M = "load ./pdb/PDC_modulo.pdb.gz; ";
+	var ini = "background white; set antialiasDisplay true; set zShade false; set cartoonFancy false; ";
+	var cargado = "M";
+	function parar() {
+		var r = document.getElementById("rotacion"); if (r) r.checked = false;
+		return "spin off; if (_animating) { animation off; delay 1.1; } animation off; ";
+	}
+	// Si el visor no está a la vista (por ejemplo, en el móvil), desplaza la página hasta él.
+	function verVisor() {
+		var v = document.getElementById("visor"); if (!v) return;
+		var r = v.getBoundingClientRect();
+		if (r.top < 0 || r.bottom > window.innerHeight) v.scrollIntoView({ behavior: "smooth", block: "start" });
+	}
+	function unidad() { Jmol.script(jmolApplet0, parar() + colorModulo + vistaM + "frame 1; select none; "); }
+	function modulo(f, anim) {
+		var s = parar();
+		if (cargado !== "M") { s += CARGA_M + ini + vistaM; cargado = "M"; }
+		s += colorModulo;
+		if (anim) s += "frame 1; animation mode loop; animation fps 1; animation on; ";
+		else s += "frame " + f + "; ";
+		Jmol.script(jmolApplet0, s + "select none; ");
+		verVisor();
+	}
+	function regulacion() {
+		var s = parar();
+		if (cargado !== "M") { s += CARGA_M + ini + vistaM; cargado = "M"; }
+		s += colorModulo + "select * and not (:D or :F); color cartoon " + C.palido + "; color " + C.palido + "; "
+			+ "select [TPP]; color cpk; "
+			+ "select (:D or :F) and (resno=203 or resno=264 or resno=271) and sidechain; spacefill on; color [0,200,255]; "
+			+ "frame 1; ";
+		Jmol.script(jmolApplet0, s + "select none; ");
+		verVisor();
+	}
+</script>
+</head>
+<body>
+
+<div class="pdc">
+  <div class="col-visor">
+    <h2>Brazo de lipoamida y regulación</h2>
+    <div id="visor">
+    <script>
+      jmolInitialize("./jsmol/js");
+      Jmol.Info.j2sPath = "./jsmol/j2s";
+      jmolSetParameter("UseCommandThread", "true");
+      jmolApplet(Math.max(280, Math.min(520, document.documentElement.clientWidth - 32)),
+        CARGA_M + ini + vistaM + colorModulo + "frame 1; select none; ");
+    </script>
+    </div>
+    <div class="controles-pdc">
+      <input type="button" value="Unidad catalítica" onclick="unidad()">
+      <label><input type="checkbox" id="rotacion" onclick="Jmol.script(jmolApplet0, this.checked ? 'set spinY 15; spin on' : 'spin off')"> Rotación</label>
+    </div>
+    <ul class="leyenda-u">
+      <li><span style="background:#c81e1e"></span>E1α</li>
+      <li><span style="background:#f58c8c"></span>E1β</li>
+      <li><span style="background:#1e50b4"></span>E2 (núcleo)</li>
+      <li><span style="background:#468ce6"></span>PSBD</li>
+      <li><span style="background:#82beff"></span>Dominio lipoílo</li>
+      <li><span style="background:#ffc800"></span>Brazo de lipoamida</li>
+      <li><span style="background:#4664a0"></span>Conectores de E2</li>
+      <li><span style="background:#7d3caa"></span>E3BP</li>
+      <li><span style="background:#b97de1"></span>Dominio de unión a E3</li>
+      <li><span style="background:#1e8232"></span>E3</li>
+      <li><span style="background:#78c878"></span>E3 (otra cadena)</li>
+      <li><span style="background:#ff7800"></span>His620 de E2</li>
+      <li><span style="background:#fff03c"></span>Cys45/Cys50 de E3</li>
+      <li><span style="background:#00c8ff"></span>Serinas de E1α</li>
+    </ul>
+    <div class="como-se-hizo">
+      <h3>Cómo se ha hecho el modelo</h3>
+      <p>La unidad catalítica se ha recortado del modelo del <a href="PiruvatoDH.htm">complejo completo</a>, construido con estructuras humanas: núcleo de E2 (PDB 6CT0), E1 con tiamina difosfato (1NI4), E3 con FAD unido al dominio de E3BP que lo fija (1ZY8) y dominio lipoílo (1FYC). La posición del PSBD sobre E1 procede del complejo bacteriano 1W85. Se muestran la cadena principal, los cofactores y algunos residuos clave. Solo se dibuja el dominio lipoílo que se desplaza; sus tres posiciones, los conectores y el brazo de lipoamida (Lys259 y el grupo lipoílo como seudoátomos) son ilustrativos.</p>
+    </div>
+  </div>
+
+  <div class="col-texto">
+    <h3>Una unidad catalítica</h3>
+    <p>El visor muestra una pequeña parte del <a href="PiruvatoDH.htm">complejo piruvato deshidrogenasa</a>: tres cadenas vecinas del núcleo (dos de E2 y una de E3BP), una E1 α<sub>2</sub>β<sub>2</sub> unida al dominio periférico (PSBD) de una de las cadenas de E2, un dímero de E3 unido a E3BP y el dominio lipoílo que transporta los intermediarios. Los colores son los mismos que en el complejo completo.</p>
+    <h3>El brazo de lipoamida</h3>
+    <p>El intermediario no se libera al medio: viaja unido al grupo lipoílo, que forma un enlace amida con una lisina del dominio lipoílo. La cadena de la lisina y el ácido lipoico forman un brazo largo, y los conectores del dominio, muy flexibles, le permiten visitar los centros activos de E1, E2 y E3 (<a href="https://doi.org/10.1146/annurev.biochem.69.1.961">Perham, 2000</a>). En el complejo, el hueco entre el núcleo y la capa externa es el espacio por el que se mueven los dominios lipoílo (<a href="https://doi.org/10.1093/emboj/cdf574">Milne et al., 2002</a>).</p>
+    <p>Los botones siguientes muestran ese recorrido: el dominio lipoílo (azul claro, con el brazo amarillo) visita la ThDP de E1, la histidina catalítica de E2 (His620, naranja) y las cisteínas redox de E3 junto al FAD.</p>
+    <div class="controles-texto">
+      <input type="button" value="1. En E1" onclick="modulo(1)">
+      <input type="button" value="2. En E2" onclick="modulo(2)">
+      <input type="button" value="3. En E3" onclick="modulo(3)">
+      <input type="button" value="Animar ciclo" onclick="modulo(1, true)">
+    </div>
+    <h3>Regulación por fosforilación</h3>
+    <p>Las quinasas de la piruvato deshidrogenasa (PDK) fosforilan tres serinas de E1α e inactivan el complejo; las fosfatasas (PDP) lo reactivan (<a href="https://doi.org/10.1074/jbc.R114.563148">Patel et al., 2014</a>). En la numeración de la proteína madura son Ser264 (sitio 1), Ser271 (sitio 2) y Ser203 (sitio 3); en la del precursor, Ser293, Ser300 y Ser232 (<a href="https://www.uniprot.org/uniprotkb/P08559/entry">UniProt P08559</a>). El botón las muestra en cian en las dos subunidades E1α.</p>
+    <div class="controles-texto">
+      <input type="button" value="Serinas reguladoras" onclick="regulacion()">
+    </div>
+    <h3>Referencias</h3>
+    <ul class="referencias">
+      <li>Ciszak EM, Korotchkina LG, Dominiak PM, Sidhu S, Patel MS. (2003). Structural basis for flip-flop action of thiamin pyrophosphate-dependent enzymes revealed by human pyruvate dehydrogenase. <i>J Biol Chem</i> 278: 21240–21246. <a href="https://doi.org/10.1074/jbc.M300339200">https://doi.org/10.1074/jbc.M300339200</a></li>
+      <li>Milne JLS, Shi D, Rosenthal PB, Sunshine JS, Domingo GJ, Wu X, Brooks BR, Perham RN, Henderson R, Subramaniam S. (2002). Molecular architecture and mechanism of an icosahedral pyruvate dehydrogenase complex: a multifunctional catalytic machine. <i>EMBO J</i> 21: 5587–5598. <a href="https://doi.org/10.1093/emboj/cdf574">https://doi.org/10.1093/emboj/cdf574</a></li>
+      <li>Patel MS, Nemeria NS, Furey W, Jordan F. (2014). The pyruvate dehydrogenase complexes: structure-based function and regulation. <i>J Biol Chem</i> 289: 16615–16623. <a href="https://doi.org/10.1074/jbc.R114.563148">https://doi.org/10.1074/jbc.R114.563148</a></li>
+      <li>Perham RN. (2000). Swinging arms and swinging domains in multifunctional enzymes: catalytic machines for multistep reactions. <i>Annu Rev Biochem</i> 69: 961–1004. <a href="https://doi.org/10.1146/annurev.biochem.69.1.961">https://doi.org/10.1146/annurev.biochem.69.1.961</a></li>
+      <li>Estructuras: PDB <a href="https://www.rcsb.org/structure/6CT0">6CT0</a>, <a href="https://www.rcsb.org/structure/1NI4">1NI4</a>, <a href="https://www.rcsb.org/structure/1ZY8">1ZY8</a>, <a href="https://www.rcsb.org/structure/1FYC">1FYC</a> y <a href="https://www.rcsb.org/structure/1W85">1W85</a>.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

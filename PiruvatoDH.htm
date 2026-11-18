@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/moderno.css?v=20261116">
-<script src="js/marco.js?v=20261117d"></script>
+<script src="js/marco.js?v=20261118"></script>
 
 <title>Complejo piruvato deshidrogenasa: modelo 3D simplificado | Atlas de estructuras</title>
-<meta name="description" content="Modelo 3D simplificado del complejo piruvato deshidrogenasa humano: núcleo icosaédrico de E2 (PDB 6CT0), E1 (1NI4), E3 con E3BP (1ZY8) y dominios lipoílo (1FYC), con el recorrido del brazo de lipoamida entre los tres centros activos.">
+<meta name="description" content="Modelo 3D simplificado del complejo piruvato deshidrogenasa humano: núcleo icosaédrico de E2 (PDB 6CT0), E1 (1NI4), E3 con E3BP (1ZY8) y dominios lipoílo (1FYC).">
 <link rel="canonical" href="https://biomodels.es/PiruvatoDH.htm">
 <meta property="og:title" content="Complejo piruvato deshidrogenasa: modelo 3D simplificado">
 <meta property="og:description" content="Núcleo icosaédrico de E2, enzimas periféricas E1 y E3 y dominios lipoílo móviles del complejo piruvato deshidrogenasa humano.">
@@ -28,8 +28,10 @@
 .controles-pdc input[type="button"] { margin: 0 !important; }
 .controles-pdc label { margin-left: 4px; white-space: nowrap; }
 .miembros { margin: 4px 0 0; }
-.fila-m { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 0 0 6px; align-items: center; }
+.fila-m { display: flex; gap: 6px; margin: 0 0 6px; align-items: flex-start; }
+.fila-m .partes { display: flex; flex-wrap: wrap; gap: 4px 6px; flex: 1 1 auto; min-width: 0; }
 .fila-m input[type="button"] { margin: 0 !important; }
+.fila-m .principal { flex: 0 0 5em; width: 5em; padding-left: 0 !important; padding-right: 0 !important; }
 .fila-m .principal { background: var(--b) !important; color: var(--t) !important; border-color: var(--b) !important; font-weight: 700; min-width: 4.2em; }
 .fila-m .parte { border-left: 6px solid var(--b) !important; }
 .controles-texto { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 4px 0 10px; }
@@ -127,30 +129,8 @@
 		bp_con:   pinta(grupos(["conector_bp"]), true)
 	};
 
-	// ---------------------------------------------------------------
-	// Fichero 2: unidad catalítica (cadena principal, cofactores y
-	// residuos clave). Modelo 1: dominio lipoílo en E1; 2: en E2; 3: en E3.
-	// Cadenas: A = E2 que lleva el PSBD unido a E1; B = E3BP; C = E2;
-	// D, F = E1α; E, G = E1β; H = PSBD; I, J = E3; K = dominio de E3BP que une E3;
-	// L = dominio lipoílo con el brazo; M, N = conectores de E2; O = conector de E3BP.
-	// ---------------------------------------------------------------
-	var colorModulo = "select *; spacefill off; backbone off; cartoon only; "
-		+ "select :A or :C; color cartoon " + C.e2 + "; select :H; color cartoon " + C.psbd + "; "
-		+ "select :L; color cartoon " + C.lipoil + "; "
-		+ "select :B; color cartoon " + C.e3bp + "; select :K; color cartoon " + C.e3bd + "; "
-		+ "select :D or :F; color cartoon " + C.e1a + "; select :E or :G; color cartoon " + C.e1b + "; "
-		+ "select :I; color cartoon " + C.e3a + "; select :J; color cartoon " + C.e3b + "; "
-		+ "select :M or :N; cartoon off; backbone 0.8; color " + C.conector + "; "
-		+ "select :O; cartoon off; backbone 0.8; color " + C.conector_bp + "; "
-		+ "select [TPP] or [FAD]; spacefill on; color cpk; "
-		+ "select :L and (resno=259 and not backbone or [LPA]); spacefill 1.5; color " + C.lys + "; select :L and [LPA] and _S; color [255,240,60]; "
-		+ "select (:A or :B or :C) and resno=620 and sidechain; spacefill on; color [255,120,0]; "
-		+ "select (:I or :J) and (resno=45 or resno=50) and sidechain; spacefill on; color [255,240,60]; ";
-	var vistaM = "moveto 0 {0 0 1} 0; zoom 100; ";
-
 	var cargado = "";
 	var CARGA_C = "load ./pdb/PDC_completo.cif.gz; ";
-	var CARGA_M = "load ./pdb/PDC_modulo.pdb.gz; ";
 	var ini = "background white; set antialiasDisplay true; set zShade false; set cartoonFancy false; ";
 	function parar() {
 		var r = document.getElementById("rotacion"); if (r) r.checked = false;
@@ -167,25 +147,6 @@
 		if (cargado !== "C") { s += CARGA_C + ini + vistaC; cargado = "C"; }
 		s += escenasC[e];
 		Jmol.script(jmolApplet0, s + "select none; ");
-	}
-	function modulo(f, anim) {
-		var s = parar();
-		if (cargado !== "M") { s += CARGA_M + ini + vistaM; cargado = "M"; }
-		s += colorModulo;
-		if (anim) s += "frame 1; animation mode loop; animation fps 1; animation on; ";
-		else s += "frame " + f + "; ";
-		Jmol.script(jmolApplet0, s + "select none; ");
-		verVisor();
-	}
-	function regulacion() {
-		var s = parar();
-		if (cargado !== "M") { s += CARGA_M + ini + vistaM; cargado = "M"; }
-		s += colorModulo + "select * and not (:D or :F); color cartoon " + C.palido + "; color " + C.palido + "; "
-			+ "select [TPP]; color cpk; "
-			+ "select (:D or :F) and (resno=203 or resno=264 or resno=271) and sidechain; spacefill on; color [0,200,255]; "
-			+ "frame 1; ";
-		Jmol.script(jmolApplet0, s + "select none; ");
-		verVisor();
 	}
 </script>
 </head>
@@ -214,29 +175,37 @@
     <div class="miembros">
       <div class="fila-m">
         <input type="button" class="principal" style="--b:#c81e1e; --t:#fff" value="E1" onclick="completo('e1')">
-        <input type="button" class="parte" style="--b:#c81e1e" value="Un tetrámero α₂β₂" onclick="completo('e1_uno')">
-        <input type="button" class="parte" style="--b:#c81e1e" value="α" onclick="completo('e1_a')">
-        <input type="button" class="parte" style="--b:#f58c8c" value="β" onclick="completo('e1_b')">
+        <div class="partes">
+          <input type="button" class="parte" style="--b:#c81e1e" value="Un tetrámero α₂β₂" onclick="completo('e1_uno')">
+          <input type="button" class="parte" style="--b:#c81e1e" value="α" onclick="completo('e1_a')">
+          <input type="button" class="parte" style="--b:#f58c8c" value="β" onclick="completo('e1_b')">
+        </div>
       </div>
       <div class="fila-m">
         <input type="button" class="principal" style="--b:#1e50b4; --t:#fff" value="E2" onclick="completo('e2')">
-        <input type="button" class="parte" style="--b:#1e50b4" value="Una subunidad" onclick="completo('e2_uno')">
-        <input type="button" class="parte" style="--b:#1e50b4" value="Núcleo" onclick="completo('e2_nucleo')">
-        <input type="button" class="parte" style="--b:#468ce6" value="PSBD" onclick="completo('e2_psbd')">
-        <input type="button" class="parte" style="--b:#82beff" value="Dominios lipoílo" onclick="completo('e2_lip')">
-        <input type="button" class="parte" style="--b:#4664a0" value="Conectores" onclick="completo('e2_con')">
+        <div class="partes">
+          <input type="button" class="parte" style="--b:#1e50b4" value="Una subunidad" onclick="completo('e2_uno')">
+          <input type="button" class="parte" style="--b:#1e50b4" value="Núcleo" onclick="completo('e2_nucleo')">
+          <input type="button" class="parte" style="--b:#468ce6" value="PSBD" onclick="completo('e2_psbd')">
+          <input type="button" class="parte" style="--b:#82beff" value="Dominios lipoílo" onclick="completo('e2_lip')">
+          <input type="button" class="parte" style="--b:#4664a0" value="Conectores" onclick="completo('e2_con')">
+        </div>
       </div>
       <div class="fila-m">
         <input type="button" class="principal" style="--b:#1e8232; --t:#fff" value="E3" onclick="completo('e3')">
-        <input type="button" class="parte" style="--b:#1e8232" value="Un dímero" onclick="completo('e3_uno')">
+        <div class="partes">
+          <input type="button" class="parte" style="--b:#1e8232" value="Un dímero" onclick="completo('e3_uno')">
+        </div>
       </div>
       <div class="fila-m">
         <input type="button" class="principal" style="--b:#7d3caa; --t:#fff" value="E3BP" onclick="completo('bp')">
-        <input type="button" class="parte" style="--b:#7d3caa" value="Una subunidad" onclick="completo('bp_uno')">
-        <input type="button" class="parte" style="--b:#7d3caa" value="Núcleo" onclick="completo('bp_nucleo')">
-        <input type="button" class="parte" style="--b:#b97de1" value="Dominio de unión a E3" onclick="completo('bp_e3bd')">
-        <input type="button" class="parte" style="--b:#dcbef5" value="Dominio lipoílo" onclick="completo('bp_lip')">
-        <input type="button" class="parte" style="--b:#825aaa" value="Conectores" onclick="completo('bp_con')">
+        <div class="partes">
+          <input type="button" class="parte" style="--b:#7d3caa" value="Una subunidad" onclick="completo('bp_uno')">
+          <input type="button" class="parte" style="--b:#7d3caa" value="Núcleo" onclick="completo('bp_nucleo')">
+          <input type="button" class="parte" style="--b:#b97de1" value="Dominio de unión a E3" onclick="completo('bp_e3bd')">
+          <input type="button" class="parte" style="--b:#dcbef5" value="Dominio lipoílo" onclick="completo('bp_lip')">
+          <input type="button" class="parte" style="--b:#825aaa" value="Conectores" onclick="completo('bp_con')">
+        </div>
       </div>
     </div>
     <div class="como-se-hizo">
@@ -273,24 +242,11 @@
     <ul>
       <li><b>E1, piruvato deshidrogenasa (α<sub>2</sub>β<sub>2</sub>).</b> Con tiamina difosfato (ThDP), descarboxila el piruvato y transfiere el grupo acetilo a la lipoamida de E2, que queda acetilada y reducida.</li>
       <li><b>E2, dihidrolipoamida acetiltransferasa.</b> Transfiere el acetilo a la CoA y libera acetil-CoA. Sus dominios catalíticos forman el núcleo; cada cadena humana tiene, desde el extremo N-terminal, dos dominios lipoílo (lisinas lipoiladas 132 y 259), un dominio de unión periférico (PSBD) y el dominio catalítico, unidos por conectores flexibles (<a href="https://www.uniprot.org/uniprotkb/P10515/entry">UniProt P10515</a>).</li>
-      <li><b>E3, dihidrolipoamida deshidrogenasa.</b> Reoxida la dihidrolipoamida con el FAD y su par de cisteínas redox; el FADH<sub>2</sub> cede los electrones al NAD<sup>+</sup>. En el complejo humano, E3 se une al núcleo mediante E3BP, que es homóloga de E2 pero no tiene actividad catalítica (<a href="https://doi.org/10.1074/jbc.M507850200">Ciszak et al., 2006</a>).</li>
+      <li><b>E3, dihidrolipoamida deshidrogenasa.</b> Reoxida la dihidrolipoamida con el FAD y su par de cisteínas redox; el FADH<sub>2</sub> cede los electrones al NAD<sup>+</sup>. En el complejo humano, E3 no se une a E2 sino a E3BP (<a href="https://doi.org/10.1074/jbc.M507850200">Ciszak et al., 2006</a>).</li>
+      <li><b>E3BP, proteína de unión a E3 (proteína X, gen <i>PDHX</i>).</b> Es homóloga de E2 y tiene su misma organización, pero no tiene actividad catalítica. Su dominio C-terminal se integra en el núcleo junto a los de E2 (unas 48 cadenas de E2 y 12 de E3BP); su dominio de unión a E3 fija un dímero de E3, y tiene un dominio lipoílo (Lys97) unido por conectores flexibles. Sin E3BP, E3 no queda anclada y el complejo pierde actividad aunque E1, E2 y E3 sean normales: es la deficiencia de E3BP (<a href="https://www.uniprot.org/uniprotkb/O00330/entry">UniProt O00330</a>).</li>
     </ul>
-    <h3>El brazo de lipoamida</h3>
-    <p>El intermediario no se libera al medio: viaja unido al grupo lipoílo, que forma un enlace amida con una lisina del dominio lipoílo. La cadena de la lisina y el ácido lipoico forman un brazo largo, y los conectores del dominio, muy flexibles, le permiten visitar los centros activos de E1, E2 y E3 (<a href="https://doi.org/10.1146/annurev.biochem.69.1.961">Perham, 2000</a>). El hueco entre el núcleo y la capa externa, visible con «Corte», es el espacio por el que se mueven los dominios lipoílo (<a href="https://doi.org/10.1093/emboj/cdf574">Milne et al., 2002</a>).</p>
-    <p>Los botones siguientes muestran ese recorrido en una unidad catalítica: una cadena de E2 con su PSBD unido a E1, una cadena de E3BP con su E3 y el dominio lipoílo que se desplaza (azul claro, con el brazo amarillo). El brazo visita la ThDP de E1, la histidina catalítica de E2 (His620, naranja) y las cisteínas redox de E3 junto al FAD.</p>
-    <div class="controles-texto">
-      <input type="button" value="1. En E1" onclick="modulo(1)">
-      <input type="button" value="2. En E2" onclick="modulo(2)">
-      <input type="button" value="3. En E3" onclick="modulo(3)">
-      <input type="button" value="Animar ciclo" onclick="modulo(1, true)">
-      <input type="button" value="Volver al complejo" onclick="completo('completo'); verVisor()">
-    </div>
-    <h3>Regulación por fosforilación</h3>
-    <p>Las quinasas de la piruvato deshidrogenasa (PDK) fosforilan tres serinas de E1α e inactivan el complejo; las fosfatasas (PDP) lo reactivan (<a href="https://doi.org/10.1074/jbc.R114.563148">Patel et al., 2014</a>). En la numeración de la proteína madura son Ser264 (sitio 1), Ser271 (sitio 2) y Ser203 (sitio 3); en la del precursor, Ser293, Ser300 y Ser232 (<a href="https://www.uniprot.org/uniprotkb/P08559/entry">UniProt P08559</a>). El botón las muestra en cian en las dos subunidades E1α de la unidad catalítica.</p>
-    <div class="controles-texto">
-      <input type="button" value="Serinas reguladoras" onclick="regulacion()">
-      <input type="button" value="Volver al complejo" onclick="completo('completo'); verVisor()">
-    </div>
+    <h3>El brazo de lipoamida y la regulación</h3>
+    <p>El recorrido del brazo de lipoamida entre los centros activos de E1, E2 y E3, y la inactivación del complejo por fosforilación de E1, se explican con una unidad catalítica del complejo en una página aparte: <a href="PiruvatoDH_ciclo.htm">Brazo de lipoamida y regulación</a>.</p>
     <h3>Referencias</h3>
     <ul class="referencias">
       <li>Ciszak EM, Korotchkina LG, Dominiak PM, Sidhu S, Patel MS. (2003). Structural basis for flip-flop action of thiamin pyrophosphate-dependent enzymes revealed by human pyruvate dehydrogenase. <i>J Biol Chem</i> 278: 21240–21246. <a href="https://doi.org/10.1074/jbc.M300339200">https://doi.org/10.1074/jbc.M300339200</a></li>
@@ -298,9 +254,7 @@
       <li>Frank RAW, Titman CM, Pratap JV, Luisi BF, Perham RN. (2004). A molecular switch and proton wire synchronize the active sites in thiamine enzymes. <i>Science</i> 306: 872–876. <a href="https://doi.org/10.1126/science.1101030">https://doi.org/10.1126/science.1101030</a></li>
       <li>Howard MJ, Fuller C, Broadhurst RW, Perham RN, Tang JG, Quinn J, Diamond AG, Yeaman SJ. (1998). Three-dimensional structure of the major autoantigen in primary biliary cirrhosis. <i>Gastroenterology</i> 115: 139–146. <a href="https://doi.org/10.1016/S0016-5085(98)70375-0">https://doi.org/10.1016/S0016-5085(98)70375-0</a></li>
       <li>Jiang J, Baiesc FL, Hiromasa Y, Yu X, Hui WH, Dai X, Roche TE, Zhou ZH. (2018). Atomic structure of the E2 inner core of human pyruvate dehydrogenase complex. <i>Biochemistry</i> 57: 2325–2334. <a href="https://doi.org/10.1021/acs.biochem.8b00357">https://doi.org/10.1021/acs.biochem.8b00357</a></li>
-      <li>Milne JLS, Shi D, Rosenthal PB, Sunshine JS, Domingo GJ, Wu X, Brooks BR, Perham RN, Henderson R, Subramaniam S. (2002). Molecular architecture and mechanism of an icosahedral pyruvate dehydrogenase complex: a multifunctional catalytic machine. <i>EMBO J</i> 21: 5587–5598. <a href="https://doi.org/10.1093/emboj/cdf574">https://doi.org/10.1093/emboj/cdf574</a></li>
       <li>Patel MS, Nemeria NS, Furey W, Jordan F. (2014). The pyruvate dehydrogenase complexes: structure-based function and regulation. <i>J Biol Chem</i> 289: 16615–16623. <a href="https://doi.org/10.1074/jbc.R114.563148">https://doi.org/10.1074/jbc.R114.563148</a></li>
-      <li>Perham RN. (2000). Swinging arms and swinging domains in multifunctional enzymes: catalytic machines for multistep reactions. <i>Annu Rev Biochem</i> 69: 961–1004. <a href="https://doi.org/10.1146/annurev.biochem.69.1.961">https://doi.org/10.1146/annurev.biochem.69.1.961</a></li>
       <li>Estructuras: PDB <a href="https://www.rcsb.org/structure/6CT0">6CT0</a>, <a href="https://www.rcsb.org/structure/1NI4">1NI4</a>, <a href="https://www.rcsb.org/structure/1ZY8">1ZY8</a>, <a href="https://www.rcsb.org/structure/1FYC">1FYC</a> y <a href="https://www.rcsb.org/structure/1W85">1W85</a>.</li>
     </ul>
   </div>

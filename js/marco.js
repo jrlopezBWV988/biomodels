@@ -76,7 +76,7 @@
     { cat: "Macroestructuras", items: [
       { t: "Ribosomas", href: "ribosoma.htm" },
       { t: "Lipoproteínas", href: "Lipoproteinas.htm" },
-      { t: "Piruvato Deshidrogenasa", href: "PiruvatoDH.htm" }
+      { t: "Piruvato Deshidrogenasa", href: "PiruvatoDH.htm", sub: "pdh" }
     ]}
   ];
 
@@ -122,6 +122,13 @@
         { t: "Inmunoglobulinas G", href: "proteinas/igg.htm" },
         { t: "Plegamiento de inmunoglobulina", href: "proteinas/Igdomain.htm" },
         { t: "Unión antígeno-anticuerpo", href: "proteinas/cdrs.htm" }
+      ]
+    },
+    pdh: {
+      paginas: [],
+      enlaces: [
+        { t: "Complejo piruvato deshidrogenasa", href: "PiruvatoDH.htm" },
+        { t: "Brazo de lipoamida y regulación", href: "PiruvatoDH_ciclo.htm" }
       ]
     }
   };

@@ -46,6 +46,10 @@
 .leyenda-u { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 3px 14px; font-size: 0.88em; }
 .leyenda-u li { display: flex; align-items: center; gap: 5px; }
 .leyenda-u span { display: inline-block; width: 13px; height: 13px; border-radius: 3px; border: 1px solid #888; }
+@media (min-width: 1000px) {
+  .pdc { flex-wrap: nowrap; height: calc(100vh - 110px); }
+  .pdc .col-visor, .pdc .col-texto { height: 100%; overflow-y: auto; overscroll-behavior: contain; padding-right: 10px; }
+}
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">

@@ -37,12 +37,16 @@
 .controles-texto { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 4px 0 10px; }
 .controles-texto input[type="button"] { margin: 0 !important; }
 .pie-esquema { margin: 0 0 8px; font-size: 0.9em; color: #444; }
-.esquema-pdc { width: 100%; max-width: 520px; height: auto; display: block; margin: 6px 0 4px; }
+.esquema-pdc { width: 100%; max-width: 380px; height: auto; display: block; margin: 6px auto 4px; }
 .como-se-hizo { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line, #dbe2e9); font-size: 0.86em; font-style: italic; line-height: 1.45; color: #444; }
 .como-se-hizo h3 { margin: 0 0 6px; font-size: 1.05em; color: #6633CC; }
 .como-se-hizo p { margin: 0 0 7px; }
 .referencias { font-size: 0.9em; }
 .referencias li { margin-bottom: 4px; }
+@media (min-width: 1000px) {
+  .pdc { flex-wrap: nowrap; height: calc(100vh - 110px); }
+  .pdc .col-visor, .pdc .col-texto { height: 100%; overflow-y: auto; overscroll-behavior: contain; padding-right: 10px; }
+}
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
@@ -218,7 +222,7 @@
     <h2>Complejo piruvato deshidrogenasa humano</h2>
     <h3>Tres enzimas y un brazo móvil</h3>
     <p>El complejo piruvato deshidrogenasa, en la matriz mitocondrial, convierte el piruvato en acetil-CoA: piruvato + CoA + NAD<sup>+</sup> → acetil-CoA + CO<sub>2</sub> + NADH. Es una gran partícula formada por un núcleo de E2 y E3BP, al que se unen las enzimas E1 y E3 (<a href="https://doi.org/10.1074/jbc.R114.563148">Patel et al., 2014</a>). El núcleo de este modelo, construido con 6CT0, mide unos 24 nm de diámetro.</p>
-    <img class="esquema-pdc" src="images/PDH_reaccion.png?v=20261118" width="1100" height="712" alt="Esquema de las tres reacciones del complejo piruvato deshidrogenasa: E1 con pirofosfato de tiamina descarboxila el piruvato y libera CO2; la acetil-lipoamida pasa a E2, que libera acetil-CoA; la dihidrolipoamida pasa a E3, que con FAD reduce el NAD+ a NADH, y la lipoamida oxidada vuelve a E1.">
+    <img class="esquema-pdc" src="images/PDH_reaccion.png?v=20261118b" width="760" height="492" alt="Esquema de las tres reacciones del complejo piruvato deshidrogenasa: E1 con pirofosfato de tiamina descarboxila el piruvato y libera CO2; la acetil-lipoamida pasa a E2, que libera acetil-CoA; la dihidrolipoamida pasa a E3, que con FAD reduce el NAD+ a NADH, y la lipoamida oxidada vuelve a E1.">
     <p class="pie-esquema">Cada enzima tiene su color, el mismo que en el visor. Las flechas azules siguen al brazo lipoílo de E2, que lleva los intermediarios de un centro activo a otro.</p>
     <ul>
       <li><b>E1, piruvato deshidrogenasa (α<sub>2</sub>β<sub>2</sub>).</b> Con tiamina difosfato (ThDP), descarboxila el piruvato y transfiere el grupo acetilo a la lipoamida de E2, que queda acetilada y reducida.</li>

@@ -1,88 +1,260 @@
-<html lang="es">
-<head>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML lang="es">
+<HEAD>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../css/moderno.css?v=20261115">
 <script src="../js/marco.js?v=20261118"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
-<meta name="ProgId" content="FrontPage.Editor.Document">
-<title>Hoja beta en 3D: fibroína de la seda | Atlas de estructuras</title>
-<meta name="description" content="Modelo 3D interactivo de la hoja plegada beta antiparalela de la fibroína de la seda y sus puentes de hidrógeno.">
+<title>Hoja plegada beta en 3D: estructura secundaria | Atlas de estructuras</title>
+<meta name="description" content="Modelo 3D interactivo de la hoja plegada beta: horquilla antiparalela de la lisozima y apilamiento de hojas en la fibroína de la seda.">
 <link rel="canonical" href="https://biomodels.es/proteinas/hojabeta.htm">
-<meta property="og:title" content="Hoja beta en 3D: fibroína de la seda">
-<meta property="og:description" content="Modelo 3D interactivo de la hoja plegada beta antiparalela de la fibroína de la seda y sus puentes de hidrógeno.">
+<meta property="og:title" content="Hoja plegada beta en 3D: estructura secundaria">
+<meta property="og:description" content="Modelo 3D interactivo de la hoja plegada beta: horquilla antiparalela de la lisozima y apilamiento de hojas en la fibroína de la seda.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://biomodels.es/proteinas/hojabeta.htm">
 <meta property="og:locale" content="es_ES">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-</head>
 <font face="Tahoma">
 <script src="../jsmol/JSmol.min.js?v=20261113"></script>
 <script src="../jsmol/js/Jmol2.js?v=20261113b"></script>
-<body>
-<table width="780" cellpadding=5>
- <tr>
-    <td valign=top>
-	<CENTER>
-	<form>
+<META NAME="Author" CONTENT="Jose Ramon Lopez Lopez">
+<style>
+.hoja { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-start; max-width: 1180px; }
+.hoja .col-visor { flex: 0 1 540px; min-width: 280px; text-align: center; }
+.hoja .col-texto { flex: 1 1 380px; min-width: 280px; line-height: 1.5; }
+.hoja h1 { margin: 0 0 10px; font-size: 1.6em; color: #3333CC; text-align: center; }
+.hoja .col-visor .fila-botones { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.hoja .col-visor .fila-botones input[type="button"] { margin: 0; min-width: 140px; }
+#botonRotacion.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+.col-texto p { margin: 0 0 12px; }
+.col-texto .selector { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 14px; }
+.col-texto .selector label { font-weight: 600; }
+.col-texto .selector select { font: inherit; padding: 4px 8px; border: 1px solid var(--line, #d5dee6); border-radius: 6px; background: #fff; min-width: 230px; }
+.col-texto .descripcion { margin: 0 0 16px; }
+.col-texto .vista { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0 0 12px; }
+.col-texto .vista button { margin: 0; }
+.col-texto .vista span { flex: 1 1 180px; }
+.col-texto .modelo[hidden] { display: none; }
+.secuencia { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px; max-width: 520px; margin: 10px auto 0; }
+.secuencia button { margin: 0; padding: 3px 6px; min-width: 2.9em; font-size: 0.85em; line-height: 1.15; }
+.secuencia button .num { display: block; font-size: 0.78em; font-weight: 400; opacity: 0.75; }
+.secuencia button.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+.secuencia .extremo { font-size: 0.85em; color: var(--muted, #5a6977); }
+.medidas { border-collapse: collapse; margin: 0 0 6px; font-size: 0.9em; }
+.medidas th, .medidas td { border: 1px solid var(--line, #d5dee6); padding: 4px 8px; text-align: left; vertical-align: top; }
+.medidas thead th { background: var(--surface-soft, #eef4f8); }
+.medidas td:not(:first-child) { white-space: nowrap; }
+.nota { font-size: 0.8em; }
+.nota-medidas { font-size: 0.8em; color: var(--muted, #5a6977); margin: 0 0 16px !important; }
+.muestra { display: inline-block; width: 0.9em; height: 0.9em; border-radius: 50%; border: 1px solid #888; vertical-align: -0.1em; margin: 0 2px; }
+</style>
+<script>
+	// Esqueleto peptídico: N, Cα, C, O (y H del enlace peptídico), más los grupos acetilo y N-metilamida que bloquean los extremos
+	var BB = "(atomName='N' or atomName='CA' or atomName='C' or atomName='O' or atomName='H' or atomName='OXT' or group='ACE' or group='NME')";
+	// Cada modelo define su fichero, su centro y tres orientaciones calculadas sobre sus coordenadas:
+	//   frontal  — cadenas en vertical, hoja de frente
+	//   canto    — cadenas en horizontal, hoja vista de canto (se aprecian los pliegues)
+	//   superior — vista a lo largo de las cadenas (se aprecia el apilamiento de hojas)
+	var modelos = {
+		antiparalela: {
+			fichero: "../pdb/hoja_beta.pdb.gz?v=20261118h",
+			centro: "{12.25 18.75 22.53}",
+			frontal: "{0.1188 0.8050 0.5813 132.79}", canto: "{0.8906 0.2485 0.3809 175.04}", superior: "{-0.2210 0.9628 -0.1554 137.79}",
+			zoom: 85,
+			// Cadenas laterales que salen por cada cara de la hoja (calculadas con los Cβ respecto al plano medio)
+			arriba: "(resno=43 or resno=45 or resno=51 or resno=53)",
+			// En la vista de canto se ocultan los H para que se distingan las cadenas laterales
+			ocultarH: true,
+			abajo:  "(resno=42 or resno=44 or resno=46 or resno=50 or resno=52)",
+			secuencia: { inicio: "Ac&ndash;", fin: "&ndash;NHCH<sub>3</sub>", residuos: [
+				["Ala", 42], ["Thr", 43], ["Asn", 44], ["Arg", 45], ["Asn", 46], ["Thr", 47], ["Asp", 48],
+				["Gly", 49], ["Ser", 50], ["Thr", 51], ["Asp", 52], ["Tyr", 53], ["Gly", 54]] }
+		},
+		seda: {
+			fichero: "../pdb/2SLK.pdb.gz?v=20261118",
+			centro: "{14.69 -4.45 0.54}",
+			frontal: "{-0.3956 -0.0263 0.9181 61.00}", canto: "{-0.9279 -0.1254 -0.3510 112.34}", superior: "{-0.8497 0.3620 0.3833 124.28}",
+			zoom: 100,
+			// En la seda todas las Ala quedan en una cara y todas las Gly en la otra
+			arriba: "group=ALA", abajo: "group=GLY",
+			// Para ver los puentes de hidrógeno basta una hoja: se ocultan las otras dos
+			extras: { puentes: "select not (:A or :B or :C or :D or :E); wireframe off; hbonds off; select *" },
+			secuencia: { inicio: "(&ndash;", fin: "&ndash;)<sub>n</sub>", tipos: [["Gly", "GLY"], ["Ala", "ALA"]] }
+		}
+	};
+	var actual = "antiparalela";
+	var girando = true;
+	function orientar(o, zoom) {
+		var m = modelos[actual];
+		return "reset; center " + m.centro + "; moveto 0 " + m[o] + " " + Math.round((zoom || 1) * m.zoom) + "; ";
+	}
+	function inicial() {
+		return "background aliceblue; set showHydrogens true; select *; hbonds off; cartoons off; wireframe off; spacefill on; color cpk; " + orientar("frontal") + "set spinX 0; set spinY 20; set spinZ 0; spin on";
+	}
+	var GIRO = "set spinX 0; set spinY 20; set spinZ 0; ";
+	// Representaciones; las orientaciones se piden por nombre y se resuelven para el modelo activo
+	var vistas = {
+		esqueleto:   { s: "select *; hbonds off; cartoons off; wireframe off; spacefill on; color cpk; select " + BB + "; color [255,255,0]; select *", o: null, giro: true },
+		laterales:   { s: "select *; hbonds off; cartoons off; wireframe off; spacefill on; color [0,200,0]; select " + BB + "; color [255,255,0]; select *", o: null, giro: true },
+		varillas:    { s: "select *; hbonds off; cartoons off; spacefill 23%; wireframe 0.15; color cpk", o: null, giro: true },
+		canto:       { s: function (m) { return "select *; hbonds off; cartoons off; spacefill off; wireframe 0.15; color cpk; select " + BB + "; color [160,160,160]; select " + m.arriba + " and not " + BB + " and not atomName='HA'; color [0,190,0]; wireframe 0.25; spacefill 25%; select " + m.abajo + " and not " + BB + "; color [210,0,210]; wireframe 0.25; spacefill 25%; select atomName='CA'; color [255,140,0]; spacefill 45%; select *; set showHydrogens " + !m.ocultarH; }, o: "canto", giro: false },
+		puentes:     { s: "select *; cartoons off; spacefill off; wireframe off; color cpk; select " + BB + "; wireframe 0.15; select *; calculate hbonds; hbonds 0.06; color hbonds [0,170,0]; select not " + BB + "; hbonds off; select *", o: "frontal", giro: false },
+		pares:       { s: "select *; cartoons off; spacefill off; wireframe off; color cpk; select " + BB + "; wireframe 0.15; select *; calculate hbonds; hbonds 0.06; color hbonds [0,170,0]; select not " + BB + "; hbonds off; select *; select (resno=44 or resno=52) and " + BB + "; wireframe 0.3; color [255,140,0]; select (resno=43 or resno=45 or resno=51 or resno=53) and " + BB + "; wireframe 0.3; color [200,0,200]; select *", o: "frontal", giro: false },
+		caras:       { s: "select *; hbonds off; cartoons off; wireframe off; spacefill on; color [205,205,205]; select group=GLY and not " + BB + "; color [60,150,255]; select group=ALA and not " + BB + " and not atomName='HA'; color [255,140,0]; select group=ACE or group=NME; spacefill off; select *", o: "superior", giro: false },
+		hojas:       { s: "select *; hbonds off; cartoons off; wireframe off; spacefill on; select :A or :B or :C or :D or :E; color [70,110,230]; select :F or :G or :H or :I or :J; color [220,60,60]; select :K or :L or :M or :N or :O; color [230,180,0]; select group=ACE or group=NME; spacefill off; select *", o: "superior", giro: false },
+		convencional:{ s: "select *; wireframe off; hbonds off; spacefill off; cartoons on; color structure", o: "frontal", giro: true }
+	};
+	function marcarRotacion() {
+		var b = document.getElementById("botonRotacion");
+		b.value = girando ? "Detener rotación" : "Activar rotación";
+		b.classList.toggle("activo", girando);
+	}
+	function ver(nombre) {
+		var v = vistas[nombre];
+		girando = v.giro;
+		var o = v.o ? orientar(v.o) : "";
+		var extra = (modelos[actual].extras || {})[nombre] || "";
+		var guion = typeof v.s === "function" ? v.s(modelos[actual]) : v.s;
+		Jmol.script(jmolApplet0, "spin off; set showHydrogens true; " + o + guion + "; " + extra + "; " + GIRO + (girando ? "spin on" : ""));
+		limpiarSecuencia();
+		marcarRotacion();
+	}
+	function rotacion() {
+		girando = !girando;
+		Jmol.script(jmolApplet0, girando ? GIRO + "spin on" : "spin off");
+		marcarRotacion();
+	}
+	// Resalta un aminoácido (o todos los de un tipo) en colores CPK y deja el resto en gris claro, sin cambiar la vista
+	function residuo(sel, boton) {
+		limpiarSecuencia();
+		boton.classList.add("activo");
+		Jmol.script(jmolApplet0, "select *; color [211,211,211]; select " + sel + "; color cpk; select *");
+	}
+	function limpiarSecuencia() {
+		document.querySelectorAll(".secuencia button").forEach(function (b) { b.classList.remove("activo"); });
+	}
+	function pintarSecuencia() {
+		var s = modelos[actual].secuencia, h = '<span class="extremo">' + s.inicio + '</span>';
+		if (s.residuos) s.residuos.forEach(function (r) {
+			h += '<button type="button" onclick="residuo(\'resno=' + r[1] + '\', this)">' + r[0] + '<span class="num">' + r[1] + '</span></button>';
+		});
+		else s.tipos.forEach(function (r) {
+			h += '<button type="button" onclick="residuo(\'group=' + r[1] + '\', this)">' + r[0] + '</button>';
+		});
+		document.getElementById("secuencia").innerHTML = h + '<span class="extremo">' + s.fin + '</span>';
+	}
+	function imagenOriginal() {
+		girando = true;
+		Jmol.script(jmolApplet0, "spin off; " + inicial());
+		limpiarSecuencia();
+		marcarRotacion();
+	}
+	function cambiarModelo(m) {
+		actual = m;
+		document.querySelectorAll(".modelo").forEach(function (d) { d.hidden = d.getAttribute("data-modelo") !== m; });
+		pintarSecuencia();
+		girando = true;
+		Jmol.script(jmolApplet0, "spin off; zap; load " + modelos[m].fichero + "; " + inicial());
+		marcarRotacion();
+	}
+</script>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<div class="hoja">
+	<div class="col-visor">
+		<h1>Hoja plegada beta</h1>
 		<script>
-		  jmolInitialize("../jsmol/js");
-		  jmolSetParameter("UseCommandThread","true");
-		  jmolApplet(420, "load ../pdb/hoja_beta.pdb.gz; moveTo 0 -816 -349 461 76.8; background aliceblue; spacefill on; spin on");
-		  jmolBr();
-		  jmolBr();
-		  jmolButton("moveTo 0 -816 -349 461 76.8; background aliceblue; select *; spacefill on; color cpk; spin on", "imagen original");
-		  </script>
-		</form>
-	</CENTER>
-	</td>
-    <td valign="top">
-       <font SIZE="5" COLOR="#3333CC" face="Tahoma"><b>Hoja plegada beta</b></font>
-	   <hr>
-	   <P>
-	   <B>
-	   <script>
-	  jmolRadioGroup([
-		  ["load ../pdb/silk.pdb.gz; moveTo 0 -816 -349 461 76.8; background aliceblue; spacefill on; spin on",  "Fibro&iacute;na de la seda"],
-		  ["load ../pdb/hoja_beta.pdb.gz; moveTo 0 -816 -349 461 76.8; background aliceblue; spacefill on; spin on",  "Hoja beta (fragmento del enzima Lisozima)", "checked"]
-		]);
-	  </script>
-	  </B>
-	  <BR>
-	  <I>(La fibro&iacute;na de la seda est&aacute; formada por polp&eacute;ptidos con la secuencia<br>
-        </span><span style="mso-color-index: 3"><font color="#3333CC">(-Gly-ser-Gly-Ala-Gly-Ala-)<span style="mso-color-index: 3; position: relative; top: .37em; mso-text-raise: -25%">n</span></font></span><span style="color: black; mso-color-index: 3"><span style="mso-spacerun: yes; color: black; mso-color-index: 3">&nbsp;</span>plegados
-        en hojas beta antiparalelas)</span></b></font></I>
-	<hr>
-	<P>
-	<script>
-		jmolButton("spin on;select *;hbonds off;cartoons off; color cpk; spacefill on; select backbone; spacefill on;color [255,255,0]", "x");
-	</script>
-	Esqueleto Pept&iacute;dico en amarillo
-	<P>
-	<script>
-		jmolButton("spin on;select *;hbonds off;cartoons off; spacefill on; color [0,255,0];select backbone;spacefill on;color [255,255,0]", "x");
-	</script>
-	Esqueleto Pept&iacute;dico en amarillo y cadenas laterales en verde
-	<script>
-		jmolButton("spin on;select *;hbonds off; cartoons off; spacefill off; wireframe 60;color [0,255,0];select backbone;color [255,255,0]", "x");
-	</script>
-	(modelo de varillas)  
-	<P>  
-	<script>
-		jmolButton("spin on;select *;hbonds calculate;cartoons off; spacefill off; wireframe off; color cpk;  select backbone; wireframe 60", "x");
-	</script>
-	Los puentes de hidrogeno (trazos punteados) se establecen entre el CO y el NH de los enlaces pept&iacute;dicos de las cadenas antiparalelas
-	 <P>  
-	<script>
-		jmolButton("spin on;select *;hbonds off;wireframe off;hbonds off; spacefill off;cartoons on; color structure", "x");
-	</script>
-	Representaci&oacute;n convencional
-	</td>
-</tr>
-</table>
-</body>
-</html>
+			jmolInitialize("../jsmol/js");
+			// En pantallas estrechas el visor se ajusta al ancho disponible
+			var lado = Math.max(280, Math.min(520, document.documentElement.clientWidth - 32));
+			jmolApplet([lado, lado], "load " + modelos[actual].fichero + "; " + inicial());
+		</script>
+		<div class="fila-botones">
+			<input type="button" id="botonInicial" value="Imagen original" onclick="imagenOriginal()">
+			<input type="button" id="botonRotacion" class="activo" value="Detener rotaci&oacute;n" onclick="rotacion()">
+		</div>
+		<div class="secuencia" id="secuencia"></div>
+		<script>pintarSecuencia();</script>
+	</div>
+	<div class="col-texto">
+		<div class="selector">
+			<label for="modelo">Modelo:</label>
+			<select id="modelo" onchange="cambiarModelo(this.value)">
+				<option value="antiparalela" selected>Hoja beta antiparalela</option>
+				<option value="paralela" disabled>Hoja beta paralela (en preparaci&oacute;n)</option>
+				<option value="seda">Fibro&iacute;na de la seda</option>
+			</select>
+		</div>
+		<p class="descripcion">La hoja plegada beta es una estructura secundaria de las proteínas en la que varios tramos de cadena polipeptídica casi totalmente extendidos (<b>cadenas β</b>) se disponen uno junto a otro. A diferencia de la hélice alfa, los puentes de hidrógeno se establecen entre el CO y el NH de cadenas <b>vecinas</b>, no dentro de la misma cadena. Las cadenas pueden avanzar en sentidos opuestos (hoja <b>antiparalela</b>) o en el mismo sentido (hoja <b>paralela</b>).</p>
+		<p><b>¿Por qué «plegada»?</b> La hoja no es plana: vista de canto tiene forma de <b>acordeón</b> o de papel plegado. Cada enlace peptídico es un plano rígido, y dos planos consecutivos se unen en un C&alpha; formando un ángulo. Así, los C&alpha; ocupan alternativamente las crestas y los valles de los <b>dobleces</b>. La cadena lateral de cada aminoácido sale de su C&alpha; casi perpendicular a la hoja y, como los dobleces alternan, las cadenas laterales también alternan: una <b>por encima</b> del plano, la siguiente <b>por debajo</b>, y así sucesivamente. Dos aminoácidos consecutivos quedan a 3,5&nbsp;&Aring; a lo largo de la cadena, en caras opuestas; los que están en la misma cara se repiten cada 7&nbsp;&Aring;.</p>
+
+		<div class="modelo" data-modelo="antiparalela">
+			<p>El modelo es una <b>horquilla β</b> de la lisozima de clara de huevo de gallina (<a href="https://www.rcsb.org/structure/1HEL" target="_blank" rel="noopener">PDB 1HEL</a>, residuos 42&ndash;54): dos cadenas β (43&ndash;46 y 50&ndash;53) unidas por un giro de tres residuos (47&ndash;49) forman la hoja antiparalela más sencilla posible. Los extremos se han bloqueado con un grupo acetilo y otro N-metilamida, tomados de los residuos 41 y 55, para que el fragmento no tenga cargas terminales artificiales, y se han añadido los hidrógenos a pH 7.</p>
+			<table class="medidas">
+				<thead><tr><th>Medida</th><th>Hoja &beta; antiparalela t&iacute;pica</th><th>Este modelo</th></tr></thead>
+				<tbody>
+					<tr><td>Sentido de las cadenas</td><td>opuesto</td><td>opuesto</td></tr>
+					<tr><td>Avance por amino&aacute;cido</td><td>3,5 &Aring;</td><td>3,3 &Aring;</td></tr>
+					<tr><td>Repetici&oacute;n (dos amino&aacute;cidos)</td><td>7,0 &Aring;</td><td>6,6 &Aring;</td></tr>
+					<tr><td>Distancia entre cadenas vecinas</td><td>4,7 &Aring;</td><td>4,6 &Aring;</td></tr>
+				</tbody>
+			</table>
+			<p class="nota-medidas">Valores t&iacute;picos: <a href="https://doi.org/10.1073/pnas.39.4.253" target="_blank" rel="noopener">Pauling y Corey (1953)</a> para avance y distancias. Valores del modelo calculados sobre los C&alpha; de las cadenas 43&ndash;46 y 50&ndash;53. En las proteínas las cadenas β son cortas y están algo retorcidas, por lo que se apartan de los valores ideales.</p>
+		</div>
+
+		<div class="modelo" data-modelo="seda" hidden>
+			<p>La fibroína de la seda del gusano <i>Bombyx mori</i> está formada en gran parte por repeticiones <b>(&ndash;Gly&ndash;Ala&ndash;Gly&ndash;Ala&ndash;Gly&ndash;Ser&ndash;)<sub>n</sub></b> plegadas en hojas β antiparalelas. Como las cadenas laterales se alternan a uno y otro lado de cada cadena β, todas las glicinas quedan en una cara de la hoja y todas las alaninas (o serinas) en la otra. Las hojas se apilan cara de Gly contra cara de Gly y cara de Ala contra cara de Ala. El modelo (<a href="https://doi.org/10.1002/bip.360311309" target="_blank" rel="noopener">Fossey et al., 1991</a>; PDB 2SLK, modelo teórico de la seda II) simplifica la secuencia a poli(Ala&ndash;Gly) y contiene tres hojas de cinco cadenas Ac&ndash;(Ala&ndash;Gly)<sub>3</sub>&ndash;NHCH<sub>3</sub>.</p>
+			<table class="medidas">
+				<thead><tr><th>Medida</th><th>Fibro&iacute;na (seda II)</th><th>Este modelo</th></tr></thead>
+				<tbody>
+					<tr><td>Sentido de las cadenas</td><td>opuesto</td><td>opuesto</td></tr>
+					<tr><td>Avance por amino&aacute;cido</td><td>3,5 &Aring;</td><td>3,5 &Aring;</td></tr>
+					<tr><td>Repetici&oacute;n (dos amino&aacute;cidos)</td><td>7,0 &Aring;</td><td>7,1 &Aring;</td></tr>
+					<tr><td>Distancia entre cadenas vecinas</td><td>4,7 &Aring;</td><td>4,7 &Aring;</td></tr>
+					<tr><td>Distancia entre hojas, caras Gly</td><td>3,5 &Aring;</td><td>3,6 &Aring;</td></tr>
+					<tr><td>Distancia entre hojas, caras Ala</td><td>5,7 &Aring;</td><td>5,0 &Aring;</td></tr>
+				</tbody>
+			</table>
+			<p class="nota-medidas">Valores t&iacute;picos: <a href="https://doi.org/10.1073/pnas.39.4.253" target="_blank" rel="noopener">Pauling y Corey (1953)</a> y <a href="https://doi.org/10.1016/0006-3002(55)90178-5" target="_blank" rel="noopener">Marsh, Corey y Pauling (1955)</a> (distancias entre hojas). Valores del modelo calculados sobre los C&alpha;; la distancia entre hojas es la separaci&oacute;n entre los planos medios de sus C&alpha;.</p>
+		</div>
+
+		<div class="vista"><button type="button" onclick="ver('esqueleto')">Esqueleto pept&iacute;dico</button>
+			<span>Esqueleto pept&iacute;dico en amarillo; cadenas laterales en colores CPK.</span></div>
+		<div class="vista"><button type="button" onclick="ver('laterales')">Cadenas laterales</button>
+			<span>Esqueleto en amarillo y cadenas laterales en verde.</span></div>
+		<div class="vista"><button type="button" onclick="ver('varillas')">Esferas y varillas</button></div>
+		<div class="vista"><button type="button" onclick="ver('canto')">Hoja plegada</button>
+			<span>Hoja vista de canto: esqueleto en gris, C&alpha; en <span class="muestra" style="background:#ff8c00"></span>naranja y cadenas laterales de una cara en <span class="muestra" style="background:#00be00"></span>verde y de la otra en <span class="muestra" style="background:#d200d2"></span>magenta.</span></div>
+		<div class="modelo" data-modelo="antiparalela">
+			<p class="nota">El esqueleto dibuja un zigzag con un C&alpha; en cada doblez. En cada cadena β las cadenas laterales alternan arriba (Thr43, Arg45; Thr51, Tyr53) y abajo (Ala42, Asn44, Asn46; Ser50, Asp52). En la hoja antiparalela, los residuos enfrentados de cadenas vecinas salen por la misma cara: Thr43 y Tyr53 hacia arriba, Asn44 y Asp52 hacia abajo.</p>
+		</div>
+		<div class="modelo" data-modelo="seda" hidden>
+			<p class="nota">En cada hoja el esqueleto dibuja un zigzag con un C&alpha; en cada doblez. Como la secuencia alterna Gly y Ala, en cada hoja todas las alaninas (CH<sub>3</sub>, verde) salen por una cara y todas las glicinas (un H, magenta) por la otra. La hoja central está invertida respecto a las otras dos: sus alaninas miran hacia abajo, a las de la hoja inferior, y sus glicinas hacia arriba, a las de la hoja superior.</p>
+		</div>
+		<div class="vista"><button type="button" onclick="ver('puentes')">Puentes de hidr&oacute;geno</button>
+			<span>Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH de cadenas vecinas aparecen como trazos verdes.</span></div>
+
+		<div class="modelo" data-modelo="antiparalela">
+			<div class="vista"><button type="button" onclick="ver('pares')">Pares enfrentados</button>
+				<span>Asn44&ndash;Asp52 en <span class="muestra" style="background:#ff8c00"></span>naranja; Thr43&ndash;Tyr53 y Arg45&ndash;Thr51 en <span class="muestra" style="background:#c800c8"></span>magenta.</span></div>
+			<p class="nota">En la hoja antiparalela los puentes de hidr&oacute;geno son casi lineales y se agrupan por pares. Los residuos enfrentados alternan entre pares <b>estrechos</b>, unidos entre s&iacute; por dos puentes de hidr&oacute;geno (Asn44&ndash;Asp52), y pares <b>anchos</b>, sin puentes entre ellos, cuyos NH y CO apuntan hacia fuera y se unir&iacute;an a una tercera cadena de la hoja. En la horquilla, el puente entre el NH de Asn46 y el CO de Ser50 cierra el giro.</p>
+		</div>
+
+		<div class="modelo" data-modelo="seda" hidden>
+			<div class="vista"><button type="button" onclick="ver('caras')">Caras Gly y Ala</button>
+				<span>Vista a lo largo de las cadenas, con el esqueleto en gris: cadena lateral de Gly (un H) en <span class="muestra" style="background:#3c96ff"></span>azul y de Ala (CH<sub>3</sub>) en <span class="muestra" style="background:#ff8c00"></span>naranja.</span></div>
+			<div class="vista"><button type="button" onclick="ver('hojas')">Tres hojas apiladas</button>
+				<span>Cada hoja en un color.</span></div>
+			<p class="nota">Las caras de glicina, con un simple H como cadena lateral, se acercan mucho (&asymp;3,5 &Aring;); las de alanina, con su grupo metilo, quedan m&aacute;s separadas (&asymp;5,7 &Aring;). Las hojas solo se mantienen unidas por interacciones de van der Waals. Las cadenas ya est&aacute;n casi completamente extendidas y unidas por enlaces covalentes a lo largo de la fibra, por lo que la seda apenas se estira, pero es flexible.</p>
+		</div>
+
+		<div class="vista"><button type="button" onclick="ver('convencional')">Representaci&oacute;n convencional</button>
+			<span>Cada cadena β se dibuja como una flecha que apunta hacia el extremo carboxilo.</span></div>
+	</div>
+</div>
+</font>
+</BODY>
+</HTML>

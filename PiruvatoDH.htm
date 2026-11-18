@@ -27,10 +27,13 @@
 .controles-pdc { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 4px 0 4px; align-items: center; }
 .controles-pdc input[type="button"] { margin: 0 !important; }
 .controles-pdc label { margin-left: 4px; white-space: nowrap; }
-.leyenda-pdc { margin: 8px 0 0; font-size: 0.93em; }
-.leyenda-pdc .fila { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 2px 0; }
-.leyenda-pdc .fila b { min-width: 3.6em; }
-.leyenda-pdc .fila span::before { content: ""; display: inline-block; width: 0.85em; height: 0.85em; margin-right: 5px; border-radius: 50%; background: var(--c); vertical-align: -0.08em; border: 1px solid rgba(0,0,0,.25); }
+.miembros { margin: 4px 0 0; }
+.fila-m { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 0 0 6px; align-items: center; }
+.fila-m input[type="button"] { margin: 0 !important; }
+.fila-m .principal { background: var(--b) !important; color: var(--t) !important; border-color: var(--b) !important; font-weight: 700; min-width: 4.2em; }
+.fila-m .parte { border-left: 6px solid var(--b) !important; }
+.controles-texto { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 4px 0 10px; }
+.controles-texto input[type="button"] { margin: 0 !important; }
 .pie-esquema { margin: 0 0 8px; font-size: 0.9em; color: #444; }
 .esquema-pdc { width: 100%; max-width: 520px; height: auto; display: block; margin: 6px 0 4px; }
 .como-se-hizo { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line, #dbe2e9); font-size: 0.86em; font-style: italic; line-height: 1.45; color: #444; }
@@ -49,52 +52,96 @@
 	// Fichero 1: complejo completo (solo Cα). Cada componente ocupa un
 	// intervalo continuo de números de átomo (atomno).
 	// ---------------------------------------------------------------
+	// ---------------------------------------------------------------
+	// Fichero 1: complejo completo (solo Cα). Cada componente ocupa un
+	// intervalo continuo de números de átomo (atomno).
+	// ---------------------------------------------------------------
 	var R = {
-		e2: "atomno>=1 and atomno<=10992", psbd: "atomno>=10993 and atomno<=11832",
-		lip: "atomno>=11833 and atomno<=15864", con: "atomno>=15865 and atomno<=16658",
-		e3bp: "atomno>=16659 and atomno<=19406", e3bd: "atomno>=19407 and atomno<=19934",
-		lipbp: "atomno>=19935 and atomno<=20942", conbp: "atomno>=20943 and atomno<=21302",
-		e1a: "atomno>=21303 and atomno<=35302", e1b: "atomno>=35303 and atomno<=47982",
-		e3: "atomno>=47983 and atomno<=59358", lys: "atomno>=59359 and atomno<=59418"
+		e2: "atomno>=1 and atomno<=10992",
+		psbd: "atomno>=10993 and atomno<=13008",
+		lipoil: "atomno>=13009 and atomno<=21072",
+		lys: "atomno>=21073 and atomno<=21168",
+		conector: "atomno>=21169 and atomno<=22598",
+		e3bp: "atomno>=22599 and atomno<=25346",
+		e3bd: "atomno>=25347 and atomno<=25874",
+		lipoil_bp: "atomno>=25875 and atomno<=26882",
+		lys_bp: "atomno>=26883 and atomno<=26894",
+		conector_bp: "atomno>=26895 and atomno<=27251",
+		e1a: "atomno>=27252 and atomno<=41251",
+		e1b: "atomno>=41252 and atomno<=53931",
+		e3a: "atomno>=53932 and atomno<=59619",
+		e3b: "atomno>=59620 and atomno<=65307"
 	};
-	// Una gama de color por proteína: E1 rojos, E2 azules, E3 verde, E3BP violetas.
+	// Ejemplos individuales (los situados más cerca del observador en la vista inicial)
+	var EJ = {
+		e2: {e2: "(atomno>=1833 and atomno<=2061)", psbd: "(atomno>=11329 and atomno<=11370)", lipoil: "(atomno>=14353 and atomno<=14436) or (atomno>=14437 and atomno<=14520)", lys: "(atomno>=21089 and atomno<=21089) or (atomno>=21090 and atomno<=21090)", conector: "(atomno>=21411 and atomno<=21419) or (atomno>=21420 and atomno<=21430) or (atomno>=21431 and atomno<=21446)"},
+		e3bp: {e3bp: "(atomno>=23057 and atomno<=23285)", e3bd: "(atomno>=25435 and atomno<=25478)", lipoil_bp: "(atomno>=26043 and atomno<=26126)", lys_bp: "(atomno>=26885 and atomno<=26885)", conector_bp: "(atomno>=26953 and atomno<=26964) or (atomno>=26965 and atomno<=26982)"},
+		e1: {e1a: "(atomno>=34252 and atomno<=34601) or (atomno>=34602 and atomno<=34951)", e1b: "(atomno>=47592 and atomno<=47908) or (atomno>=47909 and atomno<=48225)"},
+		e3: {e3a: "(atomno>=56776 and atomno<=57249)", e3b: "(atomno>=62464 and atomno<=62937)"}
+	};
+	// Una gama de color por proteína: E1 rojos, E2 azules, E3 verdes, E3BP violetas.
 	var C = {
 		e1a: "[200,30,30]", e1b: "[245,140,140]",
-		e2: "[30,80,180]", psbd: "[70,140,230]", lip: "[130,190,255]", con: "[100,125,175]",
-		e3: "[40,150,60]",
-		e3bp: "[125,60,170]", e3bd: "[185,125,225]", lipbp: "[220,190,245]", conbp: "[150,115,180]",
-		lys: "[255,200,0]", gris: "[215,215,215]"
+		e2: "[30,80,180]", psbd: "[70,140,230]", lipoil: "[130,190,255]", conector: "[70,100,160]",
+		e3a: "[30,130,50]", e3b: "[120,200,120]",
+		e3bp: "[125,60,170]", e3bd: "[185,125,225]", lipoil_bp: "[220,190,245]", conector_bp: "[130,90,170]",
+		lys: "[255,200,0]", lys_bp: "[255,200,0]", palido: "[236,236,236]"
 	};
-	var colorCompleto = "";
-	for (var k in R) colorCompleto += "select " + R[k] + "; color " + C[k] + "; ";
-	var cuentas = "select *; spacefill 3.2; select " + R.con + " or " + R.conbp + "; spacefill 1.6; select " + R.lys + "; spacefill 3.4; ";
-	var gris = cuentas + "select *; color " + C.gris + "; ";
-	function col(lista) { var t = ""; for (var i = 0; i < lista.length; i++) t += "select " + R[lista[i]] + "; color " + C[lista[i]] + "; "; return t; }
+	var CONECTORES = ["conector", "conector_bp"];
+	function esConector(g) { return CONECTORES.indexOf(g) >= 0; }
+	// Dibuja los grupos indicados (g: selección) en su color; el resto, en gris muy pálido.
+	// Dominios en esferas (Cα); conectores como líneas continuas.
+	function pinta(sel, resto) {
+		var s = "slab off; select *; display *; spacefill off; backbone off; trace off; cartoon off; ";
+		if (resto) s += "select *; backbone 0.4; color " + C.palido + "; ";
+		for (var g in sel) {
+			s += "select " + sel[g] + "; ";
+			if (esConector(g)) s += "spacefill off; backbone 1.0; color " + C[g] + "; ";
+			else s += "backbone off; spacefill " + (g.indexOf("lys") === 0 ? "3.4" : "3.2") + "; color " + C[g] + "; ";
+		}
+		return s;
+	}
+	function grupos(lista) { var o = {}; for (var i = 0; i < lista.length; i++) o[lista[i]] = R[lista[i]]; return o; }
+	var TODO = ["e2", "psbd", "lipoil", "lys", "conector", "e3bp", "e3bd", "lipoil_bp", "lys_bp", "conector_bp", "e1a", "e1b", "e3a", "e3b"];
 	var vistaC = "moveto 0 {0 0 1} 0; zoom 100; ";
 	var escenasC = {
-		completo: "slab off; select *; display *; " + cuentas + colorCompleto,
-		nucleo:   "slab off; select *; display " + R.e2 + " or " + R.e3bp + "; " + cuentas + colorCompleto,
-		periferia: "slab off; select *; display *; " + gris + col(["e1a", "e1b", "e3"]),
-		e2:       "slab off; select *; display *; " + gris + col(["e2", "psbd", "lip", "con", "lys"]),
-		lipoilo:  "slab off; select *; display *; " + gris + col(["lip", "con", "lipbp", "conbp", "lys"]),
-		corte:    "select *; display *; " + cuentas + colorCompleto + "slab on; slab 50; depth 0; "
+		completo: pinta(grupos(TODO), false) + vistaC,
+		corte:    pinta(grupos(TODO), false) + "slab on; slab 50; depth 0; ",
+		e1:       pinta(grupos(["e1a", "e1b"]), true),
+		e1_uno:   pinta(EJ.e1, true) + vistaC,
+		e1_a:     pinta(grupos(["e1a"]), true),
+		e1_b:     pinta(grupos(["e1b"]), true),
+		e2:       pinta(grupos(["e2", "psbd", "lipoil", "lys", "conector"]), true),
+		e2_uno:   pinta(EJ.e2, true) + vistaC,
+		e2_nucleo: pinta(grupos(["e2"]), true),
+		e2_psbd:  pinta(grupos(["psbd"]), true),
+		e2_lip:   pinta(grupos(["lipoil", "lys"]), true),
+		e2_con:   pinta(grupos(["conector"]), true),
+		e3:       pinta(grupos(["e3a", "e3b"]), true),
+		e3_uno:   pinta(EJ.e3, true) + vistaC,
+		bp:       pinta(grupos(["e3bp", "e3bd", "lipoil_bp", "lys_bp", "conector_bp"]), true),
+		bp_uno:   pinta(EJ.e3bp, true) + vistaC,
+		bp_nucleo: pinta(grupos(["e3bp"]), true),
+		bp_e3bd:  pinta(grupos(["e3bd"]), true),
+		bp_lip:   pinta(grupos(["lipoil_bp", "lys_bp"]), true),
+		bp_con:   pinta(grupos(["conector_bp"]), true)
 	};
 
 	// ---------------------------------------------------------------
 	// Fichero 2: unidad catalítica (cadena principal, cofactores y
 	// residuos clave). Modelo 1: dominio lipoílo en E1; 2: en E2; 3: en E3.
 	// Cadenas: A = E2 que lleva el PSBD unido a E1; B = E3BP; C = E2;
-	// D, F = E1α; E, G = E1β; H = PSBD; I, J = E3; K = E3BD de E3BP;
-	// L = dominio lipoílo con el brazo; M, N = conectores.
+	// D, F = E1α; E, G = E1β; H = PSBD; I, J = E3; K = dominio de E3BP que une E3;
+	// L = dominio lipoílo con el brazo; M, N = conectores de E2; O = conector de E3BP.
 	// ---------------------------------------------------------------
-	var colorModulo = "select *; cartoon only; "
+	var colorModulo = "select *; spacefill off; backbone off; cartoon only; "
 		+ "select :A or :C; color cartoon " + C.e2 + "; select :H; color cartoon " + C.psbd + "; "
-		+ "select :L; color cartoon " + C.lip + "; "
+		+ "select :L; color cartoon " + C.lipoil + "; "
 		+ "select :B; color cartoon " + C.e3bp + "; select :K; color cartoon " + C.e3bd + "; "
 		+ "select :D or :F; color cartoon " + C.e1a + "; select :E or :G; color cartoon " + C.e1b + "; "
-		+ "select :I or :J; color cartoon " + C.e3 + "; "
-		+ "select :M and *.CA; cartoon off; spacefill 1.4; color " + C.con + "; "
-		+ "select :N and *.CA; cartoon off; spacefill 1.4; color " + C.conbp + "; "
+		+ "select :I; color cartoon " + C.e3a + "; select :J; color cartoon " + C.e3b + "; "
+		+ "select :M or :N; cartoon off; backbone 0.8; color " + C.conector + "; "
+		+ "select :O; cartoon off; backbone 0.8; color " + C.conector_bp + "; "
 		+ "select [TPP] or [FAD]; spacefill on; color cpk; "
 		+ "select :L and (resno=259 and not backbone or [LPA]); spacefill 1.5; color " + C.lys + "; select :L and [LPA] and _S; color [255,240,60]; "
 		+ "select (:A or :B or :C) and resno=620 and sidechain; spacefill on; color [255,120,0]; "
@@ -109,32 +156,36 @@
 		var r = document.getElementById("rotacion"); if (r) r.checked = false;
 		return "spin off; if (_animating) { animation off; delay 1.1; } animation off; ";
 	}
+	// Si el visor no está a la vista (por ejemplo, en el móvil), desplaza la página hasta él.
+	function verVisor() {
+		var v = document.getElementById("visor"); if (!v) return;
+		var r = v.getBoundingClientRect();
+		if (r.top < 0 || r.bottom > window.innerHeight) v.scrollIntoView({ behavior: "smooth", block: "start" });
+	}
 	function completo(e) {
 		var s = parar();
-		if (cargado !== "C") { s += CARGA_C + ini + escenasC[e] + vistaC; cargado = "C"; }
-		else s += escenasC[e];
+		if (cargado !== "C") { s += CARGA_C + ini + vistaC; cargado = "C"; }
+		s += escenasC[e];
 		Jmol.script(jmolApplet0, s + "select none; ");
 	}
 	function modulo(f, anim) {
 		var s = parar();
-		if (cargado !== "M") { s += CARGA_M + ini + colorModulo + vistaM; cargado = "M"; }
-		else s += colorModulo;
+		if (cargado !== "M") { s += CARGA_M + ini + vistaM; cargado = "M"; }
+		s += colorModulo;
 		if (anim) s += "frame 1; animation mode loop; animation fps 1; animation on; ";
 		else s += "frame " + f + "; ";
 		Jmol.script(jmolApplet0, s + "select none; ");
+		verVisor();
 	}
 	function regulacion() {
 		var s = parar();
 		if (cargado !== "M") { s += CARGA_M + ini + vistaM; cargado = "M"; }
-		s += colorModulo + "select * and not (:D or :F); color cartoon " + C.gris + "; "
-			+ "select (:A or :B or :C) and resno=620 and sidechain; color " + C.gris + "; "
+		s += colorModulo + "select * and not (:D or :F); color cartoon " + C.palido + "; color " + C.palido + "; "
+			+ "select [TPP]; color cpk; "
 			+ "select (:D or :F) and (resno=203 or resno=264 or resno=271) and sidechain; spacefill on; color [0,200,255]; "
 			+ "frame 1; ";
 		Jmol.script(jmolApplet0, s + "select none; ");
-	}
-	function vistaInicial() {
-		cargado = "";
-		completo("completo");
+		verVisor();
 	}
 </script>
 </head>
@@ -143,46 +194,55 @@
 <div class="pdc">
   <div class="col-visor">
     <h2>Complejo piruvato deshidrogenasa humano</h2>
+    <div id="visor">
     <script>
       jmolInitialize("./jsmol/js");
       Jmol.Info.j2sPath = "./jsmol/j2s";   // árbol j2s completo: incluye el lector mmCIF
       jmolSetParameter("UseCommandThread", "true");
       cargado = "C";
       jmolApplet(Math.max(280, Math.min(520, document.documentElement.clientWidth - 32)),
-        CARGA_C + ini + escenasC.completo + vistaC + "select none; ");
+        CARGA_C + ini + escenasC.completo + "select none; ");
     </script>
+    </div>
     <div class="grupo-pdc">Complejo completo</div>
     <div class="controles-pdc">
       <input type="button" value="Complejo" onclick="completo('completo')">
-      <input type="button" value="Núcleo E2/E3BP" onclick="completo('nucleo')">
-      <input type="button" value="E2" onclick="completo('e2')">
-      <input type="button" value="E1 y E3" onclick="completo('periferia')">
-      <input type="button" value="Dominios lipoílo" onclick="completo('lipoilo')">
       <input type="button" value="Corte" onclick="completo('corte')">
-    </div>
-    <div class="grupo-pdc">Unidad catalítica: recorrido del brazo de lipoamida</div>
-    <div class="controles-pdc">
-      <input type="button" value="1. En E1" onclick="modulo(1)">
-      <input type="button" value="2. En E2" onclick="modulo(2)">
-      <input type="button" value="3. En E3" onclick="modulo(3)">
-      <input type="button" value="Animar ciclo" onclick="modulo(1, true)">
-      <input type="button" value="Serinas reguladoras" onclick="regulacion()">
-    </div>
-    <div class="controles-pdc">
-      <input type="button" value="Vista inicial" onclick="vistaInicial()">
       <label><input type="checkbox" id="rotacion" onclick="Jmol.script(jmolApplet0, this.checked ? 'set spinY 15; spin on' : 'spin off')"> Rotación</label>
     </div>
-    <div class="leyenda-pdc">
-      <div class="fila"><b>E1</b><span style="--c:#c81e1e">α</span><span style="--c:#f58c8c">β</span></div>
-      <div class="fila"><b>E2</b><span style="--c:#1e50b4">núcleo</span><span style="--c:#468ce6">PSBD</span><span style="--c:#82beff">dominios lipoílo</span><span style="--c:#647daf">conectores</span></div>
-      <div class="fila"><b>E3</b><span style="--c:#28963c">dímero</span></div>
-      <div class="fila"><b>E3BP</b><span style="--c:#7d3caa">núcleo</span><span style="--c:#b97de1">dominio de unión a E3</span><span style="--c:#dcbef5">dominio lipoílo</span><span style="--c:#9673b4">conectores</span></div>
-      <div class="fila"><b>Brazo</b><span style="--c:#ffc800">lisina lipoilada</span></div>
+    <div class="grupo-pdc">Componentes del complejo</div>
+    <div class="miembros">
+      <div class="fila-m">
+        <input type="button" class="principal" style="--b:#c81e1e; --t:#fff" value="E1" onclick="completo('e1')">
+        <input type="button" class="parte" style="--b:#c81e1e" value="Un tetrámero α₂β₂" onclick="completo('e1_uno')">
+        <input type="button" class="parte" style="--b:#c81e1e" value="α" onclick="completo('e1_a')">
+        <input type="button" class="parte" style="--b:#f58c8c" value="β" onclick="completo('e1_b')">
+      </div>
+      <div class="fila-m">
+        <input type="button" class="principal" style="--b:#1e50b4; --t:#fff" value="E2" onclick="completo('e2')">
+        <input type="button" class="parte" style="--b:#1e50b4" value="Una subunidad" onclick="completo('e2_uno')">
+        <input type="button" class="parte" style="--b:#1e50b4" value="Núcleo" onclick="completo('e2_nucleo')">
+        <input type="button" class="parte" style="--b:#468ce6" value="PSBD" onclick="completo('e2_psbd')">
+        <input type="button" class="parte" style="--b:#82beff" value="Dominios lipoílo" onclick="completo('e2_lip')">
+        <input type="button" class="parte" style="--b:#4664a0" value="Conectores" onclick="completo('e2_con')">
+      </div>
+      <div class="fila-m">
+        <input type="button" class="principal" style="--b:#1e8232; --t:#fff" value="E3" onclick="completo('e3')">
+        <input type="button" class="parte" style="--b:#1e8232" value="Un dímero" onclick="completo('e3_uno')">
+      </div>
+      <div class="fila-m">
+        <input type="button" class="principal" style="--b:#7d3caa; --t:#fff" value="E3BP" onclick="completo('bp')">
+        <input type="button" class="parte" style="--b:#7d3caa" value="Una subunidad" onclick="completo('bp_uno')">
+        <input type="button" class="parte" style="--b:#7d3caa" value="Núcleo" onclick="completo('bp_nucleo')">
+        <input type="button" class="parte" style="--b:#b97de1" value="Dominio de unión a E3" onclick="completo('bp_e3bd')">
+        <input type="button" class="parte" style="--b:#dcbef5" value="Dominio lipoílo" onclick="completo('bp_lip')">
+        <input type="button" class="parte" style="--b:#825aaa" value="Conectores" onclick="completo('bp_con')">
+      </div>
     </div>
     <div class="como-se-hizo">
       <h3>Cómo se ha hecho el modelo</h3>
       <p>Las piezas son estructuras humanas: el núcleo de 60 dominios catalíticos de E2 (PDB 6CT0, criomicroscopía electrónica, generado con la simetría icosaédrica depositada), E1 α<sub>2</sub>β<sub>2</sub> con tiamina difosfato (1NI4), el dímero de E3 con FAD unido al dominio de E3BP que lo fija (1ZY8) y el dominio lipoílo interno de E2 (1FYC, RMN). No hay estructura humana de E1 unida al dominio periférico de E2 (PSBD): ese dominio y su posición se tomaron del complejo bacteriano de <i>Geobacillus stearothermophilus</i> (1W85), superponiendo la E1 bacteriana sobre la humana (1,2 Å de desviación en 908 Cα).</p>
-      <p>La disposición es un esquema: se colocaron 20 E1 sobre los ejes ternarios y 12 E3 sobre los ejes quinarios del núcleo, con el mismo hueco para todas, y se colorearon como E3BP 12 subunidades del núcleo, una por cara pentagonal, para anclar las E3. En el complejo real las enzimas periféricas son móviles, su número varía y E3BP no ocupa posiciones idénticas a E2. Se muestra un solo dominio lipoílo por cadena; las posiciones de estos dominios, los conectores y el brazo de lipoamida (Lys259 y el grupo lipoílo como seudoátomos) son ilustrativos. El complejo completo muestra solo los Cα; la unidad catalítica, la cadena principal, los cofactores y algunos residuos clave.</p>
+      <p>La disposición es un esquema: se colocaron 20 E1 sobre los ejes ternarios y 12 E3 sobre los ejes quinarios del núcleo, con el mismo hueco para todas, y se colorearon como E3BP 12 subunidades del núcleo, una por cara pentagonal, para anclar las E3. En el complejo real las enzimas periféricas son móviles, su número varía y E3BP no ocupa posiciones idénticas a E2. Cada cadena de E2 tiene sus dos dominios lipoílo (ambos con el plegamiento de 1FYC) y su PSBD, aunque solo 20 PSBD están unidos a E1; cada cadena de E3BP tiene un dominio lipoílo. Las posiciones de los dominios libres, los conectores y el brazo de lipoamida (Lys259 y el grupo lipoílo como seudoátomos) son ilustrativos; en la unidad catalítica solo se muestra el dominio lipoílo que se desplaza. El complejo completo muestra solo los Cα; la unidad catalítica, la cadena principal, los cofactores y algunos residuos clave.</p>
     </div>
   </div>
 
@@ -216,9 +276,21 @@
       <li><b>E3, dihidrolipoamida deshidrogenasa.</b> Reoxida la dihidrolipoamida con el FAD y su par de cisteínas redox; el FADH<sub>2</sub> cede los electrones al NAD<sup>+</sup>. En el complejo humano, E3 se une al núcleo mediante E3BP, que es homóloga de E2 pero no tiene actividad catalítica (<a href="https://doi.org/10.1074/jbc.M507850200">Ciszak et al., 2006</a>).</li>
     </ul>
     <h3>El brazo de lipoamida</h3>
-    <p>El intermediario no se libera al medio: viaja unido al grupo lipoílo, que forma un enlace amida con una lisina del dominio lipoílo. La cadena de la lisina y el ácido lipoico forman un brazo largo, y los conectores del dominio, muy flexibles, le permiten visitar los centros activos de E1, E2 y E3 (<a href="https://doi.org/10.1146/annurev.biochem.69.1.961">Perham, 2000</a>). Los botones 1–3 muestran ese recorrido en una sola unidad: el dominio lipoílo de una cadena de E2 (azul claro, con el brazo amarillo) visita la ThDP de E1, la histidina catalítica de E2 (His620, naranja) y las cisteínas redox de E3 junto al FAD. El hueco entre el núcleo y la capa externa, visible con «Corte», es el espacio por el que se mueven los dominios lipoílo (<a href="https://doi.org/10.1093/emboj/cdf574">Milne et al., 2002</a>).</p>
+    <p>El intermediario no se libera al medio: viaja unido al grupo lipoílo, que forma un enlace amida con una lisina del dominio lipoílo. La cadena de la lisina y el ácido lipoico forman un brazo largo, y los conectores del dominio, muy flexibles, le permiten visitar los centros activos de E1, E2 y E3 (<a href="https://doi.org/10.1146/annurev.biochem.69.1.961">Perham, 2000</a>). El hueco entre el núcleo y la capa externa, visible con «Corte», es el espacio por el que se mueven los dominios lipoílo (<a href="https://doi.org/10.1093/emboj/cdf574">Milne et al., 2002</a>).</p>
+    <p>Los botones siguientes muestran ese recorrido en una unidad catalítica: una cadena de E2 con su PSBD unido a E1, una cadena de E3BP con su E3 y el dominio lipoílo que se desplaza (azul claro, con el brazo amarillo). El brazo visita la ThDP de E1, la histidina catalítica de E2 (His620, naranja) y las cisteínas redox de E3 junto al FAD.</p>
+    <div class="controles-texto">
+      <input type="button" value="1. En E1" onclick="modulo(1)">
+      <input type="button" value="2. En E2" onclick="modulo(2)">
+      <input type="button" value="3. En E3" onclick="modulo(3)">
+      <input type="button" value="Animar ciclo" onclick="modulo(1, true)">
+      <input type="button" value="Volver al complejo" onclick="completo('completo'); verVisor()">
+    </div>
     <h3>Regulación por fosforilación</h3>
-    <p>Las quinasas de la piruvato deshidrogenasa (PDK) fosforilan tres serinas de E1α e inactivan el complejo; las fosfatasas (PDP) lo reactivan (<a href="https://doi.org/10.1074/jbc.R114.563148">Patel et al., 2014</a>). En la numeración de la proteína madura son Ser264 (sitio 1), Ser271 (sitio 2) y Ser203 (sitio 3); en la del precursor, Ser293, Ser300 y Ser232 (<a href="https://www.uniprot.org/uniprotkb/P08559/entry">UniProt P08559</a>). El botón «Serinas reguladoras» las muestra en cian en las dos subunidades E1α.</p>
+    <p>Las quinasas de la piruvato deshidrogenasa (PDK) fosforilan tres serinas de E1α e inactivan el complejo; las fosfatasas (PDP) lo reactivan (<a href="https://doi.org/10.1074/jbc.R114.563148">Patel et al., 2014</a>). En la numeración de la proteína madura son Ser264 (sitio 1), Ser271 (sitio 2) y Ser203 (sitio 3); en la del precursor, Ser293, Ser300 y Ser232 (<a href="https://www.uniprot.org/uniprotkb/P08559/entry">UniProt P08559</a>). El botón las muestra en cian en las dos subunidades E1α de la unidad catalítica.</p>
+    <div class="controles-texto">
+      <input type="button" value="Serinas reguladoras" onclick="regulacion()">
+      <input type="button" value="Volver al complejo" onclick="completo('completo'); verVisor()">
+    </div>
     <h3>Referencias</h3>
     <ul class="referencias">
       <li>Ciszak EM, Korotchkina LG, Dominiak PM, Sidhu S, Patel MS. (2003). Structural basis for flip-flop action of thiamin pyrophosphate-dependent enzymes revealed by human pyruvate dehydrogenase. <i>J Biol Chem</i> 278: 21240–21246. <a href="https://doi.org/10.1074/jbc.M300339200">https://doi.org/10.1074/jbc.M300339200</a></li>

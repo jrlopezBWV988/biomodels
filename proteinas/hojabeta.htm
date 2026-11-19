@@ -193,11 +193,18 @@
 				<option value="seda">Fibro&iacute;na de la seda</option>
 			</select>
 		</div>
-		<p class="descripcion">La hoja plegada beta es una estructura secundaria de las proteínas en la que varios tramos de cadena polipeptídica casi totalmente extendidos (<b>cadenas β</b>) se disponen uno junto a otro. A diferencia de la hélice alfa, los puentes de hidrógeno se establecen entre el CO y el NH de cadenas <b>vecinas</b>, no dentro de la misma cadena. Las cadenas pueden avanzar en sentidos opuestos (hoja <b>antiparalela</b>) o en el mismo sentido (hoja <b>paralela</b>).</p>
-		<p><b>¿Por qué «plegada»?</b> La hoja no es plana: vista de canto tiene forma de <b>acordeón</b> o de papel plegado. Cada enlace peptídico es un plano rígido, y dos planos consecutivos se unen en un C&alpha; formando un ángulo. Así, los C&alpha; ocupan alternativamente las crestas y los valles de los <b>dobleces</b>. La cadena lateral de cada aminoácido sale de su C&alpha; casi perpendicular a la hoja y, como los dobleces alternan, las cadenas laterales también alternan: una <b>por encima</b> del plano, la siguiente <b>por debajo</b>, y así sucesivamente. Dos aminoácidos consecutivos quedan a 3,5&nbsp;&Aring; a lo largo de la cadena, en caras opuestas; los que están en la misma cara se repiten cada 7&nbsp;&Aring;.</p>
-
 		<div class="modelo" data-modelo="antiparalela">
-			<p>El modelo es una <b>horquilla β</b> de la lisozima de clara de huevo de gallina (<a href="https://www.rcsb.org/structure/1HEL" target="_blank" rel="noopener">PDB 1HEL</a>, residuos 42&ndash;54): dos cadenas β (43&ndash;46 y 50&ndash;53) unidas por un giro de tres residuos (47&ndash;49) forman la hoja antiparalela más sencilla posible. Es solo un fragmento de la proteína: las <b>líneas de puntos</b> del principio y del final siguen el recorrido real de la cadena de la lisozima, que continúa por ambos lados. Se han añadido los hidrógenos a pH 7, con los extremos tratados como enlaces peptídicos y no como extremos amino y carboxilo libres.</p>
+			<p>El modelo es un fragmento de la lisozima de clara de huevo de gallina (<a href="https://www.rcsb.org/structure/1HEL" target="_blank" rel="noopener">PDB 1HEL</a>) en el que dos cadenas β forman una <b>hoja antiparalela</b>. Las <b>líneas de puntos</b> de los extremos indican que la cadena de la proteína continúa por ambos lados.</p>
+			<p class="descripcion">La hoja plegada beta es una estructura secundaria de las proteínas en la que varios tramos de cadena polipeptídica casi totalmente extendidos (<b>cadenas β</b>) se disponen uno junto a otro. A diferencia de la hélice alfa, los puentes de hidrógeno se establecen entre el CO y el NH de cadenas <b>vecinas</b>, no dentro de la misma cadena. Las cadenas pueden avanzar en sentidos opuestos (hoja <b>antiparalela</b>) o en el mismo sentido (hoja <b>paralela</b>).</p>
+			<div class="vista"><button type="button" onclick="ver('puentes')">Puentes de hidr&oacute;geno</button>
+				<span>Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH de cadenas vecinas aparecen como trazos verdes.</span></div>
+			<div class="vista"><button type="button" onclick="ver('pares')">Pares enfrentados</button>
+				<span>Asn44&ndash;Asp52 en <span class="muestra" style="background:#ff8c00"></span>naranja; Thr43&ndash;Tyr53 y Arg45&ndash;Thr51 en <span class="muestra" style="background:#c800c8"></span>magenta.</span></div>
+			<p class="nota">En la hoja antiparalela los puentes de hidr&oacute;geno son casi lineales y se agrupan por pares. Los residuos enfrentados alternan entre pares <b>estrechos</b>, unidos entre s&iacute; por dos puentes de hidr&oacute;geno (Asn44&ndash;Asp52), y pares <b>anchos</b>, sin puentes entre ellos, cuyos NH y CO apuntan hacia fuera y se unir&iacute;an a una tercera cadena de la hoja. En la horquilla, el puente entre el NH de Asn46 y el CO de Ser50 cierra el giro.</p>
+			<p><b>¿Por qué «plegada»?</b> La hoja no es plana: vista de canto tiene forma de <b>acordeón</b> o de papel plegado. Cada enlace peptídico es un plano rígido, y dos planos consecutivos se unen en un C&alpha; formando un ángulo. Así, los C&alpha; ocupan alternativamente las crestas y los valles de los <b>dobleces</b>. La cadena lateral de cada aminoácido sale de su C&alpha; casi perpendicular a la hoja y, como los dobleces alternan, las cadenas laterales también alternan: una <b>por encima</b> del plano, la siguiente <b>por debajo</b>, y así sucesivamente. Dos aminoácidos consecutivos quedan a 3,5&nbsp;&Aring; a lo largo de la cadena, en caras opuestas; los que están en la misma cara se repiten cada 7&nbsp;&Aring;.</p>
+			<div class="vista"><button type="button" onclick="ver('canto')">Hoja plegada</button>
+				<span>Hoja vista de canto: esqueleto en gris, C&alpha; en <span class="muestra" style="background:#ff8c00"></span>naranja y cadenas laterales de una cara en <span class="muestra" style="background:#00be00"></span>verde y de la otra en <span class="muestra" style="background:#d200d2"></span>magenta.</span></div>
+			<p class="nota">El esqueleto dibuja un zigzag con un C&alpha; en cada doblez. En cada cadena β las cadenas laterales alternan arriba (Thr43, Arg45; Thr51, Tyr53) y abajo (Ala42, Asn44, Asn46; Ser50, Asp52). En la hoja antiparalela, los residuos enfrentados de cadenas vecinas salen por la misma cara: Thr43 y Tyr53 hacia arriba, Asn44 y Asp52 hacia abajo.</p>
 			<table class="medidas">
 				<thead><tr><th>Medida</th><th>Hoja &beta; antiparalela t&iacute;pica</th><th>Este modelo</th></tr></thead>
 				<tbody>
@@ -211,6 +218,8 @@
 		</div>
 
 		<div class="modelo" data-modelo="seda" hidden>
+			<p class="descripcion">La hoja plegada beta es una estructura secundaria de las proteínas en la que varios tramos de cadena polipeptídica casi totalmente extendidos (<b>cadenas β</b>) se disponen uno junto a otro. A diferencia de la hélice alfa, los puentes de hidrógeno se establecen entre el CO y el NH de cadenas <b>vecinas</b>, no dentro de la misma cadena. Las cadenas pueden avanzar en sentidos opuestos (hoja <b>antiparalela</b>) o en el mismo sentido (hoja <b>paralela</b>).</p>
+			<p><b>¿Por qué «plegada»?</b> La hoja no es plana: vista de canto tiene forma de <b>acordeón</b> o de papel plegado. Cada enlace peptídico es un plano rígido, y dos planos consecutivos se unen en un C&alpha; formando un ángulo. Así, los C&alpha; ocupan alternativamente las crestas y los valles de los <b>dobleces</b>. La cadena lateral de cada aminoácido sale de su C&alpha; casi perpendicular a la hoja y, como los dobleces alternan, las cadenas laterales también alternan: una <b>por encima</b> del plano, la siguiente <b>por debajo</b>, y así sucesivamente. Dos aminoácidos consecutivos quedan a 3,5&nbsp;&Aring; a lo largo de la cadena, en caras opuestas; los que están en la misma cara se repiten cada 7&nbsp;&Aring;.</p>
 			<p>La fibroína de la seda del gusano <i>Bombyx mori</i> está formada en gran parte por repeticiones <b>(&ndash;Gly&ndash;Ala&ndash;Gly&ndash;Ala&ndash;Gly&ndash;Ser&ndash;)<sub>n</sub></b> plegadas en hojas β antiparalelas. Como las cadenas laterales se alternan a uno y otro lado de cada cadena β, todas las glicinas quedan en una cara de la hoja y todas las alaninas (o serinas) en la otra. Las hojas se apilan cara de Gly contra cara de Gly y cara de Ala contra cara de Ala. El modelo (<a href="https://doi.org/10.1002/bip.360311309" target="_blank" rel="noopener">Fossey et al., 1991</a>; PDB 2SLK, modelo teórico de la seda II) simplifica la secuencia a poli(Ala&ndash;Gly) y contiene tres hojas de cinco cadenas Ac&ndash;(Ala&ndash;Gly)<sub>3</sub>&ndash;NHCH<sub>3</sub>.</p>
 			<table class="medidas">
 				<thead><tr><th>Medida</th><th>Fibro&iacute;na (seda II)</th><th>Este modelo</th></tr></thead>
@@ -224,31 +233,16 @@
 				</tbody>
 			</table>
 			<p class="nota-medidas">Valores t&iacute;picos: <a href="https://doi.org/10.1073/pnas.39.4.253" target="_blank" rel="noopener">Pauling y Corey (1953)</a> y <a href="https://doi.org/10.1016/0006-3002(55)90178-5" target="_blank" rel="noopener">Marsh, Corey y Pauling (1955)</a> (distancias entre hojas). Valores del modelo calculados sobre los C&alpha;; la distancia entre hojas es la separaci&oacute;n entre los planos medios de sus C&alpha;.</p>
-		</div>
-
-		<div class="vista"><button type="button" onclick="ver('esqueleto')">Esqueleto pept&iacute;dico</button>
-			<span>Esqueleto pept&iacute;dico en amarillo; cadenas laterales en colores CPK.</span></div>
-		<div class="vista"><button type="button" onclick="ver('laterales')">Cadenas laterales</button>
-			<span>Esqueleto en amarillo y cadenas laterales en verde.</span></div>
-		<div class="vista"><button type="button" onclick="ver('varillas')">Esferas y varillas</button></div>
-		<div class="vista"><button type="button" onclick="ver('canto')">Hoja plegada</button>
-			<span>Hoja vista de canto: esqueleto en gris, C&alpha; en <span class="muestra" style="background:#ff8c00"></span>naranja y cadenas laterales de una cara en <span class="muestra" style="background:#00be00"></span>verde y de la otra en <span class="muestra" style="background:#d200d2"></span>magenta.</span></div>
-		<div class="modelo" data-modelo="antiparalela">
-			<p class="nota">El esqueleto dibuja un zigzag con un C&alpha; en cada doblez. En cada cadena β las cadenas laterales alternan arriba (Thr43, Arg45; Thr51, Tyr53) y abajo (Ala42, Asn44, Asn46; Ser50, Asp52). En la hoja antiparalela, los residuos enfrentados de cadenas vecinas salen por la misma cara: Thr43 y Tyr53 hacia arriba, Asn44 y Asp52 hacia abajo.</p>
-		</div>
-		<div class="modelo" data-modelo="seda" hidden>
+			<div class="vista"><button type="button" onclick="ver('esqueleto')">Esqueleto pept&iacute;dico</button>
+				<span>Esqueleto pept&iacute;dico en amarillo; cadenas laterales en colores CPK.</span></div>
+			<div class="vista"><button type="button" onclick="ver('laterales')">Cadenas laterales</button>
+				<span>Esqueleto en amarillo y cadenas laterales en verde.</span></div>
+			<div class="vista"><button type="button" onclick="ver('varillas')">Esferas y varillas</button></div>
+			<div class="vista"><button type="button" onclick="ver('canto')">Hoja plegada</button>
+				<span>Hoja vista de canto: esqueleto en gris, C&alpha; en <span class="muestra" style="background:#ff8c00"></span>naranja y cadenas laterales de una cara en <span class="muestra" style="background:#00be00"></span>verde y de la otra en <span class="muestra" style="background:#d200d2"></span>magenta.</span></div>
 			<p class="nota">En cada hoja el esqueleto dibuja un zigzag con un C&alpha; en cada doblez. Como la secuencia alterna Gly y Ala, en cada hoja todas las alaninas (CH<sub>3</sub>, verde) salen por una cara y todas las glicinas (un H, magenta) por la otra. La hoja central está invertida respecto a las otras dos: sus alaninas miran hacia abajo, a las de la hoja inferior, y sus glicinas hacia arriba, a las de la hoja superior.</p>
-		</div>
-		<div class="vista"><button type="button" onclick="ver('puentes')">Puentes de hidr&oacute;geno</button>
-			<span>Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH de cadenas vecinas aparecen como trazos verdes.</span></div>
-
-		<div class="modelo" data-modelo="antiparalela">
-			<div class="vista"><button type="button" onclick="ver('pares')">Pares enfrentados</button>
-				<span>Asn44&ndash;Asp52 en <span class="muestra" style="background:#ff8c00"></span>naranja; Thr43&ndash;Tyr53 y Arg45&ndash;Thr51 en <span class="muestra" style="background:#c800c8"></span>magenta.</span></div>
-			<p class="nota">En la hoja antiparalela los puentes de hidr&oacute;geno son casi lineales y se agrupan por pares. Los residuos enfrentados alternan entre pares <b>estrechos</b>, unidos entre s&iacute; por dos puentes de hidr&oacute;geno (Asn44&ndash;Asp52), y pares <b>anchos</b>, sin puentes entre ellos, cuyos NH y CO apuntan hacia fuera y se unir&iacute;an a una tercera cadena de la hoja. En la horquilla, el puente entre el NH de Asn46 y el CO de Ser50 cierra el giro.</p>
-		</div>
-
-		<div class="modelo" data-modelo="seda" hidden>
+			<div class="vista"><button type="button" onclick="ver('puentes')">Puentes de hidr&oacute;geno</button>
+				<span>Esqueleto pept&iacute;dico en colores CPK; los puentes de hidr&oacute;geno entre el CO y el NH de cadenas vecinas aparecen como trazos verdes.</span></div>
 			<div class="vista"><button type="button" onclick="ver('caras')">Caras Gly y Ala</button>
 				<span>Vista a lo largo de las cadenas, con el esqueleto en gris: cadena lateral de Gly (un H) en <span class="muestra" style="background:#3c96ff"></span>azul y de Ala (CH<sub>3</sub>) en <span class="muestra" style="background:#ff8c00"></span>naranja.</span></div>
 			<div class="vista"><button type="button" onclick="ver('hojas')">Tres hojas apiladas</button>

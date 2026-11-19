@@ -41,6 +41,8 @@
 .secuencia button { margin: 0; padding: 3px 6px; min-width: 2.9em; font-size: 0.85em; line-height: 1.15; }
 .secuencia button .num { display: block; font-size: 0.78em; font-weight: 400; opacity: 0.75; }
 .secuencia button.activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+.secuencia.horquilla { display: grid; grid-template-columns: repeat(8, auto); justify-content: center; gap: 4px; }
+.secuencia.horquilla .extremo { justify-self: end; align-self: center; }
 .secuencia .extremo { font-size: 0.85em; color: var(--muted, #5a6977); }
 .medidas { border-collapse: collapse; margin: 0 0 6px; font-size: 0.9em; }
 .medidas th, .medidas td { border: 1px solid var(--line, #d5dee6); padding: 4px 8px; text-align: left; vertical-align: top; }
@@ -73,7 +75,11 @@
 			extraInicial: "hide group=ACE or group=NME; draw ini0 width 0.25 {7.67 13.99 14.37} color [110,110,110]; draw ini1 width 0.25 {7.83 13.47 14.42} color [110,110,110]; draw ini2 width 0.25 {7.57 13.06 14.31} color [110,110,110]; draw ini3 width 0.25 {7.20 12.67 14.16} color [110,110,110]; draw ini4 width 0.25 {6.83 12.32 14.01} color [110,110,110]; draw ini5 width 0.25 {6.35 12.51 13.83} color [110,110,110]; draw ini6 width 0.25 {5.87 12.71 13.66} color [110,110,110]; draw ini7 width 0.25 {5.41 12.86 13.70} color [110,110,110]; draw ini8 width 0.25 {4.97 12.95 14.02} color [110,110,110]; draw ini9 width 0.25 {4.54 13.04 14.35} color [110,110,110]; draw ini10 width 0.25 {4.07 13.20 14.12} color [110,110,110]; draw ini11 width 0.25 {3.61 13.37 13.88} color [110,110,110]; draw ini12 width 0.25 {3.23 13.54 13.59} color [110,110,110]; draw ini13 width 0.25 {3.31 13.75 13.09} color [110,110,110]; draw ini14 width 0.25 {3.39 13.95 12.58} color [110,110,110]; draw ini15 width 0.25 {3.56 14.28 12.28} color [110,110,110]; draw ini16 width 0.25 {3.83 14.75 12.22} color [110,110,110]; draw ini17 width 0.25 {4.10 15.22 12.14} color [110,110,110]; draw ini18 width 0.25 {4.16 15.40 11.63} color [110,110,110]; draw ini19 width 0.25 {4.22 15.59 11.12} color [110,110,110]; draw fin0 width 0.25 {3.30 16.52 16.74} color [110,110,110]; draw fin1 width 0.25 {2.80 16.46 16.52} color [110,110,110]; draw fin2 width 0.25 {2.52 16.79 16.22} color [110,110,110]; draw fin3 width 0.25 {2.27 17.17 15.90} color [110,110,110]; draw fin4 width 0.25 {2.07 17.58 15.76} color [110,110,110]; draw fin5 width 0.25 {2.00 18.06 16.02} color [110,110,110]; draw fin6 width 0.25 {1.93 18.54 16.28} color [110,110,110]; draw fin7 width 0.25 {1.86 18.73 16.70} color [110,110,110]; draw fin8 width 0.25 {1.81 18.70 17.24} color [110,110,110]; draw fin9 width 0.25 {1.75 18.75 17.75} color [110,110,110]; draw fin10 width 0.25 {1.69 19.20 18.05} color [110,110,110]; draw fin11 width 0.25 {1.62 19.66 18.35} color [110,110,110]; draw fin12 width 0.25 {1.81 19.93 18.66} color [110,110,110]; draw fin13 width 0.25 {2.23 20.04 19.00} color [110,110,110]; draw fin14 width 0.25 {2.66 20.15 19.33} color [110,110,110]; draw fin15 width 0.25 {3.10 19.92 19.33} color [110,110,110]; draw fin16 width 0.25 {3.55 19.61 19.25} color [110,110,110]; draw fin17 width 0.25 {4.01 19.49 19.32} color [110,110,110]; draw fin18 width 0.25 {4.48 19.60 19.58} color [110,110,110]; draw fin19 width 0.25 {4.94 19.71 19.85} color [110,110,110]; ",
 			secuencia: { inicio: "&middot;&middot;&middot;&ndash;", fin: "&ndash;&middot;&middot;&middot;", residuos: [
 				["Ala", 42], ["Thr", 43], ["Asn", 44], ["Arg", 45], ["Asn", 46], ["Thr", 47], ["Asp", 48],
-				["Gly", 49], ["Ser", 50], ["Thr", 51], ["Asp", 52], ["Tyr", 53], ["Gly", 54]] }
+				["Gly", 49], ["Ser", 50], ["Thr", 51], ["Asp", 52], ["Tyr", 53], ["Gly", 54]],
+				// Disposición en horquilla: [fila, columna] de cada residuo; la segunda cadena va de derecha a izquierda
+				horquilla: { inicio: [1, 1], fin: [3, 1], finTexto: "&middot;&middot;&middot;&ndash;",
+					42: [1, 2], 43: [1, 3], 44: [1, 4], 45: [1, 5], 46: [1, 6], 47: [1, 7], 48: [2, 8],
+					49: [3, 7], 50: [3, 6], 51: [3, 5], 52: [3, 4], 53: [3, 3], 54: [3, 2] } }
 		},
 		seda: {
 			fichero: "../pdb/2SLK.pdb.gz?v=20261118",
@@ -139,14 +145,17 @@
 		document.querySelectorAll(".secuencia button").forEach(function (b) { b.classList.remove("activo"); });
 	}
 	function pintarSecuencia() {
-		var s = modelos[actual].secuencia, h = '<span class="extremo">' + s.inicio + '</span>';
+		var s = modelos[actual].secuencia, c = document.getElementById("secuencia"), g = s.horquilla, h;
+		var pos = function (p) { return g ? ' style="grid-row:' + p[0] + ';grid-column:' + p[1] + '"' : ""; };
+		h = '<span class="extremo"' + (g ? pos(g.inicio) : "") + '>' + s.inicio + '</span>';
 		if (s.residuos) s.residuos.forEach(function (r) {
-			h += '<button type="button" onclick="residuo(\'resno=' + r[1] + '\', this)">' + r[0] + '<span class="num">' + r[1] + '</span></button>';
+			h += '<button type="button"' + (g ? pos(g[r[1]]) : "") + ' onclick="residuo(\'resno=' + r[1] + '\', this)">' + r[0] + '<span class="num">' + r[1] + '</span></button>';
 		});
 		else s.tipos.forEach(function (r) {
 			h += '<button type="button" onclick="residuo(\'group=' + r[1] + '\', this)">' + r[0] + '</button>';
 		});
-		document.getElementById("secuencia").innerHTML = h + '<span class="extremo">' + s.fin + '</span>';
+		c.className = g ? "secuencia horquilla" : "secuencia";
+		c.innerHTML = h + '<span class="extremo"' + (g ? pos(g.fin) : "") + '>' + (g ? g.finTexto : s.fin) + '</span>';
 	}
 	function imagenOriginal() {
 		girando = true;
@@ -218,8 +227,6 @@
 		</div>
 
 		<div class="modelo" data-modelo="seda" hidden>
-			<p class="descripcion">La hoja plegada beta es una estructura secundaria de las proteínas en la que varios tramos de cadena polipeptídica casi totalmente extendidos (<b>cadenas β</b>) se disponen uno junto a otro. A diferencia de la hélice alfa, los puentes de hidrógeno se establecen entre el CO y el NH de cadenas <b>vecinas</b>, no dentro de la misma cadena. Las cadenas pueden avanzar en sentidos opuestos (hoja <b>antiparalela</b>) o en el mismo sentido (hoja <b>paralela</b>).</p>
-			<p><b>¿Por qué «plegada»?</b> La hoja no es plana: vista de canto tiene forma de <b>acordeón</b> o de papel plegado. Cada enlace peptídico es un plano rígido, y dos planos consecutivos se unen en un C&alpha; formando un ángulo. Así, los C&alpha; ocupan alternativamente las crestas y los valles de los <b>dobleces</b>. La cadena lateral de cada aminoácido sale de su C&alpha; casi perpendicular a la hoja y, como los dobleces alternan, las cadenas laterales también alternan: una <b>por encima</b> del plano, la siguiente <b>por debajo</b>, y así sucesivamente. Dos aminoácidos consecutivos quedan a 3,5&nbsp;&Aring; a lo largo de la cadena, en caras opuestas; los que están en la misma cara se repiten cada 7&nbsp;&Aring;.</p>
 			<p>La fibroína de la seda del gusano <i>Bombyx mori</i> está formada en gran parte por repeticiones <b>(&ndash;Gly&ndash;Ala&ndash;Gly&ndash;Ala&ndash;Gly&ndash;Ser&ndash;)<sub>n</sub></b> plegadas en hojas β antiparalelas. Como las cadenas laterales se alternan a uno y otro lado de cada cadena β, todas las glicinas quedan en una cara de la hoja y todas las alaninas (o serinas) en la otra. Las hojas se apilan cara de Gly contra cara de Gly y cara de Ala contra cara de Ala. El modelo (<a href="https://doi.org/10.1002/bip.360311309" target="_blank" rel="noopener">Fossey et al., 1991</a>; PDB 2SLK, modelo teórico de la seda II) simplifica la secuencia a poli(Ala&ndash;Gly) y contiene tres hojas de cinco cadenas Ac&ndash;(Ala&ndash;Gly)<sub>3</sub>&ndash;NHCH<sub>3</sub>.</p>
 			<table class="medidas">
 				<thead><tr><th>Medida</th><th>Fibro&iacute;na (seda II)</th><th>Este modelo</th></tr></thead>

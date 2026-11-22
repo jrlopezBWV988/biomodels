@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test de monosacáridos: modelo 3D y proyección de Fischer | Atlas de estructuras</title>
+<meta name="description" content="Test interactivo: identifique la proyección de Fischer que corresponde al modelo 3D de un monosacárido, de las triosas a las hexosas.">
+<link rel="canonical" href="https://biomodels.es/Test-glucidos.htm">
+<meta property="og:title" content="Test de monosacáridos: modelo 3D y proyección de Fischer">
+<meta property="og:description" content="Test interactivo: identifique la proyección de Fischer que corresponde al modelo 3D de un monosacárido, de las triosas a las hexosas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/Test-glucidos.htm">
+<meta property="og:locale" content="es_ES">
+<link rel="stylesheet" href="css/moderno.css?v=20261115">
+<script src="js/marco.js?v=20261122"></script>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  .test-superior { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  #JmolDiv_Test { width: 350px; height: 350px; }
+  .test-panel { flex: 1 1 320px; max-width: 520px; }
+  .test-panel h1 { font-size: 1.45rem; line-height: 1.2; color: var(--title); margin: 0 0 8px; }
+  .test-pregunta { margin: 14px 0 8px; font-weight: 600; }
+  .test-respuesta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .test-respuesta button:disabled { opacity: .45; cursor: default; }
+  #test-feedback { margin-top: 14px; padding: 10px 14px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); min-height: 1.5em; }
+  #test-feedback[hidden] { display: none; }
+  #test-feedback.ok { border-color: #5aa469; background: #edf7ef; }
+  #test-feedback.mal { border-color: #d0724f; background: #fbefe9; }
+  #test-feedback strong { display: block; font-size: 1.05em; margin-bottom: 2px; }
+  .test-panel label { white-space: nowrap; }
+  .test-marcador { margin-top: 10px; color: var(--muted); font-size: .92em; }
+  .test-proyecciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+  .test-tarjeta { display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    width: 132px; padding: 10px 8px 8px; background: var(--surface); border: 2px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow); cursor: pointer; font: inherit; color: inherit; }
+  .test-tarjeta:hover { border-color: var(--accent); }
+  .test-tarjeta.elegida { border-color: var(--accent); background: var(--accent-soft); }
+  .test-tarjeta.correcta { border-color: #3f8f50; background: #edf7ef; }
+  .test-tarjeta.erronea { border-color: #c4552f; background: #fbefe9; }
+  .test-tarjeta .letra { font-weight: 700; color: var(--accent-strong); margin-bottom: 6px; }
+  .test-tarjeta .imagen { flex: 1; display: flex; align-items: center; min-height: 170px; }
+  .test-tarjeta img { max-width: none; mix-blend-mode: multiply; }
+  .test-tarjeta .nombre { margin-top: 6px; font-size: .9em; min-height: 1.4em; color: var(--muted); }
+  .test-nota { margin-top: 14px; max-width: 760px; font-size: .9em; color: var(--muted); }
+</style>
+<script src="./jsmol/JSmol.min.js?v=20261113"></script>
+<script>
+// Monosacáridos del test: los mismos modelos (.mol), orientaciones iniciales y
+// proyecciones de Fischer que se usan en las páginas de triosas, tetrosas,
+// aldopentosas, aldohexosas, cetopentosas y cetohexosas.
+// n = número de carbonos; tipo = aldosa o cetosa;
+// conf = posición del –OH (R derecha, L izquierda) en cada carbono asimétrico,
+// de arriba abajo (desde C2 en las aldosas y desde C3 en las cetosas).
+var AZUCARES = [
+  { id: "D-Gliceraldehido", nombre: "D-Gliceraldehído", n: 3, tipo: "aldosa", conf: "R", img: "D-Gliceraldehido.png", ancho: 89,
+    vista: ";reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 94.42; rotate y 53.31; rotate z 167.39; zoom 132.25; translate x -0.57; translate y 1.72; set rotationRadius 6.22" },
+  { id: "L-Gliceraldehido", nombre: "L-Gliceraldehído", n: 3, tipo: "aldosa", conf: "L", img: "L-Gliceraldehido.png", ancho: 85,
+    vista: ";reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 92.0; rotate y 124.3; rotate z -172.36; zoom 132.25; translate x 0.29; translate y 2.57; set rotationRadius 6.22" },
+  { id: "Dihidroxiacetona", nombre: "Dihidroxiacetona", n: 3, tipo: "cetosa", conf: "", img: "Dihidroxiacetona.jpg", ancho: 59,
+    vista: ";reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 94.42; rotate y 53.31; rotate z 167.39; zoom 132.25; translate x -0.57; translate y 1.72; set rotationRadius 6.22" },
+  { id: "D-Eritrosa", nombre: "D-Eritrosa", n: 4, tipo: "aldosa", conf: "RR", img: "D-Eritrosa.png", ancho: 100,
+    vista: "; reset; zoom 110" },
+  { id: "D-Treosa", nombre: "D-Treosa", n: 4, tipo: "aldosa", conf: "LR", img: "D-Treosa.png", ancho: 100,
+    vista: "; reset; zoom 110" },
+  { id: "D-Eritrulosa", nombre: "D-Eritrulosa", n: 4, tipo: "cetosa", conf: "R", img: "D-Eritrulosa.png", ancho: 100,
+    vista: "; reset; zoom 110" },
+  { id: "D-Ribosa", nombre: "D-Ribosa", n: 5, tipo: "aldosa", conf: "RRR", img: "D-Ribosa.png", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 89.65; rotate y 49.44; rotate z 177.13; zoom 110; translate x -0.57; translate y 1.43; set rotationRadius 6.22" },
+  { id: "D-Arabinosa", nombre: "D-Arabinosa", n: 5, tipo: "aldosa", conf: "LRR", img: "D-Arabinosa.png", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 91.79; rotate y 55.42; rotate z -171.21; zoom 110; set rotationRadius 6.2" },
+  { id: "D-Xilosa", nombre: "D-Xilosa", n: 5, tipo: "aldosa", conf: "RLR", img: "D-Xilosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z 91.17; rotate y 69.52; rotate z 175.86; zoom 110.0; translate x 1.43; translate y 2.29;zoom 110; set rotationRadius 6.27" },
+  { id: "D-Lixosa", nombre: "D-Lixosa", n: 5, tipo: "aldosa", conf: "LLR", img: "D-Lixosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z 97.45; rotate y 113.21; rotate z -169.53; translate x 1.71; translate y 1.71;zoom 110; set rotationRadius 6.27" },
+  { id: "D-Ribulosa", nombre: "D-Ribulosa", n: 5, tipo: "cetosa", conf: "RR", img: "D-Ribulosa.jpg", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 90.3; rotate y 135.01; rotate z -3.21; translate x -0.86; translate y -3.71; set rotationRadius 6.22" },
+  { id: "D-Xilulosa", nombre: "D-Xilulosa", n: 5, tipo: "cetosa", conf: "LR", img: "D-Xilulosa.jpg", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 102.82; rotate y 54.98; rotate z -1.68; translate x 0.29; translate y -4.86; set rotationRadius 6.2" },
+  { id: "D-Alosa", nombre: "D-Alosa", n: 6, tipo: "aldosa", conf: "RRRR", img: "D-Alosa.png", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z 112.31; rotate y 5.88; rotate z -115.21; zoom 100.0; translate x -0.86; translate y -3.71; set rotationRadius 6.22" },
+  { id: "D-Altrosa", nombre: "D-Altrosa", n: 6, tipo: "aldosa", conf: "LRRR", img: "D-Altrosa.png", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z -94.36; rotate y 123.31; rotate z -9.69; set rotationRadius 6.2" },
+  { id: "D-Glucosa", nombre: "D-Glucosa", n: 6, tipo: "aldosa", conf: "RLRR", img: "D-Glucosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -96.68; rotate y 118.65; rotate z 6.05; set rotationRadius 6.27" },
+  { id: "D-Manosa", nombre: "D-Manosa", n: 6, tipo: "aldosa", conf: "LLRR", img: "D-Manosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -95.99; rotate y 93.64; rotate z -2.43; set rotationRadius 6.27" },
+  { id: "D-Gulosa", nombre: "D-Gulosa", n: 6, tipo: "aldosa", conf: "RRLR", img: "D-Gulosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -96.27; rotate y 122.99; rotate z 2.5; set rotationRadius 6.27" },
+  { id: "D-Idosa", nombre: "D-Idosa", n: 6, tipo: "aldosa", conf: "LRLR", img: "D-Idosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -92.74; rotate y 92.21; rotate z -5.08; translate x 2.86; translate y 0.86; set rotationRadius 6.27" },
+  { id: "D-Galactosa", nombre: "D-Galactosa", n: 6, tipo: "aldosa", conf: "RLLR", img: "D-Galactosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z 94.19; rotate y 100.75; rotate z -171.27; set rotationRadius 6.27" },
+  { id: "D-Talosa", nombre: "D-Talosa", n: 6, tipo: "aldosa", conf: "LLLR", img: "D-Talosa.png", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -96.05; rotate y 61.97; rotate z 0.67; set rotationRadius 6.27" },
+  { id: "D-Psicosa", nombre: "D-Psicosa", n: 6, tipo: "cetosa", conf: "RRR", img: "D-Psicosa.jpg", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z -77.69; rotate y 40.55; rotate z 175.8; translate x 0.29; translate y -4.86; set rotationRadius 6.2" },
+  { id: "D-Fructosa", nombre: "D-Fructosa", n: 6, tipo: "cetosa", conf: "LRR", img: "D-Fructosa.jpg", ancho: 100,
+    vista: "; reset;center {0.4826999999999999 -0.022749999999999937 0.10675000000000001}; rotate z -84.83; rotate y 123.95; rotate z -176.75; translate x -0.86; translate y -3.71; set rotationRadius 6.22" },
+  { id: "D-Sorbosa", nombre: "D-Sorbosa", n: 6, tipo: "cetosa", conf: "RLR", img: "D-Sorbosa.jpg", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -70.18; rotate y 50.33; rotate z 172.89; translate x 0.57; translate y -7.14; set rotationRadius 6.27" },
+  { id: "D-Tagatosa", nombre: "D-Tagatosa", n: 6, tipo: "cetosa", conf: "LLR", img: "D-Tagatosa.jpg", ancho: 100,
+    vista: "; reset;center {0.4827001 -0.02275002 0.10675001}; rotate z -78.06; rotate y 125.4; rotate z -171.57; translate x 1.14; translate y -6.86; set rotationRadius 6.27" }
+];
+
+var Test = 'Test';
+var JmolInfo = {
+  width: '100%',
+  height: '100%',
+  color: '#F0F8FF',
+  j2sPath: './jsmol/j2s',
+  serverURL: './jsmol/php/jsmol.php',
+  use: 'html5'
+};
+var ESTILO = '; background aliceblue; spacefill 25%; wireframe 0.15; colour cpk';
+var LETRAS = ['A', 'B', 'C', 'D', 'E'];
+
+var mazo = [];          // orden aleatorio de las moléculas, para no repetir hasta agotarlas
+var actual = null;      // molécula mostrada en JSmol
+var opciones = [];      // las cinco proyecciones mostradas
+var resuelta = false;
+var aciertos = 0, intentos = 0;
+
+function barajar(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var x = a[i]; a[i] = a[j]; a[j] = x;
+  }
+  return a;
+}
+
+function invertir(c) { return c === 'R' ? 'L' : 'R'; }
+
+// Cebo: la proyección que se obtiene al leer mal la de Fischer, es decir, al
+// tomar la cadena del modelo 3D como si estuviera dibujada en el plano. En ese
+// error se invierten los carbonos asimétricos alternos, contando desde el que
+// define la serie D/L (p. ej., D-sorbosa ↔ D-psicosa, D-fructosa ↔ D-tagatosa,
+// D-glucosa ↔ D-talosa, D-ribosa ↔ D-xilosa). En el gliceraldehído el cebo es su
+// enantiómero. Si el cebo no existe en el atlas (dihidroxiacetona, eritrulosa),
+// se usa una molécula con el mismo número de carbonos y el otro carbonilo.
+function cebo(m) {
+  var c = m.conf.split(''), u = c.length - 1, buscada;
+  if (c.length === 1) {
+    buscada = invertir(c[0]);
+  } else if (c.length > 1) {
+    for (var i = 0; i < c.length; i++) if ((u - i) % 2 === 1) c[i] = invertir(c[i]);
+    buscada = c.join('');
+  }
+  var b = AZUCARES.filter(function (x) {
+    return x !== m && x.n === m.n && x.tipo === m.tipo && x.conf === buscada;
+  });
+  if (b.length) return b[0];
+  b = AZUCARES.filter(function (x) { return x.n === m.n && x.tipo !== m.tipo; });
+  return barajar(b)[0];
+}
+
+function elegirOpciones(m) {
+  var lista = [m];
+  var cb = cebo(m);
+  lista.push(cb);
+  function libres(f) {
+    return barajar(AZUCARES.filter(function (x) { return lista.indexOf(x) === -1 && f(x); }));
+  }
+  // Un distractor de cada tipo de error, si lo hay: misma familia con otra
+  // configuración, mismo número de carbonos con el otro carbonilo y otro número de carbonos.
+  var grupos = [
+    libres(function (x) { return x.n === m.n && x.tipo === m.tipo; }),
+    libres(function (x) { return x.n === m.n && x.tipo !== m.tipo; }),
+    libres(function (x) { return Math.abs(x.n - m.n) === 1 && x.tipo === m.tipo; })
+  ];
+  grupos.forEach(function (g) {
+    var x = g.filter(function (y) { return lista.indexOf(y) === -1; })[0];
+    if (x && lista.length < 5) lista.push(x);
+  });
+  var resto = libres(function () { return true; });
+  while (lista.length < 5 && resto.length) lista.push(resto.shift());
+  return { opciones: barajar(lista), cebo: cb };
+}
+
+function nuevaPregunta() {
+  if (!mazo.length) mazo = barajar(AZUCARES.slice());
+  actual = mazo.shift();
+  var r = elegirOpciones(actual);
+  opciones = r.opciones;
+  actual.ceboActual = r.cebo;
+  resuelta = false;
+
+  Jmol.script(Test, 'load ./pdb/glucidos/' + actual.id + '.mol' + actual.vista + ESTILO);
+  var giro = document.getElementById('test-giro');
+  if (giro) giro.checked = false;
+
+  var sel = document.getElementById('test-seleccion');
+  sel.innerHTML = '<option value="">Elija una proyección…</option>';
+  sel.disabled = false;
+  var cont = document.getElementById('test-proyecciones');
+  cont.innerHTML = '';
+  opciones.forEach(function (o, i) {
+    var op = document.createElement('option');
+    op.value = i;
+    op.textContent = 'Proyección ' + LETRAS[i];
+    sel.appendChild(op);
+
+    var t = document.createElement('button');
+    t.type = 'button';
+    t.className = 'test-tarjeta';
+    t.setAttribute('aria-label', 'Proyección ' + LETRAS[i]);
+    t.innerHTML = '<span class="letra">' + LETRAS[i] + '</span>' +
+      '<span class="imagen"><img src="./pdb/glucidos/' + o.img + '" style="width:' + o.ancho + 'px" alt="Proyección de Fischer ' + LETRAS[i] + '"></span>' +
+      '<span class="nombre"></span>';
+    t.addEventListener('click', function () {
+      if (resuelta) return;
+      sel.value = i;
+      marcarElegida();
+    });
+    cont.appendChild(t);
+  });
+  document.getElementById('test-comprobar').disabled = true;
+  document.getElementById('test-siguiente').hidden = true;
+  var fb = document.getElementById('test-feedback');
+  fb.hidden = true;
+  fb.className = '';
+  fb.innerHTML = '';
+}
+
+function marcarElegida() {
+  var sel = document.getElementById('test-seleccion');
+  var tarjetas = document.querySelectorAll('.test-tarjeta');
+  for (var i = 0; i < tarjetas.length; i++) {
+    tarjetas[i].classList.toggle('elegida', String(i) === sel.value);
+  }
+  document.getElementById('test-comprobar').disabled = sel.value === '';
+}
+
+function grupo(m) { return m.tipo === 'aldosa' ? 'aldehído (C1)' : 'cetona (C2)'; }
+
+function comprobar() {
+  var sel = document.getElementById('test-seleccion');
+  if (sel.value === '' || resuelta) return;
+  var elegida = opciones[+sel.value];
+  resuelta = true;
+  intentos++;
+
+  var titulo, texto, ok = elegida === actual;
+  if (ok) {
+    aciertos++;
+    titulo = 'Correcto';
+    texto = 'Es la proyección de Fischer de la ' + actual.nombre + '.';
+    if (actual.nombre === 'Dihidroxiacetona') texto = 'Es la proyección de la dihidroxiacetona.';
+  } else if (elegida.n !== actual.n) {
+    titulo = 'Cuenta los carbonos';
+    texto = 'La molécula del modelo tiene ' + actual.n + ' carbonos y la proyección elegida tiene ' + elegida.n + '.';
+  } else if (elegida.tipo !== actual.tipo) {
+    titulo = 'Identifica el carbonilo';
+    texto = 'La molécula del modelo es una ' + actual.tipo + ', con un grupo ' + grupo(actual) +
+      '; la proyección elegida corresponde a una ' + elegida.tipo + ', con un grupo ' + grupo(elegida) + '.';
+  } else {
+    var inicio = actual.tipo === 'aldosa' ? 2 : 3, dif = [];
+    for (var i = 0; i < actual.conf.length; i++) {
+      if (actual.conf[i] !== elegida.conf[i]) dif.push('C' + (inicio + i));
+    }
+    titulo = 'Repasa las proyecciones de Fischer';
+    texto = 'El número de carbonos y el carbonilo son correctos, pero la configuración no: la proyección elegida difiere en ' +
+      (dif.length === 1 ? 'el ' : 'los ') + dif.join(', ').replace(/, (C\d)$/, ' y $1') + '. ' +
+      'En la proyección de Fischer los enlaces horizontales se dirigen hacia el observador y los verticales, hacia atrás.';
+    if (elegida === actual.ceboActual) {
+      texto += ' Es el error típico de leer la cadena del modelo como si estuviera en el plano del dibujo.';
+    }
+  }
+
+  var fb = document.getElementById('test-feedback');
+  fb.className = ok ? 'ok' : 'mal';
+  fb.innerHTML = '<strong>' + titulo + '</strong>' + texto +
+    (ok ? '' : ' La respuesta correcta es la proyección ' + LETRAS[opciones.indexOf(actual)] + ' (' + actual.nombre + ').');
+  fb.hidden = false;
+
+  var tarjetas = document.querySelectorAll('.test-tarjeta');
+  opciones.forEach(function (o, i) {
+    tarjetas[i].querySelector('.nombre').textContent = o.nombre;
+    tarjetas[i].classList.remove('elegida');
+    if (o === actual) tarjetas[i].classList.add('correcta');
+    else if (o === elegida) tarjetas[i].classList.add('erronea');
+  });
+  sel.disabled = true;
+  document.getElementById('test-comprobar').disabled = true;
+  document.getElementById('test-siguiente').hidden = false;
+  document.getElementById('test-marcador').textContent = 'Aciertos: ' + aciertos + ' de ' + intentos;
+}
+
+$(document).ready(function () {
+  $('#JmolDiv_Test').html(Jmol.getAppletHtml(Test, JmolInfo));
+  nuevaPregunta();
+});
+</script>
+</head>
+<body>
+<div class="test-superior">
+  <div id="JmolDiv_Test"></div>
+  <div class="test-panel">
+    <h1>Test: del modelo 3D a la proyección de Fischer</h1>
+    <p>El visor muestra un monosacárido elegido al azar. Gírelo y observe la disposición de los sustituyentes de cada carbono asimétrico; después, elija cuál de las cinco proyecciones de Fischer le corresponde.</p>
+    <div>
+      <button type="button" onclick="Jmol.script(Test, 'select *; colour cpk; spacefill 25%; wireframe 0.15')">Bolas y varillas</button>
+      <button type="button" onclick="Jmol.script(Test, 'select *; colour cpk; spacefill 100%')">Esferas de Van der Waals</button>
+      <label><input type="checkbox" id="test-giro" onclick="Jmol.script(Test, this.checked ? 'set spinX 0; set spinY 30; spin on' : 'spin off')">Rotación</label>
+      <button type="button" onclick="Jmol.script(Test, 'spin off; load ./pdb/glucidos/' + actual.id + '.mol' + actual.vista + ESTILO); document.getElementById('test-giro').checked = false;">Orientación inicial</button>
+    </div>
+    <p class="test-pregunta"><label for="test-seleccion">¿Qué proyección de Fischer corresponde a la molécula?</label></p>
+    <div class="test-respuesta">
+      <select id="test-seleccion" onchange="marcarElegida()"></select>
+      <button type="button" id="test-comprobar" onclick="comprobar()" disabled>Comprobar</button>
+      <button type="button" id="test-siguiente" onclick="nuevaPregunta()" hidden>Otra molécula</button>
+    </div>
+    <div id="test-feedback" role="status" aria-live="polite" hidden></div>
+    <div class="test-marcador" id="test-marcador">Aciertos: 0 de 0</div>
+  </div>
+</div>
+<div class="test-proyecciones" id="test-proyecciones"></div>
+<p class="test-nota">En la proyección de Fischer el carbono asimétrico está en el plano del dibujo; los enlaces horizontales se proyectan hacia delante del plano y los verticales, hacia atrás. También puede elegir la proyección haciendo clic sobre ella.</p>
+</body>
+</html>

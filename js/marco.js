@@ -93,7 +93,8 @@
         { t: "Aldohexosas", href: "Aldohexosas.htm" },
         { t: "Tetrosas", href: "Tetrosas.htm" },
         { t: "Cetopentosas", href: "Cetopentosas.htm" },
-        { t: "Cetohexosas", href: "Cetohexosas.htm" }
+        { t: "Cetohexosas", href: "Cetohexosas.htm" },
+        { t: "Test", href: "Test-glucidos.htm" }
       ]
     },
     lipidos: {

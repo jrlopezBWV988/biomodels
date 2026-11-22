@@ -11,6 +11,7 @@ Autor y mantenimiento: José Ramón López López, Bioquímica y Biología Molec
 - `atlas.htm`: portada. `index.html` redirige a ella.
 - Sin marcos: cada página tiene su propia dirección y muestra el índice lateral fijo; en pantallas estrechas, el índice se abre con el botón «Índice».
 - `estructuras.htm`, `glucidos.htm`, `proteinas/globinas.htm` y `proteinas/inmuno.htm`: redirigen a la página equivalente, para que sigan funcionando los enlaces antiguos (incluidos los del tipo `estructuras.htm?p=SRC.htm`).
+- `Test-glucidos.htm`: test de monosacáridos (botón «Test» del submenú de glúcidos). Muestra en JSmol un monosacárido al azar y cinco proyecciones de Fischer; entre ellas, la correcta y un cebo, la proyección que resulta de leer mal la de Fischer (p. ej., D-sorbosa y D-psicosa). Usa los mismos `.mol`, orientaciones e imágenes que las páginas de glúcidos, definidos en la lista `AZUCARES` de la propia página.
 - `proteinas/`: páginas de estructura de proteínas.
 - `pdb/`: coordenadas moleculares (`.pdb.gz`, `.mol`, `.cif`) e imágenes de glúcidos.
 - `jsmol/`: biblioteca JSmol 16.5.7 (`JSmol.min.js`, `js/Jmol2.js` y `j2s/`). Todas las páginas usan el árbol completo `jsmol/j2s`; `js/Jmol2.js` incluye un ajuste local para que `jmolInitialize("…/jsmol/js")` apunte a él.

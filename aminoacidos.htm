@@ -21,87 +21,109 @@
 </HEAD>
 <script src="./jsmol/JSmol.min.js?v=20261113"></script>
 <script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
+<style>
+.controles-aa { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:4px 0 14px; }
+.controles-aa input[type="button"] { margin:0 !important; white-space:nowrap; }
+.controles-aa input[type="button"].activo { background:#f6c48d; border-color:#e08a2c; }
+.controles-aa label { margin-left:6px; white-space:nowrap; }
+.familia-aa { margin:0 0 12px; }
+.familia-aa h3 { font-size:1rem; margin:0 0 4px; color:var(--title); }
+.fila-aa { display:flex; flex-wrap:wrap; gap:5px; }
+.celda-aa { display:flex; flex-direction:column; align-items:center; width:135px; }
+.celda-aa .nombre-aa { font-size:.85em; text-align:center; margin-top:2px; line-height:1.25; }
+</style>
 <body>
-<font face="Tahoma">
-<TABLE border="0" cellspacing="5">
-<TR>
-	<TD>
-	<CENTER>
-	<FONT SIZE="+2" COLOR="#6633CC"><B>Amino&aacute;cidos</B></FONT>
-	<BR>
-	<form>
-	<script>
-		  jmolInitialize("./jsmol/js");
-		  jmolSetParameter("UseCommandThread","true");
-		  jmolApplet(420, "load ./pdb/aminoacidos/Glicina.mol; cpk on; background aliceblue");
-		  jmolBr();
-	</script>
-	</form></CENTER>
-	</TD>
-	<TD valign=center>
-		<script>
-		  jmolMenu([
-	        ["#optgroup", "Polares sin carga:"],
-			["load ./pdb/aminoacidos/Glicina.mol; cpk on", "Glicina (Gly, G)", "selected"],
-			["load ./pdb/aminoacidos/Serina.mol; cpk on", "Serina (Ser, S)"],
-			["load ./pdb/aminoacidos/Treonina.mol; cpk on", "Treonina (Thr, T)"],
-			["load ./pdb/aminoacidos/Cisteina.mol; cpk on", "Ciste&iacute;na (Cys, C)"],
-			["load ./pdb/aminoacidos/Asparragina.mol; cpk on", "Asparragina (Asn, N)"],
-			["load ./pdb/aminoacidos/Glutamina.mol; cpk on", "Glutamina (Gln, Q)"],
-			["#optgroupEnd"],
-			["#optgroup", "Polares con carga positiva:"],
-			["load ./pdb/aminoacidos/Lisina.mol; cpk on", "Lisina (Lys, K)"],
-			["load ./pdb/aminoacidos/Arginina.mol; cpk on", "Arginina (Arg, R)"],
-			["load ./pdb/aminoacidos/Histidina.mol; cpk on", "Histidina (His, H)"],
-			["#optgroupEnd"],
-			["#optgroup", "Polares con carga negativa:"],
-			["load ./pdb/aminoacidos/Aspartato.mol; cpk on", "Acido Asp&aacute;rtico (Asp, D)"],
-			["load ./pdb/aminoacidos/Glutamato.mol; cpk on", "Acido Glut&aacute;mico (Glu, E)"],
-			["#optgroupEnd"],
-			["#optgroup", "Apolares Alif&aacute;ticos:"],
-			["load ./pdb/aminoacidos/Alanina.mol; cpk on", "Alanina (Ala, A)"],
-			["load ./pdb/aminoacidos/Valina.mol; cpk on", "Valina (Val, V)"],
-			["load ./pdb/aminoacidos/Leucina.mol; cpk on", "Leucina (Leu, L)"],
-			["load ./pdb/aminoacidos/Isoleucina.mol; cpk on", "Isoleucina (Ile, I)"],
-			["load ./pdb/aminoacidos/Metionina.mol; cpk on", "Metionina (Met, M)"],
-		    ["load ./pdb/aminoacidos/Prolina.mol; cpk on", "Prolina (Pro, P)"],
-			["#optgroupEnd"],
-			["#optgroup", "Apolares Arom&aacute;ticos:"],
-			["load ./pdb/aminoacidos/Fenilalanina.mol; cpk on", "Fenilalanina (Phe, F)"],
-			["load ./pdb/aminoacidos/Tirosina.mol; cpk on", "Tirosina (Tyr, Y)"],
-			["load ./pdb/aminoacidos/Triptofano.mol; cpk on", "Triptofano (Trp, W)"],
-			["#optgroupEnd"],
-			["#optgroup", "NO PROTE&Iacute;COS:"],
-			["load ./pdb/aminoacidos/Homocisteina.mol; cpk on", "Homociste&iacute;na"],
-			["load ./pdb/aminoacidos/Homoserina.mol; cpk on", "Homoserina"],
-			["load ./pdb/aminoacidos/Citrulina.mol; cpk on", "Citrulina"],
-			["load ./pdb/aminoacidos/Ornitina.mol; cpk on", "Ornitina"]
-	    ]);
-		</script>
-		<P>
-		<script>
-			jmolButton("select *; spacefill 25%; isosurface off", "Modelo de esferas y varillas");
-		</script> 
-		<P>
-		<script>
-			jmolButton("select *; spacefill 25%; isosurface ignore(solvent)molecular; color isosurface translucent", "Modelo de esferas y varillas \r (superfice transparente)");
-		</script> 
-		<P>
-		<script>
-			jmolButton("select *; spacefill off; isosurface off", "Modelo de varillas");
-		</script> 
-		<P>
-		<script>
-			jmolButton("select *; spacefill 100%;isosurface off", "Esferas de Van der Walls");
-		</script> 
-		<P>
-		<script>
-			jmolCheckbox("set spinX 10; set spinY 10; spin on", "spin off", "Rotaci&oacute;n")
-		</script>
-		<P>
-		Todos los modelos se presentan en su estado de protonaci&oacute;n a pH fisiol&oacute;gico.
-		</TD>
-</TR>
-<p class="descripcion-pagina">Esta página muestra los aminoácidos que forman las proteínas como modelos moleculares tridimensionales interactivos. Cada molécula se presenta con la carga que tiene a pH fisiológico y puede girarse y ampliarse con el ratón para estudiar su cadena lateral.</p>
+<FONT SIZE="+2" COLOR="#6633CC"><B>Amino&aacute;cidos</B></FONT>
+<div class="controles-aa">
+	<input type="button" value="Esferas y varillas" onclick="estiloAA('select *; spacefill 25%; isosurface off')">
+	<input type="button" value="Esferas y varillas (superficie transparente)" onclick="estiloAA('select *; spacefill 25%; isosurface ignore(solvent) molecular; color isosurface translucent')">
+	<input type="button" value="Esferas de Van der Waals" onclick="estiloAA('select *; spacefill 100%; isosurface off')">
+	<input type="button" id="botonCA" value="C&alpha; en naranja" onclick="alternarCA()">
+	<input type="button" value="Vista inicial" onclick="vistaInicialAA()">
+	<label><input type="checkbox" id="giroAA" onclick="todosAA(this.checked ? 'set spinX 0; set spinY 20; spin on' : 'spin off')"> Rotaci&oacute;n</label>
+</div>
+<script>
+	// Cada entrada: [archivo .mol, etiqueta, n.º de átomo del Calfa, orientación (eje y ángulo), centro].
+	// La orientación coloca N a la izquierda, el carboxilato a la derecha y la cadena lateral hacia arriba.
+	// Todos los visores usan el mismo radio de rotación (escala fija) para comparar tamaños.
+	var RADIO_AA = 8.5;
+	var ZOOM_AA = 120;
+	var familiasAA = [
+		["Apolares alif&aacute;ticos", [
+			["Glicina", "Glicina (Gly, G)", 2, "{0.1066 -0.0534 -0.9929} 121.3", "{-1.613 -1.818 0.118}"],
+			["Alanina", "Alanina (Ala, A)", 2, "{0.9773 0.1442 -0.1554} 150.11", "{-0.065 -1.822 -0.276}"],
+			["Valina", "Valina (Val, V)", 2, "{0.8928 0.2831 -0.3503} 158.97", "{0.292 -1.197 -0.164}"],
+			["Leucina", "Leucina (Leu, L)", 2, "{0.907 0.1834 -0.379} 161.41", "{0.125 -0.734 -0.346}"],
+			["Isoleucina", "Isoleucina (Ile, I)", 2, "{0.8911 0.1677 -0.4217} 149.7", "{-0.0 -0.812 -0.192}"],
+			["Metionina", "Metionina (Met, M)", 2, "{0.8926 0.2533 -0.3731} 148.43", "{0.128 0.076 -0.297}"],
+			["Prolina", "Prolina (Pro, P)", 2, "{0.9168 0.284 -0.2809} 153.91", "{0.783 -1.106 -0.365}"]
+		]],
+		["Apolares arom&aacute;ticos", [
+			["Fenilalanina", "Fenilalanina (Phe, F)", 2, "{0.9416 0.2565 -0.2181} 155.54", "{0.514 0.176 -0.765}"],
+			["Tirosina", "Tirosina (Tyr, Y)", 2, "{0.8885 0.3112 -0.3371} 141.99", "{0.242 0.83 -0.903}"],
+			["Triptofano", "Triptofano (Trp, W)", 2, "{0.8525 0.2924 -0.4333} 154.38", "{0.59 0.941 -0.932}"]
+		]],
+		["Polares sin carga", [
+			["Serina", "Serina (Ser, S)", 2, "{0.9196 0.2575 -0.2966} 164.85", "{0.478 -1.329 -0.059}"],
+			["Treonina", "Treonina (Thr, T)", 2, "{0.8733 0.1138 -0.4738} 153.55", "{0.25 -1.229 -0.062}"],
+			["Cisteina", "Ciste&iacute;na (Cys, C)", 2, "{0.9051 0.2065 -0.3717} 147.03", "{0.245 -0.892 -0.515}"],
+			["Asparragina", "Asparragina (Asn, N)", 2, "{0.0672 -0.3633 -0.9292} 147.21", "{-0.548 -0.509 0.458}"],
+			["Glutamina", "Glutamina (Gln, Q)", 2, "{0.9739 0.2259 0.0194} 174.23", "{0.192 -0.128 -0.004}"]
+		]],
+		["Polares con carga positiva", [
+			["Lisina", "Lisina (Lys, K)", 2, "{0.9361 0.1132 -0.3331} 163.86", "{0.167 0.071 -0.339}"],
+			["Arginina", "Arginina (Arg, R)", 2, "{0.1012 -0.2255 -0.969} 142.18", "{-0.139 1.056 -0.075}"],
+			["Histidina", "Histidina (His, H)", 2, "{0.9123 0.1941 -0.3607} 141.51", "{0.225 0.04 -0.8}"]
+		]],
+		["Polares con carga negativa", [
+			["Aspartato", "&Aacute;cido asp&aacute;rtico (Asp, D)", 2, "{0.9491 0.055 -0.3101} 159.98", "{0.117 -0.804 -0.35}"],
+			["Glutamato", "&Aacute;cido glut&aacute;mico (Glu, E)", 2, "{0.8275 0.0954 -0.5534} 148.55", "{0.047 -0.122 -0.204}"]
+		]],
+		["No prote&iacute;cos", [
+			["Homocisteina", "Homociste&iacute;na", 2, "{0.9648 0.2066 -0.1628} 149.01", "{0.179 -0.383 -0.196}"],
+			["Homoserina", "Homoserina", 2, "{0.9421 0.2021 -0.2675} 154.97", "{0.223 -0.868 -0.234}"],
+			["Citrulina", "Citrulina", 2, "{0.9615 0.2549 -0.1026} 163.32", "{0.218 1.031 -0.283}"],
+			["Ornitina", "Ornitina", 2, "{0.9084 0.1739 -0.3803} 153.64", "{0.162 -0.397 -0.334}"]
+		]]
+	];
+	var vistasAA = [];
+	var caActivo = false;
+	function vistaAA(a) {
+		return "moveto 0 " + a[3] + " " + ZOOM_AA + " 0 0 " + a[4] + " " + RADIO_AA + ";";
+	}
+	function marcaCA() {
+		return caActivo ? "select ca; color orange; select *;" : "select *; color cpk;";
+	}
+	function todosAA(cmd) {
+		for (var i = 0; i < nAA; i++) Jmol.script(window["jmolApplet" + i], cmd);
+	}
+	function estiloAA(cmd) { todosAA(cmd + "; " + marcaCA()); }
+	function alternarCA() {
+		caActivo = !caActivo;
+		document.getElementById("botonCA").className = caActivo ? "activo" : "";
+		todosAA(marcaCA());
+	}
+	function vistaInicialAA() {
+		document.getElementById("giroAA").checked = false;
+		for (var i = 0; i < vistasAA.length; i++) Jmol.script(window["jmolApplet" + i], vistasAA[i]);
+	}
+	jmolInitialize("./jsmol/js");
+	jmolSetParameter("UseCommandThread", "true");
+	var nAA = 0;
+	for (var f = 0; f < familiasAA.length; f++) {
+		jmolHtml('<div class="familia-aa"><h3>' + familiasAA[f][0] + '</h3><div class="fila-aa">');
+		var lista = familiasAA[f][1];
+		for (var k = 0; k < lista.length; k++) {
+			var a = lista[k];
+			vistasAA.push("spin off; " + vistaAA(a));
+			jmolHtml('<div class="celda-aa">');
+			jmolApplet(135, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 25%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
+			jmolHtml('<div class="nombre-aa">' + a[1] + '</div></div>');
+			nAA++;
+		}
+		jmolHtml('</div></div>');
+	}
+</script>
+<p>Todos los modelos se presentan en su estado de protonaci&oacute;n a pH fisiol&oacute;gico, a la misma escala y con la misma orientaci&oacute;n del esqueleto (N a la izquierda, carboxilato a la derecha, cadena lateral hacia arriba).</p>
 </BODY>
 </HTML>

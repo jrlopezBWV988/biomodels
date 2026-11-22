@@ -29,7 +29,7 @@
   #test-feedback.ok { border-color: #5aa469; background: #edf7ef; }
   #test-feedback.mal { border-color: #d0724f; background: #fbefe9; }
   #test-feedback strong { display: block; font-size: 1.05em; margin-bottom: 2px; }
-  .test-panel label { white-space: nowrap; }
+  .test-giro { white-space: nowrap; }
   .test-marcador { margin-top: 10px; color: var(--muted); font-size: .92em; }
   .test-proyecciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
   .test-tarjeta { display: flex; flex-direction: column; align-items: center; justify-content: space-between;
@@ -302,7 +302,7 @@ $(document).ready(function () {
     <div>
       <button type="button" onclick="Jmol.script(Test, 'select *; colour cpk; spacefill 25%; wireframe 0.15')">Bolas y varillas</button>
       <button type="button" onclick="Jmol.script(Test, 'select *; colour cpk; spacefill 100%')">Esferas de Van der Waals</button>
-      <label><input type="checkbox" id="test-giro" onclick="Jmol.script(Test, this.checked ? 'set spinX 0; set spinY 30; spin on' : 'spin off')">Rotación</label>
+      <label class="test-giro"><input type="checkbox" id="test-giro" onclick="Jmol.script(Test, this.checked ? 'set spinX 0; set spinY 30; spin on' : 'spin off')">Rotación</label>
       <button type="button" onclick="Jmol.script(Test, 'spin off; load ./pdb/glucidos/' + actual.id + '.mol' + actual.vista + ESTILO); document.getElementById('test-giro').checked = false;">Orientación inicial</button>
     </div>
     <p class="test-pregunta"><label for="test-seleccion">¿Qué proyección de Fischer corresponde a la molécula?</label></p>

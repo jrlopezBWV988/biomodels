@@ -29,11 +29,10 @@
 .familia-aa { margin:0 0 12px; }
 .familia-aa h3 { font-size:1rem; margin:0 0 4px; color:var(--title); }
 .fila-aa { display:flex; flex-wrap:wrap; gap:5px; }
-.celda-aa { display:flex; flex-direction:column; align-items:center; width:180px; }
+.celda-aa { display:flex; flex-direction:column; align-items:center; width:220px; }
 .celda-aa .nombre-aa { font-size:.85em; text-align:center; margin-top:2px; line-height:1.25; }
 </style>
 <body>
-<FONT SIZE="+2" COLOR="#6633CC"><B>Amino&aacute;cidos</B></FONT>
 <div class="controles-aa">
 	<input type="button" value="Esferas y varillas" onclick="estiloAA('select *; spacefill 25%; isosurface off')">
 	<input type="button" value="Esferas y varillas (superficie transparente)" onclick="estiloAA('select *; spacefill 25%; isosurface ignore(solvent) molecular; color isosurface translucent')">
@@ -116,7 +115,7 @@
 			var a = lista[k];
 			vistasAA.push("spin off; select *; spacefill 100%; isosurface off; " + vistaAA(a));
 			jmolHtml('<div class="celda-aa">');
-			jmolApplet(180, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 100%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
+			jmolApplet(220, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 100%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
 			jmolHtml('<div class="nombre-aa">' + a[1] + '</div></div>');
 			nAA++;
 		}

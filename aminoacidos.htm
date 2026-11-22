@@ -29,7 +29,7 @@
 .familia-aa { margin:0 0 12px; }
 .familia-aa h3 { font-size:1rem; margin:0 0 4px; color:var(--title); }
 .fila-aa { display:flex; flex-wrap:wrap; gap:5px; }
-.celda-aa { display:flex; flex-direction:column; align-items:center; width:135px; }
+.celda-aa { display:flex; flex-direction:column; align-items:center; width:180px; }
 .celda-aa .nombre-aa { font-size:.85em; text-align:center; margin-top:2px; line-height:1.25; }
 </style>
 <body>
@@ -37,7 +37,6 @@
 <div class="controles-aa">
 	<input type="button" value="Esferas y varillas" onclick="estiloAA('select *; spacefill 25%; isosurface off')">
 	<input type="button" value="Esferas y varillas (superficie transparente)" onclick="estiloAA('select *; spacefill 25%; isosurface ignore(solvent) molecular; color isosurface translucent')">
-	<input type="button" value="Esferas de Van der Waals" onclick="estiloAA('select *; spacefill 100%; isosurface off')">
 	<input type="button" id="botonCA" value="C&alpha; en naranja" onclick="alternarCA()">
 	<input type="button" value="Vista inicial" onclick="vistaInicialAA()">
 	<label><input type="checkbox" id="giroAA" onclick="todosAA(this.checked ? 'set spinX 0; set spinY 20; spin on' : 'spin off')"> Rotaci&oacute;n</label>
@@ -105,7 +104,7 @@
 	}
 	function vistaInicialAA() {
 		document.getElementById("giroAA").checked = false;
-		for (var i = 0; i < vistasAA.length; i++) Jmol.script(window["jmolApplet" + i], vistasAA[i]);
+		for (var i = 0; i < vistasAA.length; i++) Jmol.script(window["jmolApplet" + i], vistasAA[i] + " " + marcaCA());
 	}
 	jmolInitialize("./jsmol/js");
 	jmolSetParameter("UseCommandThread", "true");
@@ -115,9 +114,9 @@
 		var lista = familiasAA[f][1];
 		for (var k = 0; k < lista.length; k++) {
 			var a = lista[k];
-			vistasAA.push("spin off; " + vistaAA(a));
+			vistasAA.push("spin off; select *; spacefill 100%; isosurface off; " + vistaAA(a));
 			jmolHtml('<div class="celda-aa">');
-			jmolApplet(135, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 25%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
+			jmolApplet(180, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 100%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
 			jmolHtml('<div class="nombre-aa">' + a[1] + '</div></div>');
 			nAA++;
 		}

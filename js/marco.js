@@ -64,6 +64,7 @@
     ]},
     { cat: "Enzimas: Motivos, Módulos y Dominios", items: [
       { t: "Tirosina quinasa Src", href: "SRC.htm" },
+      { t: "PFK-2/FBPasa-2: Motivo vs Dominio", href: "Motivo.vs.Dominio.htm" },
       { t: "aa-tRNA Sintetasas", href: "tRNASintetasas.htm" },
       { t: "Acido Graso Sintasa", href: "proteinas/FAS.htm" }
     ]},

@@ -34,7 +34,9 @@
 @media (max-width: 900px) { .mapa-pfk svg { width: calc(100vw - 30px); } }
 .texto-pfk { max-width: 980px; line-height: 1.5; }
 .texto-pfk h2 { color: #6633CC; font-size: 1.25em; margin: 18px 0 6px; }
-.texto-pfk h3 { color: #6633CC; font-size: 1.05em; margin: 14px 0 4px; }
+.texto-pfk h3 { color: #6633CC; font-size: 1.05em; margin: 26px 0 4px; }
+.texto-pfk .subparrafo { margin-left: 2em; }
+.texto-pfk h3 + h4, .texto-pfk h2 + p { margin-top: 6px; }
 .texto-pfk h4 { color: #6633CC; font-size: 0.98em; font-style: italic; margin: 10px 0 2px; }
 .texto-pfk p { margin: 6px 0; }
 .texto-pfk .secuencia { font-family: "Courier New", monospace; font-weight: 700; white-space: nowrap; }
@@ -53,7 +55,7 @@
 	// AlphaFold (AF-P16118-F1). Numeración de la proteína madura (sin la Met inicial): sitio de PKA = Ser32.
 	// Las coordenadas están centradas y giradas: dominio 2-quinasa a la izquierda y 2-fosfatasa a la derecha.
 	var NTER = "21-38", QUINASA = "39-249", FOSFATASA = "250-470";
-	var MOTIVO = "29-32", SER = "32", LAZO = "48-55", HIS = "258";
+	var MOTIVO = "29-32", SER = "32", LAZO = "48-55";
 	var C_QUI = "[0,192,0]", C_FOS = "[255,0,0]", C_PKA = "magenta", C_SER = "[255,220,0]", C_LAZO = "[0,200,255]";
 	// Representación de base de cada visor: proteína en gris y ligandos ocultos; se borran barras y etiquetas.
 	// Izquierda: cintas (con superficie de van der Waals translúcida). Derecha: esferas (superficie).
@@ -74,7 +76,6 @@
 	// Ligandos en esferas (carbonos del ATPgammaS en naranja)
 	var ATP = "select AGS; spacefill on; color cpk; select AGS and _C; color [255,130,0]; ";
 	var PO4 = "select PO4; spacefill on; color cpk; ";
-	var HIS258 = "select " + HIS + " and protein and sidechain; wireframe 0.35; color [255,140,140]; ";
 	// Motivos en la vista general
 	var motivoPKA = pinta(MOTIVO, C_PKA) + pinta(SER, C_SER);
 	var motivoLazo = pinta(LAZO, C_LAZO);
@@ -86,7 +87,7 @@
 		todos: [pinta(QUINASA, C_QUI) + pinta(FOSFATASA, C_FOS) + ATP + PO4,
 			pinta(QUINASA, C_QUI) + pinta(FOSFATASA, C_FOS) + ATP + PO4, vista],
 		QUI: [pinta(QUINASA, C_QUI) + ATP, pinta(QUINASA, C_QUI) + ATP, vista],
-		FOS: [pinta(FOSFATASA, C_FOS) + PO4 + HIS258, pinta(FOSFATASA, C_FOS) + PO4, vista],
+		FOS: [pinta(FOSFATASA, C_FOS) + PO4, pinta(FOSFATASA, C_FOS) + PO4, vista],
 		motivos: [motivoPKA + motivoLazo + barras(MOTIVO) + barras(LAZO) + pinta(SER, C_SER) + ATP,
 			motivoPKA + motivoLazo + ATP, vista],
 		// Motivo de PKA: el visor izquierdo lo muestra en barras; el derecho, como parche magenta
@@ -121,7 +122,7 @@
 <TR>
 	<TD class="cabecera-pfk">
 	<CENTER>
-	<FONT SIZE="+2" COLOR="#6633CC"><B>Dominios y motivos: cintas</B></FONT>
+	<FONT SIZE="+2" COLOR="#6633CC"><B>Dominios y Motivos</B></FONT>
 	<BR>
 	<script>
 		  jmolInitialize("./jsmol/js");
@@ -141,7 +142,6 @@
 			<input type="button" value="Vista inicial" onclick="vistaInicial()">
 			<label><input type="checkbox" id="rotacion" onclick="ambos(this.checked ? 'spin on' : 'spin off')"> Rotaci&oacute;n</label>
 			<div class="leyenda-pfk">
-				<span style="color:#c000c0">Motivo RRGS</span>
 				<span style="color:#c8a000">Ser32</span>
 				<span style="color:#0090b8">Lazo P</span>
 				<span style="color:#e07000">ATP&gamma;S</span>
@@ -151,7 +151,7 @@
 	</TD>
 	<TD class="cabecera-pfk">
 	<CENTER>
-	<FONT SIZE="+2" COLOR="#6633CC"><B>Dominios y motivos: superficie</B></FONT>
+	<FONT SIZE="+2" COLOR="#6633CC" style="visibility:hidden" aria-hidden="true"><B>Dominios y Motivos</B></FONT>
 	<BR>
 	<script>
 		  jmolApplet(420, "load ./pdb/PFK2_FBPasa2_monomero.pdb.gz; " + estiloInicial[1] + vista.replace("moveto 1", "moveto 0"));
@@ -161,7 +161,7 @@
 </TR>
 <TR>
 	<TD colspan="3" class="mapa-pfk">
-	<svg viewBox="0 0 980 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa lineal de la cadena de la PFK-2/FBPasa-2 hepática: segmento N-terminal con el motivo de PKA RRGS32, dominio 2-quinasa (residuos 39-249) con el lazo P y dominio 2-fosfatasa (residuos 250-470) con la His258" font-family="Tahoma, sans-serif">
+	<svg viewBox="0 0 980 178" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa lineal de la cadena de la PFK-2/FBPasa-2 hepática: segmento N-terminal con el motivo de PKA RRGS32, dominio 2-quinasa (residuos 39-249) con el lazo P y dominio 2-fosfatasa (residuos 250-470)" font-family="Tahoma, sans-serif">
 		<!-- Escala: x = 40 + residuo * 1.9 -->
 		<text x="490" y="20" text-anchor="middle" font-size="16" font-weight="700" fill="#6633CC">Una cadena, dos dominios y dos motivos</text>
 		<!-- Motivo y lazo P: llamadas -->
@@ -170,8 +170,6 @@
 		<text x="99" y="55" text-anchor="middle" font-size="13" font-family="Courier New, monospace" font-weight="700"><tspan fill="#c000c0">RRG</tspan><tspan fill="#b08c00">S</tspan><tspan fill="#444" font-size="11">32</tspan></text>
 		<line x1="137" y1="72" x2="137" y2="88" stroke="#0090b8" stroke-width="2"/>
 		<text x="160" y="68" text-anchor="start" font-size="13" fill="#0090b8" font-weight="700">Lazo P (48&#8211;55)</text>
-		<line x1="530" y1="72" x2="530" y2="88" stroke="#b00000" stroke-width="2"/>
-		<text x="530" y="68" text-anchor="middle" font-size="13" fill="#b00000" font-weight="700">His258</text>
 		<!-- Barra de la cadena -->
 		<rect x="40" y="88" width="72" height="34" fill="#d9d9d9" stroke="#777"/>
 		<rect x="95" y="88" width="8" height="34" fill="#ff00ff"/>
@@ -186,7 +184,6 @@
 		</g>
 		<text x="76" y="158" text-anchor="middle" font-size="12" fill="#444">N-terminal</text>
 		<text x="76" y="172" text-anchor="middle" font-size="12" fill="#444">regulador</text>
-		<text x="490" y="180" text-anchor="middle" font-size="12" fill="#444">Numeraci&oacute;n de la prote&iacute;na madura (sin la metionina inicial); Ser32 = Ser33 en UniProt P16118</text>
 	</svg>
 	</TD>
 </TR>
@@ -197,15 +194,23 @@
 <p>Un <strong>dominio</strong> es una región de la cadena polipeptídica que se pliega de forma compacta y relativamente independiente y que suele tener una función propia, como catalizar una reacción o unir un ligando. Un <strong>motivo</strong> es una secuencia corta, de unos pocos aminoácidos, con una función concreta: puede ser reconocido por otra proteína, por ejemplo por una quinasa que lo fosforila, o formar parte de un sitio de unión dentro de un dominio (<a target="_blank" rel="noopener" href="https://doi.org/10.1038/nrm2203">Ubersax y Ferrell, 2007</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>). La 6-fosfofructo-2-quinasa/fructosa-2,6-bisfosfatasa hepática (PFKFB1) reúne los dos conceptos: una misma cadena contiene dos dominios catalíticos con actividades opuestas y dos motivos, uno de fosforilación por la proteína quinasa dependiente de AMPc (PKA) y otro de unión de nucleótidos, el lazo P. La enzima es un homodímero cuyas dos subunidades se unen «cabeza con cabeza» por sus dominios PFK-2 (<a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>); por claridad, los visores muestran <strong>un solo monómero</strong>.</p>
 <h3>Los dominios</h3>
 <h4>Dominio 6-fosfofructo-2-quinasa (PFK-2)</h4>
+<div class="subparrafo">
 <p>En verde (residuos 39–249). Sintetiza fructosa-2,6-bisfosfato a partir de fructosa-6-fosfato y ATP. En el modelo, el análogo del ATP (ATP&gamma;S) ocupa su centro activo (<a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>).</p>
+</div>
 <h4>Dominio fructosa-2,6-bisfosfatasa (FBPasa-2)</h4>
-<p>En rojo (residuos 250–470). Hidroliza la fructosa-2,6-bisfosfato a fructosa-6-fosfato y fosfato a través de un intermediario fosfohistidina; la histidina forma parte de un motivo RHG (His258 en el modelo). En su centro activo el modelo contiene dos iones fosfato (<a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>).</p>
+<div class="subparrafo">
+<p>En rojo (residuos 250–470). Hidroliza la fructosa-2,6-bisfosfato a fructosa-6-fosfato y fosfato. En su centro activo el modelo contiene dos iones fosfato (<a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>).</p>
+</div>
 <h3>Los motivos</h3>
 <h4>Motivo de fosforilación por PKA</h4>
-<p>La PKA fosforila serinas o treoninas precedidas por dos argininas, con la secuencia consenso <span class="secuencia">R-R-X-S/T</span> (<a target="_blank" rel="noopener" href="https://doi.org/10.1038/nrm2203">Ubersax y Ferrell, 2007</a>). En la isoenzima hepática este motivo es <span class="secuencia">R29-R30-G31-S32</span>, en el extremo N-terminal (Ser32 en la numeración clásica, sin la metionina inicial; Ser33 en UniProt P16118). En los visores el motivo aparece en magenta, con la Ser32 en amarillo. En la superficie forma un <strong>parche expuesto</strong>, en un segmento flexible situado fuera de los dominios catalíticos y accesible para la PKA. El botón «Motivo PKA» acerca la vista al motivo y muestra la Ser32 en barras.</p>
-<p>Cuando el glucagón eleva el AMPc en el hepatocito, la PKA fosforila la Ser32. La fosforilación inhibe la PFK-2, sobre todo porque aumenta su K<sub>m</sub> para la fructosa-6-fosfato, y activa la FBPasa-2, cuya V<sub>máx</sub> aumenta por un cambio conformacional que se transmite a ese dominio. Por eso cae la concentración de fructosa-2,6-bisfosfato: se activa menos la fosfofructoquinasa-1 y se inhibe menos la fructosa-1,6-bisfosfatasa, de modo que el hígado frena la glucólisis y favorece la gluconeogénesis. En la isoenzima cardiaca, en cambio, los sitios de fosforilación están en el extremo C-terminal y su fosforilación activa la PFK-2 (<a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>).</p>
+<div class="subparrafo">
+<p>La PKA fosforila serinas o treoninas precedidas por dos argininas, con la secuencia consenso <span class="secuencia">R-R-X-S/T</span> (<a target="_blank" rel="noopener" href="https://doi.org/10.1038/nrm2203">Ubersax y Ferrell, 2007</a>). En la isoenzima hepática este motivo es <em><span class="secuencia">R29-R30-G31-S32</span></em>, en el extremo N-terminal. En los visores el motivo aparece en magenta, con la Ser32 en amarillo. En la superficie forma un <strong>parche expuesto</strong>, en un segmento flexible situado fuera de los dominios catalíticos y accesible para la PKA. El botón «Motivo PKA» acerca la vista al motivo.</p>
+<p><em>Cuando el glucagón eleva el AMPc en el hepatocito, la PKA fosforila la Ser32. La fosforilación inhibe la PFK-2, sobre todo porque aumenta su K<sub>m</sub> para la fructosa-6-fosfato, y activa la FBPasa-2, cuya V<sub>máx</sub> aumenta por un cambio conformacional que se transmite a ese dominio. Por eso cae la concentración de fructosa-2,6-bisfosfato: se activa menos la fosfofructoquinasa-1 y se inhibe menos la fructosa-1,6-bisfosfatasa, de modo que el hígado frena la glucólisis y favorece la gluconeogénesis. En la isoenzima cardiaca, en cambio, los sitios de fosforilación están en el extremo C-terminal y su fosforilación activa la PFK-2 (<a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>).</em></p>
+</div>
 <h4>Lazo P (motivo Walker A)</h4>
+<div class="subparrafo">
 <p>En cian (<span class="secuencia">G48-L-P-A-R-G-K54-T55</span>). Es el motivo «Walker A» de unión de nucleótidos, de secuencia consenso <span class="secuencia">G(X)<sub>4</sub>GKT/S</span>. En el modelo sus residuos contactan con el ATP&gamma;S, y la mutación de la Lys54 y la Thr55 reduce drásticamente la actividad PFK-2 (<a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>). A diferencia del motivo de PKA, el lazo P está dentro del dominio PFK-2 y forma parte de su centro activo. El botón «Lazo P» acerca la vista al motivo y al ATP&gamma;S.</p>
+</div>
 <h3>El modelo 3D</h3>
 <p>Es un modelo docente compuesto de un monómero. Los residuos 39–470, el ATP&gamma;S y los fosfatos proceden de la cadena A de la estructura cristalográfica de la enzima hepática humana (PDB <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/1K6M">1K6M</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>). La estructura no incluye el extremo N-terminal; el segmento 21–38, que contiene el motivo de PKA, procede del modelo AlphaFold <a target="_blank" rel="noopener" href="https://alphafold.ebi.ac.uk/entry/P16118">AF-P16118-F1</a> y se superpuso sobre los residuos 39–60. AlphaFold predice este segmento con confianza baja (pLDDT &lt; 50), lo que indica que es flexible: su posición en el modelo es solo ilustrativa. Los residuos 1–20 se han omitido.</p>
 <h3>Referencias</h3>

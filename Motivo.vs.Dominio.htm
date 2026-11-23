@@ -51,8 +51,9 @@
 <script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
 <script>
 	// Modelo compuesto (pdb/PFK2_FBPasa2_monomero.pdb.gz): una subunidad (cadena A) de la enzima hepática
-	// humana (PDB 1K6M, residuos 39-470, con ATPgammaS y fosfato) y el segmento N-terminal 21-38 de
-	// AlphaFold (AF-P16118-F1). Numeración de la proteína madura (sin la Met inicial): sitio de PKA = Ser32.
+	// humana (PDB 1K6M, residuos 39-470, con ATPgammaS), el segmento N-terminal 21-38 de AlphaFold
+	// (AF-P16118-F1) y fructosa-2,6-bisfosfato (FDP) modelada en el centro activo de la 2-fosfatasa a partir
+	// de la fructosa-6-fosfato de PDB 2I1V y de los dos fosfatos de 1K6M. Numeración de la proteína madura (sin la Met inicial): sitio de PKA = Ser32.
 	// Las coordenadas están centradas y giradas: dominio 2-quinasa a la izquierda y 2-fosfatasa a la derecha.
 	var NTER = "21-38", QUINASA = "39-249", FOSFATASA = "250-470";
 	var MOTIVO = "29-32", SER = "32", LAZO = "48-55";
@@ -75,7 +76,7 @@
 	function pinta(sel, c) { return "select (" + sel + ") and protein; color " + c + "; "; }
 	// Ligandos en esferas (carbonos del ATPgammaS en naranja)
 	var ATP = "select AGS; spacefill on; color cpk; select AGS and _C; color [255,130,0]; ";
-	var PO4 = "select PO4; spacefill on; color cpk; ";
+	var FDP = "select FDP; spacefill on; color cpk; select FDP and carbon; color [150,80,255]; ";
 	// Motivos en la vista general
 	var motivoPKA = pinta(MOTIVO, C_PKA) + pinta(SER, C_SER);
 	var motivoLazo = pinta(LAZO, C_LAZO);
@@ -84,10 +85,10 @@
 	// Cada botón: [comandos del visor izquierdo, comandos del visor derecho, vista]
 	var botones = {
 		inicial: ["", "", vista],
-		todos: [pinta(QUINASA, C_QUI) + pinta(FOSFATASA, C_FOS) + ATP + PO4,
-			pinta(QUINASA, C_QUI) + pinta(FOSFATASA, C_FOS) + ATP + PO4, vista],
+		todos: [pinta(QUINASA, C_QUI) + pinta(FOSFATASA, C_FOS) + ATP + FDP,
+			pinta(QUINASA, C_QUI) + pinta(FOSFATASA, C_FOS) + ATP + FDP, vista],
 		QUI: [pinta(QUINASA, C_QUI) + ATP, pinta(QUINASA, C_QUI) + ATP, vista],
-		FOS: [pinta(FOSFATASA, C_FOS) + PO4, pinta(FOSFATASA, C_FOS) + PO4, vista],
+		FOS: [pinta(FOSFATASA, C_FOS) + FDP, pinta(FOSFATASA, C_FOS) + FDP, vista],
 		motivos: [motivoPKA + motivoLazo + barras(MOTIVO) + barras(LAZO) + pinta(SER, C_SER) + ATP,
 			motivoPKA + motivoLazo + ATP, vista],
 		// Motivo de PKA: el visor izquierdo lo muestra en barras; el derecho, como parche magenta
@@ -127,7 +128,7 @@
 	<script>
 		  jmolInitialize("./jsmol/js");
 		  jmolSetParameter("UseCommandThread","true");
-		  jmolApplet(420, "load ./pdb/PFK2_FBPasa2_monomero.pdb.gz; " + estiloInicial[0] + vista.replace("moveto 1", "moveto 0"));
+		  jmolApplet(420, "load ./pdb/PFK2_FBPasa2_monomero.pdb.gz?v=20261123b; " + estiloInicial[0] + vista.replace("moveto 1", "moveto 0"));
 	</script>
 	</CENTER>
 	</TD>
@@ -145,7 +146,7 @@
 				<span style="color:#c8a000">Ser32</span>
 				<span style="color:#0090b8">Lazo P</span>
 				<span style="color:#e07000">ATP&gamma;S</span>
-				<span style="color:#d07000">Fosfato</span>
+				<span style="color:#8a4be8">Fructosa-2,6-<br>bisfosfato</span>
 			</div>
 		</div>
 	</TD>
@@ -154,7 +155,7 @@
 	<FONT SIZE="+2" COLOR="#6633CC" style="visibility:hidden" aria-hidden="true"><B>Dominios y Motivos</B></FONT>
 	<BR>
 	<script>
-		  jmolApplet(420, "load ./pdb/PFK2_FBPasa2_monomero.pdb.gz; " + estiloInicial[1] + vista.replace("moveto 1", "moveto 0"));
+		  jmolApplet(420, "load ./pdb/PFK2_FBPasa2_monomero.pdb.gz?v=20261123b; " + estiloInicial[1] + vista.replace("moveto 1", "moveto 0"));
 	</script>
 	</CENTER>
 	</TD>
@@ -199,7 +200,7 @@
 </div>
 <h4>Dominio fructosa-2,6-bisfosfatasa (FBPasa-2)</h4>
 <div class="subparrafo">
-<p>En rojo (residuos 250–470). Hidroliza la fructosa-2,6-bisfosfato a fructosa-6-fosfato y fosfato. En su centro activo el modelo contiene dos iones fosfato (<a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>).</p>
+<p>En rojo (residuos 250–470). Hidroliza la fructosa-2,6-bisfosfato a fructosa-6-fosfato y fosfato. En su centro activo el modelo contiene su sustrato, la fructosa-2,6-bisfosfato (<a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>).</p>
 </div>
 <h3>Los motivos</h3>
 <h4>Motivo de fosforilación por PKA</h4>
@@ -212,7 +213,7 @@
 <p>En cian (<span class="secuencia">G48-L-P-A-R-G-K54-T55</span>). Es el motivo «Walker A» de unión de nucleótidos, de secuencia consenso <span class="secuencia">G(X)<sub>4</sub>GKT/S</span>. En el modelo sus residuos contactan con el ATP&gamma;S, y la mutación de la Lys54 y la Thr55 reduce drásticamente la actividad PFK-2 (<a target="_blank" rel="noopener" href="https://doi.org/10.1042/BJ20040752">Rider et al., 2004</a>). A diferencia del motivo de PKA, el lazo P está dentro del dominio PFK-2 y forma parte de su centro activo. El botón «Lazo P» acerca la vista al motivo y al ATP&gamma;S.</p>
 </div>
 <h3>El modelo 3D</h3>
-<p>Es un modelo docente compuesto de un monómero. Los residuos 39–470, el ATP&gamma;S y los fosfatos proceden de la cadena A de la estructura cristalográfica de la enzima hepática humana (PDB <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/1K6M">1K6M</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>). La estructura no incluye el extremo N-terminal; el segmento 21–38, que contiene el motivo de PKA, procede del modelo AlphaFold <a target="_blank" rel="noopener" href="https://alphafold.ebi.ac.uk/entry/P16118">AF-P16118-F1</a> y se superpuso sobre los residuos 39–60. AlphaFold predice este segmento con confianza baja (pLDDT &lt; 50), lo que indica que es flexible: su posición en el modelo es solo ilustrativa. Los residuos 1–20 se han omitido.</p>
+<p>Es un modelo docente compuesto de un monómero. Los residuos 39–470 y el ATP&gamma;S proceden de la cadena A de la estructura cristalográfica de la enzima hepática humana (PDB <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/1K6M">1K6M</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">Lee et al., 2003</a>). La estructura no incluye el extremo N-terminal; el segmento 21–38, que contiene el motivo de PKA, procede del modelo AlphaFold <a target="_blank" rel="noopener" href="https://alphafold.ebi.ac.uk/entry/P16118">AF-P16118-F1</a> y se superpuso sobre los residuos 39–60. AlphaFold predice este segmento con confianza baja (pLDDT &lt; 50), lo que indica que es flexible: su posición en el modelo es solo ilustrativa. Los residuos 1–20 se han omitido. La fructosa-2,6-bisfosfato se ha modelado en el centro activo de la 2-fosfatasa a partir de la fructosa-6-fosfato de la isoenzima PFKFB3 (PDB <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/2I1V">2I1V</a>), colocando sus dos grupos fosfato sobre los dos iones fosfato de 1K6M.</p>
 <h3>Referencias</h3>
 <ul class="referencias">
 <li>Lee YH, Li Y, Uyeda K, Hasemann CA. (2003). Tissue-specific structure/function differentiation of the liver isoform of 6-phosphofructo-2-kinase/fructose-2,6-bisphosphatase. <i>J Biol Chem</i> 278: 523–530. <a target="_blank" rel="noopener" href="https://doi.org/10.1074/jbc.M209105200">https://doi.org/10.1074/jbc.M209105200</a>. Coordenadas: entrada PDB <a target="_blank" rel="noopener" href="https://www.rcsb.org/structure/1K6M">1K6M</a>.</li>

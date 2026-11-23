@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css?v=20261115">
+<script src="js/marco.js?v=20261123c"></script>
+
+<link rel="stylesheet" type="text/css" href="biomodels.css">
+<title>Configuración y conformación en 3D | Atlas de estructuras</title>
+<meta name="description" content="Modelos 3D interactivos que distinguen conformación (giro de enlaces sencillos en el butano; silla y bote de la glucopiranosa) y configuración (D- y L-gliceraldehído; isomería cis-trans del 2-buteno).">
+<link rel="canonical" href="https://biomodels.es/Configuracion-Conformacion.htm">
+<meta property="og:title" content="Configuración y conformación en 3D">
+<meta property="og:description" content="Modelos 3D interactivos que distinguen conformación (giro de enlaces sencillos en el butano; silla y bote de la glucopiranosa) y configuración (D- y L-gliceraldehído; isomería cis-trans del 2-buteno).">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/Configuracion-Conformacion.htm">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="./jsmol/JSmol.min.js?v=20261113" type="text/javascript"></script>
+<style>
+.cc-concepto { margin:0 0 4px; font-size:1.45rem; color:var(--title); }
+.cc-fila { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:22px; margin:0 0 28px; max-width:1180px; }
+.cc-celda h2 { margin:0 0 6px; font-size:1.2rem; }
+.cc-visor { width:100%; height:330px; }
+.cc-controles { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:8px 0; }
+.cc-controles input[type="button"] { margin:0 !important; }
+.cc-controles label { white-space:nowrap; }
+.cc-estado { border:1px solid #c9d3dc; background:#fff; padding:6px 10px; margin:8px 0; font-size:.95em; line-height:1.5; }
+.cc-estado b.cambia { color:#b3261e; }
+.cc-estado b.igual { color:#1e6b2e; }
+.cc-slider { width:200px; max-width:100%; vertical-align:middle; }
+.cc-celda p { margin:6px 0; }
+table.cc-resumen { border-collapse:collapse; margin:6px 0 16px; max-width:1000px; }
+table.cc-resumen th, table.cc-resumen td { border:1px solid #9aa7b2; padding:5px 9px; text-align:left; vertical-align:top; }
+table.cc-resumen th { background:#e8eef3; }
+@media (max-width:900px) {
+  .cc-fila { grid-template-columns:1fr; }
+  .cc-visor { height:300px; }
+}
+</style>
+<script type="text/javascript">
+var But = 'But';   // butano
+var Glc = 'Glc';   // glucopiranosa silla / bote
+var Gli = 'Gli';   // D/L-gliceraldehído
+var But2 = 'But2'; // cis/trans-2-buteno
+var JmolInfo = {
+	width:'100%',
+	height:'100%',
+	color:'#F0F8FF',
+	j2sPath:'./jsmol/j2s',
+	serverURL:'./jsmol/php/jsmol.php',
+	use:'html5'
+};
+
+// ---------------------------------------------------------------
+// 1. Butano. En el fichero, el enlace C2–C3 está sobre el eje z (C2 hacia el
+// observador), así que "reset" da la proyección de Newman.
+// Átomos: C1=1, C2=2, C3=3, C4=4; H de C1 = 5-7; H de C2 = 8-9.
+// Al girar se mueve la mitad delantera (C1 y los H de C1 y C2) alrededor de C2–C3.
+// rotateSelected con ángulo positivo disminuye el diedro C1-C2-C3-C4.
+// ---------------------------------------------------------------
+var BUT_DELANTE = 'select atomno=1 or atomno=5 or atomno=6 or atomno=7 or atomno=8 or atomno=9';
+var butInicio = 'load ./pdb/estereoquimica/Butano.mol; spacefill 22%; wireframe 0.15; colour cpk;'
+	+ ' select atomno=1 or atomno=4; colour atoms [230,140,40];'
+	+ ' select *; set rotationRadius 4.2; zoom 100; reset; rotate y 70; rotate x 15;';
+var diedro = 180;
+var animando = null;
+
+function nombreConf(d) {
+	var x = ((d % 360) + 360) % 360;
+	var r = Math.min(x, 360 - x);
+	if (r < 15) return ['eclipsada total (sin)', 'C1 tapa a C4: máxima repulsión'];
+	if (Math.abs(r - 60) < 15) return ['alternada <i>gauche</i>', 'mínimo local: C1 y C4 a 60°'];
+	if (Math.abs(r - 120) < 15) return ['eclipsada', 'cada metilo eclipsa un H'];
+	if (r > 165) return ['alternada <i>anti</i>', 'la más estable: C1 y C4 opuestos'];
+	return ['intermedia', ''];
+}
+function ponerDiedro(t) {
+	t = ((t % 360) + 360) % 360;
+	var delta = diedro - t;
+	if (Math.abs(delta) > 0.01) Jmol.script(But, BUT_DELANTE + '; rotateSelected {atomno=2} {atomno=3} ' + delta.toFixed(2) + '; select *');
+	diedro = t;
+	document.getElementById('sliderDiedro').value = Math.round(t);
+	var n = nombreConf(t);
+	document.getElementById('diedroValor').innerHTML = Math.round(t) + '&deg;';
+	document.getElementById('confNombre').innerHTML = n[0] + (n[1] ? ' &ndash; ' + n[1] : '');
+}
+function girarCompleto() {
+	if (animando) { clearInterval(animando); animando = null; document.getElementById('botonGiro').value = 'Girar 360° (animación)'; return; }
+	var pasos = 0;
+	document.getElementById('botonGiro').value = 'Detener';
+	animando = setInterval(function(){
+		ponerDiedro(diedro + 5);
+		if (++pasos >= 72) girarCompleto();
+	}, 70);
+}
+function reiniciarBut() {
+	if (animando) girarCompleto();
+	diedro = 180;
+	Jmol.script(But, butInicio);
+	ponerDiedro(180);
+}
+
+// ---------------------------------------------------------------
+// 2. beta-D-glucopiranosa. El fichero .sdf tiene 15 modelos: el 1 es la silla 4C1
+// y el 15 un bote con C1 y C4 hacia arriba; los intermedios son pasos interpolados
+// solo para la animación. Coordenadas orientadas con el plano C2-C3-C5-O5 horizontal.
+// Átomos: C5=3, O5=4, C1=5, C2=7, C3=9, C4=11.
+// ---------------------------------------------------------------
+var glcInicio = 'load ./pdb/estereoquimica/Glucopiranosa_silla_bote.sdf; colour cpk;'
+	+ ' select *; spacefill 22%; wireframe 0.15;'
+	+ ' select atomno=5 or atomno=11; colour atoms [230,140,40]; select *;'
+	+ ' reset; rotate x 28; set rotationRadius 5.0; zoom 105;'
+	+ ' font echo 18 sansserif bold; color echo [40,40,40];';
+var glcModelo = 1;
+function glcEstado(n) {
+	glcModelo = n;
+	var silla = (n === 1);
+	Jmol.script(Glc, 'anim off; frame 1.' + n + '; set echo txtG 4% 92%; echo "' + (silla ? 'Silla (4C1)' : 'Bote') + '"');
+	document.getElementById('glcNombre').innerHTML = silla ? 'silla <sup>4</sup>C<sub>1</sub>' : 'bote';
+}
+function glcAnimar() {
+	Jmol.script(Glc, 'set echo txtG 4% 92%; echo "Silla \u2194 bote"; anim mode palindrome 0 0; anim fps 10; frame 1.1; frame range 1.1 1.15; anim on');
+	document.getElementById('glcNombre').innerHTML = 'paso de silla a bote y vuelta (animación)';
+}
+function reiniciarGlc() {
+	Jmol.scriptWait(Glc, glcInicio);
+	glcEstado(1);
+}
+
+// ---------------------------------------------------------------
+// 3. D-gliceraldehído. Átomos del fichero: C1=2 (CHO), C2=3 (carbono asimétrico),
+// H de C2 = 4, O de C2 = 5, H del OH = 9, C3 = 6, O de C3 = 7, H = 10, 11, 12.
+// Orientación de Fisher tomada de Triosas.htm.
+// ---------------------------------------------------------------
+var gliOrient = 'center {0.4827 -0.02275 0.10675}; rotate z 94.42; rotate y 53.31; rotate z 167.39; set rotationRadius 6.22; zoom 92;';
+var gliInicio = 'load ./pdb/glucidos/D-Gliceraldehido.mol; spacefill 25%; wireframe 0.15; colour cpk; reset; ' + gliOrient + ';'
+	+ ' select atomno=3; colour atoms [20,120,20]; spacefill 28%; select *;'
+	+ ' font echo 18 sansserif bold; color echo [20,120,20];';
+var giroC2C3 = 0, enlacesRotos = 0;
+
+function actualizarGli() {
+	var q = Jmol.evaluateVar(Gli, '{atomno=3}.chirality');
+	Jmol.script(Gli, 'set echo txtRS 4% 92%; echo C2: ' + q);
+	var serie = (q === 'R') ? 'D' : 'L';
+	document.getElementById('gliNombre').innerHTML = '<b>' + serie + '-gliceraldehído</b>';
+	document.getElementById('gliRS').innerHTML = q;
+	document.getElementById('gliRS').className = (q === 'R') ? 'igual' : 'cambia';
+	document.getElementById('gliGiro').innerHTML = giroC2C3 + '&deg;';
+	document.getElementById('gliEnlaces').innerHTML = enlacesRotos;
+	document.getElementById('gliEnlaces').className = enlacesRotos ? 'cambia' : 'igual';
+}
+function girarGli() {
+	// Conformación: gira el grupo CH2OH (C3) alrededor del enlace C2–C3.
+	Jmol.scriptWait(Gli, 'select atomno=7 or atomno=10 or atomno=11 or atomno=12; rotateSelected {atomno=3} {atomno=6} 60; select *');
+	giroC2C3 = (giroC2C3 + 60) % 360;
+	actualizarGli();
+}
+function invertirGli() {
+	// Configuración: intercambia H y OH del C2 (equivale a romper dos enlaces y formarlos de nuevo).
+	Jmol.scriptWait(Gli, 'select atomno=3; invertSelected STEREO {atomno=3} {atomno=4 or atomno=5 or atomno=9}; select *');
+	enlacesRotos += 2;
+	actualizarGli();
+	Jmol.script(Gli, 'select atomno=4 or atomno=5; halos on; delay 1.2; halos off; select *');
+}
+function reiniciarGli() {
+	giroC2C3 = 0; enlacesRotos = 0;
+	Jmol.scriptWait(Gli, gliInicio);
+	actualizarGli();
+}
+
+// ---------------------------------------------------------------
+// 4. cis/trans-2-buteno. Los cuatro carbonos están en el plano xy, con el doble
+// enlace C2=C3 sobre el eje x. Átomos: C1=1, C2=2, C3=3, C4=4, H de C2 = 8, H de C3 = 9,
+// H de C4 = 10-12. El giro mueve la mitad derecha (C4, sus H y el H de C3).
+// ---------------------------------------------------------------
+var B2_DERECHA = 'select atomno=4 or atomno=9 or atomno=10 or atomno=11 or atomno=12';
+var b2Isomero = 'cis', b2Giro = 0;
+function b2Inicio(iso) {
+	b2Isomero = iso; b2Giro = 0;
+	document.getElementById('sliderPi').value = 0;
+	Jmol.scriptWait(But2, 'load ./pdb/estereoquimica/' + iso + '-2-Buteno.mol; spacefill 22%; wireframe 0.15; colour cpk;'
+		+ ' select atomno=1 or atomno=4; colour atoms [230,140,40]; select *;'
+		+ ' reset; rotate x -55; rotate y 15; set rotationRadius 4.6; zoom 100;'
+		+ ' draw plano {-2.5 -2.0 0} {2.5 -2.0 0} {2.5 2.0 0} {-2.5 2.0 0}; color $plano translucent 0.65 [120,200,140];'
+		+ ' font echo 18 sansserif bold; color echo [40,40,40];');
+	b2Capas();
+	b2Actualizar();
+}
+function b2Capas() {
+	var plano = document.getElementById('verPlano').checked;
+	Jmol.script(But2, 'draw plano ' + (plano ? 'on' : 'off'));
+}
+function b2Girar(t) {
+	t = +t;
+	var delta = t - b2Giro;
+	if (Math.abs(delta) > 0.01) Jmol.script(But2, B2_DERECHA + '; rotateSelected {atomno=2} {atomno=3} ' + delta.toFixed(2) + '; select *');
+	b2Giro = t;
+	b2Capas();
+	b2Actualizar();
+}
+function b2Actualizar() {
+	var t = b2Giro, solape, nombre;
+	var c = Math.cos(t * Math.PI / 180);
+	if (t < 5) solape = '<b class="igual">máximo</b>: orbitales p paralelos, enlace &pi; intacto';
+	else if (t > 85 && t < 95) solape = '<b class="cambia">nulo</b>: orbitales p perpendiculares, <b class="cambia">enlace &pi; roto</b>';
+	else if (t > 175) solape = '<b class="igual">máximo</b> de nuevo: el enlace &pi; se ha vuelto a formar';
+	else solape = (Math.abs(c) > 0.5 ? 'parcial' : 'muy pequeño') + ': el enlace &pi; se debilita';
+	var actual = b2Isomero;
+	if (t > 90) actual = (b2Isomero === 'cis') ? 'trans' : 'cis';
+	nombre = (t > 85 && t < 95) ? 'ni cis ni trans (enlace &pi; roto)' : '<b>' + actual + '-2-buteno</b>';
+	document.getElementById('piValor').innerHTML = Math.round(t) + '&deg;';
+	document.getElementById('b2Nombre').innerHTML = nombre;
+	document.getElementById('b2Solape').innerHTML = solape;
+	Jmol.script(But2, 'set echo txtB 4% 92%; echo "' + ((t > 85 && t < 95) ? '\u03c0 roto' : actual + '-2-buteno') + '"');
+}
+
+$(document).ready(function(){
+	$('#JmolDiv_But').html(Jmol.getAppletHtml(But, JmolInfo));
+	$('#JmolDiv_Glc').html(Jmol.getAppletHtml(Glc, JmolInfo));
+	$('#JmolDiv_Gli').html(Jmol.getAppletHtml(Gli, JmolInfo));
+	$('#JmolDiv_But2').html(Jmol.getAppletHtml(But2, JmolInfo));
+	Jmol.script(But, butInicio);
+	ponerDiedro(180);
+	setTimeout(function(){ reiniciarGlc(); reiniciarGli(); b2Inicio('cis'); }, 300);
+});
+</script>
+</head>
+<body>
+<font face="Tahoma">
+
+<p>
+La <FONT COLOR="#6633CC"><B>conformación</B></FONT> y la <FONT COLOR="#6633CC"><B>configuración</B></FONT> describen ambas la
+disposición de los átomos en el espacio, pero se distinguen por <b>qué hace falta para pasar de una forma a otra</b>:
+las conformaciones se interconvierten <u>girando enlaces sencillos</u>, sin romper ninguno; las configuraciones solo cambian
+<u>rompiendo enlaces</u>, y el resultado es otro compuesto.
+</p>
+
+<!-- Fila 1: conformación -->
+<h2 class="cc-concepto">Conformación: girar enlaces sencillos</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>Butano: giro del enlace C2&ndash;C3</h2>
+		<div id="JmolDiv_But" class="cc-visor"></div>
+		<div class="cc-controles">
+			<label for="sliderDiedro">Diedro C1&ndash;C2&ndash;C3&ndash;C4:</label>
+			<input type="range" id="sliderDiedro" class="cc-slider" min="0" max="360" step="5" value="180" oninput="ponerDiedro(+this.value)">
+			<b id="diedroValor">180&deg;</b>
+		</div>
+		<div class="cc-controles">
+			<input type="button" id="botonGiro" value="Girar 360° (animación)" onclick="girarCompleto()">
+			<input type="button" value="Proyección de Newman" onclick="Jmol.script(But, 'reset')">
+			<input type="button" value="Vista lateral" onclick="Jmol.script(But, 'reset; rotate y 70; rotate x 15')">
+			<input type="button" value="Vista inicial" onclick="reiniciarBut()">
+		</div>
+		<div class="cc-estado">Conformación: <b id="confNombre"></b><br>
+		<FONT SIZE="-1">C1 y C4 (los metilos) en naranja; C2 y C3 en gris.</FONT></div>
+		<p>
+		Todas las posiciones del deslizador son <b>la misma molécula</b>: ningún enlace se rompe y, a temperatura ambiente,
+		el butano pasa de una conformación a otra continuamente. Las conformaciones difieren en estabilidad
+		(la <i>anti</i> es la más estable), pero no son compuestos distintos y no se pueden aislar.
+		</p>
+	</div>
+	<div class="cc-celda">
+		<h2>&beta;-D-glucopiranosa: silla y bote</h2>
+		<div id="JmolDiv_Glc" class="cc-visor"></div>
+		<div class="cc-controles">
+			<input type="button" value="Silla" onclick="glcEstado(1)">
+			<input type="button" value="Bote" onclick="glcEstado(15)">
+			<input type="button" value="Animación silla ↔ bote" onclick="glcAnimar()">
+			<input type="button" value="Vista superior" onclick="Jmol.script(Glc, 'reset; rotate x 90')">
+			<input type="button" value="Vista inicial" onclick="reiniciarGlc()">
+		</div>
+		<div class="cc-estado">Conformación del anillo: <b id="glcNombre"></b><br>
+		<FONT SIZE="-1">C1 (izquierda) y C4 (derecha) en naranja; el anillo se ve de perfil.</FONT></div>
+		<p>
+		El anillo de seis átomos no es plano. En la <b>silla</b>, C4 queda por encima del plano del resto del anillo y C1 por debajo;
+		en el <b>bote</b>, ambos quedan del mismo lado. Para pasar de una a otra basta con girar enlaces sencillos del anillo:
+		sigue siendo la misma &beta;-D-glucopiranosa, con la misma configuración en todos sus carbonos. En la silla
+		<sup>4</sup>C<sub>1</sub> todos los sustituyentes voluminosos son ecuatoriales, y es la conformación predominante.
+		<FONT SIZE="-1"><i>(Los pasos intermedios de la animación son interpolados, solo ilustrativos.)</i></FONT>
+		</p>
+	</div>
+</div>
+
+<!-- Fila 2: configuración -->
+<h2 class="cc-concepto">Configuración: solo cambia rompiendo enlaces</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>D- y L-gliceraldehído</h2>
+		<div id="JmolDiv_Gli" class="cc-visor"></div>
+		<div class="cc-controles">
+			<input type="button" value="Girar el enlace C2–C3 (60°)" onclick="girarGli()">
+			<input type="button" value="Intercambiar H y OH del C2" onclick="invertirGli()">
+			<input type="button" value="Vista inicial" onclick="reiniciarGli()">
+		</div>
+		<div class="cc-estado">
+			Compuesto: <span id="gliNombre"></span> &nbsp;|&nbsp; Configuración del C2: <b id="gliRS"></b><br>
+			Giro acumulado del enlace C2&ndash;C3: <b id="gliGiro"></b> &nbsp;|&nbsp; Enlaces rotos: <b id="gliEnlaces"></b>
+		</div>
+		<p>
+		El C2 (en verde) es un carbono asimétrico. <b>Girar el enlace C2&ndash;C3</b> mueve el grupo CH<sub>2</sub>OH: es un cambio
+		de <u>conformación</u> y el C2 sigue siendo R (D-gliceraldehído). <b>Intercambiar el H y el OH</b> del C2 exige romper dos
+		enlaces y formarlos de nuevo: es un cambio de <u>configuración</u> y el compuesto pasa a ser el L-gliceraldehído (S),
+		su imagen especular no superponible. En la proyección de Fisher, el OH del C2 pasa de la derecha a la izquierda.
+		</p>
+	</div>
+	<div class="cc-celda">
+		<h2>Isomería cis-trans: 2-buteno</h2>
+		<div id="JmolDiv_But2" class="cc-visor"></div>
+		<div class="cc-controles">
+			<input type="button" value="cis-2-buteno" onclick="b2Inicio('cis')">
+			<input type="button" value="trans-2-buteno" onclick="b2Inicio('trans')">
+			<label><input type="checkbox" id="verPlano" checked onclick="b2Capas()"> Plano del doble enlace</label>
+		</div>
+		<div class="cc-controles">
+			<label for="sliderPi">Intentar girar el doble enlace C2=C3:</label>
+			<input type="range" id="sliderPi" class="cc-slider" min="0" max="180" step="5" value="0" oninput="b2Girar(this.value)">
+			<b id="piValor">0&deg;</b>
+		</div>
+		<div class="cc-estado">
+			Compuesto: <span id="b2Nombre"></span><br>
+			Solapamiento de los orbitales p: <span id="b2Solape"></span>
+		</div>
+		<p>
+		Los dos carbonos del doble enlace y los cuatro átomos unidos a ellos están <b>en un mismo plano</b> (en verde). El enlace &pi;
+		se forma por el solapamiento lateral de dos orbitales p perpendiculares a ese plano. Al girar el doble enlace, los orbitales
+		dejan de estar paralelos y, a 90&deg;, ya no se solapan: <b>el enlace &pi; se ha roto</b>. Por eso el doble enlace no gira a
+		temperatura ambiente y las formas cis y trans son <u>configuraciones</u> distintas: compuestos diferentes que se pueden aislar.
+		</p>
+	</div>
+</div>
+
+<!-- Fila 3: resumen -->
+<b><i><font color="#FF373B">Resumen:</font></i></b>
+<table class="cc-resumen">
+	<tr><th></th><th>Conformación</th><th>Configuración</th></tr>
+	<tr><td><b>Cómo se cambia</b></td><td>Girando enlaces sencillos</td><td>Rompiendo enlaces (y formándolos de nuevo)</td></tr>
+	<tr><td><b>Descriptor R/S, D/L o cis/trans</b></td><td>No cambia</td><td>Cambia</td></tr>
+	<tr><td><b>¿Es el mismo compuesto?</b></td><td>Sí; las formas se interconvierten continuamente</td><td>No; son isómeros que se pueden aislar</td></tr>
+	<tr><td><b>Ejemplos</b></td><td><i>Anti</i> y <i>gauche</i> del butano; silla y bote de la glucopiranosa</td><td>D- y L-gliceraldehído; cis- y trans-2-buteno; ácidos oleico (cis) y elaídico (trans)</td></tr>
+</table>
+
+<p class="descripcion-pagina">
+Modelos 3D interactivos para distinguir conformación y configuración: el giro del enlace C2&ndash;C3 del butano, la silla y el
+bote de la &beta;-D-glucopiranosa, el D- y el L-gliceraldehído y la isomería cis-trans del 2-buteno.
+</p>
+</font>
+</body>
+</html>

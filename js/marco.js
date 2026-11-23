@@ -41,6 +41,7 @@
   // ---------------------------------------------------------------
   var MENU = [
     { t: "Inicio", href: "atlas.htm" },
+    { t: "Configuración y conformación", href: "Configuracion-Conformacion.htm" },
     { t: "Aminoácidos", href: "aminoacidos.htm" },
     { cat: "Glúcidos", items: [
       { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" }

@@ -22,15 +22,15 @@
 <script src="./jsmol/JSmol.min.js?v=20261113"></script>
 <script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
 <style>
-.controles-aa { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:4px 0 14px; }
+.controles-aa { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 14px; padding:8px 0; position:sticky; top:0; z-index:100000; background:#f5f7f9 !important; transform:translateZ(0); border-bottom:1px solid var(--line); }
 .controles-aa input[type="button"] { margin:0 !important; white-space:nowrap; }
 .controles-aa input[type="button"].activo { background:#f6c48d; border-color:#e08a2c; }
 .controles-aa label { margin-left:6px; white-space:nowrap; }
 .familia-aa { margin:0 0 12px; }
-.familia-aa h3 { font-size:1rem; margin:0 0 4px; color:var(--title); }
+.familia-aa h3 { font-size:1.3rem; margin:0 0 4px; color:var(--title); }
 .fila-aa { display:flex; flex-wrap:wrap; gap:5px; }
-.celda-aa { display:flex; flex-direction:column; align-items:center; width:220px; }
-.celda-aa .nombre-aa { font-size:.85em; text-align:center; margin-top:2px; line-height:1.25; }
+.celda-aa { display:flex; flex-direction:column; align-items:center; width:264px; }
+.celda-aa .nombre-aa { font-size:.95em; font-weight:700; text-align:center; margin-top:2px; line-height:1.25; }
 </style>
 <body>
 <div class="controles-aa">
@@ -115,7 +115,7 @@
 			var a = lista[k];
 			vistasAA.push("spin off; select *; spacefill 100%; isosurface off; " + vistaAA(a));
 			jmolHtml('<div class="celda-aa">');
-			jmolApplet(220, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 100%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
+			jmolApplet(264, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 100%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
 			jmolHtml('<div class="nombre-aa">' + a[1] + '</div></div>');
 			nAA++;
 		}

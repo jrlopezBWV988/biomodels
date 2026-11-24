@@ -173,48 +173,60 @@ function reiniciarGli() {
 
 // ---------------------------------------------------------------
 // 4. cis/trans-2-buteno. Los cuatro carbonos están en el plano xy, con el doble
-// enlace C2=C3 sobre el eje x. Átomos: C1=1, C2=2, C3=3, C4=4, H de C2 = 8, H de C3 = 9,
-// H de C4 = 10-12. El giro mueve la mitad derecha (C4, sus H y el H de C3).
+// enlace C2=C3 sobre el eje x. Átomos: C1=1, C2=2, C3=3, C4=4; H del metilo C1 = 5-7,
+// H de C2 = 8, H de C3 = 9, H del metilo C4 = 10-12.
+// Deslizador 1: el doble enlace no gira; toda la molécula gira alrededor del eje
+// C2=C3 como un bloque rígido y el plano (dibujado a partir de las coordenadas
+// del C1) gira con ella. Deslizador 2: giro de los enlaces sencillos C1-C2 y C3-C4.
 // ---------------------------------------------------------------
-var B2_DERECHA = 'select atomno=4 or atomno=9 or atomno=10 or atomno=11 or atomno=12';
-var b2Isomero = 'cis', b2Giro = 0;
+var b2Isomero = 'cis', b2Giro = 0, b2Metilo = 0, b2Fase0 = 0;
+function b2Fase() {
+	var y = Jmol.evaluateVar(But2, '{atomno=1}.y'), z = Jmol.evaluateVar(But2, '{atomno=1}.z');
+	return Math.atan2(z, y);
+}
+function b2Plano() {
+	var f = b2Fase() - b2Fase0, c = 2.0 * Math.cos(f), d = 2.0 * Math.sin(f);
+	var p = function (x, k) { return '{' + x + ' ' + (k * c).toFixed(3) + ' ' + (k * d).toFixed(3) + '}'; };
+	var plano = document.getElementById('verPlano').checked;
+	Jmol.script(But2, 'draw plano ' + p(-2.5, -1) + ' ' + p(2.5, -1) + ' ' + p(2.5, 1) + ' ' + p(-2.5, 1)
+		+ '; color $plano translucent 0.65 [120,200,140]; draw plano ' + (plano ? 'on' : 'off'));
+}
 function b2Inicio(iso) {
-	b2Isomero = iso; b2Giro = 0;
+	b2Isomero = iso; b2Giro = 0; b2Metilo = 0;
 	document.getElementById('sliderPi').value = 0;
+	document.getElementById('sliderMe').value = 0;
 	Jmol.scriptWait(But2, 'load ./pdb/estereoquimica/' + iso + '-2-Buteno.mol; spacefill 22%; wireframe 0.15; colour cpk;'
-		+ ' select atomno=1 or atomno=4; colour atoms [230,140,40]; select *;'
+		+ ' select atomno=1 or atomno=4; colour atoms [230,140,40];'
+		+ ' select atomno=6 or atomno=10; colour atoms [120,170,235]; select *;'
 		+ ' reset; rotate x -55; rotate y 15; set rotationRadius 4.6; zoom 100;'
-		+ ' draw plano {-2.5 -2.0 0} {2.5 -2.0 0} {2.5 2.0 0} {-2.5 2.0 0}; color $plano translucent 0.65 [120,200,140];'
 		+ ' font echo 18 sansserif bold; color echo [40,40,40];');
-	b2Capas();
+	b2Fase0 = b2Fase();
+	b2Plano();
 	b2Actualizar();
 }
-function b2Capas() {
-	var plano = document.getElementById('verPlano').checked;
-	Jmol.script(But2, 'draw plano ' + (plano ? 'on' : 'off'));
-}
+function b2Capas() { b2Plano(); }
 function b2Girar(t) {
 	t = +t;
 	var delta = t - b2Giro;
-	if (Math.abs(delta) > 0.01) Jmol.script(But2, B2_DERECHA + '; rotateSelected {atomno=2} {atomno=3} ' + delta.toFixed(2) + '; select *');
+	if (Math.abs(delta) > 0.01) Jmol.scriptWait(But2, 'select *; rotateSelected {atomno=2} {atomno=3} ' + delta.toFixed(2) + '; select *');
 	b2Giro = t;
-	b2Capas();
+	b2Plano();
+	b2Actualizar();
+}
+function b2GirarMetilos(t) {
+	t = +t;
+	var delta = t - b2Metilo;
+	if (Math.abs(delta) > 0.01) Jmol.scriptWait(But2,
+		'select atomno=5 or atomno=6 or atomno=7; rotateSelected {atomno=2} {atomno=1} ' + delta.toFixed(2) + ';'
+		+ ' select atomno=10 or atomno=11 or atomno=12; rotateSelected {atomno=3} {atomno=4} ' + delta.toFixed(2) + '; select *');
+	b2Metilo = t;
 	b2Actualizar();
 }
 function b2Actualizar() {
-	var t = b2Giro, solape, nombre;
-	var c = Math.cos(t * Math.PI / 180);
-	if (t < 5) solape = '<b class="igual">máximo</b>: orbitales p paralelos, enlace &pi; intacto';
-	else if (t > 85 && t < 95) solape = '<b class="cambia">nulo</b>: orbitales p perpendiculares, <b class="cambia">enlace &pi; roto</b>';
-	else if (t > 175) solape = '<b class="igual">máximo</b> de nuevo: el enlace &pi; se ha vuelto a formar';
-	else solape = (Math.abs(c) > 0.5 ? 'parcial' : 'muy pequeño') + ': el enlace &pi; se debilita';
-	var actual = b2Isomero;
-	if (t > 90) actual = (b2Isomero === 'cis') ? 'trans' : 'cis';
-	nombre = (t > 85 && t < 95) ? 'ni cis ni trans (enlace &pi; roto)' : '<b>' + actual + '-2-buteno</b>';
-	document.getElementById('piValor').innerHTML = Math.round(t) + '&deg;';
-	document.getElementById('b2Nombre').innerHTML = nombre;
-	document.getElementById('b2Solape').innerHTML = solape;
-	Jmol.script(But2, 'set echo txtB 4% 92%; echo "' + ((t > 85 && t < 95) ? '\u03c0 roto' : actual + '-2-buteno') + '"');
+	document.getElementById('piValor').innerHTML = Math.round(b2Giro) + '&deg;';
+	document.getElementById('meValor').innerHTML = Math.round(b2Metilo) + '&deg;';
+	document.getElementById('b2Nombre').innerHTML = '<b>' + b2Isomero + '-2-buteno</b> (no cambia con ningún giro)';
+	Jmol.script(But2, 'set echo txtB 4% 92%; echo "' + b2Isomero + '-2-buteno"');
 }
 
 $(document).ready(function(){
@@ -316,19 +328,26 @@ las conformaciones se interconvierten <u>girando enlaces sencillos</u>, sin romp
 			<label><input type="checkbox" id="verPlano" checked onclick="b2Capas()"> Plano del doble enlace</label>
 		</div>
 		<div class="cc-controles">
-			<label for="sliderPi">Intentar girar el doble enlace C2=C3:</label>
-			<input type="range" id="sliderPi" class="cc-slider" min="0" max="180" step="5" value="0" oninput="b2Girar(this.value)">
+			<label for="sliderPi">Girar alrededor del doble enlace C2=C3:</label>
+			<input type="range" id="sliderPi" class="cc-slider" min="0" max="360" step="5" value="0" oninput="b2Girar(this.value)">
 			<b id="piValor">0&deg;</b>
+		</div>
+		<div class="cc-controles">
+			<label for="sliderMe">Girar los enlaces sencillos de los metilos:</label>
+			<input type="range" id="sliderMe" class="cc-slider" min="0" max="360" step="5" value="0" oninput="b2GirarMetilos(this.value)">
+			<b id="meValor">0&deg;</b>
 		</div>
 		<div class="cc-estado">
 			Compuesto: <span id="b2Nombre"></span><br>
-			Solapamiento de los orbitales p: <span id="b2Solape"></span>
+			<font size="-1">C1 y C4 (los metilos) en naranja; un hidrógeno de cada metilo en azul claro.</font>
 		</div>
 		<p>
-		Los dos carbonos del doble enlace y los cuatro átomos unidos a ellos están <b>en un mismo plano</b> (en verde). El enlace &pi;
-		se forma por el solapamiento lateral de dos orbitales p perpendiculares a ese plano. Al girar el doble enlace, los orbitales
-		dejan de estar paralelos y, a 90&deg;, ya no se solapan: <b>el enlace &pi; se ha roto</b>. Por eso el doble enlace no gira a
-		temperatura ambiente y las formas cis y trans son <u>configuraciones</u> distintas: compuestos diferentes que se pueden aislar.
+		Los dos carbonos del doble enlace y los cuatro átomos unidos a ellos están <b>en un mismo plano</b> (en verde).
+		<b>El doble enlace no puede girar</b>: con el primer deslizador, la molécula gira entera alrededor del eje C2=C3,
+		como un bloque rígido, y el plano gira con ella; los metilos siguen al mismo lado (cis) o en lados opuestos (trans).
+		En cambio, <b>los enlaces sencillos de los metilos sí giran</b>: con el segundo deslizador cambia la orientación de sus
+		hidrógenos (una <u>conformación</u> distinta), pero los C1 y C4 no salen del plano. Pasar de cis a trans exigiría romper
+		el doble enlace: por eso son <u>configuraciones</u> distintas, compuestos diferentes que se pueden aislar.
 		</p>
 	</div>
 </div>

@@ -19,7 +19,7 @@
 /* Recuadro de instrucciones del ratón, con el mismo fondo que el visor JSmol */
 .ayuda-raton {
 	box-sizing: border-box;
-	width: 300px;
+	height: var(--fila);
 	margin-left: 18px;
 	padding: 16px 18px;
 	background: #f0f8ff;
@@ -50,6 +50,18 @@
 	background: #ffffff;
 	color: var(--accent-strong, #134e69);
 }
+/* Composición cuadrada de los tres recuadros: el texto arriba y, debajo, el visor
+   y el uso del ratón, con la misma altura.
+   Ancho total = alto total = --lado. */
+body.portada table.cuadro-portada { --lado: 756px; --fila: 422px; width: var(--lado); max-width: none; }
+body.portada table.cuadro-portada > tbody > tr:first-child > td { box-sizing: border-box; height: calc(var(--lado) - 18px - var(--fila)); }
+body.portada .celda-visor form { margin: 0; }
+/* En pantallas estrechas, sin medidas fijas */
+@media (max-width: 1079px) {
+	body.portada table.cuadro-portada { width: 100%; max-width: 900px; }
+	body.portada table.cuadro-portada > tbody > tr:first-child > td { height: auto; }
+	body.portada .ayuda-raton { height: auto; width: 300px; }
+}
 .descripcion-sitio { margin: 0 0 12px; font-size: 1.05rem; color: var(--title, #13324a); }
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -61,7 +73,7 @@
 <body class="portada">
 <h1 class="solo-lectores">Atlas de estructuras moleculares en 3D – Bioquímica</h1>
 <font face="Tahoma">
-<table width="100%">
+<table width="100%" class="cuadro-portada">
 <tr valign="top">
 	<td colspan="2" valign="middle">
 		<p class="descripcion-sitio"><b>biomodels.es</b> es un recurso docente de bioqu&iacute;mica estructural: modelos moleculares 3D interactivos para estudiantes de Medicina y Ciencias de la Salud, desarrollado en la Universidad de Valladolid.</p>
@@ -76,13 +88,16 @@
 	</td>
 </tr>
 <tr valign="top">
-	<td width="1">
+	<td width="1" class="celda-visor">
 		<form>
 		<script>
 		  jmolInitialize("./jsmol/js");
-		  jmolApplet(420, "load ./pdb/2hhd.pdb.gz; restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; spacefill on; select hem; color cpk; spin on");
-		  jmolBr();
-		  jmolButton("restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; spacefill on; select hem; color cpk; spin on", "imagen original");
+		  // Giro continuo de la hemoglobina: media vuelta con esferas (colores por cadena),
+		  // media vuelta con cohetes y cintas, y media vuelta solo con los grupos hemo; después vuelve a empezar.
+		  jmolApplet(420, "load ./pdb/2hhd.pdb.gz; restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; select hem; color cpk; set cartoonRockets true; "
+		    + "while (true) { display not solvent; select protein; cartoons off; spacefill on; select hem; spacefill on; select none; move 0 180 0 0 0 0 0 0 6; "
+		    + "select protein; spacefill off; wireframe off; cartoons on; select none; move 0 180 0 0 0 0 0 0 6; "
+		    + "display hem; move 0 180 0 0 0 0 0 0 6; }");
 		</script>
 		</form>
 	</td>

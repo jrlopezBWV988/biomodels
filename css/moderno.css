@@ -54,6 +54,10 @@ font[size="+2"], font[size="+3"], font[size="5"] {
   letter-spacing: -.01em;
   margin: 4px 0 14px;
 }
+/* Título principal (h1) que envuelve un título antiguo: conserva su aspecto */
+h1.titulo-pagina { display: inline; margin: 0; padding: 0; font: inherit; color: inherit; letter-spacing: inherit; }
+/* Título (h1) solo para lectores de pantalla y buscadores, en las páginas sin título visible */
+.solo-lectores { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 font[color="#6633CC" i], font[color="#3333CC" i], font[color="#990033" i] {
   color: var(--title) !important;
 }
@@ -305,7 +309,7 @@ font[color="#00FF00" i], font[color="#FFFFFF" i], font[color="#CCCCFF" i] {
 .nav-superior a.activo { background: var(--accent); color: #fff; }
 
 /* ======================================================
-   Portada (atlas.htm)
+   Portada (index.html)
    ====================================================== */
 body.portada img[src*="jr.foto"] {
   width: 97px !important;

@@ -1,15 +1,101 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML lang="es">
+<HEAD>
 <meta charset="utf-8">
-<title>Atlas de estructuras</title>
-<!-- Página antigua con marcos: ahora redirige a la página equivalente sin marcos. -->
-<meta http-equiv="refresh" content="0; url=atlas.htm">
-<link rel="canonical" href="atlas.htm">
-<script>location.replace("atlas.htm" + location.hash);</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css?v=20261124">
+<script src="js/marco.js?v=20261124"></script>
+
+<title>Atlas de estructuras moleculares en 3D – Bioquímica | Atlas de estructuras</title>
+<meta name="description" content="Modelos moleculares 3D interactivos para la docencia de Bioquímica: aminoácidos, glúcidos, lípidos, proteínas y complejos enzimáticos. Universidad de Valladolid.">
+<link rel="canonical" href="https://biomodels.es/">
+<meta property="og:title" content="Atlas de estructuras moleculares en 3D – Bioquímica">
+<meta property="og:description" content="Modelos moleculares 3D interactivos para la docencia de Bioquímica: aminoácidos, glúcidos, lípidos, proteínas y complejos enzimáticos. Universidad de Valladolid.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/">
+<meta property="og:locale" content="es_ES">
+<META NAME="Generator" CONTENT="EditPlus 1.2">
+<style>
+/* Recuadro de instrucciones del ratón, con el mismo fondo que el visor JSmol */
+.ayuda-raton {
+	box-sizing: border-box;
+	width: 300px;
+	margin-left: 18px;
+	padding: 16px 18px;
+	background: #f0f8ff;
+	border: 1px solid var(--line, #dbe2e9);
+	border-radius: var(--radius, 10px);
+	box-shadow: var(--shadow, 0 4px 14px rgba(18,32,44,.06));
+}
+.ayuda-raton h3 {
+	margin: 0 0 12px;
+	font-size: 1.05rem;
+	font-weight: 600;
+	color: var(--title, #13324a);
+}
+.ayuda-raton p { margin: 0 0 10px; }
+.ayuda-raton p:last-child { margin-bottom: 0; color: var(--muted, #5a6977); font-size: .93em; }
+/* Copia del botón del ratón que crea js/marco.js; al pulsarla abre la misma ventana */
+.ayuda-raton .raton-muestra {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	margin: 0 4px;
+	padding: 0;
+	vertical-align: middle;
+	border-radius: 50%;
+	border: 1px solid var(--accent, #1d6a8c);
+	background: #ffffff;
+	color: var(--accent-strong, #134e69);
+}
+.descripcion-sitio { margin: 0 0 12px; font-size: 1.05rem; color: var(--title, #13324a); }
+</style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-</head>
-<body><p><a href="atlas.htm">Atlas de estructuras</a></p></body>
-</html>
+</HEAD>
+<script src="./jsmol/JSmol.min.js?v=20261113"></script>
+<script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
+<body class="portada">
+<h1 class="solo-lectores">Atlas de estructuras moleculares en 3D – Bioquímica</h1>
+<font face="Tahoma">
+<table width="100%">
+<tr valign="top">
+	<td colspan="2" valign="middle">
+		<p class="descripcion-sitio"><b>biomodels.es</b> es un recurso docente de bioqu&iacute;mica estructural: modelos moleculares 3D interactivos para estudiantes de Medicina y Ciencias de la Salud, desarrollado en la Universidad de Valladolid.</p>
+		La responsabilidad de su dise&ntilde;o y mantenimiento es de<br>
+		<i><a href="mailto:jrlopez@uva.es">Jos&eacute; Ram&oacute;n L&oacute;pez L&oacute;pez</a></i>,
+		<br>profesor de Bioqu&iacute;mica y Biolog&iacute;a Molecular de la Universidad de Valladolid.
+		<br>
+		<br>Deber&iacute;as ver una mol&eacute;cula de hemoglobina dando vueltas.
+		<br>
+		<br>Estas p&aacute;ginas utilizan JSmol (<a href="http://jmol.sourceforge.net/">http://jmol.sourceforge.net/</a>).
+		<br><img src="images/JSmol_logo.png" width="116" height="40" alt="JSmol" border="0"/>
+	</td>
+</tr>
+<tr valign="top">
+	<td width="1">
+		<form>
+		<script>
+		  jmolInitialize("./jsmol/js");
+		  jmolApplet(420, "load ./pdb/2hhd.pdb.gz; restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; spacefill on; select hem; color cpk; spin on");
+		  jmolBr();
+		  jmolButton("restrict not solvent; moveTo 0 -95 -748 -657 171.8 110 0 -2; background aliceblue; color chain; spacefill on; select hem; color cpk; spin on", "imagen original");
+		</script>
+		</form>
+	</td>
+	<td>
+		<div class="ayuda-raton">
+			<h3>Uso del rat&oacute;n</h3>
+			<p>En todas las p&aacute;ginas con modelos 3D, incluida esta, hay junto al escudo de la UVa, en la parte superior del &iacute;ndice (en el m&oacute;vil, a la derecha de la barra &laquo;&Iacute;ndice&raquo;), un bot&oacute;n con este icono:
+			<button type="button" class="raton-muestra" title="Uso del rat&oacute;n en los modelos 3D" aria-label="Uso del rat&oacute;n en los modelos 3D" onclick="event.stopPropagation(); var b = document.querySelector('.raton-boton'); if (b) b.click();"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="6" y="2.5" width="12" height="19" rx="6" fill="none" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="2.5" x2="12" y2="10" stroke="currentColor" stroke-width="1.8"/><line x1="6" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1.8"/><rect x="11" y="5" width="2" height="3" rx="1" fill="currentColor"/></svg></button></p>
+			<p>P&uacute;lsalo para ver c&oacute;mo girar, acercar, desplazar y volver a orientar el modelo con el rat&oacute;n o en pantallas t&aacute;ctiles.</p>
+		</div>
+	</td>
+</tr>
+</table>
+
+</BODY>
+</HTML>

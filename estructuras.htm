@@ -8,14 +8,15 @@
 <script>
 (function () {
   var p = new URLSearchParams(location.search).get("p");
-  var destino = (p && /^(proteinas\/)?[\w.\-]+\.html?$/i.test(p)) ? p : "atlas.htm";
+  var destino = (p && /^(proteinas\/)?[\w.\-]+\.html?$/i.test(p)) ? p : (location.protocol === "file:" ? "index.html" : "./");
   location.replace(destino + location.hash);
 })();
 </script>
-<noscript><meta http-equiv="refresh" content="0; url=atlas.htm"></noscript>
+<link rel="canonical" href="https://biomodels.es/">
+<noscript><meta http-equiv="refresh" content="0; url=./"></noscript>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
-<body><p><a href="atlas.htm">Atlas de estructuras</a></p></body>
+<body><p><a href="./">Atlas de estructuras</a></p></body>
 </html>

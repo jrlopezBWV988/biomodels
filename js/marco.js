@@ -20,6 +20,10 @@
     } catch (e) { /* si el navegador no lo permite, la página sigue cargando */ }
   }
 
+  // Portada: la raíz del sitio (index.html). En una copia local (file://) se enlaza
+  // index.html, porque la carpeta sola no abre la página.
+  var INICIO = location.protocol === "file:" ? "index.html" : "";
+
   // Carpeta raíz del sitio, deducida de la dirección de este mismo script (…/js/marco.js).
   var yo = document.currentScript || document.querySelector('script[src*="js/marco.js"]');
   var RAIZ = yo.src.replace(/js\/marco\.js(\?.*)?$/, "");
@@ -40,7 +44,7 @@
   // con "grupo" es un subtítulo dentro de un apartado.
   // ---------------------------------------------------------------
   var MENU = [
-    { t: "Inicio", href: "atlas.htm" },
+    { t: "Inicio", href: INICIO },
     { t: "Configuración y Conformación", href: "Configuracion-Conformacion.htm" },
     { t: "Aminoácidos", href: "aminoacidos.htm" },
     { cat: "Glúcidos", items: [
@@ -146,7 +150,8 @@
     var u = url.split("#")[0].split("?")[0];
     return u.indexOf(RAIZ) === 0 ? decodeURIComponent(u.slice(RAIZ.length)) : u;
   }
-  var ACTUAL = rutaRelativa(location.href) || "atlas.htm";
+  var ACTUAL = rutaRelativa(location.href);
+  if (ACTUAL === "" || ACTUAL === "index.html") ACTUAL = INICIO;
 
   // Apartado con submenú al que pertenece la página actual (si lo hay).
   var subActual = null;
@@ -172,7 +177,7 @@
     ul.className = clase;
     items.forEach(function (it) {
       var li = document.createElement("li");
-      if (it.href) {
+      if (typeof it.href === "string") {
         li.appendChild(enlace(it));
       } else {
         var span = document.createElement("span");
@@ -200,7 +205,7 @@
     aside.id = "marco-indice";
     aside.setAttribute("aria-label", "Índice");
     var logo = document.createElement("a");
-    logo.href = RAIZ + "atlas.htm";
+    logo.href = RAIZ + INICIO;
     logo.className = "marco-logo";
     var img = document.createElement("img");
     img.src = RAIZ + "images/LogoUva.png";

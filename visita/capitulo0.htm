@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css?v=20261125">
+<script src="../js/marco.js?v=20261125"></script>
+
+<title>Visita guiada · Capítulo 0: cómo leer un modelo 3D | Atlas de estructuras</title>
+<meta name="description" content="Primer capítulo de la visita guiada: representaciones de un modelo molecular (esferas, varillas, cintas), colores por elemento y escala, del ATP a la hemoglobina, con modelos JSmol y un test de comprobación.">
+<link rel="canonical" href="https://biomodels.es/visita/capitulo0.htm">
+<meta property="og:title" content="Visita guiada · Capítulo 0: cómo leer un modelo 3D">
+<meta property="og:description" content="Representaciones de un modelo molecular, colores por elemento y escala, del ATP a la hemoglobina, con modelos JSmol y un test de comprobación.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/visita/capitulo0.htm">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="../jsmol/JSmol.min.js?v=20261113"></script>
+<style>
+.vc { max-width: 1120px; }
+.vc-migas { margin: 0 0 6px; font-size: .92em; color: var(--muted); }
+.vc-migas a { color: var(--accent); }
+.vc h1 { margin: 0 0 10px; font-size: 1.75rem; line-height: 1.2; }
+.vc-entradilla { margin: 0 0 16px; max-width: 780px; font-size: 1.05rem; line-height: 1.55; }
+.vc-objetivos {
+  margin: 0 0 26px; padding: 14px 18px 14px 18px; max-width: 780px;
+  background: var(--accent-soft); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.vc-objetivos h2 { margin: 0 0 6px; font-size: 1.02rem; color: var(--accent-strong); }
+.vc-objetivos ul { margin: 0; padding-left: 20px; line-height: 1.5; }
+.vc-parada { margin: 0 0 34px; }
+.vc-parada-cab { display: flex; align-items: baseline; gap: 12px; margin: 0 0 4px; }
+.vc-parada-num {
+  flex: none; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1px solid var(--accent); color: var(--accent-strong); font-weight: 600;
+  transform: translateY(-2px);
+}
+.vc-parada h2 { margin: 0; font-size: 1.35rem; line-height: 1.25; }
+.vc-fila { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 12px; }
+.vc-visor { width: 100%; height: 420px; }
+.vc-controles { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 0; }
+.vc-controles input[type="button"] { margin: 0 !important; }
+.vc-controles input[type="button"].activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+.vc-controles .vc-rotulo { font-size: .9em; color: var(--muted); margin-right: 2px; }
+.vc-estado { margin: 8px 0 0; padding: 7px 11px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; font-size: .95em; line-height: 1.45; }
+.vc-texto p { margin: 0 0 10px; line-height: 1.55; }
+.vc-fijate {
+  margin: 12px 0 0; padding: 10px 14px; background: #fbf8ef; border: 1px solid #e8dfc4; border-radius: 8px; line-height: 1.5;
+}
+.vc-fijate strong { color: #6b5a24; }
+.vc-fijate ul { margin: 4px 0 0; padding-left: 20px; }
+table.vc-tabla { border-collapse: collapse; margin: 8px 0 10px; font-size: .95em; }
+table.vc-tabla th, table.vc-tabla td { border: 1px solid var(--line); padding: 5px 9px; text-align: left; vertical-align: top; }
+table.vc-tabla th { background: var(--surface-soft); }
+.vc-color { display: inline-block; width: 13px; height: 13px; border-radius: 50%; border: 1px solid #8a97a3; vertical-align: -2px; margin-right: 6px; }
+/* Comprueba */
+.vc-test { margin: 6px 0 30px; max-width: 860px; }
+.vc-pregunta { margin: 0 0 14px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.vc-pregunta > p { margin: 0 0 8px; font-weight: 600; color: var(--title); line-height: 1.45; }
+.vc-opciones { display: flex; flex-wrap: wrap; gap: 6px; }
+.vc-opciones input[type="button"] { margin: 0 !important; }
+.vc-opciones input[type="button"]:disabled { opacity: 1; cursor: default; color: var(--muted); }
+.vc-opciones input[type="button"].ok:disabled { color: #fff; }
+.vc-opciones input[type="button"].mal:disabled { color: #8a3a1c; }
+.vc-opciones input[type="button"].ok { background: #2f7d43; border-color: #2f7d43; color: #fff; }
+.vc-opciones input[type="button"].mal { background: #fbefe9; border-color: #d0724f; color: #8a3a1c; }
+.vc-respuesta { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; line-height: 1.5; }
+.vc-respuesta[hidden] { display: none; }
+.vc-respuesta.ok { background: #edf7ef; border: 1px solid #5aa469; }
+.vc-respuesta.mal { background: #fbefe9; border: 1px solid #d0724f; }
+.vc-marcador { margin: 4px 0 0; color: var(--muted); }
+/* Navegación entre capítulos */
+.vc-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin: 10px 0 8px; padding-top: 16px; border-top: 1px solid var(--line); max-width: 1120px; }
+.vc-nav a, .vc-nav span { display: inline-block; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent-strong); }
+.vc-nav a:hover { background: var(--accent-soft); text-decoration: none; }
+.vc-nav span { border-style: dashed; border-color: #9fb0bf; color: var(--muted); }
+@media (max-width: 960px) {
+  .vc-fila { grid-template-columns: 1fr; }
+  .vc-visor { height: 340px; }
+}
+@media (max-width: 640px) {
+  .vc h1 { font-size: 1.4rem; }
+  .vc-parada h2 { font-size: 1.15rem; }
+  .vc-visor { height: 300px; }
+}
+</style>
+<script>
+var Rep = 'Rep';   // ATP: representaciones y colores
+var Prot = 'Prot'; // mioglobina: representaciones de proteínas
+var Esc = 'Esc';   // escala: ATP, mioglobina y hemoglobina juntas
+var JmolInfo = {
+  width: '100%',
+  height: '100%',
+  color: '#F0F8FF',
+  j2sPath: '../jsmol/j2s',
+  serverURL: '../jsmol/php/jsmol.php',
+  disableJ2SLoadMonitor: true,
+  disableInitialConsole: true,
+  use: 'html5'
+};
+
+// Marca como activo el botón pulsado dentro de un mismo grupo
+function marcar(boton) {
+  var grupo = boton.parentNode.querySelectorAll('input[type="button"]');
+  for (var i = 0; i < grupo.length; i++) grupo[i].classList.remove('activo');
+  boton.classList.add('activo');
+}
+
+// ---------------------------------------------------------------
+// Parada 1. ATP: la misma molécula en cuatro representaciones.
+// Átomos del fichero: 1 P(α)... 14–21 ribosa; C14–C15 es un enlace C–C (1,53 Å).
+// ---------------------------------------------------------------
+var REP = {
+  esferas:  ['spacefill 100%; wireframe off',
+             '<b>Esferas (spacefill).</b> Cada átomo es una esfera con su radio de van der Waals: es el volumen que ocupa la molécula, la superficie que «toca» el agua u otra molécula. Los enlaces quedan ocultos.'],
+  bolas:    ['spacefill 23%; wireframe 0.15',
+             '<b>Bolas y varillas.</b> Esferas pequeñas para los átomos y varillas para los enlaces. Es la más útil para ver a la vez qué átomos hay y cómo están unidos.'],
+  varillas: ['spacefill off; wireframe 0.2',
+             '<b>Varillas (sticks).</b> Solo los enlaces, coloreados en cada mitad por el átomo correspondiente. Deja ver bien la geometría y los ángulos de enlace.'],
+  alambre:  ['spacefill off; wireframe on',
+             '<b>Alambre (wireframe).</b> Enlaces como líneas finas. Es la más ligera; se usa para moléculas muy grandes o para dejar en segundo plano lo que no interesa.']
+};
+var repInicio = 'load ../pdb/ATP.gz; set antialiasDisplay true; colour cpk; set measurementUnits angstroms; '
+  + 'set defaultLabelPDB "%e"; font measures 16; color measures black; rotate x -20; zoom 110; ';
+function repVer(tipo, boton) {
+  Jmol.script(Rep, 'select all; ' + REP[tipo][0] + '; select all');
+  document.getElementById('repEstado').innerHTML = REP[tipo][1];
+  if (boton) marcar(boton);
+}
+var repH = true;
+function repHidrogenos(boton) {
+  repH = !repH;
+  Jmol.script(Rep, repH ? 'display all' : 'display not hydrogen');
+  boton.value = repH ? 'Ocultar hidrógenos' : 'Mostrar hidrógenos';
+}
+function repMedir() {
+  Jmol.script(Rep, 'measure delete; measure {atomno=14} {atomno=15}; select atomno=14 or atomno=15; halos on; delay 1.5; halos off; select all');
+}
+function repMedirClic() {
+  Jmol.script(Rep, 'measure delete; set picking distance');
+  document.getElementById('repEstado').innerHTML = '<b>Modo medida.</b> Haz clic en un átomo y después en otro: aparecerá la distancia entre sus centros, en angstroms (Å). Pulsa «Borrar medidas» para salir.';
+}
+function repBorrar() {
+  Jmol.script(Rep, 'measure delete; set picking ident');
+}
+function repReiniciar() {
+  repH = true;
+  document.getElementById('botonH').value = 'Ocultar hidrógenos';
+  Jmol.script(Rep, repInicio + 'display all; set picking ident; measure delete');
+  repVer('bolas', document.getElementById('repBolas'));
+}
+
+// ---------------------------------------------------------------
+// Parada 2. Mioglobina (1MBO): cómo se simplifica una proteína.
+// ---------------------------------------------------------------
+var PROT = {
+  atomos:   ['select protein; cartoons off; backbone off; spacefill on; wireframe off',
+             '<b>Todos los átomos.</b> Unos 1200 átomos pesados (sin hidrógenos). Se ve el volumen y la superficie, pero no cómo va la cadena.'],
+  esqueleto:['select protein; spacefill off; wireframe off; cartoons off; backbone 0.3',
+             '<b>Esqueleto (trace).</b> Una línea que une los carbonos α (Cα) de los 153 aminoácidos, en orden. Desaparecen las cadenas laterales y queda el recorrido de la cadena.'],
+  cintas:   ['select protein; spacefill off; wireframe off; backbone off; cartoons on',
+             '<b>Cintas (cartoon).</b> El mismo recorrido, dibujado con convenciones: las hélices α como espirales (o cilindros) y las hebras β como flechas. Es una abstracción, no átomos.'],
+  cadenas:  ['select protein; spacefill off; backbone off; cartoons on; wireframe 0.12',
+             '<b>Cintas y cadenas laterales.</b> Las cintas para el plegamiento y varillas para las cadenas laterales: la combinación habitual para ver qué residuos forman un sitio.']
+};
+var COLOR = {
+  elemento:   ['select protein; colour cartoons cpk; colour cpk; colour backbone cpk',
+               'Color por elemento: C gris, N azul, O rojo, S amarillo.'],
+  estructura: ['select protein; colour structure; colour cartoons structure; colour backbone structure',
+               'Color por estructura secundaria: hélices α en magenta, giros en azul y bucles en blanco.'],
+  secuencia:  ['select protein; colour group; colour cartoons group; colour backbone group',
+               'Color por posición en la secuencia: del extremo N (azul) al extremo C (rojo).']
+};
+var protTipo = 'cintas', protColor = 'estructura';
+var protInicio = 'load ../pdb/mioglobinaO2.pdb.gz; set antialiasDisplay true; restrict not (water or sulfate); '
+  + 'select hetero and not (water or sulfate); spacefill 0; wireframe 0.2; colour cpk; '
+  + 'set cartoonFancy true; rotate y 90; rotate x 20; zoom 105; ';
+function protAplicar() {
+  Jmol.script(Prot, PROT[protTipo][0] + '; ' + COLOR[protColor][0] + '; select hem; colour cpk; select none');
+  document.getElementById('protEstado').innerHTML = PROT[protTipo][1] + '<br><span style="color:var(--muted)">' + COLOR[protColor][1] + ' El grupo hemo, en varillas.</span>';
+}
+function protVer(tipo, boton) { protTipo = tipo; protAplicar(); marcar(boton); }
+function protCol(c, boton) { protColor = c; protAplicar(); marcar(boton); }
+function protHemo() {
+  Jmol.script(Prot, 'select hem or (resno=0 and not protein); halos on; delay 2; halos off; select none');
+}
+function protReiniciar() {
+  Jmol.script(Prot, protInicio);
+  protTipo = 'cintas'; protColor = 'estructura'; protAplicar();
+  marcar(document.getElementById('protCintas'));
+  marcar(document.getElementById('protEstr'));
+}
+
+// ---------------------------------------------------------------
+// Parada 3. Escala: ATP, mioglobina y hemoglobina en el mismo visor.
+// Las tres se colocan una al lado de otra (centros en x = 0, 34 y 82 Å);
+// la barra de escala mide 10 Å = 1 nm.
+// ---------------------------------------------------------------
+var escEtiqueta = function (id, x, y, texto) {
+  return 'set echo ' + id + ' {' + x + ' ' + y + ' 0}; font echo 16 sans bold; colour echo black; echo "' + texto + '"; ';
+};
+var escInicio = 'load files "../pdb/ATP.gz" "../pdb/mioglobinaO2.pdb.gz" "../pdb/2hhd.pdb.gz"; '
+  + 'set antialiasDisplay true; frame *; restrict not (water or sulfate); '
+  + 'select 1.1; translateSelected @{ point(0,0,0) - {1.1}.xyz }; '
+  + 'select 2.1; translateSelected @{ point(40,0,0) - {2.1 and not (water or sulfate)}.xyz }; '
+  + 'select 3.1; translateSelected @{ point(108,0,0) - {3.1 and not (water or sulfate)}.xyz }; '
+  + 'select all; spacefill on; wireframe off; colour cpk; hide water or sulfate; '
+  + 'select 2.1 and protein; colour [x8fb3d9]; select 3.1 and protein; colour chain; select hem; colour cpk; '
+  + 'draw barra diameter 1.2 {-5 -42 0} {5 -42 0} colour black; '
+  + escEtiqueta('eATP', 0, 14, 'ATP') + escEtiqueta('eMb', 40, 32, 'Mioglobina') + escEtiqueta('eHb', 108, 42, 'Hemoglobina')
+  + escEtiqueta('eBarra', 0, -48, '1 nm')
+  + 'select none; boundbox {*} ; center {56 0 0}; zoom 92; ';
+function escReiniciar() { Jmol.script(Esc, escInicio); }
+function escGirar(boton) {
+  Jmol.script(Esc, 'spin y 12; spin on');
+  boton.value = 'Parar el giro'; boton.onclick = function () { escParar(boton); };
+}
+function escParar(boton) {
+  Jmol.script(Esc, 'spin off');
+  boton.value = 'Girar las tres'; boton.onclick = function () { escGirar(boton); };
+}
+
+// ---------------------------------------------------------------
+// Comprueba lo que has aprendido
+// ---------------------------------------------------------------
+var respondidas = 0, aciertos = 0;
+function responder(boton, ok, texto) {
+  var preg = boton.closest('.vc-pregunta');
+  if (preg.dataset.hecha) return;
+  preg.dataset.hecha = '1';
+  respondidas++; if (ok) aciertos++;
+  var botones = preg.querySelectorAll('input[type="button"]');
+  for (var i = 0; i < botones.length; i++) {
+    botones[i].disabled = true;
+    if (botones[i].dataset.ok) botones[i].classList.add('ok');
+  }
+  if (!ok) boton.classList.add('mal');
+  var r = preg.querySelector('.vc-respuesta');
+  r.className = 'vc-respuesta ' + (ok ? 'ok' : 'mal');
+  r.innerHTML = '<b>' + (ok ? 'Correcto. ' : 'No. ') + '</b>' + texto;
+  r.hidden = false;
+  var total = document.querySelectorAll('.vc-pregunta').length;
+  document.getElementById('marcador').textContent = 'Has respondido ' + respondidas + ' de ' + total + ' preguntas; ' + aciertos + ' correctas.';
+}
+function repetirTest() {
+  respondidas = 0; aciertos = 0;
+  var pregs = document.querySelectorAll('.vc-pregunta');
+  for (var i = 0; i < pregs.length; i++) {
+    delete pregs[i].dataset.hecha;
+    var bs = pregs[i].querySelectorAll('input[type="button"]');
+    for (var j = 0; j < bs.length; j++) { bs[j].disabled = false; bs[j].classList.remove('ok', 'mal'); }
+    pregs[i].querySelector('.vc-respuesta').hidden = true;
+  }
+  document.getElementById('marcador').textContent = '';
+}
+
+$(document).ready(function () {
+  $('#JmolDiv_Rep').html(Jmol.getAppletHtml(Rep, JmolInfo));
+  $('#JmolDiv_Prot').html(Jmol.getAppletHtml(Prot, JmolInfo));
+  $('#JmolDiv_Esc').html(Jmol.getAppletHtml(Esc, JmolInfo));
+  setTimeout(function () { repReiniciar(); protReiniciar(); escReiniciar(); }, 300);
+});
+</script>
+</head>
+<body>
+<main class="vc">
+  <p class="vc-migas"><a href="./">Visita guiada</a> › Capítulo 0</p>
+  <h1>Capítulo 0. Cómo leer un modelo 3D</h1>
+  <p class="vc-entradilla">Antes de empezar el recorrido conviene saber qué estamos mirando. Un modelo molecular no es una fotografía: es un dibujo de unas coordenadas atómicas, y cada forma de dibujarlo resalta unas cosas y oculta otras. En este capítulo verás la misma molécula de varias maneras, aprenderás el código de colores y te harás una idea del tamaño real de lo que vas a ver en el resto de la visita.</p>
+
+  <section class="vc-objetivos" aria-labelledby="obj-titulo">
+    <h2 id="obj-titulo">Al terminar este capítulo deberías saber</h2>
+    <ul>
+      <li>Distinguir las representaciones de esferas, bolas y varillas, varillas y cintas, y elegir la adecuada para cada pregunta.</li>
+      <li>Reconocer cada elemento químico por su color en los modelos.</li>
+      <li>Medir una distancia entre átomos y expresarla en angstroms y nanómetros.</li>
+      <li>Comparar el tamaño de una molécula pequeña y el de una proteína.</li>
+    </ul>
+  </section>
+
+  <p class="vc-texto">Todos los modelos se manejan con el ratón: arrastra para girarlos y usa la rueda para acercarlos. Si tienes dudas, pulsa el botón del ratón que hay junto al escudo de la UVa.</p>
+
+  <!-- Parada 1 -->
+  <section class="vc-parada" aria-labelledby="p1">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">1</span><h2 id="p1">Una molécula, cuatro representaciones: el ATP</h2></div>
+    <div class="vc-fila">
+      <div>
+        <div id="JmolDiv_Rep" class="vc-visor"></div>
+        <div class="vc-controles">
+          <input type="button" value="Esferas" onclick="repVer('esferas', this)">
+          <input type="button" id="repBolas" value="Bolas y varillas" onclick="repVer('bolas', this)">
+          <input type="button" value="Varillas" onclick="repVer('varillas', this)">
+          <input type="button" value="Alambre" onclick="repVer('alambre', this)">
+        </div>
+        <div class="vc-controles">
+          <input type="button" id="botonH" value="Ocultar hidrógenos" onclick="repHidrogenos(this)">
+          <input type="button" value="Medir un enlace C–C" onclick="repMedir()">
+          <input type="button" value="Medir con el ratón" onclick="repMedirClic()">
+          <input type="button" value="Borrar medidas" onclick="repBorrar()">
+          <input type="button" value="Vista inicial" onclick="repReiniciar()">
+        </div>
+        <div class="vc-estado" id="repEstado"></div>
+      </div>
+      <div class="vc-texto">
+        <p>Las cuatro imágenes son <b>las mismas coordenadas</b>: solo cambia cómo se dibujan. Las esferas muestran el espacio que ocupa la molécula; las varillas, cómo están conectados los átomos. Ninguna es «la verdadera»: se elige según lo que se quiera ver.</p>
+        <p>Los colores siguen el código CPK, el mismo en toda la web:</p>
+        <table class="vc-tabla">
+          <tr><th>Elemento</th><th>Color</th><th>Elemento</th><th>Color</th></tr>
+          <tr><td><span class="vc-color" style="background:#909090"></span>Carbono (C)</td><td>gris</td><td><span class="vc-color" style="background:#ff8000"></span>Fósforo (P)</td><td>naranja</td></tr>
+          <tr><td><span class="vc-color" style="background:#ffffff"></span>Hidrógeno (H)</td><td>blanco</td><td><span class="vc-color" style="background:#ffff30"></span>Azufre (S)</td><td>amarillo</td></tr>
+          <tr><td><span class="vc-color" style="background:#ff0d0d"></span>Oxígeno (O)</td><td>rojo</td><td><span class="vc-color" style="background:#e06633"></span>Hierro (Fe)</td><td>naranja oscuro</td></tr>
+          <tr><td><span class="vc-color" style="background:#3050f8"></span>Nitrógeno (N)</td><td>azul</td><td></td><td></td></tr>
+        </table>
+        <p>Las distancias se miden en <b>angstroms</b>: 1 Å = 0,1 nm = 10<sup>−10</sup> m. Un enlace sencillo C–C mide unos 1,5 Å; el átomo de carbono, con su radio de van der Waals, ocupa unos 3,4 Å de diámetro.</p>
+        <div class="vc-fijate"><strong>Fíjate en…</strong>
+          <ul>
+            <li>las tres partes del ATP: la <b>adenina</b> (anillos con N azules), la <b>ribosa</b> (anillo de cinco átomos con un O) y los <b>tres fosfatos</b> (P naranjas rodeados de O rojos);</li>
+            <li>cuánto espacio ocupan los hidrógenos en la vista de esferas, y cómo «desaparecen» los enlaces;</li>
+            <li>la distancia C–C de la ribosa, frente a la distancia entre los dos extremos de la molécula (mídela con el ratón).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parada 2 -->
+  <section class="vc-parada" aria-labelledby="p2">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">2</span><h2 id="p2">Proteínas: de los átomos a las cintas, con la mioglobina</h2></div>
+    <div class="vc-fila">
+      <div>
+        <div id="JmolDiv_Prot" class="vc-visor"></div>
+        <div class="vc-controles">
+          <span class="vc-rotulo">Dibujo:</span>
+          <input type="button" value="Todos los átomos" onclick="protVer('atomos', this)">
+          <input type="button" value="Esqueleto" onclick="protVer('esqueleto', this)">
+          <input type="button" id="protCintas" value="Cintas" onclick="protVer('cintas', this)">
+          <input type="button" value="Cintas y cadenas laterales" onclick="protVer('cadenas', this)">
+        </div>
+        <div class="vc-controles">
+          <span class="vc-rotulo">Color:</span>
+          <input type="button" value="Por elemento" onclick="protCol('elemento', this)">
+          <input type="button" id="protEstr" value="Por estructura" onclick="protCol('estructura', this)">
+          <input type="button" value="Del extremo N al C" onclick="protCol('secuencia', this)">
+        </div>
+        <div class="vc-controles">
+          <input type="button" value="Señalar el hemo" onclick="protHemo()">
+          <input type="button" value="Vista inicial" onclick="protReiniciar()">
+        </div>
+        <div class="vc-estado" id="protEstado"></div>
+      </div>
+      <div class="vc-texto">
+        <p>Una proteína tiene miles de átomos. Dibujados todos, se ve un «ovillo» del que no se deduce cómo va la cadena. Por eso las proteínas se simplifican: primero se reduce cada aminoácido a su carbono α (el <b>esqueleto</b>) y después se dibuja ese recorrido con símbolos (las <b>cintas</b>).</p>
+        <p>La mioglobina es una cadena de 153 aminoácidos que forma ocho hélices α y lleva un grupo <b>hemo</b> con un átomo de hierro, al que se une el O<sub>2</sub>. Volverás a ella en el capítulo 4.</p>
+        <p>Este modelo procede de un cristal analizado por difracción de rayos X (entrada PDB 1MBO). Como en casi todas las estructuras de rayos X, <b>no hay hidrógenos</b>: existen, pero la técnica no los resuelve a esa resolución.</p>
+        <div class="vc-fijate"><strong>Fíjate en…</strong>
+          <ul>
+            <li>que en «Todos los átomos» no se distinguen las hélices, y en «Cintas» sí;</li>
+            <li>que el color «del extremo N al C» permite seguir la cadena de principio a fin;</li>
+            <li>dónde queda el hemo: en un bolsillo entre hélices, casi oculto en la vista de átomos.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parada 3 -->
+  <section class="vc-parada" aria-labelledby="p3">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">3</span><h2 id="p3">La escala: del ATP a la hemoglobina</h2></div>
+    <div class="vc-fila">
+      <div>
+        <div id="JmolDiv_Esc" class="vc-visor"></div>
+        <div class="vc-controles">
+          <input type="button" value="Girar las tres" onclick="escGirar(this)">
+          <input type="button" value="Vista inicial" onclick="escReiniciar()">
+        </div>
+        <div class="vc-estado">Las tres moléculas, en esferas y a la misma escala. La barra negra mide 1 nm (10 Å). La mioglobina, en azul; la hemoglobina, con cada una de sus cuatro cadenas de un color.</div>
+      </div>
+      <div class="vc-texto">
+        <p>En cada página de la web, el visor ajusta el zoom para que la molécula llene el recuadro, así que un nucleótido y un ribosoma parecen del mismo tamaño. Aquí no: las tres están a la misma escala.</p>
+        <table class="vc-tabla">
+          <tr><th>Molécula</th><th>Tamaño aproximado</th><th>Átomos (sin H)</th></tr>
+          <tr><td>ATP</td><td>≈ 1,5 nm</td><td>31</td></tr>
+          <tr><td>Mioglobina (1 cadena)</td><td>≈ 4–5 nm</td><td>≈ 1200</td></tr>
+          <tr><td>Hemoglobina (4 cadenas)</td><td>≈ 6–7 nm</td><td>≈ 4500</td></tr>
+        </table>
+        <p>Para situarlas: la doble hélice del DNA tiene unos 2 nm de diámetro, un ribosoma unos 25 nm, y un glóbulo rojo, que contiene unos 270 millones de moléculas de hemoglobina, unos 7 µm (7000 nm).</p>
+        <div class="vc-fijate"><strong>Fíjate en…</strong>
+          <ul>
+            <li>que el ATP es comparable al grosor de una sola hélice α de la mioglobina;</li>
+            <li>que la hemoglobina es casi cuatro mioglobinas empaquetadas: es un buen anticipo de la estructura cuaternaria (capítulo 3);</li>
+            <li>los grupos hemo (en colores CPK) asomando en la superficie de las dos proteínas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comprueba -->
+  <section class="vc-test" aria-labelledby="test">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">✓</span><h2 id="test">Comprueba lo que has aprendido</h2></div>
+    <p class="vc-texto" style="margin-top:8px">Elige una respuesta en cada pregunta. Si fallas, la explicación te dice dónde está el error.</p>
+
+    <div class="vc-pregunta">
+      <p>1. Quieres saber si una molécula pequeña cabe en el bolsillo de una enzima. ¿Qué representación usarías?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Esferas" data-ok="1" onclick="responder(this, true, 'Las esferas usan el radio de van der Waals de cada átomo: muestran el volumen real que ocupan las dos moléculas.')">
+        <input type="button" value="Varillas" onclick="responder(this, false, 'Las varillas solo dibujan los enlaces: la molécula parece mucho más delgada de lo que es. Para el volumen hacen falta las esferas.')">
+        <input type="button" value="Cintas" onclick="responder(this, false, 'Las cintas solo muestran el recorrido de la cadena de la proteína; ocultan las cadenas laterales que forman el bolsillo. Para el volumen hacen falta las esferas.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>2. En una representación de cintas de una proteína, ¿qué se está dibujando?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Todos los átomos, simplificados" onclick="responder(this, false, 'Las cintas no dibujan los átomos: dibujan una línea que pasa por los carbonos α, con símbolos para hélices y hebras. Las cadenas laterales desaparecen.')">
+        <input type="button" value="El recorrido de la cadena principal" data-ok="1" onclick="responder(this, true, 'Las cintas siguen los carbonos α de un aminoácido al siguiente y dibujan las hélices α como espirales y las hebras β como flechas.')">
+        <input type="button" value="La superficie de la proteína" onclick="responder(this, false, 'La superficie se ve con las esferas (o con superficies moleculares). Las cintas dibujan el recorrido de la cadena principal por el interior.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>3. En un modelo con colores CPK ves un átomo rojo unido a un átomo naranja. ¿Qué grupo es más probable?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Un fosfato (P–O)" data-ok="1" onclick="responder(this, true, 'El oxígeno es rojo y el fósforo, naranja: es un enlace P–O, como en los fosfatos del ATP.')">
+        <input type="button" value="Un grupo amino (N–H)" onclick="responder(this, false, 'El nitrógeno es azul y el hidrógeno, blanco. Rojo es oxígeno y naranja, fósforo: un fosfato.')">
+        <input type="button" value="Un hierro unido a un oxígeno (Fe–O)" onclick="responder(this, false, 'Es una buena trampa: el hierro también es anaranjado, pero más oscuro, y solo aparece en grupos como el hemo. Rojo unido a naranja en una molécula como el ATP es un fosfato (P–O).')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>4. Mides un enlace C–C y JSmol indica 1,53. ¿Cuánto es?</p>
+      <div class="vc-opciones">
+        <input type="button" value="1,53 nm" onclick="responder(this, false, 'JSmol mide en angstroms, no en nanómetros: 1,53 Å = 0,153 nm. Un enlace de 1,53 nm sería tan largo como toda la molécula de ATP.')">
+        <input type="button" value="0,153 nm" data-ok="1" onclick="responder(this, true, 'JSmol mide en angstroms: 1,53 Å = 0,153 nm, el valor típico de un enlace sencillo C–C.')">
+        <input type="button" value="15,3 nm" onclick="responder(this, false, 'JSmol mide en angstroms: 1 Å = 0,1 nm, así que 1,53 Å = 0,153 nm. 15,3 nm sería mayor que dos hemoglobinas juntas.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>5. El modelo de la mioglobina no tiene átomos de hidrógeno. ¿Por qué?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Las proteínas no tienen hidrógenos" onclick="responder(this, false, 'Los tienen, y son casi la mitad de sus átomos. No aparecen porque la difracción de rayos X no suele resolverlos.')">
+        <input type="button" value="La técnica no los resuelve" data-ok="1" onclick="responder(this, true, 'El hidrógeno tiene un solo electrón y apenas difracta los rayos X; en casi todas las estructuras cristalográficas no se ve, aunque está.')">
+        <input type="button" value="Se han ocultado para simplificar" onclick="responder(this, false, 'En el ATP sí se pueden ocultar porque están en el fichero. En la mioglobina no están: la difracción de rayos X no suele resolver los hidrógenos.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <p class="vc-marcador" id="marcador" aria-live="polite"></p>
+    <div class="vc-controles"><input type="button" value="Repetir el test" onclick="repetirTest()"></div>
+  </section>
+
+  <nav class="vc-nav" aria-label="Capítulos">
+    <a href="./">← Mapa de la visita</a>
+    <span>Capítulo 1 · Fundamentos (en construcción)</span>
+  </nav>
+</main>
+</body>
+</html>

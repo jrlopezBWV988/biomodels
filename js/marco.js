@@ -292,7 +292,7 @@
     a.innerHTML = ICONO_VISITA;
     a.title = "Visita guiada";
     a.setAttribute("aria-label", "Visita guiada");
-    if (ACTUAL === "visita/" || ACTUAL === "visita/index.html") a.setAttribute("aria-current", "page");
+    if (ACTUAL.indexOf("visita/") === 0) a.setAttribute("aria-current", "page");
 
     function colocar() {
       if (estrecha.matches) {

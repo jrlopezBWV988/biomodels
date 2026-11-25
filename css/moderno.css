@@ -415,7 +415,8 @@ html.con-marco body { padding-left: 228px !important; }
   margin: 0 8px 10px 0;
 }
 .nav-lateral .marco-cabecera img[src*="LogoUva"] { margin-bottom: 0; }
-.raton-boton {
+.marco-botones { display: flex; align-items: center; gap: 8px; }
+.raton-boton, .visita-boton {
   flex: none;
   width: 42px;
   height: 42px;
@@ -431,7 +432,10 @@ html.con-marco body { padding-left: 228px !important; }
   box-shadow: none;
   cursor: pointer;
 }
-.raton-boton:hover { background: var(--nav-hover); color: #fff; }
+.raton-boton:hover, .visita-boton:hover { background: var(--nav-hover); color: #fff; text-decoration: none; }
+.visita-boton { box-sizing: border-box; }
+.visita-boton[aria-current="page"] { background: var(--nav-accent); border-color: var(--nav-accent); color: var(--nav-bg); }
+.marco-lateral .visita-boton { padding: 0; }
 .raton-boton[aria-expanded="true"] { background: var(--nav-accent); border-color: var(--nav-accent); color: var(--nav-bg); }
 .raton-ayuda {
   position: fixed;
@@ -485,7 +489,7 @@ html.con-marco body { padding-left: 228px !important; }
 }
 @media (max-width: 760px) {
   /* El botón se sitúa sobre el extremo derecho de la barra «Índice» */
-  .raton-boton {
+  .raton-boton, .visita-boton {
     position: absolute;
     top: 5px;
     right: 10px;
@@ -493,6 +497,8 @@ html.con-marco body { padding-left: 228px !important; }
     width: 36px;
     height: 36px;
   }
+  /* Con los dos botones, el de la visita queda a la izquierda del ratón */
+  html.con-raton .visita-boton { right: 54px; }
   .raton-ayuda {
     position: fixed;
     left: 10px;
@@ -502,4 +508,4 @@ html.con-marco body { padding-left: 228px !important; }
     max-height: calc(100vh - 64px);
   }
 }
-@media print { .raton-boton, .raton-ayuda { display: none !important; } }
+@media print { .raton-boton, .raton-ayuda, .visita-boton { display: none !important; } }

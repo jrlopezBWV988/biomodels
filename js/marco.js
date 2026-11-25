@@ -3,6 +3,7 @@
    - el índice lateral fijo a la izquierda (en el móvil, desplegable con el botón «Índice»);
    - el submenú superior en los apartados que lo tienen (glúcidos, lípidos, hemoglobina e inmunoglobulinas);
    - el resaltado de la página activa;
+   - el botón de la visita guiada, junto al escudo de la UVa en todas las páginas;
    - el contador de visitas (GoatCounter).
    El menú se define una sola vez, aquí abajo, en MENU y SUBMENUS. */
 (function () {
@@ -216,6 +217,10 @@
     var cabecera = document.createElement("div");
     cabecera.className = "marco-cabecera";
     cabecera.appendChild(logo);
+    // Grupo de botones a la derecha del escudo: visita guiada y, si procede, ratón
+    var botones = document.createElement("div");
+    botones.className = "marco-botones";
+    cabecera.appendChild(botones);
     aside.appendChild(cabecera);
     var menu = document.createElement("div");
     menu.className = "menu";
@@ -253,14 +258,52 @@
       body.insertBefore(barra, primero);
     }
 
+    // Botón de la visita guiada (en todas las páginas)
+    montarBotonVisita(botones, boton);
+
     // Ayuda del ratón (solo en las páginas con modelos JSmol)
-    if (document.querySelector('script[src*="jsmol/"]')) montarAyudaRaton(body, cabecera, boton);
+    if (document.querySelector('script[src*="jsmol/"]')) montarAyudaRaton(body, botones, boton);
 
     // Mantiene visible en el índice el enlace activo
     var activo = aside.querySelector("a.activo");
     if (activo && activo.scrollIntoView && activo.getBoundingClientRect().bottom > window.innerHeight) {
       activo.scrollIntoView({ block: "center" });
     }
+  }
+
+  // ---------------------------------------------------------------
+  // Visita guiada: botón entre el escudo de la UVa y el botón del ratón que
+  // lleva a la página de la visita (visita/). La visita es un recorrido
+  // independiente del índice; el índice no cambia.
+  // En pantallas estrechas, el botón pasa a la barra «Índice», como el del ratón.
+  // ---------------------------------------------------------------
+  var VISITA = location.protocol === "file:" ? "visita/index.html" : "visita/";
+
+  // Icono de «reproducir», como en un reproductor de audio o vídeo
+  var ICONO_VISITA =
+    '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">' +
+    '<path d="M8.4 5.2v13.6a.9.9 0 0 0 1.4.75l10.2-6.8a.9.9 0 0 0 0-1.5L9.8 4.45a.9.9 0 0 0-1.4.75z" fill="currentColor"/></svg>';
+
+  function montarBotonVisita(grupo, botonIndice) {
+    var estrecha = window.matchMedia("(max-width: 760px)");
+    var a = document.createElement("a");
+    a.className = "visita-boton";
+    a.href = RAIZ + VISITA;
+    a.innerHTML = ICONO_VISITA;
+    a.title = "Visita guiada";
+    a.setAttribute("aria-label", "Visita guiada");
+    if (ACTUAL === "visita/" || ACTUAL === "visita/index.html") a.setAttribute("aria-current", "page");
+
+    function colocar() {
+      if (estrecha.matches) {
+        botonIndice.parentNode.insertBefore(a, botonIndice.nextSibling);
+      } else {
+        grupo.insertBefore(a, grupo.firstChild);
+      }
+    }
+    colocar();
+    if (estrecha.addEventListener) estrecha.addEventListener("change", colocar);
+    else if (estrecha.addListener) estrecha.addListener(colocar);
   }
 
   // ---------------------------------------------------------------
@@ -360,6 +403,7 @@
       } else {
         cabeceraIndice.appendChild(boton);
       }
+      document.documentElement.classList.add("con-raton");
     }
     colocar();
     if (estrecha.addEventListener) estrecha.addEventListener("change", colocar);

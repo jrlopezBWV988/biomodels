@@ -7,10 +7,10 @@
 <script src="../js/marco.js?v=20261125.2"></script>
 
 <title>Visita guiada · Capítulo 1: fundamentos | Atlas de estructuras</title>
-<meta name="description" content="Segundo capítulo de la visita guiada: conformación y configuración, el puente de hidrógeno en el agua, los iones en disolución y las interacciones no covalentes de la mioglobina, con modelos JSmol y un test de comprobación.">
+<meta name="description" content="Segundo capítulo de la visita guiada: conformación y configuración, el puente de hidrógeno en el agua, los iones en disolución y las interacciones no covalentes de la mioglobina y el efecto hidrofóbico, con modelos JSmol y un test de comprobación.">
 <link rel="canonical" href="https://biomodels.es/visita/capitulo1.htm">
 <meta property="og:title" content="Visita guiada · Capítulo 1: fundamentos">
-<meta property="og:description" content="Conformación y configuración, el puente de hidrógeno en el agua, los iones en disolución y las interacciones no covalentes de la mioglobina, con modelos JSmol y un test de comprobación.">
+<meta property="og:description" content="Conformación y configuración, el puente de hidrógeno en el agua, los iones en disolución y las interacciones no covalentes de la mioglobina y el efecto hidrofóbico, con modelos JSmol y un test de comprobación.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://biomodels.es/visita/capitulo1.htm">
 <meta property="og:locale" content="es_ES">
@@ -18,8 +18,8 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script src="../jsmol/JSmol.min.js?v=20261113"></script>
-<link rel="stylesheet" href="capitulo.css?v=20261125.2">
-<script src="capitulo.js?v=20261125.2"></script>
+<link rel="stylesheet" href="capitulo.css?v=20261125.3">
+<script src="capitulo.js?v=20261125.3"></script>
 <script>
 var Agua = 'Agua'; // hielo: el puente de hidrógeno
 var Ion = 'Ion';   // Na+ y Cl- con su capa de agua
@@ -104,7 +104,7 @@ function ionReiniciar() {
 // ---------------------------------------------------------------
 // Parada 4. Mioglobina (1MBO, la misma del capítulo 0). Interacciones elegidas
 // a partir de las coordenadas: puentes de hidrógeno de la hélice E (58–77),
-// His64 NE2···O2 (2,77 Å), Asp20 OD1···Arg118 NH2 (2,82 Å) y Asp27 OD2···Arg118
+// Asp20 OD1···Arg118 NH2 (2,82 Å) y Asp27 OD2···Arg118
 // NH1 (3,01 Å) entre las hélices B y G, Arg45 NH1···propionato del hemo (2,88 Å),
 // cadenas apolares a menos de 4 Å del hemo (Phe43, Val68, Ala71, Leu89, Ile99,
 // Leu104, Ile107) y aguas del cristal a menos de 3,2 Å de un N u O de la proteína.
@@ -138,12 +138,6 @@ var MB = {
             + 'select ' + MB_HELICE + '; hbonds 0.08; colour hbonds [xB8860B]; ' + MB_ETIQ('58', 'CA', 'Ser58') + MB_ETIQ('77', 'CA', 'Lys77')
             + 'select none; moveTo 0 { 0.3527 0.2373 0.9052 } 159.76; zoomTo 0.6 {' + MB_HELICE + '} 150',
             '<b>Puentes de hidrógeno en una hélice α</b> (hélice E, residuos 58–77). Solo se dibuja la cadena principal: el O del C=O de cada aminoácido recibe un puente de hidrógeno del N–H del aminoácido situado cuatro posiciones más adelante. Así, los puentes quedan casi paralelos al eje de la hélice. Lo verás en detalle en el capítulo 3.'],
-  oxigeno: ['select (resno=64 or resno=93) and (sidechain or atomname="CA"); ' + MB_BOLAS
-            + 'select (resno=64 and atomname="NE2") or (hem and atomname="O2"); hbonds 0.08; colour hbonds [xB8860B]; '
-            + 'measure {resno=64 and atomname="NE2"} {hem and atomname="O2"}; '
-            + MB_ETIQ('64', 'CG', 'His64 (distal)') + MB_ETIQ('93', 'CG', 'His93 (proximal)')
-            + 'select none; moveTo 0 { -0.5459 -0.3535 0.7597 } 133.98; zoomTo 0.6 {hem or resno=64 or resno=93} 300',
-            '<b>Un puente de hidrógeno que sujeta el O<sub>2</sub>.</b> El O<sub>2</sub> (esferas rojas) está unido al hierro del hemo. La histidina 64, en la parte superior del bolsillo (histidina distal), le da un puente de hidrógeno desde su N–H. Debajo, la histidina 93 (histidina proximal) está unida al hierro por un enlace de coordinación. Esto se retoma en el capítulo 4.'],
   salino:  ['select (resno=20 or resno=27 or resno=118 or resno=45) and (sidechain or atomname="CA"); ' + MB_BOLAS
             + 'select protein and ((resno>=20 and resno<=35) or (resno>=100 and resno<=118)); backbone 0.4; colour backbone [x8fb3d9]; '
             + 'measure {resno=20 and atomname="OD1"} {resno=118 and atomname="NH2"}; '
@@ -154,7 +148,7 @@ var MB = {
             '<b>Puentes salinos (interacciones iónicas).</b> La arginina 118 (+), en la hélice G, se une a dos aspartatos (−) de la hélice B: Asp20 y Asp27. Así une dos hélices alejadas en la secuencia. Al fondo, la arginina 45 se une a un propionato (−) del hemo. Las distancias (2,8–3 Å) son las de un puente de hidrógeno: en un puente salino los dos tipos de interacción suelen ir juntos.'],
   apolar:  ['select protein; backbone 0.12; select hem; spacefill on; colour cpk; select ' + MB_APOLARES + '; spacefill on; colour [xE3B341]; '
             + 'select none; ' + MB_ORIENT + 'zoomTo 0.6 {hem or ' + MB_APOLARES + '} 260',
-            '<b>Van der Waals y efecto hidrofóbico: el bolsillo del hemo.</b> En esferas, el hemo y las cadenas laterales apolares que lo tocan, a menos de 4 Å (en amarillo: Phe43, Val68, Ala71, Leu89, Ile99, Leu104 e Ile107). Sus superficies encajan sin dejar huecos: cada contacto es una interacción de van der Waals muy débil, pero son muchas. Además, estos grupos apolares quedan en el interior, lejos del agua.'],
+            '<b>Contactos de van der Waals: el bolsillo del hemo.</b> En esferas, el hemo y las cadenas laterales apolares que lo tocan, a menos de 4 Å (en amarillo: Phe43, Val68, Ala71, Leu89, Ile99, Leu104 e Ile107). Sus superficies encajan sin dejar huecos: cada contacto es una interacción de van der Waals muy débil, pero son muchas. Que estos grupos apolares estén en el interior, lejos del agua, se debe al efecto hidrofóbico (parada 5).'],
   agua:    ['select protein; backbone off; cartoons on; colour cartoons [x9db7d4]; display not water or (water and within(3.2, ' + MB_POLARES + ')); '
             + 'select water and within(3.2, ' + MB_POLARES + '); spacefill 0.45; colour cpk; '
             + 'select (water and within(3.2, ' + MB_POLARES + ')) or (' + MB_POLARES + ' and within(3.2, water)); hbonds 0.08; colour hbonds [xB8860B]; '
@@ -296,11 +290,10 @@ $(document).ready(function () {
         <div id="JmolDiv_Mb" class="vc-visor"></div>
         <div class="vc-controles">
           <input type="button" id="mbHelice" value="Puentes de H en una hélice" onclick="mbVer('helice', this)">
-          <input type="button" value="Un puente de H con el O₂" onclick="mbVer('oxigeno', this)">
           <input type="button" value="Puentes salinos" onclick="mbVer('salino', this)">
         </div>
         <div class="vc-controles">
-          <input type="button" value="Van der Waals y efecto hidrofóbico" onclick="mbVer('apolar', this)">
+          <input type="button" value="Contactos de van der Waals" onclick="mbVer('apolar', this)">
           <input type="button" value="El agua de la superficie" onclick="mbVer('agua', this)">
           <input type="button" value="Vista inicial" onclick="mbReiniciar()">
         </div>
@@ -315,14 +308,37 @@ $(document).ready(function () {
           <tr><td>Iónica (puente salino)</td><td>grupos con cargas opuestas</td><td>2,8–4 Å</td><td>variable; muy debilitada por el agua</td></tr>
           <tr><td>Van der Waals</td><td>cualquier par de átomos en contacto</td><td>3,5–4 Å entre centros</td><td>0,4–4 kJ/mol</td></tr>
         </table>
-        <p>El <b>efecto hidrofóbico</b> no es una atracción entre los grupos apolares. Al juntarse y apartarse del agua, liberan las moléculas de agua que tenían que ordenarse a su alrededor, y la entropía del agua aumenta. Es la principal fuerza que pliega las proteínas y forma las membranas.</p>
         <div class="vc-fijate"><strong>Fíjate en…</strong>
           <ul>
             <li>que las interacciones no covalentes son de 10 a más de 100 veces más débiles que un enlace covalente; a 37 °C la energía térmica es de unos 2,6 kJ/mol, así que se rompen y se forman continuamente. Lo que da estabilidad es su número;</li>
-            <li>que los grupos cargados (Asp, Arg) están en la superficie y los apolares (Leu, Ile, Phe, Val), en el interior;</li>
             <li>que la proteína está rodeada de agua unida a su superficie: el agua forma parte de la estructura.</li>
           </ul>
         </div>
+      </div>
+    </div>
+    <div class="vc-desvio">
+      <p><b>Pequeño desvío: el O<sub>2</sub>, el hierro y la His64.</b> En el bolsillo del hemo hay un puente de hidrógeno muy especial: el que da la histidina 64 al O<sub>2</sub> unido al hierro. La página muestra cómo se une el O<sub>2</sub> al Fe<sup>2+</sup> (hibridación d<sup>2</sup>sp<sup>3</sup>) y por qué ese puente de hidrógeno ayuda a la mioglobina a distinguir el O<sub>2</sub> del monóxido de carbono. Es opcional; al terminar, la barra de arriba te trae de vuelta aquí.</p>
+      <a class="vc-ir" href="../proteinas/O2Hem.htm?visita=1.4">Abrir «Unión del oxígeno al hemo» <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- Parada 5 -->
+  <section class="vc-parada" id="p5" aria-labelledby="p5-titulo">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">5</span><h2 id="p5-titulo">El efecto hidrofóbico: dentro, los apolares; fuera, los polares</h2></div>
+    <div class="vc-fila">
+      <div class="vc-texto">
+        <p>En la parada anterior has visto que los grupos apolares del bolsillo del hemo quedan en el interior de la proteína. No es una casualidad: en todas las proteínas globulares solubles, los aminoácidos <b>apolares</b> se agrupan dentro y los <b>polares</b> y <b>cargados</b>, fuera.</p>
+        <p>El <b>efecto hidrofóbico</b> no es una atracción entre los grupos apolares. El agua no puede formar puentes de hidrógeno con ellos y tiene que ordenarse a su alrededor, lo que reduce su entropía. Al juntarse en el interior, los grupos apolares liberan esa agua ordenada y la entropía del agua aumenta. Es la principal fuerza que pliega las proteínas y forma las membranas.</p>
+        <p>Esta parada está en una página del índice: la misma mioglobina, con los aminoácidos coloreados por familia y un plano de corte para verla por dentro. Al abrirla verás arriba una barra para volver aquí.</p>
+        <a class="vc-ir" href="../proteinas/hidrofobicidad.htm?visita=1.5">Abrir «Hidrofobicidad» <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="vc-fijate"><strong>Fíjate en…</strong>
+        <ul>
+          <li>con el plano de corte hacia la mitad, el centro de la proteína es casi todo azul y violeta (apolares) y el borde, rosa, rojo y naranja (polares y cargados);</li>
+          <li>con «Solo los apolares», el interior es un bloque compacto; con «Solo los polares», una cáscara hueca;</li>
+          <li>la tabla: más del 60 % de los apolares están enterrados, y solo el 5 % de los aminoácidos con carga negativa;</li>
+          <li>con «Agua del cristal», el agua cubre la superficie pero no entra en el interior.</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -332,7 +348,6 @@ $(document).ready(function () {
     <h2 id="exc-titulo">Excursiones opcionales</h2>
     <p>Para quien quiera profundizar antes de seguir. No son necesarias para el test.</p>
     <ul>
-      <li><a href="../proteinas/hidrofobicidad.htm?visita=1.e">Hidrofobicidad</a>: los aminoácidos apolares en el interior de una proteína y los polares en la superficie.</li>
       <li><a href="../Fosfolipidos.htm?visita=1.e">Fosfolípidos</a>: el efecto hidrofóbico a gran escala, en una membrana.</li>
       <li><a href="../ParesBases.htm?visita=1.e">Apareamiento de bases</a>: los puentes de hidrógeno que emparejan las bases del DNA (capítulo 5).</li>
     </ul>

@@ -1,52 +1,262 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<HTML lang="es">
-<HEAD>
+<!DOCTYPE html>
+<html lang="es">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../css/moderno.css?v=20261125.2">
 <script src="../js/marco.js?v=20261125.2"></script>
 
-<title>Unión del oxígeno al grupo hemo en 3D | Atlas de estructuras</title>
-<meta name="description" content="Modelo 3D de la unión del oxígeno al hierro del grupo hemo: coordinación con la porfirina y la histidina proximal His92.">
+<title>Unión del oxígeno al grupo hemo en 3D: el hierro, la His93 y la His64 | Atlas de estructuras</title>
+<meta name="description" content="Modelo 3D de la unión del O2 al hierro del hemo en la mioglobina: hibridación d2sp3 del Fe2+, histidina proximal His93, puente de hidrógeno con la histidina distal His64 y discriminación frente al CO.">
 <link rel="canonical" href="https://biomodels.es/proteinas/O2Hem.htm">
-<meta property="og:title" content="Unión del oxígeno al grupo hemo en 3D">
-<meta property="og:description" content="Modelo 3D de la unión del oxígeno al hierro del grupo hemo: coordinación con la porfirina y la histidina proximal His92.">
+<meta property="og:title" content="Unión del oxígeno al grupo hemo en 3D: el hierro, la His93 y la His64">
+<meta property="og:description" content="Modelo 3D de la unión del O2 al hierro del hemo en la mioglobina: hibridación d2sp3 del Fe2+, histidina proximal His93, puente de hidrógeno con la histidina distal His64 y discriminación frente al CO.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://biomodels.es/proteinas/O2Hem.htm">
 <meta property="og:locale" content="es_ES">
-<META NAME="Generator" CONTENT="EditPlus 1.2">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-</HEAD>
-<font face="Tahoma">
 <script src="../jsmol/JSmol.min.js?v=20261113"></script>
-<script src="../jsmol/js/Jmol2.js?v=20261113b"></script>
+<style>
+.oh-titulo { margin:0 0 6px; font-size:1.55rem; color:var(--title); line-height:1.25; }
+.oh-lead { max-width:1180px; margin:0 0 16px; line-height:1.55; }
+.oh-seccion { margin:0 0 6px; font-size:1.35rem; color:var(--title); }
+.oh-fila { display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, 1fr); gap:24px; max-width:1180px; margin:0 0 26px; }
+.oh-visor { width:100%; height:480px; }
+.oh-controles { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:8px 0; }
+.oh-controles input[type="button"] { margin:0 !important; }
+.oh-controles input[type="button"].activo { background:#f6c48d; border-color:#e08a2c; }
+.oh-estado { border:1px solid #c9d3dc; background:#fff; padding:8px 12px; margin:8px 0; font-size:.95em; line-height:1.5; min-height:4.5em; }
+.oh-texto p { margin:0 0 10px; line-height:1.55; }
+.oh-texto h2 { font-size:1.2rem; margin:16px 0 6px; color:var(--title); }
+.oh-texto h2:first-child { margin-top:0; }
+.oh-figura { margin:6px 0 12px; }
+.oh-figura img { max-width:100%; height:auto; background:#fff; border:1px solid #d5dde4; border-radius:6px; padding:6px; }
+.oh-figura figcaption { font-size:.88em; color:var(--muted); margin-top:4px; }
+table.oh-tabla { border-collapse:collapse; margin:6px 0 10px; font-size:.95em; }
+table.oh-tabla th, table.oh-tabla td { border:1px solid #9aa7b2; padding:4px 8px; text-align:left; vertical-align:top; }
+table.oh-tabla th { background:#e8eef3; }
+.oh-fijate { background:#fdf8e8; border:1px solid #ecdcae; border-radius:8px; padding:10px 14px; margin:12px 0; }
+.oh-fijate ul { margin:6px 0 0; padding-left:20px; }
+.oh-fijate li { margin:4px 0; line-height:1.5; }
+.oh-ref { font-size:.88em; color:var(--muted); line-height:1.45; }
+@media (max-width:900px) {
+  .oh-fila { grid-template-columns:1fr; }
+  .oh-visor { height:360px; }
+}
+</style>
+<script>
+var Mb = 'Mb', Hb = 'Hb';
+var JmolInfo = {
+  width:'100%',
+  height:'100%',
+  color:'#F0F8FF',
+  j2sPath:'../jsmol/j2s',
+  serverURL:'../jsmol/php/jsmol.php',
+  use:'html5'
+};
+
+// ---------------------------------------------------------------
+// 1. Mioglobina con O2 (1MBO). Al fichero se le ha añadido el H del Nε2 (HE2)
+// de la His64, a 1,01 Å en la bisectriz exterior del anillo: H···O2 1,78 Å,
+// N–H···O 165°. Distancias del cristal: Fe–N(porfirina) 1,9–2,0 Å,
+// Fe–Nε2 His93 2,07 Å, Fe–O1 1,83 Å, ángulo Fe–O1–O2 115°, Nε2 His64···O2 2,77 Å.
+// ---------------------------------------------------------------
+var OH_PORF  = '(hem and not (atomname="O1" or atomname="O2"))';
+var OH_O2    = '(hem and (atomname="O1" or atomname="O2"))';
+var OH_H93   = '(resno=93 and (sidechain or atomname="CA"))';
+var OH_H64   = '(resno=64 and (sidechain or atomname="CA"))';
+var OH_FE    = '(hem and elemno=26)';
+// Orientación base: plano del hemo horizontal, O2 hacia arriba, His64 a la derecha.
+// OH_PLANO inclina el hemo para ver los cuatro N; OH_CANTO lo deja casi de canto
+// para ver los dos ligandos axiales.
+var OH_ORIENT = 'moveTo 0 {0.8574 0.4718 0.2054} 179.06 100 0 0 {16.18 28.75 0.41} 8.5; ';
+var OH_PLANO = OH_ORIENT + 'rotate x 10; zoom 90; ';
+var OH_CANTO = OH_ORIENT + 'rotate x -20; zoom 90; ';
+
+function ohEtiq(sel, texto, dx, dy) {
+  // Desplazamiento de la etiqueta en píxeles; la del Fe va a la izquierda y abajo
+  // para que no la tape la porfirina.
+  if (dx === undefined) { dx = (sel === OH_FE) ? -48 : 12; dy = (sel === OH_FE) ? -22 : 12; }
+  var off = 'set labelOffset ' + dx + ' ' + dy + '; ';
+  return 'select ' + sel + '; label "' + texto + '"; colour labels [x134e69]; font labels 15 sans bold; ' + off;
+}
+
+var ohInicio = 'load ../pdb/mioglobinaO2_HisH.pdb.gz; set antialiasDisplay true; restrict not (sulfate or water); '
+  + 'colour cpk; select all; spacefill off; wireframe off; cartoons off; '
+  + 'connect ({' + OH_FE + '}) ({(resno=93 and atomname="NE2") or (hem and atomname="O1") or (hem and _N)}) SINGLE; '
+  + 'connect ({resno=64 and atomname="HE2"}) ({hem and atomname="O2"}) HBOND; '
+  + 'select ' + OH_PORF + '; wireframe 0.12; spacefill 0.18; '
+  + 'select hem and _N; spacefill 0.3; '
+  + 'select ' + OH_FE + '; spacefill 0.5; '
+  + 'select ' + OH_O2 + '; spacefill 0.38; wireframe 0.16; '
+  + 'select ' + OH_H93 + ' or ' + OH_H64 + '; wireframe 0.16; spacefill 0.28; '
+  + 'select resno=64 and atomname="HE2"; spacefill 0.22; '
+  + 'select ' + OH_PORF + ' or ' + OH_O2 + ' or ' + OH_H93 + ' or ' + OH_H64 + '; wireframe 0.14; '
+  + 'select ' + OH_O2 + '; wireframe 0.18; '
+  + 'select protein; cartoons 0.6; colour cartoons translucent 0.6 [xb9c8d6]; cartoons off; '
+  + 'set cartoonFancy true; set hbondsSolid false; '
+  + 'font measures 15; colour measures black; set measurementUnits angstroms; '
+  + 'font labels 15 sans bold; colour labels [x134e69]; set labelOffset 12 12; set labelFront true; '
+  + 'select none; ' + OH_PLANO;
+
+var OH_COMUN = 'measure delete; set measurementLabels true; select all; label off; polyhedra delete; hbonds off; cartoons off; select none; ';
+
+var OH_PASOS = [
+  ['El Fe²⁺ en la porfirina',
+   'display ' + OH_PORF + '; '
+   + ohEtiq(OH_FE, 'Fe²⁺') + OH_PLANO,
+   '<b>Paso 1. El Fe<sup>2+</sup> en el anillo de porfirina.</b> El hierro ferroso está en el centro del anillo, unido a sus cuatro nitrógenos (azul) por <b>enlaces coordinados</b>: cada N aporta los dos electrones del enlace. Los cuatro enlaces están en el plano del anillo; la distancia Fe–N es de unos 2,0 Å.'],
+  ['5.º enlace: la His93',
+   'display ' + OH_PORF + ' or ' + OH_H93 + '; '
+   + ohEtiq(OH_FE, 'Fe²⁺') + ohEtiq('resno=93 and atomname="CB"', 'His93 (proximal)', 14, 0)
+   + 'measure {' + OH_FE + '} {resno=93 and atomname="NE2"}; ' + OH_CANTO,
+   '<b>Paso 2. El quinto enlace: la histidina proximal (His93, F8).</b> Por debajo del plano, el Nε2 del imidazol de la His93 da su par de electrones libre al Fe (2,07 Å). Es el único enlace covalente entre el hemo y la proteína.'],
+  ['6.º enlace: el O₂',
+   'display ' + OH_PORF + ' or ' + OH_H93 + ' or ' + OH_O2 + '; '
+   + ohEtiq(OH_FE, 'Fe²⁺') + ohEtiq('resno=93 and atomname="CB"', 'His93', 14, 0) + ohEtiq('hem and atomname="O2"', 'O₂', 14, 4)
+   + ohEtiq('hem and atomname="O1"', 'Fe–O 1,83 Å', -120, 8)
+   + 'measure {' + OH_FE + '} {hem and atomname="O1"}; set measurementLabels false; ' + OH_CANTO,
+   '<b>Paso 3. El sexto enlace: el O<sub>2</sub>.</b> Por encima del plano, en la posición opuesta a la His93, se une el O<sub>2</sub> por uno de sus átomos (1,83 Å). La molécula no queda recta, sino <b>inclinada</b>: el ángulo Fe–O–O es de unos 115°. El oxígeno terminal apunta hacia un lado del bolsillo, donde está la His64 (paso 5).'],
+  ['El octaedro d²sp³',
+   'display ' + OH_PORF + ' or ' + OH_H93 + ' or ' + OH_O2 + '; '
+   + 'select ' + OH_FE + '; polyhedra 6 BONDS; colour polyhedra translucent 0.55 [xE8A33D]; '
+   + ohEtiq(OH_FE, 'Fe²⁺') + 'select none; ' + OH_PLANO,
+   '<b>Paso 4. Seis enlaces hacia los vértices de un octaedro.</b> Los seis orbitales híbridos d<sup>2</sup>sp<sup>3</sup> del Fe<sup>2+</sup> (esquema de la derecha) apuntan a los vértices de un octaedro: cuatro en el plano de la porfirina, uno hacia la His93 y uno hacia el O<sub>2</sub>. Gira el modelo para verlo desde varios lados.'],
+  ['Puente de H con la His64',
+   'display ' + OH_PORF + ' or ' + OH_H93 + ' or ' + OH_O2 + ' or ' + OH_H64 + '; '
+   + 'select (resno=64 and atomname="HE2") or (hem and atomname="O2"); hbonds 0.08; colour hbonds [xB8860B]; '
+   + ohEtiq(OH_FE, 'Fe²⁺') + ohEtiq('resno=93 and atomname="CB"', 'His93 (proximal)', 14, 0) + ohEtiq('resno=64 and atomname="CB"', 'His64 (distal)')
+   + ohEtiq('resno=64 and atomname="HE2"', 'H···O 1,78 Å', -130, 14)
+   + 'measure {resno=64 and atomname="HE2"} {hem and atomname="O2"}; set measurementLabels false; ' + OH_CANTO,
+   '<b>Paso 5. El puente de hidrógeno con la histidina distal (His64, E7).</b> Al otro lado del O<sub>2</sub>, sin enlace con el Fe, está la His64. Su Nε2 lleva un H (añadido al modelo; los rayos X no lo ven) que apunta al oxígeno terminal del O<sub>2</sub>: H···O 1,8 Å, N···O 2,8 Å, casi en línea (165°). Es un puente de hidrógeno típico, como los del capítulo 1.'],
+  ['En la proteína',
+   'display ' + OH_PORF + ' or ' + OH_H93 + ' or ' + OH_O2 + ' or ' + OH_H64 + ' or protein; '
+   + 'select protein; cartoons 0.6; select (resno=64 and atomname="HE2") or (hem and atomname="O2"); hbonds 0.08; colour hbonds [xB8860B]; '
+   + ohEtiq('resno=93 and atomname="CB"', 'His93 (hélice F)', 40, -20) + ohEtiq('resno=64 and atomname="CB"', 'His64 (hélice E)', 40, 20)
+   + 'select none; zoomTo 0.8 {protein} 0; ',
+   '<b>Paso 6. El hemo en la proteína.</b> El hemo queda en un bolsillo entre dos hélices: la F, que aporta la His93, y la E, que aporta la His64. El resto del bolsillo es apolar (véase <a href="hidrofobicidad.htm">Hidrofobicidad</a>).']
+];
+var ohPaso = 0;
+
+function ohVer(n) {
+  ohPaso = n;
+  var p = OH_PASOS[n];
+  Jmol.script(Mb, OH_COMUN + p[1] + (n < 5 ? 'select none; ' : ''));
+  document.getElementById('ohEstado').innerHTML = p[2];
+  var bs = document.querySelectorAll('#ohPasos input[type="button"]');
+  for (var i = 0; i < bs.length; i++) bs[i].className = (i === n) ? 'activo' : '';
+  document.getElementById('ohSiguiente').disabled = (n === OH_PASOS.length - 1);
+}
+function ohSiguiente() { if (ohPaso < OH_PASOS.length - 1) ohVer(ohPaso + 1); }
+function ohReiniciar() { Jmol.script(Mb, ohInicio); ohVer(0); }
+
+// ---------------------------------------------------------------
+// 2. Hemoglobina: hemo de la cadena beta con la hélice F, sin O2 (2HHD) y con O2 (1HHO).
+// Átomos 2283 y 2284: los dos O del O2 en el modelo oxigenado.
+// ---------------------------------------------------------------
+var HB_ESTILO = 'restrict not solvent; select *; spacefill off; wireframe off; cartoons on; colour cpk; '
+  + 'select hem; cartoons off; wireframe 0.2; select atomno=2283 or atomno=2284; spacefill on; '
+  + 'select iron; spacefill on; select His92; cartoons off; wireframe 0.2; select none; ';
+var HB = {
+  desoxi: ['load ../pdb/hemo-deOxy-HeliceF.pdb.gz; ' + HB_ESTILO + 'moveTo 0 -912 406 55 34.9 150; zoom 85; ',
+           '<b>Desoxihemoglobina.</b> Sin O<sub>2</sub>, el Fe<sup>2+</sup> tiene solo cinco enlaces y queda algo por debajo del plano del anillo, hacia la His92 (F8).'],
+  oxi:    ['load ../pdb/hemo-Oxy-HeliceF.pdb.gz; ' + HB_ESTILO + 'moveTo 0 -922 219 -319 37.1 150; zoom 85; ',
+           '<b>Oxihemoglobina.</b> Al unirse el O<sub>2</sub> (esferas rojas), el Fe<sup>2+</sup> forma el sexto enlace y entra en el plano del anillo, arrastrando consigo la His92 y la hélice F.']
+};
+function hbVer(modo, boton) {
+  Jmol.script(Hb, HB[modo][0]);
+  document.getElementById('hbEstado').innerHTML = HB[modo][1];
+  var bs = document.querySelectorAll('#hbModos input[type="button"]');
+  for (var i = 0; i < bs.length; i++) bs[i].className = (bs[i] === boton) ? 'activo' : '';
+}
+
+$(document).ready(function () {
+  $('#JmolDiv_Mb').html(Jmol.getAppletHtml(Mb, JmolInfo));
+  $('#JmolDiv_Hb').html(Jmol.getAppletHtml(Hb, JmolInfo));
+  setTimeout(function () { ohReiniciar(); hbVer('desoxi', document.getElementById('hbDesoxi')); }, 300);
+});
+</script>
+</head>
 <body>
-<h1 class="solo-lectores">Unión del oxígeno al grupo hemo en 3D</h1>
-<table width="780">
-<tr>
-    <td valign=top>
-	<form>
-		<script>
-		  jmolInitialize("../jsmol/js");
-		  jmolSetParameter("UseCommandThread","true");
-		  jmolApplet(420, "load ../pdb/hemo-deOxy-HeliceF.pdb.gz;moveTo 0 -912 406 55 34.9 150; restrict not solvent; zoom 150;select *;background aliceblue; spacefill off; wireframe off; cartoons on; select hem; cartoons off; wireframe 50; select atomno=2283; spacefill on; select atomno=2284; spacefill on; select iron; spacefill on; colour cpk; select His92; spacefill off; wireframe 50; colour cpk; spin on");
-		</script>
-		</form>
-	</td>
-    <td valign="top">
-       <B>
-	   <script>
-	  jmolRadioGroup([
-		  ["load ../pdb/hemo-deOxy-HeliceF.pdb.gz;moveTo 0 -912 406 55 34.9 150; restrict not solvent; zoom 150;select *;background aliceblue; spacefill off; wireframe off; cartoons on; select hem; cartoons off; wireframe 50; select atomno=2283; spacefill on; select atomno=2284; spacefill on; select iron; spacefill on; colour cpk; select His92; spacefill off; wireframe 50; colour cpk; spin on",  "DeOxiHb", "checked"],
-		  ["load ../pdb/hemo-Oxy-HeliceF.pdb.gz;moveTo 0 -922 219 -319 37.1 150;restrict not solvent; zoom 150;select *;background aliceblue; spacefill off; wireframe off; cartoons on; select hem; cartoons off; wireframe 50; select atomno=2283; spacefill on; select atomno=2284; spacefill on; select iron; spacefill on; colour cpk; select His92; spacefill off; wireframe 50; colour cpk; spin on",  "OxiHb"]
-		]);
-	  </script>
-	 <P></B>
-	 <IMG SRC="../images/d2sp3.png">
-	 <P>
-	 El hierro ferroso se une mediante 6 enlaces coordinados a los cuatro nitrogenos del anillo de porfirina, al nitrogeno imidaz&oacute;lico de la His92 y al Ox&iacute;geno molecular.
-	 <p class="descripcion-pagina">Esta página compara el grupo hemo con y sin oxígeno unido, junto con la hélice F de la globina. El hierro ferroso se coordina con los cuatro nitrógenos de la porfirina y con la histidina proximal; la sexta posición de coordinación es la que ocupa el oxígeno.</p>
-</BODY>
-</HTML>
+<h1 class="oh-titulo">La unión del oxígeno al hemo: el hierro, la His93 y la His64</h1>
+<p class="oh-lead">El O<sub>2</sub> no se une a la cadena de la mioglobina ni de la hemoglobina, sino al <b>hierro ferroso (Fe<sup>2+</sup>)</b> del grupo hemo. El modelo es el hemo de la mioglobina de cachalote con O<sub>2</sub> unido (PDB 1MBO) y las dos histidinas que lo rodean. Sigue los pasos en orden: primero los seis enlaces del hierro y después el puente de hidrógeno que estabiliza el O<sub>2</sub>.</p>
+
+<h2 class="oh-seccion">Los seis enlaces del hierro en la mioglobina</h2>
+<div class="oh-fila">
+  <div>
+    <div id="JmolDiv_Mb" class="oh-visor"></div>
+    <div class="oh-controles" id="ohPasos">
+      <input type="button" value="1 · Fe²⁺ en la porfirina" onclick="ohVer(0)">
+      <input type="button" value="2 · His93" onclick="ohVer(1)">
+      <input type="button" value="3 · O₂" onclick="ohVer(2)">
+      <input type="button" value="4 · Octaedro d²sp³" onclick="ohVer(3)">
+      <input type="button" value="5 · Puente de H con la His64" onclick="ohVer(4)">
+      <input type="button" value="6 · En la proteína" onclick="ohVer(5)">
+    </div>
+    <div class="oh-controles">
+      <input type="button" id="ohSiguiente" value="Siguiente paso →" onclick="ohSiguiente()">
+      <input type="button" value="Vista inicial" onclick="ohReiniciar()">
+    </div>
+    <div class="oh-estado" id="ohEstado"></div>
+  </div>
+
+  <div class="oh-texto">
+    <h2>La hibridación d<sup>2</sup>sp<sup>3</sup> del Fe<sup>2+</sup></h2>
+    <p>El hierro (Fe, número atómico 26) tiene la configuración [Ar] 3d<sup>6</sup> 4s<sup>2</sup>. El ion ferroso, Fe<sup>2+</sup>, pierde los dos electrones 4s y conserva seis electrones 3d.</p>
+    <p>En la oxihemoglobina y la oximioglobina, esos seis electrones se aparean en tres orbitales 3d. Quedan vacíos dos orbitales 3d, el 4s y los tres 4p, que se combinan en <b>seis orbitales híbridos d<sup>2</sup>sp<sup>3</sup></b> equivalentes, dirigidos hacia los vértices de un octaedro. Cada uno recibe un par de electrones de un ligando: así se forman los seis <b>enlaces coordinados</b> del hierro.</p>
+    <figure class="oh-figura">
+      <img src="../images/d2sp3.png" alt="Orbitales 3d, 4s y 4p del Fe y del Fe2+, y los seis orbitales híbridos d2sp3 vacíos que reciben los pares de electrones de los ligandos">
+      <figcaption>Orbitales del Fe y del Fe<sup>2+</sup>. Los seis orbitales del recuadro forman los híbridos d<sup>2</sup>sp<sup>3</sup>.</figcaption>
+    </figure>
+    <table class="oh-tabla">
+      <tr><th>Posición</th><th>Ligando</th><th>Distancia al Fe</th></tr>
+      <tr><td>1–4 (en el plano)</td><td>los cuatro N de la porfirina</td><td>1,9–2,0 Å</td></tr>
+      <tr><td>5 (debajo)</td><td>Nε2 de la His93 (proximal)</td><td>2,07 Å</td></tr>
+      <tr><td>6 (encima)</td><td>O<sub>2</sub></td><td>1,83 Å</td></tr>
+    </table>
+    <p>El Fe<sup>2+</sup> une el O<sub>2</sub> sin oxidarse. Si el hierro pasa a Fe<sup>3+</sup> (metamioglobina), ya no une O<sub>2</sub>.</p>
+  </div>
+</div>
+
+<h2 class="oh-seccion">El puente de hidrógeno con la His64 y el monóxido de carbono</h2>
+<div class="oh-fila">
+  <div class="oh-texto">
+    <p>El enlace Fe–O<sub>2</sub> es muy polar: el Fe<sup>2+</sup> cede parte de su densidad electrónica al O<sub>2</sub>, de modo que el oxígeno terminal adquiere una <b>carga parcial negativa</b> (el complejo se parece en parte a Fe<sup>3+</sup>–O<sub>2</sub><sup>−</sup>). Ese oxígeno es un buen aceptor de un puente de hidrógeno, y el Nε2–H de la His64 está justo en el sitio para darlo (paso 5).</p>
+    <p>Este puente de hidrógeno es fundamental para que la mioglobina y la hemoglobina <b>discriminen frente al monóxido de carbono (CO)</b>. Un hemo libre une el CO unas 20&nbsp;000 veces más que el O<sub>2</sub>; en la mioglobina de cachalote, solo unas 25 veces más. El CO unido al Fe es casi apolar y apenas forma puente de hidrógeno con la His64, mientras que el O<sub>2</sub> sí lo forma y queda muy estabilizado. Por eso la His64 aumenta mucho la afinidad por el O<sub>2</sub> y casi no cambia la afinidad por el CO: si se sustituye por un aminoácido apolar, la afinidad por el O<sub>2</sub> cae unas 100 veces, mientras que la del CO apenas aumenta.</p>
+    <p>Durante años se atribuyó esta discriminación sobre todo a un impedimento estérico: la His64 obligaría al CO, que prefiere unirse en línea recta, a inclinarse. Los estudios con mutantes indican que ese efecto es menor y que la mayor parte de la discriminación se debe al puente de hidrógeno.</p>
+    <p class="oh-ref">Olson JS, Phillips GN Jr. Myoglobin discriminates between O<sub>2</sub>, NO, and CO by electrostatic interactions with the bound ligand. <i>J Biol Inorg Chem</i> 1997; 2: 544–552. <a href="https://doi.org/10.1007/s007750050169">doi:10.1007/s007750050169</a><br>
+    Spiro TG, Kozlowski PM. Is the CO adduct of myoglobin bent, and does it matter? <i>Acc Chem Res</i> 2001; 34: 137–144. <a href="https://doi.org/10.1021/ar000108j">doi:10.1021/ar000108j</a></p>
+  </div>
+  <div class="oh-texto">
+    <div class="oh-fijate"><strong>Fíjate en…</strong>
+      <ul>
+        <li>que el O<sub>2</sub> no está suelto: está unido al Fe, en la sexta posición del octaedro (pasos 3 y 4);</li>
+        <li>que las dos histidinas hacen cosas distintas: la His93 está <b>unida</b> al Fe; la His64 <b>no</b> lo está y solo forma un puente de hidrógeno con el O<sub>2</sub>;</li>
+        <li>que el puente de hidrógeno va al oxígeno <b>terminal</b>, el que no está unido al Fe;</li>
+        <li>que la inclinación del O<sub>2</sub> (115°) acerca el oxígeno terminal a la His64. El O<sub>2</sub> se une inclinado también a un hemo libre: la His64 no lo obliga a ello.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<h2 class="oh-seccion">En la hemoglobina: el hierro con y sin oxígeno</h2>
+<div class="oh-fila">
+  <div>
+    <div id="JmolDiv_Hb" class="oh-visor"></div>
+    <div class="oh-controles" id="hbModos">
+      <input type="button" id="hbDesoxi" value="Desoxihemoglobina" onclick="hbVer('desoxi', this)">
+      <input type="button" value="Oxihemoglobina" onclick="hbVer('oxi', this)">
+    </div>
+    <div class="oh-estado" id="hbEstado"></div>
+  </div>
+  <div class="oh-texto">
+    <p>El modelo muestra el hemo de una cadena β de la hemoglobina con la hélice F, sin O<sub>2</sub> y con O<sub>2</sub>. En la cadena β, la histidina proximal es la His92 (F8), equivalente a la His93 de la mioglobina.</p>
+    <p>El hierro ferroso se une mediante seis enlaces coordinados a los cuatro nitrógenos del anillo de porfirina, al nitrógeno imidazólico de la His92 y al oxígeno molecular. Sin O<sub>2</sub> solo hay cinco, y el Fe<sup>2+</sup> queda algo fuera del plano; al unirse el O<sub>2</sub>, entra en el plano y desplaza la hélice F. Ese pequeño movimiento se transmite a las otras subunidades y es el origen de la cooperatividad de la hemoglobina.</p>
+  </div>
+</div>
+
+<p class="descripcion-pagina">Modelo 3D de la unión del oxígeno al hierro del hemo en la mioglobina (PDB 1MBO): hibridación d<sup>2</sup>sp<sup>3</sup> del Fe<sup>2+</sup>, enlace con la histidina proximal His93, puente de hidrógeno con la histidina distal His64 y su papel en la discriminación frente al CO. Incluye la comparación del hemo de la hemoglobina con y sin O<sub>2</sub>.</p>
+</body>
+</html>

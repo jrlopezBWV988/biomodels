@@ -44,6 +44,9 @@ a.vc-ir {
   border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600;
 }
 a.vc-ir:hover { background: var(--accent-strong); color: #fff; text-decoration: none; }
+/* Pequeño desvío desde una parada */
+.vc-desvio { margin: 14px 0 0; max-width: 860px; padding: 12px 16px; border: 1px dashed #9fb0bf; border-radius: var(--radius); background: var(--surface); }
+.vc-desvio p { margin: 0 0 8px; line-height: 1.55; }
 /* Excursiones opcionales */
 .vc-excursiones { margin: 0 0 30px; max-width: 860px; padding: 14px 18px; border: 1px dashed #9fb0bf; border-radius: var(--radius); background: var(--surface); }
 .vc-excursiones h2 { margin: 0 0 6px; font-size: 1.15rem; }

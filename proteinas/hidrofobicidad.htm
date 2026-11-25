@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -5,125 +6,201 @@
 <link rel="stylesheet" href="../css/moderno.css?v=20261125.2">
 <script src="../js/marco.js?v=20261125.2"></script>
 
-<title>Hidrofobicidad de proteínas globulares en 3D | Atlas de estructuras</title>
-<meta name="description" content="Distribución de aminoácidos polares y apolares en la cadena alfa de la hemoglobina: modelo 3D interactivo de hidrofobicidad.">
+<title>Hidrofobicidad de las proteínas globulares en 3D: la mioglobina | Atlas de estructuras</title>
+<meta name="description" content="Modelo 3D interactivo de la mioglobina con los aminoácidos coloreados por familia y un plano de corte para ver el interior apolar y la superficie polar: el efecto hidrofóbico.">
 <link rel="canonical" href="https://biomodels.es/proteinas/hidrofobicidad.htm">
-<meta property="og:title" content="Hidrofobicidad de proteínas globulares en 3D">
-<meta property="og:description" content="Distribución de aminoácidos polares y apolares en la cadena alfa de la hemoglobina: modelo 3D interactivo de hidrofobicidad.">
+<meta property="og:title" content="Hidrofobicidad de las proteínas globulares en 3D: la mioglobina">
+<meta property="og:description" content="Modelo 3D interactivo de la mioglobina con los aminoácidos coloreados por familia y un plano de corte para ver el interior apolar y la superficie polar: el efecto hidrofóbico.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://biomodels.es/proteinas/hidrofobicidad.htm">
 <meta property="og:locale" content="es_ES">
-<script src="../jsmol/JSmol.min.js?v=20261113"></script>
-<script src="../jsmol/js/Jmol2.js?v=20261113b"></script>
-<script type="text/javascript">
-var step=5	
-function change(ctl,inc)
-{	var v = parseInt(ctl.value)
-	if ( inc>0 && v>(100-step) ) return
-	if ( inc<0 && v<step ) return
-	v += step*inc
-	if ( ctl.name == "depth" )
-	{	if ( v > ctl.form.slab.value ) return
-		ctl.value=v
-		doDepth(v) 
-	}
-	if ( ctl.name == "slab" )
-	{	if ( v < ctl.form.depth.value ) return
-		ctl.value=v
-		doSlab(v) 
-	}
-}
-function doSlab(v) { jmolScript("slab " + v) }
-function doDepth(v) { jmolScript("depth " + v) }
-</script>
-<style type="text/css">
-<!--
-body { font-family:Arial, Helvetica, sans-serif; }
-.Estilo1 {
-	color: #CC6600;
-	font-size: 0.85em;
-}
-.Estilo2 {
-	font-size: 1.2em;
-	font-weight: bold;
-}
-.Estilo3 {
-	color: #018D6D;
-	font-weight: bold;
-}
-.Estilo4 {
-	color: #0000FF;
-	font-weight: bold;
-}
-.Estilo5 {
-	color: #FFFF00;
-	font-weight: bold;
-}
-.Estilo6 {font-size: 0.8em}
--->
-</style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="../jsmol/JSmol.min.js?v=20261113"></script>
+<style>
+.hf-titulo { margin:0 0 6px; font-size:1.55rem; color:var(--title); line-height:1.25; }
+.hf-lead { max-width:1180px; margin:0 0 16px; line-height:1.55; }
+.hf-fila { display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, 1fr); gap:24px; max-width:1180px; margin:0 0 24px; }
+.hf-visor { width:100%; height:520px; }
+.hf-controles { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:8px 0; }
+.hf-controles input[type="button"] { margin:0 !important; }
+.hf-controles input[type="button"].activo { background:#f6c48d; border-color:#e08a2c; }
+.hf-controles label { white-space:nowrap; }
+.hf-corte { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:10px 0 4px; }
+.hf-corte input[type="range"] { width:260px; max-width:100%; }
+.hf-estado { border:1px solid #c9d3dc; background:#fff; padding:6px 10px; margin:8px 0; font-size:.95em; line-height:1.5; }
+.hf-texto p { margin:0 0 10px; line-height:1.55; }
+.hf-texto h2 { font-size:1.2rem; margin:16px 0 6px; color:var(--title); }
+.hf-texto h2:first-child { margin-top:0; }
+ul.hf-leyenda { list-style:none; padding:0; margin:4px 0 12px; }
+ul.hf-leyenda li { display:flex; align-items:baseline; gap:8px; margin:3px 0; line-height:1.4; }
+.hf-color { flex:0 0 auto; display:inline-block; width:16px; height:16px; border-radius:50%; border:1px solid rgba(0,0,0,.25); position:relative; top:3px; }
+table.hf-tabla { border-collapse:collapse; margin:6px 0 6px; font-size:.95em; }
+table.hf-tabla th, table.hf-tabla td { border:1px solid #9aa7b2; padding:4px 8px; text-align:left; vertical-align:top; }
+table.hf-tabla th { background:#e8eef3; }
+table.hf-tabla td.num { text-align:right; }
+.hf-nota { font-size:.88em; color:var(--muted); margin:0 0 12px; }
+.hf-fijate { background:#fdf8e8; border:1px solid #ecdcae; border-radius:8px; padding:10px 14px; margin:12px 0; }
+.hf-fijate ul { margin:6px 0 0; padding-left:20px; }
+.hf-fijate li { margin:4px 0; line-height:1.5; }
+@media (max-width:900px) {
+  .hf-fila { grid-template-columns:1fr; }
+  .hf-visor { height:380px; }
+}
+</style>
+<script>
+var Hf = 'Hf';
+var JmolInfo = {
+  width:'100%',
+  height:'100%',
+  color:'#F0F8FF',
+  j2sPath:'../jsmol/j2s',
+  serverURL:'../jsmol/php/jsmol.php',
+  use:'html5'
+};
+
+// Familias de aminoácidos (las mismas que en la página «Aminoácidos») y sus colores.
+var HF_FAMILIAS = {
+  alifaticos: ['Gly,Ala,Val,Leu,Ile,Met,Pro', '[x2211FF]'],
+  aromaticos: ['Phe,Tyr,Trp',                 '[x8C5CE6]'],
+  polares:    ['Ser,Thr,Cys,Asn,Gln',         '[xF6999A]'],
+  positivos:  ['Lys,Arg,His',                 '[xFF2009]'],
+  negativos:  ['Asp,Glu',                     '[xFE7200]']
+};
+var HF_APOLARES = '(protein and (' + HF_FAMILIAS.alifaticos[0] + ',' + HF_FAMILIAS.aromaticos[0] + '))';
+var HF_POLARES  = '(protein and (' + HF_FAMILIAS.polares[0] + ',' + HF_FAMILIAS.positivos[0] + ',' + HF_FAMILIAS.negativos[0] + '))';
+var HF_ORIENT = 'reset; rotate y 90; rotate x 20; zoom 115; ';
+
+function hfColores() {
+  var s = '';
+  for (var f in HF_FAMILIAS) s += 'select protein and (' + HF_FAMILIAS[f][0] + '); colour ' + HF_FAMILIAS[f][1] + '; ';
+  return s + 'select hem; colour [x1E9E3A]; ';
+}
+var hfInicio = 'load ../pdb/mioglobinaO2.pdb.gz; set antialiasDisplay true; restrict not sulfate; '
+  + 'select all; spacefill on; wireframe off; ' + hfColores()
+  + 'select water; spacefill 0.6; colour [xA9C7E8]; '
+  + 'set slabByAtom false; slab on; slab 100; depth 0; set zShade off; '
+  + 'select none; ' + HF_ORIENT;
+
+var hfMostrar = 'todos', hfAgua = false;
+
+function hfDisplay() {
+  var d = (hfMostrar === 'apolares') ? '(hem or ' + HF_APOLARES + ')'
+        : (hfMostrar === 'polares') ? '(hem or ' + HF_POLARES + ')' : '(protein or hem)';
+  Jmol.script(Hf, 'display ' + d + (hfAgua ? ' or water' : '') + '; select none');
+  var texto = {
+    todos: 'Se ven <b>todos los aminoácidos</b>, coloreados por familia, y el hemo en verde.',
+    apolares: 'Se ven <b>solo los aminoácidos apolares</b> (azul y violeta) y el hemo: forman un bloque compacto en el interior.',
+    polares: 'Se ven <b>solo los aminoácidos polares</b> (rosa, rojo y naranja) y el hemo: forman una capa en la superficie, con un hueco donde estaban los apolares.'
+  }[hfMostrar];
+  document.getElementById('hfEstado').innerHTML = texto + (hfAgua ? ' Las moléculas de agua del cristal (azul claro) rodean la proteína, pero no entran en su interior.' : '');
+}
+function hfVer(modo, boton) {
+  hfMostrar = modo;
+  var bs = document.querySelectorAll('#hfModos input[type="button"]');
+  for (var i = 0; i < bs.length; i++) bs[i].className = (bs[i] === boton) ? 'activo' : '';
+  hfDisplay();
+}
+function hfAguaCambiar(c) { hfAgua = c.checked; hfDisplay(); }
+
+function hfCorte() {
+  var v = parseInt(document.getElementById('hfCorte').value, 10);
+  var slab = 100 - v;
+  Jmol.script(Hf, 'slab on; slab ' + slab + '; depth 0');
+  document.getElementById('hfCorteValor').innerHTML = v === 0 ? 'sin cortar'
+    : 'retirado el ' + v + ' % delantero';
+}
+function hfGiro(c) { Jmol.script(Hf, c.checked ? 'set spinX 0; set spinY 15; spin on' : 'spin off'); }
+function hfReiniciar() {
+  document.getElementById('hfCorte').value = 0;
+  document.getElementById('hfAgua').checked = false;
+  document.getElementById('hfGiro').checked = false;
+  hfAgua = false;
+  Jmol.script(Hf, 'spin off; slab 100; depth 0; ' + HF_ORIENT);
+  hfVer('todos', document.getElementById('hfTodos'));
+  hfCorte();
+}
+
+$(document).ready(function () {
+  $('#JmolDiv_Hf').html(Jmol.getAppletHtml(Hf, JmolInfo));
+  setTimeout(function () { Jmol.script(Hf, hfInicio); hfVer('todos', document.getElementById('hfTodos')); hfCorte(); }, 300);
+});
+</script>
 </head>
 <body>
-<form>
-<table>
-<tr valign="top">
-    <td valign="top">
-	<CENTER><script type="text/javascript">
-		jmolInitialize("../jsmol/js");
-		jmolApplet(420, "load ../pdb/hho.pdb.gz; restrict not solvent; moveTo 0 282 -803 525 81.1; background aliceblue; color cpk; slab on; spacefill on");
-		jmolBr();
-		jmolButton("moveTo 1 282 -803 525 81.1; select *; background aliceblue; color cpk; slab on; spacefill on", "imagen original");
-	</script></CENTER>
-	</td>
-    <td valign="top">
-	<CENTER><h1 class="titulo-pagina"><FONT SIZE="+1" COLOR="#3333CC"><B>Hidrofobicidad de las proteinas globulares:<BR>Cadena alfa de la hemoglobina</B></FONT></h1></CENTER><P>
-		<table border="0" bgcolor="#FFFFCC">
-		<thead>
-		<div align="center"><input type="reset" onClick="jmolScript('slab 100; depth 0')" value="Seccion original"></div>
-		</thead>
-		<tr align="center">
-		<td colspan="2">Plano anterior</td>
-		<td colspan="2">posterior</td>
-		<td colspan="2">(Ambos)</td>
-		</tr>
-		<tr>
-		<td align="right"><input type="text" name="slab" value="100" size="4" onChange="doSlab(this.value)">%</td>
-		<td align="left"><input type="button" value="+" onClick="change(this.form.slab,1)"><br/>
-		<input type="button" value="-" onClick="change(this.form.slab,-1)"></td>
-		<td align="right"><input type="text" name="depth" value="0" size="4" onChange="doDepth(this.value)">%</td>
-		<td align="left"><input type="button" value="+" onClick="change(this.form.depth,1)"><br/>
-		<input type="button" value="-" onClick="change(this.form.depth,-1)"></td>
-		<td align="center"><input type="button" value="Adelante" onClick="change(this.form.slab,1);change(this.form.depth,1)"><br/>
-		<input type="button" value="Atras" onClick="change(this.form.depth,-1);change(this.form.slab,-1)"></td>
-		</tr>
-		<tr align="center">
-		<td colspan="2"><span class="Estilo6">(porcentaje visible)</span></td>
-		<td colspan="2"><span class="Estilo6">(porcentaje oculto)</span></td>
-		<td align="center">&nbsp;</td>
-		</tr>
-		</table>
-<P>
-<script>
-	jmolCheckbox("set spinX 10; set spinY 10; spin on", "spin off", "Rotaci&oacute;n")
-</script> 
-<P>
-<script type="text/javascript">
-jmolButton("select Gly,Ala,Pro,Val,Leu,Ile,Met, Phe; colour [34,17,255]; select Ser, Thr, Cys, Asn, Gln, Tyr, Trp; colour [246,153,154];select Lys, His, Arg; colour [255,32,9]; select Asp, Glu; colour [254,114,0]; select hem; color green","X")
-</script>
-La distribuci&oacute;n de los amino&aacute;cidos en la prote&iacute;na seg&uacute;n el car&aacute;cter polar o apolar de su cadena lateral puede apreciarse con el siguiente codigo de colores:
-	<ol type="1"><B>
-    <li><FONT COLOR="#2211FF">Apolares (Gly,Ala,Pro,Val,Leu,Ile,Met,Phe)</FONT></li>
-    <li><FONT COLOR="#F69986">Polares sin carga (Ser,Thr,Cys,Asn,Gln,Tyr,Trp</FONT></li>
-    <li><FONT COLOR="#FE7200">Polares con carga positiva (Lys, His, Arg)</FONT></li>
-    <li><FONT COLOR="#FF2009">Polares con carga negativa (Asp, Glu)</FONT></li>
-    <li><FONT COLOR="#009900"><I>Hemo</I></FONT></li><B/>
-	</ol> 
-</td>
-</tr>
-</table>
-</form>
+<h1 class="hf-titulo">Hidrofobicidad de las proteínas globulares: la mioglobina</h1>
+<p class="hf-lead">En una proteína globular soluble, los aminoácidos no se reparten al azar: los <b>apolares</b> se agrupan en el interior, lejos del agua, y los <b>polares</b> y los <b>cargados</b> quedan en la superficie, en contacto con ella. Esa distribución es la huella del <b>efecto hidrofóbico</b>. El modelo es la mioglobina de cachalote con O<sub>2</sub> unido (PDB 1MBO), con todos los átomos en esferas. Usa el control de corte para ver el interior.</p>
+
+<div class="hf-fila">
+  <div>
+    <div id="JmolDiv_Hf" class="hf-visor"></div>
+    <div class="hf-corte">
+      <label for="hfCorte"><b>Plano de corte:</b></label>
+      <input type="range" id="hfCorte" min="0" max="95" step="1" value="0" oninput="hfCorte()">
+      <span id="hfCorteValor">sin cortar</span>
+    </div>
+    <div class="hf-controles">
+      <label><input type="checkbox" id="hfAgua" onclick="hfAguaCambiar(this)"> Agua del cristal</label>
+      <label><input type="checkbox" id="hfGiro" onclick="hfGiro(this)"> Rotación</label>
+    </div>
+    <div class="hf-controles" id="hfModos">
+      <input type="button" id="hfTodos" value="Todos los aminoácidos" onclick="hfVer('todos', this)">
+      <input type="button" value="Solo los apolares" onclick="hfVer('apolares', this)">
+      <input type="button" value="Solo los polares" onclick="hfVer('polares', this)">
+      <input type="button" value="Vista inicial" onclick="hfReiniciar()">
+    </div>
+    <div class="hf-estado" id="hfEstado"></div>
+  </div>
+
+  <div class="hf-texto">
+    <h2>Código de colores por familia</h2>
+    <ul class="hf-leyenda">
+      <li><span class="hf-color" style="background:#2211FF"></span><span><b>Apolares alifáticos</b> (Gly, Ala, Val, Leu, Ile, Met, Pro)</span></li>
+      <li><span class="hf-color" style="background:#8C5CE6"></span><span><b>Apolares aromáticos</b> (Phe, Tyr, Trp)</span></li>
+      <li><span class="hf-color" style="background:#F6999A"></span><span><b>Polares sin carga</b> (Ser, Thr, Cys, Asn, Gln)</span></li>
+      <li><span class="hf-color" style="background:#FF2009"></span><span><b>Polares con carga positiva</b> (Lys, Arg, His)</span></li>
+      <li><span class="hf-color" style="background:#FE7200"></span><span><b>Polares con carga negativa</b> (Asp, Glu)</span></li>
+      <li><span class="hf-color" style="background:#1E9E3A"></span><span><b>Hemo</b>, con el O<sub>2</sub> unido</span></li>
+    </ul>
+    <p>Las familias son las mismas de la página <a href="../aminoacidos.htm">Aminoácidos</a>. En esta página los colores marcan la familia del aminoácido, no el elemento químico.</p>
+
+    <h2>Cómo usar el corte</h2>
+    <p>El control desliza un plano paralelo a la pantalla que retira la parte delantera de la proteína; los átomos cortados se ven como esferas seccionadas. Gira el modelo con el ratón: el plano sigue paralelo a la pantalla, así que cortas la proteína en otra dirección.</p>
+
+    <h2>¿Dónde está cada familia?</h2>
+    <table class="hf-tabla">
+      <tr><th>Familia</th><th>N.º en la mioglobina</th><th>Enterrados</th></tr>
+      <tr><td>Apolares alifáticos</td><td class="num">69</td><td class="num">62 %</td></tr>
+      <tr><td>Apolares aromáticos</td><td class="num">11</td><td class="num">91 %</td></tr>
+      <tr><td>Polares sin carga</td><td class="num">17</td><td class="num">29 %</td></tr>
+      <tr><td>Con carga positiva</td><td class="num">35</td><td class="num">20 %</td></tr>
+      <tr><td>Con carga negativa</td><td class="num">21</td><td class="num">5 %</td></tr>
+    </table>
+    <p class="hf-nota">«Enterrado»: menos del 20 % de la superficie del aminoácido accesible al agua, calculado sobre esta estructura (con el hemo) por el método de Shrake y Rupley.</p>
+  </div>
+</div>
+
+<div class="hf-fila">
+  <div class="hf-texto">
+    <h2>El efecto hidrofóbico</h2>
+    <p>El agua líquida es una red de puentes de hidrógeno que se rompen y se rehacen continuamente. Un grupo apolar no puede formar puentes de hidrógeno: las moléculas de agua que lo tocan solo pueden mantener los suyos si se ordenan a su alrededor en una especie de jaula. Ese orden supone una <b>pérdida de entropía</b> del agua.</p>
+    <p>Cuando la cadena de una proteína se pliega y los grupos apolares se juntan en el interior, la superficie apolar en contacto con el agua disminuye mucho. El agua que estaba ordenada queda libre y su entropía aumenta: la energía libre del sistema baja y el plegamiento es favorable. Por eso el efecto hidrofóbico <b>no es una atracción entre los grupos apolares</b>, sino una consecuencia de cómo se comporta el agua. Una vez juntos, los grupos apolares quedan muy empaquetados y se estabilizan además por contactos de van der Waals.</p>
+    <p>Es la principal fuerza que pliega las proteínas solubles, y la misma que agrupa los lípidos en las <a href="../Fosfolipidos.htm">membranas</a>. Los grupos polares y cargados, en cambio, ganan estabilidad en la superficie, donde forman puentes de hidrógeno con el agua.</p>
+  </div>
+  <div class="hf-texto">
+    <div class="hf-fijate"><strong>Fíjate en…</strong>
+      <ul>
+        <li>con el corte hacia la mitad, el centro de la proteína es casi todo azul y violeta, y el borde, rosa, rojo y naranja;</li>
+        <li>con «Solo los apolares», el interior es un bloque compacto, sin huecos; con «Solo los polares», una cáscara con el interior vacío;</li>
+        <li>el hemo (verde) está metido en un bolsillo apolar: el entorno apolar dificulta que el Fe<sup>2+</sup> se oxide a Fe<sup>3+</sup>, que ya no une O<sub>2</sub>;</li>
+        <li>casi todos los aminoácidos con carga que quedan dentro son histidinas, que a pH 7 suelen estar sin carga; dos de ellas, la His64 y la His93, rodean el hemo (véase <a href="O2Hem.htm">la unión del oxígeno al hemo</a>);</li>
+        <li>con «Agua del cristal», las moléculas de agua cubren la superficie pero no penetran en el interior.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<p class="descripcion-pagina">Modelo 3D interactivo de la mioglobina (PDB 1MBO) con los aminoácidos coloreados por familia (apolares alifáticos y aromáticos, polares sin carga, con carga positiva y negativa) y un plano de corte para ver cómo los apolares se agrupan en el interior y los polares en la superficie, por el efecto hidrofóbico.</p>
 </body>
 </html>

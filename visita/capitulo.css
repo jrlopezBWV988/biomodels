@@ -1,0 +1,81 @@
+/* Estilos comunes de los capítulos de la visita guiada */
+.vc { max-width: 1120px; }
+.vc-migas { margin: 0 0 6px; font-size: .92em; color: var(--muted); }
+.vc-migas a { color: var(--accent); }
+.vc h1 { margin: 0 0 10px; font-size: 1.75rem; line-height: 1.2; }
+.vc-entradilla { margin: 0 0 16px; max-width: 780px; font-size: 1.05rem; line-height: 1.55; }
+.vc-objetivos {
+  margin: 0 0 26px; padding: 14px 18px 14px 18px; max-width: 780px;
+  background: var(--accent-soft); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.vc-objetivos h2 { margin: 0 0 6px; font-size: 1.02rem; color: var(--accent-strong); }
+.vc-objetivos ul { margin: 0; padding-left: 20px; line-height: 1.5; }
+.vc-parada { margin: 0 0 34px; }
+.vc-parada-cab { display: flex; align-items: baseline; gap: 12px; margin: 0 0 4px; }
+.vc-parada-num {
+  flex: none; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1px solid var(--accent); color: var(--accent-strong); font-weight: 600;
+  transform: translateY(-2px);
+}
+.vc-parada h2 { margin: 0; font-size: 1.35rem; line-height: 1.25; }
+.vc-fila { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 24px; align-items: start; margin-top: 12px; }
+.vc-visor { width: 100%; height: 420px; }
+.vc-controles { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 0; }
+.vc-controles input[type="button"] { margin: 0 !important; }
+.vc-controles input[type="button"].activo { background: var(--accent); border-color: var(--accent); color: #fff; }
+.vc-controles .vc-rotulo { font-size: .9em; color: var(--muted); margin-right: 2px; }
+.vc-estado { margin: 8px 0 0; padding: 7px 11px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; font-size: .95em; line-height: 1.45; }
+.vc-texto p { margin: 0 0 10px; line-height: 1.55; }
+.vc-fijate {
+  margin: 12px 0 0; padding: 10px 14px; background: #fbf8ef; border: 1px solid #e8dfc4; border-radius: 8px; line-height: 1.5;
+}
+.vc-fijate strong { color: #6b5a24; }
+.vc-fijate ul { margin: 4px 0 0; padding-left: 20px; }
+table.vc-tabla { border-collapse: collapse; margin: 8px 0 10px; font-size: .95em; }
+table.vc-tabla th, table.vc-tabla td { border: 1px solid var(--line); padding: 5px 9px; text-align: left; vertical-align: top; }
+table.vc-tabla th { background: var(--surface-soft); }
+.vc-color { display: inline-block; width: 13px; height: 13px; border-radius: 50%; border: 1px solid #8a97a3; vertical-align: -2px; margin-right: 6px; }
+ul.vc-lista { margin: 0 0 10px; padding-left: 20px; line-height: 1.55; }
+ul.vc-lista li { margin: 0 0 4px; }
+/* Enlace a una página del índice que forma parte del recorrido */
+a.vc-ir {
+  display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 0; padding: 8px 16px;
+  border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600;
+}
+a.vc-ir:hover { background: var(--accent-strong); color: #fff; text-decoration: none; }
+/* Excursiones opcionales */
+.vc-excursiones { margin: 0 0 30px; max-width: 860px; padding: 14px 18px; border: 1px dashed #9fb0bf; border-radius: var(--radius); background: var(--surface); }
+.vc-excursiones h2 { margin: 0 0 6px; font-size: 1.15rem; }
+.vc-excursiones p { margin: 0 0 6px; color: var(--muted); }
+.vc-excursiones ul { margin: 0; padding-left: 20px; line-height: 1.6; }
+/* Comprueba */
+.vc-test { margin: 6px 0 30px; max-width: 860px; }
+.vc-pregunta { margin: 0 0 14px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.vc-pregunta > p { margin: 0 0 8px; font-weight: 600; color: var(--title); line-height: 1.45; }
+.vc-opciones { display: flex; flex-wrap: wrap; gap: 6px; }
+.vc-opciones input[type="button"] { margin: 0 !important; }
+.vc-opciones input[type="button"]:disabled { opacity: 1; cursor: default; color: var(--muted); }
+.vc-opciones input[type="button"].ok:disabled { color: #fff; }
+.vc-opciones input[type="button"].mal:disabled { color: #8a3a1c; }
+.vc-opciones input[type="button"].ok { background: #2f7d43; border-color: #2f7d43; color: #fff; }
+.vc-opciones input[type="button"].mal { background: #fbefe9; border-color: #d0724f; color: #8a3a1c; }
+.vc-respuesta { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; line-height: 1.5; }
+.vc-respuesta[hidden] { display: none; }
+.vc-respuesta.ok { background: #edf7ef; border: 1px solid #5aa469; }
+.vc-respuesta.mal { background: #fbefe9; border: 1px solid #d0724f; }
+.vc-marcador { margin: 4px 0 0; color: var(--muted); }
+/* Navegación entre capítulos */
+.vc-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin: 10px 0 8px; padding-top: 16px; border-top: 1px solid var(--line); max-width: 1120px; }
+.vc-nav a, .vc-nav span { display: inline-block; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent-strong); }
+.vc-nav a:hover { background: var(--accent-soft); text-decoration: none; }
+.vc-nav span { border-style: dashed; border-color: #9fb0bf; color: var(--muted); }
+@media (max-width: 960px) {
+  .vc-fila { grid-template-columns: 1fr; }
+  .vc-visor { height: 340px; }
+}
+@media (max-width: 640px) {
+  .vc h1 { font-size: 1.4rem; }
+  .vc-parada h2 { font-size: 1.15rem; }
+  .vc-visor { height: 300px; }
+}

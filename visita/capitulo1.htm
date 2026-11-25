@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/moderno.css?v=20261125.2">
+<script src="../js/marco.js?v=20261125.2"></script>
+
+<title>Visita guiada · Capítulo 1: fundamentos | Atlas de estructuras</title>
+<meta name="description" content="Segundo capítulo de la visita guiada: conformación y configuración, el puente de hidrógeno en el agua, los iones en disolución y las interacciones no covalentes de la mioglobina, con modelos JSmol y un test de comprobación.">
+<link rel="canonical" href="https://biomodels.es/visita/capitulo1.htm">
+<meta property="og:title" content="Visita guiada · Capítulo 1: fundamentos">
+<meta property="og:description" content="Conformación y configuración, el puente de hidrógeno en el agua, los iones en disolución y las interacciones no covalentes de la mioglobina, con modelos JSmol y un test de comprobación.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/visita/capitulo1.htm">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="../jsmol/JSmol.min.js?v=20261113"></script>
+<link rel="stylesheet" href="capitulo.css?v=20261125.2">
+<script src="capitulo.js?v=20261125.2"></script>
+<script>
+var Agua = 'Agua'; // hielo: el puente de hidrógeno
+var Ion = 'Ion';   // Na+ y Cl- con su capa de agua
+var Mb = 'Mb';     // mioglobina: las interacciones en una proteína
+
+// Puentes de hidrógeno dibujados como líneas discontinuas doradas
+var HB_ESTILO = 'set hbondsSolid false; select all; hbonds 0.07; colour hbonds [xB8860B]; ';
+
+// ---------------------------------------------------------------
+// Parada 2. Hielo: 50 moléculas de agua recortadas de una red de hielo Ih
+// (O···O = 2,76 Å; O–H = 0,96 Å; ángulo H–O–H = 104,5°). Generado con un
+// programa propio: cada molécula da dos H y recibe dos (reglas del hielo).
+// La molécula 1 está en el centro y las 2–5 son sus cuatro vecinas.
+// ---------------------------------------------------------------
+var aguaInicio = 'load ../pdb/agua/hielo.pdb.gz; set antialiasDisplay true; colour cpk; '
+  + 'select all; spacefill 23%; wireframe 0.15; '
+  + 'connect 1.5 2.3 (_H) (_O) HBOND; ' + HB_ESTILO
+  + 'font labels 22 sans bold; colour labels black; set labelOffset 16 16; '
+  + 'font measures 16; colour measures black; set measurementUnits angstroms; ';
+var AGUA = {
+  molecula: ['display resno=1; select resno=1 and _O; label "δ−"; select resno=1 and _H; label "δ+"; '
+             + 'measure {atomno=1} {atomno=2}; measure {atomno=2} {atomno=1} {atomno=3}; select none; zoomTo 0.6 {resno=1} 600',
+             '<b>Una molécula de agua.</b> El oxígeno atrae los electrones de los enlaces O–H más que el hidrógeno: el O queda con una carga parcial negativa (δ−) y los H con cargas parciales positivas (δ+). Como la molécula es angular (104,5°), las cargas no se compensan y el agua es un <b>dipolo</b>.'],
+  vecinas:  ['display resno<=5; select resno=1; halos on; select none; '
+             + 'measure {atomno=4} {atomno=6}; measure {atomno=6} {atomno=1}; zoomTo 0.6 {resno<=5} 0',
+             '<b>Una molécula y sus cuatro vecinas.</b> La molécula central (con halo) <b>da</b> sus dos H a dos vecinas y <b>recibe</b> el H de otras dos: cuatro puentes de hidrógeno (líneas discontinuas) dirigidos hacia los vértices de un tetraedro. Compara las dos medidas: el enlace covalente O–H y el puente de hidrógeno H···O.'],
+  red:      ['display all; select none; zoomTo 0.6 {*} 0',
+             '<b>La red del hielo.</b> Todas las moléculas repiten la misma disposición tetraédrica. El resultado es una red abierta, con mucho espacio vacío: por eso el hielo es menos denso que el agua líquida y flota.'],
+  canales:  ['display all; select none; reset; zoomTo 0.6 {*} 0',
+             '<b>Vista a lo largo del eje de la red.</b> Los oxígenos forman anillos de seis moléculas que dejan canales hexagonales vacíos. En el agua líquida a 37 °C la red no es permanente: los puentes se rompen y se forman continuamente (cada uno dura del orden de picosegundos), pero cada molécula sigue unida en promedio a unas tres o cuatro vecinas.']
+};
+function aguaVer(modo, boton) {
+  Jmol.script(Agua, 'measure delete; select all; label off; halos off; ' + AGUA[modo][0]);
+  document.getElementById('aguaEstado').innerHTML = AGUA[modo][1];
+  if (boton) marcar(boton);
+}
+var aguaEsferas = false;
+function aguaRepr(boton) {
+  aguaEsferas = !aguaEsferas;
+  Jmol.script(Agua, 'select all; ' + (aguaEsferas ? 'spacefill 100%; hbonds off' : 'spacefill 23%; wireframe 0.15; hbonds 0.07') + '; select none');
+  boton.value = aguaEsferas ? 'Bolas y varillas' : 'Esferas';
+}
+function aguaReiniciar() {
+  aguaEsferas = false;
+  document.getElementById('aguaRepr').value = 'Esferas';
+  Jmol.script(Agua, aguaInicio + 'rotate x -60; rotate y 20; ');
+  aguaVer('vecinas', document.getElementById('aguaVecinas'));
+}
+
+// ---------------------------------------------------------------
+// Parada 3. Na+ y Cl- rodeados de seis moléculas de agua (modelo esquemático:
+// Na···O = 2,40 Å; Cl···O = 3,15 Å). Los iones, con su radio iónico
+// a la mitad (Na+ 0,5 Å; Cl- 0,9 Å), para que se vea el agua que los rodea.
+// ---------------------------------------------------------------
+var ionEtiqueta = function (id, x, y, texto) {
+  return 'set echo ' + id + ' {' + x + ' ' + y + ' 0}; font echo 18 sans bold; colour echo black; echo "' + texto + '"; ';
+};
+var ionInicio = 'load ../pdb/agua/iones.pdb.gz; set antialiasDisplay true; colour cpk; '
+  + 'select all; spacefill 23%; wireframe 0.15; select _Na; spacefill 0.5; select _Cl; spacefill 0.9; '
+  + 'connect ({_Na}) ({_O}) DELETE; connect 1.8 2.6 (_H and chain=B) (_Cl) HBOND; ' + HB_ESTILO
+  + 'font measures 16; colour measures black; set measurementUnits angstroms; '
+  + ionEtiqueta('eNa', -7.6, 4.4, 'Na⁺') + ionEtiqueta('eCl', 6.4, 5.2, 'Cl⁻')
+  + 'select none; rotate x 20; rotate y -15; zoomTo 0 {*} 0; ';
+var ION = {
+  dos: ['zoomTo 0.6 {*} 0',
+        'Los dos iones, cada uno con su primera capa de seis moléculas de agua. El Na<sup>+</sup> (violeta) y el Cl<sup>−</sup> (verde) se dibujan con la mitad de su radio iónico (el Cl<sup>−</sup> es casi el doble de grande), para que se vea el agua que los rodea; el agua, en bolas y varillas.'],
+  na:  ['measure {_Na} {chain=A and resno=2 and _O}; zoomTo 0.6 {chain=A} 0',
+        '<b>Na<sup>+</sup>.</b> Las seis moléculas de agua apuntan hacia el ion con el <b>oxígeno</b> (δ−), a unos 2,4 Å, y dejan los hidrógenos hacia fuera. Es una interacción <b>ion–dipolo</b>.'],
+  cl:  ['measure {_Cl} {chain=B and resno=2 and atomno=22}; zoomTo 0.6 {chain=B} 0',
+        '<b>Cl<sup>−</sup>.</b> Aquí el agua se orienta al revés: cada molécula apunta hacia el ion con un <b>hidrógeno</b> (δ+), a unos 2,2 Å. Es casi un puente de hidrógeno en el que el aceptor es el ion.']
+};
+function ionVer(modo, boton) {
+  Jmol.script(Ion, 'measure delete; ' + ION[modo][0]);
+  document.getElementById('ionEstado').innerHTML = ION[modo][1];
+  if (boton) marcar(boton);
+}
+function ionReiniciar() {
+  Jmol.script(Ion, ionInicio);
+  ionVer('dos', document.getElementById('ionDos'));
+}
+
+// ---------------------------------------------------------------
+// Parada 4. Mioglobina (1MBO, la misma del capítulo 0). Interacciones elegidas
+// a partir de las coordenadas: puentes de hidrógeno de la hélice E (58–77),
+// His64 NE2···O2 (2,77 Å), Asp20 OD1···Arg118 NH2 (2,82 Å) y Asp27 OD2···Arg118
+// NH1 (3,01 Å) entre las hélices B y G, Arg45 NH1···propionato del hemo (2,88 Å),
+// cadenas apolares a menos de 4 Å del hemo (Phe43, Val68, Ala71, Leu89, Ile99,
+// Leu104, Ile107) y aguas del cristal a menos de 3,2 Å de un N u O de la proteína.
+// ---------------------------------------------------------------
+var MB_BASE = 'measure delete; select all; label off; hbonds off; halos off; spacefill off; wireframe off; cartoons off; '
+  + 'select protein; backbone 0.25; colour backbone [xc3ced8]; hide water; '
+  + 'select hem and not (atomname="O1" or atomname="O2"); wireframe 0.15; colour cpk; '
+  + 'select hem and (atomname="O1" or atomname="O2"); spacefill 0.45; wireframe 0.18; colour cpk; ';
+// Etiqueta con el nombre de un residuo, sobre uno de sus átomos
+function MB_ETIQ(resno, atomo, texto) {
+  return 'select resno=' + resno + ' and atomname="' + atomo + '"; label "' + texto + '"; ';
+}
+// Orientación inicial (la del capítulo 0)
+var MB_ORIENT = 'reset; rotate y 90; rotate x 20; ';
+// Residuos destacados: bolas y varillas
+var MB_BOLAS = 'wireframe 0.2; spacefill 0.35; colour cpk; ';
+var MB_POLARES = '(protein and (_N or _O))';
+var mbInicio = 'load ../pdb/mioglobinaO2.pdb.gz; set antialiasDisplay true; restrict not sulfate; '
+  + 'set cartoonFancy true; colour cpk; select protein; calculate hbonds; '
+  + 'connect 2.5 3.0 ({resno=64 and atomname="NE2"}) ({hem and atomname="O2"}) HBOND; '
+  + 'connect 2.5 3.2 (water and _O) (' + MB_POLARES + ') HBOND; '
+  + HB_ESTILO + 'hbonds off; '
+  + 'font measures 15; colour measures black; set measurementUnits angstroms; '
+  + 'font labels 15 sans bold; colour labels [x134e69]; set labelOffset 10 10; set labelFront true; '
+  + 'connect ({hem and elemno=26}) ({(resno=93 and atomname="NE2") or (hem and atomname="O1")}) SINGLE; '
+  + 'rotate y 90; rotate x 20; ';
+var MB_HELICE = '(resno>=58 and resno<=77 and protein)';
+var MB_APOLARES = '(protein and (resno=43 or resno=68 or resno=71 or resno=89 or resno=99 or resno=104 or resno=107) and sidechain)';
+var MB = {
+  helice:  ['select hem; wireframe off; spacefill off; select ' + MB_HELICE + '; backbone off; select ' + MB_HELICE + ' and (backbone or atomname="CB"); ' + MB_BOLAS
+            + 'select ' + MB_HELICE + '; hbonds 0.08; colour hbonds [xB8860B]; ' + MB_ETIQ('58', 'CA', 'Ser58') + MB_ETIQ('77', 'CA', 'Lys77')
+            + 'select none; moveTo 0 { 0.3527 0.2373 0.9052 } 159.76; zoomTo 0.6 {' + MB_HELICE + '} 150',
+            '<b>Puentes de hidrógeno en una hélice α</b> (hélice E, residuos 58–77). Solo se dibuja la cadena principal: el O del C=O de cada aminoácido recibe un puente de hidrógeno del N–H del aminoácido situado cuatro posiciones más adelante. Así, los puentes quedan casi paralelos al eje de la hélice. Lo verás en detalle en el capítulo 3.'],
+  oxigeno: ['select (resno=64 or resno=93) and (sidechain or atomname="CA"); ' + MB_BOLAS
+            + 'select (resno=64 and atomname="NE2") or (hem and atomname="O2"); hbonds 0.08; colour hbonds [xB8860B]; '
+            + 'measure {resno=64 and atomname="NE2"} {hem and atomname="O2"}; '
+            + MB_ETIQ('64', 'CG', 'His64 (distal)') + MB_ETIQ('93', 'CG', 'His93 (proximal)')
+            + 'select none; moveTo 0 { -0.5459 -0.3535 0.7597 } 133.98; zoomTo 0.6 {hem or resno=64 or resno=93} 300',
+            '<b>Un puente de hidrógeno que sujeta el O<sub>2</sub>.</b> El O<sub>2</sub> (esferas rojas) está unido al hierro del hemo. La histidina 64, en la parte superior del bolsillo (histidina distal), le da un puente de hidrógeno desde su N–H. Debajo, la histidina 93 (histidina proximal) está unida al hierro por un enlace de coordinación. Esto se retoma en el capítulo 4.'],
+  salino:  ['select (resno=20 or resno=27 or resno=118 or resno=45) and (sidechain or atomname="CA"); ' + MB_BOLAS
+            + 'select protein and ((resno>=20 and resno<=35) or (resno>=100 and resno<=118)); backbone 0.4; colour backbone [x8fb3d9]; '
+            + 'measure {resno=20 and atomname="OD1"} {resno=118 and atomname="NH2"}; '
+            + 'measure {resno=27 and atomname="OD2"} {resno=118 and atomname="NH1"}; '
+            + 'measure {resno=45 and atomname="NH1"} {hem and atomname="O2D"}; '
+            + MB_ETIQ('20', 'CG', 'Asp20') + MB_ETIQ('27', 'CG', 'Asp27') + MB_ETIQ('118', 'CZ', 'Arg118') + MB_ETIQ('45', 'CZ', 'Arg45')
+            + 'select none; ' + MB_ORIENT + 'zoomTo 0.6 {resno=20 or resno=27 or resno=118 or resno=45} 190',
+            '<b>Puentes salinos (interacciones iónicas).</b> La arginina 118 (+), en la hélice G, se une a dos aspartatos (−) de la hélice B: Asp20 y Asp27. Así une dos hélices alejadas en la secuencia. Al fondo, la arginina 45 se une a un propionato (−) del hemo. Las distancias (2,8–3 Å) son las de un puente de hidrógeno: en un puente salino los dos tipos de interacción suelen ir juntos.'],
+  apolar:  ['select protein; backbone 0.12; select hem; spacefill on; colour cpk; select ' + MB_APOLARES + '; spacefill on; colour [xE3B341]; '
+            + 'select none; ' + MB_ORIENT + 'zoomTo 0.6 {hem or ' + MB_APOLARES + '} 260',
+            '<b>Van der Waals y efecto hidrofóbico: el bolsillo del hemo.</b> En esferas, el hemo y las cadenas laterales apolares que lo tocan, a menos de 4 Å (en amarillo: Phe43, Val68, Ala71, Leu89, Ile99, Leu104 e Ile107). Sus superficies encajan sin dejar huecos: cada contacto es una interacción de van der Waals muy débil, pero son muchas. Además, estos grupos apolares quedan en el interior, lejos del agua.'],
+  agua:    ['select protein; backbone off; cartoons on; colour cartoons [x9db7d4]; display not water or (water and within(3.2, ' + MB_POLARES + ')); '
+            + 'select water and within(3.2, ' + MB_POLARES + '); spacefill 0.45; colour cpk; '
+            + 'select (water and within(3.2, ' + MB_POLARES + ')) or (' + MB_POLARES + ' and within(3.2, water)); hbonds 0.08; colour hbonds [xB8860B]; '
+            + 'select none; ' + MB_ORIENT + 'zoomTo 0.6 {protein} 125',
+            '<b>El agua unida a la superficie.</b> Del agua que rodea a la proteína en el cristal, se muestran solo los oxígenos (esferas rojas) de las moléculas que están a menos de 3,2 Å de un N o un O de la proteína: unas 150. Cada una forma uno o más puentes de hidrógeno con la proteína (no hay hidrógenos en el modelo, así que el puente se dibuja entre el O del agua y el N u O de la proteína).']
+};
+function mbVer(modo, boton) {
+  Jmol.script(Mb, 'display all; ' + MB_BASE + MB[modo][0]);
+  document.getElementById('mbEstado').innerHTML = MB[modo][1];
+  if (boton) marcar(boton);
+}
+function mbReiniciar() {
+  Jmol.script(Mb, mbInicio);
+  mbVer('helice', document.getElementById('mbHelice'));
+}
+
+$(document).ready(function () {
+  $('#JmolDiv_Agua').html(Jmol.getAppletHtml(Agua, JmolInfo));
+  $('#JmolDiv_Ion').html(Jmol.getAppletHtml(Ion, JmolInfo));
+  $('#JmolDiv_Mb').html(Jmol.getAppletHtml(Mb, JmolInfo));
+  setTimeout(function () { aguaReiniciar(); ionReiniciar(); mbReiniciar(); }, 300);
+});
+</script>
+</head>
+<body>
+<main class="vc">
+  <p class="vc-migas"><a href="./">Visita guiada</a> › Capítulo 1</p>
+  <h1>Capítulo 1. Fundamentos: la forma de las moléculas y las fuerzas que las mantienen juntas</h1>
+  <p class="vc-entradilla">La forma de una biomolécula depende de dos cosas. Primero, de los enlaces covalentes: cuáles pueden girar y cuáles no. Después, de muchas interacciones débiles, no covalentes, entre unos átomos y otros y con el agua que los rodea. Este capítulo presenta las dos ideas, que aparecerán en todos los capítulos siguientes.</p>
+
+  <section class="vc-objetivos" aria-labelledby="obj-titulo">
+    <h2 id="obj-titulo">Al terminar este capítulo deberías saber</h2>
+    <ul>
+      <li>Distinguir un cambio de conformación (girar enlaces sencillos) de un cambio de configuración (romper enlaces).</li>
+      <li>Explicar por qué el agua es un dipolo y cuántos puentes de hidrógeno puede formar cada molécula.</li>
+      <li>Reconocer en un modelo un puente de hidrógeno, una interacción iónica y un contacto de van der Waals, y dar sus distancias típicas.</li>
+      <li>Explicar qué es el efecto hidrofóbico y por qué los grupos apolares quedan en el interior de las proteínas.</li>
+    </ul>
+  </section>
+
+  <p class="vc-texto">Recuerda: arrastra para girar los modelos y usa la rueda para acercarlos. Las líneas discontinuas doradas son puentes de hidrógeno en todos los modelos de este capítulo.</p>
+
+  <!-- Parada 1 -->
+  <section class="vc-parada" id="p1" aria-labelledby="p1-titulo">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">1</span><h2 id="p1-titulo">Conformación y configuración: girar un enlace o romperlo</h2></div>
+    <div class="vc-fila">
+      <div class="vc-texto">
+        <p>Dos moléculas con los mismos átomos y los mismos enlaces pueden tener formas distintas en el espacio. La pregunta que las distingue es <b>qué hace falta para pasar de una a otra</b>:</p>
+        <ul class="vc-lista">
+          <li>si basta con <b>girar enlaces sencillos</b>, son dos <b>conformaciones</b> de la misma molécula, que se interconvierten continuamente a temperatura ambiente;</li>
+          <li>si hay que <b>romper enlaces</b> y formarlos de nuevo, son dos <b>configuraciones</b>: compuestos distintos, que se pueden separar.</li>
+        </ul>
+        <p>Esta parada está en una página del índice, con cuatro modelos: el butano, la β-D-glucopiranosa, el gliceraldehído y el 2-buteno. Al abrirla verás arriba una barra para volver aquí.</p>
+        <a class="vc-ir" href="../Configuracion-Conformacion.htm?visita=1.1">Abrir «Configuración y conformación» <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="vc-fijate"><strong>Fíjate en…</strong>
+        <ul>
+          <li><b>Butano:</b> mueve el deslizador y observa que la molécula pasa por las conformaciones <i>anti</i>, eclipsada y <i>gauche</i> sin que se rompa ningún enlace;</li>
+          <li><b>Glucopiranosa:</b> la silla y el bote son la misma molécula; la configuración de cada carbono no cambia;</li>
+          <li><b>Gliceraldehído:</b> girar el enlace C2–C3 deja el C2 en R (D-gliceraldehído); intercambiar el H y el OH lo convierte en S (L-gliceraldehído);</li>
+          <li><b>2-buteno:</b> el doble enlace no gira; pasar de cis a trans exigiría romperlo.</li>
+        </ul>
+        <p style="margin:8px 0 0">Cuando vuelvas, piensa en esto: una proteína puede plegarse de muchas formas girando enlaces sencillos. ¿Qué la mantiene en una sola? La respuesta está en las paradas siguientes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parada 2 -->
+  <section class="vc-parada" id="p2" aria-labelledby="p2-titulo">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">2</span><h2 id="p2-titulo">El agua y el puente de hidrógeno</h2></div>
+    <div class="vc-fila">
+      <div>
+        <div id="JmolDiv_Agua" class="vc-visor"></div>
+        <div class="vc-controles">
+          <input type="button" value="Una molécula" onclick="aguaVer('molecula', this)">
+          <input type="button" id="aguaVecinas" value="Sus cuatro vecinas" onclick="aguaVer('vecinas', this)">
+          <input type="button" value="La red del hielo" onclick="aguaVer('red', this)">
+          <input type="button" value="Los canales del hielo" onclick="aguaVer('canales', this)">
+        </div>
+        <div class="vc-controles">
+          <input type="button" id="aguaRepr" value="Esferas" onclick="aguaRepr(this)">
+          <input type="button" value="Vista inicial" onclick="aguaReiniciar()">
+        </div>
+        <div class="vc-estado" id="aguaEstado"></div>
+      </div>
+      <div class="vc-texto">
+        <p>Un <b>puente de hidrógeno</b> es la atracción entre un hidrógeno unido a un átomo muy electronegativo (O o N), el <b>dador</b>, y otro O o N con un par de electrones libre, el <b>aceptor</b>. Es mucho más débil que un enlace covalente, pero también direccional: es más fuerte cuando los tres átomos están en línea.</p>
+        <p>El agua es el mejor ejemplo: cada molécula tiene dos H para dar y dos pares de electrones del O para recibir, así que puede formar <b>cuatro</b> puentes de hidrógeno. El modelo es un fragmento de hielo, donde los cuatro puentes están siempre formados y se ven con claridad. Es una estructura idealizada, generada para esta página.</p>
+        <table class="vc-tabla">
+          <tr><th>Distancia</th><th>Valor</th></tr>
+          <tr><td>Enlace covalente O–H</td><td>0,96 Å</td></tr>
+          <tr><td>Puente de hidrógeno H···O</td><td>≈ 1,8 Å</td></tr>
+          <tr><td>Entre los dos oxígenos, O···O</td><td>≈ 2,8 Å</td></tr>
+        </table>
+        <div class="vc-fijate"><strong>Fíjate en…</strong>
+          <ul>
+            <li>las dos medidas de «Sus cuatro vecinas»: el puente de hidrógeno es casi el doble de largo que el enlace covalente;</li>
+            <li>que los cuatro puentes de la molécula central apuntan a los vértices de un tetraedro;</li>
+            <li>con «Esferas», cuánto espacio vacío deja la red del hielo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parada 3 -->
+  <section class="vc-parada" id="p3" aria-labelledby="p3-titulo">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">3</span><h2 id="p3-titulo">El agua como disolvente: los iones</h2></div>
+    <div class="vc-fila">
+      <div>
+        <div id="JmolDiv_Ion" class="vc-visor"></div>
+        <div class="vc-controles">
+          <input type="button" id="ionDos" value="Los dos iones" onclick="ionVer('dos', this)">
+          <input type="button" value="Acercar el Na⁺" onclick="ionVer('na', this)">
+          <input type="button" value="Acercar el Cl⁻" onclick="ionVer('cl', this)">
+          <input type="button" value="Vista inicial" onclick="ionReiniciar()">
+        </div>
+        <div class="vc-estado" id="ionEstado"></div>
+      </div>
+      <div class="vc-texto">
+        <p>Las cargas de signo opuesto se atraen: es la <b>interacción iónica</b> (o electrostática). En un cristal de NaCl es muy fuerte. Sin embargo, la sal se disuelve en agua porque cada ion queda rodeado por moléculas de agua que orientan hacia él su extremo de carga opuesta: se <b>hidrata</b>.</p>
+        <p>Por eso, en el agua, la atracción entre dos cargas es unas 80 veces más débil que en el vacío (la constante dieléctrica del agua es ≈ 80). Lo mismo ocurre con los grupos cargados de las proteínas y los ácidos nucleicos: en la superficie, rodeados de agua, interaccionan débilmente entre sí; en el interior, lejos del agua, mucho más.</p>
+        <p style="color:var(--muted); font-size:.95em">Modelo esquemático: seis moléculas de agua alrededor de cada ion, con las distancias habituales de la primera capa de hidratación.</p>
+        <div class="vc-fijate"><strong>Fíjate en…</strong>
+          <ul>
+            <li>hacia dónde apunta el agua en cada ion: el O hacia el Na<sup>+</sup>, un H hacia el Cl<sup>−</sup>;</li>
+            <li>la diferencia de tamaño de los dos iones, que tienen el mismo número de cargas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parada 4 -->
+  <section class="vc-parada" id="p4" aria-labelledby="p4-titulo">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">4</span><h2 id="p4-titulo">Las interacciones no covalentes en una proteína: la mioglobina</h2></div>
+    <div class="vc-fila">
+      <div>
+        <div id="JmolDiv_Mb" class="vc-visor"></div>
+        <div class="vc-controles">
+          <input type="button" id="mbHelice" value="Puentes de H en una hélice" onclick="mbVer('helice', this)">
+          <input type="button" value="Un puente de H con el O₂" onclick="mbVer('oxigeno', this)">
+          <input type="button" value="Puentes salinos" onclick="mbVer('salino', this)">
+        </div>
+        <div class="vc-controles">
+          <input type="button" value="Van der Waals y efecto hidrofóbico" onclick="mbVer('apolar', this)">
+          <input type="button" value="El agua de la superficie" onclick="mbVer('agua', this)">
+          <input type="button" value="Vista inicial" onclick="mbReiniciar()">
+        </div>
+        <div class="vc-estado" id="mbEstado"></div>
+      </div>
+      <div class="vc-texto">
+        <p>Es la misma mioglobina del capítulo 0. Su cadena podría adoptar un número enorme de conformaciones girando enlaces sencillos; se mantiene en una sola porque esa forma permite el mayor número de interacciones no covalentes favorables. Cada botón muestra un tipo.</p>
+        <table class="vc-tabla">
+          <tr><th>Interacción</th><th>Entre</th><th>Distancia típica</th><th>Energía aprox.</th></tr>
+          <tr><td>Enlace covalente (referencia)</td><td>átomos que comparten electrones</td><td>1–1,5 Å</td><td>350–460 kJ/mol</td></tr>
+          <tr><td>Puente de hidrógeno</td><td>N–H u O–H y un N u O</td><td>2,7–3,1 Å entre N y O</td><td>10–30 kJ/mol</td></tr>
+          <tr><td>Iónica (puente salino)</td><td>grupos con cargas opuestas</td><td>2,8–4 Å</td><td>variable; muy debilitada por el agua</td></tr>
+          <tr><td>Van der Waals</td><td>cualquier par de átomos en contacto</td><td>3,5–4 Å entre centros</td><td>0,4–4 kJ/mol</td></tr>
+        </table>
+        <p>El <b>efecto hidrofóbico</b> no es una atracción entre los grupos apolares. Al juntarse y apartarse del agua, liberan las moléculas de agua que tenían que ordenarse a su alrededor, y la entropía del agua aumenta. Es la principal fuerza que pliega las proteínas y forma las membranas.</p>
+        <div class="vc-fijate"><strong>Fíjate en…</strong>
+          <ul>
+            <li>que las interacciones no covalentes son de 10 a más de 100 veces más débiles que un enlace covalente; a 37 °C la energía térmica es de unos 2,6 kJ/mol, así que se rompen y se forman continuamente. Lo que da estabilidad es su número;</li>
+            <li>que los grupos cargados (Asp, Arg) están en la superficie y los apolares (Leu, Ile, Phe, Val), en el interior;</li>
+            <li>que la proteína está rodeada de agua unida a su superficie: el agua forma parte de la estructura.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Excursiones opcionales -->
+  <section class="vc-excursiones" id="excursiones" aria-labelledby="exc-titulo">
+    <h2 id="exc-titulo">Excursiones opcionales</h2>
+    <p>Para quien quiera profundizar antes de seguir. No son necesarias para el test.</p>
+    <ul>
+      <li><a href="../proteinas/hidrofobicidad.htm?visita=1.e">Hidrofobicidad</a>: los aminoácidos apolares en el interior de una proteína y los polares en la superficie.</li>
+      <li><a href="../Fosfolipidos.htm?visita=1.e">Fosfolípidos</a>: el efecto hidrofóbico a gran escala, en una membrana.</li>
+      <li><a href="../ParesBases.htm?visita=1.e">Apareamiento de bases</a>: los puentes de hidrógeno que emparejan las bases del DNA (capítulo 5).</li>
+    </ul>
+  </section>
+
+  <!-- Comprueba -->
+  <section class="vc-test" aria-labelledby="test">
+    <div class="vc-parada-cab"><span class="vc-parada-num" aria-hidden="true">✓</span><h2 id="test">Comprueba lo que has aprendido</h2></div>
+    <p class="vc-texto" style="margin-top:8px">Elige una respuesta en cada pregunta. Si fallas, la explicación te dice dónde está el error.</p>
+
+    <div class="vc-pregunta">
+      <p>1. El butano pasa de la conformación <i>anti</i> a la <i>gauche</i>. ¿Qué ha ocurrido?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Ha girado un enlace sencillo" data-ok="1" onclick="responder(this, true, 'Es un cambio de conformación: gira el enlace C2–C3 y no se rompe ningún enlace. Es la misma molécula.')">
+        <input type="button" value="Se ha roto y formado un enlace" onclick="responder(this, false, 'Para pasar de anti a gauche basta con girar el enlace C2–C3; no se rompe nada. Romper enlaces cambiaría la configuración, no la conformación.')">
+        <input type="button" value="Se ha formado otro compuesto" onclick="responder(this, false, 'Anti y gauche son conformaciones de la misma molécula: se interconvierten continuamente girando el enlace C2–C3 y no se pueden aislar.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>2. El ácido oleico tiene un doble enlace cis y el ácido elaídico, el mismo doble enlace en trans. ¿Qué son?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Dos conformaciones de la misma molécula" onclick="responder(this, false, 'El doble enlace no puede girar: para pasar de cis a trans hay que romperlo. Son dos configuraciones, es decir, dos compuestos distintos.')">
+        <input type="button" value="Dos configuraciones: compuestos distintos" data-ok="1" onclick="responder(this, true, 'Para pasar de cis a trans habría que romper el doble enlace. Son isómeros que se pueden separar y tienen propiedades distintas.')">
+        <input type="button" value="La misma molécula vista desde otro lado" onclick="responder(this, false, 'Girar la molécula entera no cambia cis por trans: los dos sustituyentes siguen al mismo lado o en lados opuestos del doble enlace. Son dos configuraciones.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>3. ¿Cuántos puentes de hidrógeno puede formar como máximo una molécula de agua?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Dos" onclick="responder(this, false, 'Dos son los que da con sus hidrógenos. Además puede recibir otros dos en los pares de electrones libres del oxígeno: cuatro en total.')">
+        <input type="button" value="Cuatro" data-ok="1" onclick="responder(this, true, 'Da dos con sus hidrógenos y recibe dos en el oxígeno, hacia los vértices de un tetraedro, como en el hielo.')">
+        <input type="button" value="Seis" onclick="responder(this, false, 'Seis es el número de moléculas de agua alrededor de un ion como el Na⁺. Una molécula de agua da dos puentes de hidrógeno y recibe dos: cuatro.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>4. Mides en un modelo la distancia entre un H del agua y el O de la molécula vecina, hacia el que apunta. ¿Qué valor esperas?</p>
+      <div class="vc-opciones">
+        <input type="button" value="≈ 0,96 Å" onclick="responder(this, false, '0,96 Å es la longitud del enlace covalente O–H dentro de la misma molécula. El puente de hidrógeno H···O es casi el doble: unos 1,8 Å.')">
+        <input type="button" value="≈ 1,8 Å" data-ok="1" onclick="responder(this, true, 'Es la distancia típica de un puente de hidrógeno H···O; la distancia entre los dos oxígenos es de unos 2,8 Å.')">
+        <input type="button" value="≈ 4 Å" onclick="responder(this, false, 'A 4 Å ya no hay puente de hidrógeno; es la distancia de un contacto de van der Waals entre átomos de carbono. El puente H···O mide unos 1,8 Å.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>5. Alrededor de un ion Na<sup>+</sup> disuelto, ¿cómo se orientan las moléculas de agua?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Con el oxígeno hacia el ion" data-ok="1" onclick="responder(this, true, 'El oxígeno lleva la carga parcial negativa (δ−) y es atraído por la carga positiva del Na⁺.')">
+        <input type="button" value="Con un hidrógeno hacia el ion" onclick="responder(this, false, 'Así se orientan alrededor del Cl⁻, que es negativo. El Na⁺ es positivo y atrae el oxígeno, que lleva la carga parcial negativa.')">
+        <input type="button" value="Al azar" onclick="responder(this, false, 'La carga del ion orienta los dipolos del agua: hacia el Na⁺ apuntan los oxígenos (δ−). Esa orientación es la hidratación del ion.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>6. En la superficie de una proteína, el NH<sub>3</sub><sup>+</sup> de una lisina está a 2,8 Å del COO<sup>−</sup> de un glutamato. ¿Qué interacción es?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Un enlace covalente" onclick="responder(this, false, 'Un enlace covalente N–O mediría alrededor de 1,4 Å, y no se forma entre estas cadenas laterales. A 2,8 Å, entre dos grupos con cargas opuestas, es un puente salino.')">
+        <input type="button" value="Un puente salino (interacción iónica)" data-ok="1" onclick="responder(this, true, 'Son dos grupos con cargas opuestas. A 2,8 Å, además, el N–H de la lisina da un puente de hidrógeno al O del glutamato: en un puente salino suelen ir juntas las dos interacciones.')">
+        <input type="button" value="Una interacción hidrofóbica" onclick="responder(this, false, 'Los dos grupos están cargados: son lo contrario de apolares. Es un puente salino, una interacción iónica.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <div class="vc-pregunta">
+      <p>7. ¿Por qué las cadenas laterales de Leu, Ile, Val y Phe tienden a quedar en el interior de una proteína?</p>
+      <div class="vc-opciones">
+        <input type="button" value="Porque forman puentes de hidrógeno entre sí" onclick="responder(this, false, 'Sus cadenas laterales son hidrocarburos: no tienen N–H ni O–H para formar puentes de hidrógeno. Quedan dentro por el efecto hidrofóbico.')">
+        <input type="button" value="Porque así se libera agua ordenada y aumenta su entropía" data-ok="1" onclick="responder(this, true, 'Es el efecto hidrofóbico: el agua que rodea a un grupo apolar tiene que ordenarse; al agruparse en el interior, esa agua queda libre. Una vez juntas, las cadenas se estabilizan además con contactos de van der Waals.')">
+        <input type="button" value="Porque se atraen por sus cargas" onclick="responder(this, false, 'Estas cadenas laterales no tienen carga. Quedan dentro por el efecto hidrofóbico, que depende del agua que las rodea.')">
+      </div>
+      <div class="vc-respuesta" hidden></div>
+    </div>
+
+    <p class="vc-marcador" id="marcador" aria-live="polite"></p>
+    <div class="vc-controles"><input type="button" value="Repetir el test" onclick="repetirTest()"></div>
+  </section>
+
+  <nav class="vc-nav" aria-label="Capítulos">
+    <a href="capitulo0.htm">← Capítulo 0 · Cómo leer un modelo 3D</a>
+    <a href="./">Mapa de la visita</a>
+    <span>Capítulo 2 · Las piezas de las biomoléculas (en construcción)</span>
+  </nav>
+</main>
+</body>
+</html>

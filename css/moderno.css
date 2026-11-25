@@ -508,4 +508,16 @@ html.con-marco body { padding-left: 228px !important; }
     max-height: calc(100vh - 64px);
   }
 }
-@media print { .raton-boton, .raton-ayuda, .visita-boton { display: none !important; } }
+/* Barra para volver a la visita guiada (páginas abiertas desde un capítulo) */
+.visita-vuelta {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px;
+  margin: 0 0 14px; padding: 8px 14px; max-width: 1180px; box-sizing: border-box;
+  background: var(--accent-soft, #e3eff5); border: 1px solid var(--accent, #1d6a8c); border-radius: 10px;
+  font-size: .95em; color: var(--accent-strong, #134e69);
+}
+.visita-vuelta span { display: inline; }
+.visita-vuelta svg { width: 18px; height: 18px; vertical-align: -4px; margin-right: 4px; }
+.visita-vuelta a { padding: 4px 12px; border-radius: 999px; background: var(--accent, #1d6a8c); color: #fff; font-weight: 600; }
+.visita-vuelta a:hover { background: var(--accent-strong, #134e69); text-decoration: none; }
+@media print { .visita-vuelta, .raton-boton, .raton-ayuda, .visita-boton { display: none !important; } }

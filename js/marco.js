@@ -261,6 +261,10 @@
     // Botón de la visita guiada (en todas las páginas)
     montarBotonVisita(botones, boton);
 
+    // Si se llega desde un capítulo de la visita (?visita=1 o ?visita=1.2),
+    // barra para volver a él
+    montarVueltaVisita(body, primero);
+
     // Ayuda del ratón (solo en las páginas con modelos JSmol)
     if (document.querySelector('script[src*="jsmol/"]')) montarAyudaRaton(body, botones, boton);
 
@@ -304,6 +308,32 @@
     colocar();
     if (estrecha.addEventListener) estrecha.addEventListener("change", colocar);
     else if (estrecha.addListener) estrecha.addListener(colocar);
+  }
+
+  // ---------------------------------------------------------------
+  // Vuelta a la visita: los capítulos enlazan las páginas del índice con
+  // ?visita=<capítulo>.<parada> (por ejemplo, ?visita=1.1), o ?visita=<capítulo>.e
+  // para las excursiones opcionales. Esas páginas muestran arriba una barra que
+  // devuelve a ese punto del capítulo. Sin el parámetro, la página se ve igual que
+  // desde el índice.
+  // ---------------------------------------------------------------
+  function montarVueltaVisita(body, antesDe) {
+    var m = /[?&]visita=(\d+)(?:\.(\d+|e))?/.exec(location.search);
+    if (!m) return;
+    var cap = m[1], parada = m[2];
+    var barra = document.createElement("div");
+    barra.className = "visita-vuelta";
+    barra.setAttribute("role", "navigation");
+    barra.setAttribute("aria-label", "Visita guiada");
+    var texto = document.createElement("span");
+    texto.innerHTML = ICONO_VISITA + " Estás en la <b>visita guiada</b> · capítulo " + cap +
+      (parada === "e" ? ", excursión opcional" : parada ? ", parada " + parada : "");
+    var volver = document.createElement("a");
+    volver.href = RAIZ + "visita/capitulo" + cap + ".htm" + (parada === "e" ? "#excursiones" : parada ? "#p" + parada : "");
+    volver.textContent = "← Volver al capítulo " + cap;
+    barra.appendChild(texto);
+    barra.appendChild(volver);
+    body.insertBefore(barra, antesDe);
   }
 
   // ---------------------------------------------------------------

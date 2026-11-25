@@ -139,14 +139,37 @@ function repHidrogenos(boton) {
 function repMedir() {
   Jmol.script(Rep, 'measure delete; measure {atomno=14} {atomno=15}; select atomno=14 or atomno=15; halos on; delay 1.5; halos off; select all');
 }
+// Medida con el ratón: cada clic en un átomo llega a repPicado (pickCallback).
+// Con dos átomos se dibuja la medida con «measure», que queda fija en el modelo;
+// se pueden hacer varias seguidas.
+var repModoMedida = false, repPrimero = null;
 function repMedirClic() {
-  Jmol.script(Rep, 'measure delete; set picking distance');
-  document.getElementById('repEstado').innerHTML = '<b>Modo medida.</b> Haz clic en un átomo y después en otro: aparecerá la distancia entre sus centros, en angstroms (Å). Pulsa «Borrar medidas» para salir.';
+  repModoMedida = true; repPrimero = null;
+  Jmol.script(Rep, 'set picking ident; set pickCallback "repPicado"; select none; halos off; select all');
+  document.getElementById('repEstado').innerHTML = '<b>Modo medida.</b> Haz clic en un átomo y después en otro: la distancia entre sus centros, en angstroms (Å), queda dibujada en el modelo. Puedes hacer varias medidas seguidas; pulsa «Borrar medidas» para quitarlas y salir del modo medida.';
+}
+function repPicado(app, info, indice) {
+  if (!repModoMedida) return;
+  indice = parseInt(indice, 10);
+  if (isNaN(indice)) return;
+  if (repPrimero === null || repPrimero === indice) {
+    repPrimero = indice;
+    Jmol.script(Rep, 'select atomIndex=' + indice + '; halos on; select all');
+    document.getElementById('repEstado').innerHTML = '<b>Modo medida.</b> Primer átomo: ' + info.split('#')[0].trim() + '. Haz clic en el segundo.';
+    return;
+  }
+  var a = repPrimero; repPrimero = null;
+  Jmol.script(Rep, 'select atomIndex=' + a + '; halos off; select all; measure {atomIndex=' + a + '} {atomIndex=' + indice + '}');
+  var d = Jmol.evaluateVar(Rep, '{atomIndex=' + a + '}.distance({atomIndex=' + indice + '})');
+  document.getElementById('repEstado').innerHTML = '<b>Modo medida.</b> Distancia: <b>' + (+d).toFixed(2).replace('.', ',') + ' Å</b> = ' + (d / 10).toFixed(3).replace('.', ',') + ' nm. Haz clic en otros dos átomos para medir de nuevo, o pulsa «Borrar medidas».';
 }
 function repBorrar() {
-  Jmol.script(Rep, 'measure delete; set picking ident');
+  repModoMedida = false; repPrimero = null;
+  Jmol.script(Rep, 'measure delete; select all; halos off; set picking ident');
+  document.getElementById('repEstado').innerHTML = 'Medidas borradas.';
 }
 function repReiniciar() {
+  repModoMedida = false; repPrimero = null;
   repH = true;
   document.getElementById('botonH').value = 'Ocultar hidrógenos';
   Jmol.script(Rep, repInicio + 'display all; set picking ident; measure delete');

@@ -53,7 +53,7 @@
 /* Composición cuadrada de los tres recuadros: el texto arriba y, debajo, el visor
    y el uso del ratón, con la misma altura.
    Ancho total = alto total = --lado. */
-body.portada table.cuadro-portada { --lado: 756px; --fila: 422px; width: var(--lado); max-width: none; }
+body.portada table.cuadro-portada { --lado: 840px; --fila: 422px; width: var(--lado); max-width: none; }
 body.portada table.cuadro-portada > tbody > tr:first-child > td { box-sizing: border-box; height: calc(var(--lado) - 18px - var(--fila)); }
 body.portada .celda-visor form { margin: 0; }
 /* En pantallas estrechas, sin medidas fijas */
@@ -62,6 +62,10 @@ body.portada .celda-visor form { margin: 0; }
 	body.portada table.cuadro-portada > tbody > tr:first-child > td { height: auto; }
 	body.portada .ayuda-raton { height: auto; width: 300px; }
 }
+/* Explicación de la visita guiada, con una copia del botón que lleva a ella */
+.visita-portada { margin: 14px 0 12px; padding: 10px 14px; background: var(--accent-soft, #e3eff5); border-left: 3px solid var(--accent, #1d6a8c); border-radius: 0 8px 8px 0; line-height: 1.5; }
+.visita-portada .visita-muestra { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin: 0 4px; vertical-align: middle; border-radius: 50%; border: 1px solid var(--accent, #1d6a8c); background: #fff; color: var(--accent-strong, #134e69); text-decoration: none; }
+.visita-portada .visita-muestra:hover { background: var(--accent-soft, #e3eff5); }
 .descripcion-sitio { margin: 0 0 12px; font-size: 1.05rem; color: var(--title, #13324a); }
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -81,7 +85,10 @@ body.portada .celda-visor form { margin: 0; }
 		<i><a href="mailto:jrlopez@uva.es">Jos&eacute; Ram&oacute;n L&oacute;pez L&oacute;pez</a></i>,
 		<br>profesor de Bioqu&iacute;mica y Biolog&iacute;a Molecular de la Universidad de Valladolid.
 		<br>
-		<br>Deber&iacute;as ver una mol&eacute;cula de hemoglobina dando vueltas.
+		<p class="visita-portada"><b>Visita guiada.</b> Si es la primera vez que entras, empieza por la visita guiada: un recorrido ordenado por la web, de los conceptos elementales a las macroestructuras, con objetivos, qu&eacute; observar en cada modelo y un test en cada cap&iacute;tulo. Se abre con este bot&oacute;n, que est&aacute; en todas las p&aacute;ginas junto al escudo de la UVa:
+		<a class="raton-muestra visita-muestra" href="visita/" title="Visita guiada" aria-label="Visita guiada"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 5.2v13.6a.9.9 0 0 0 1.4.75l10.2-6.8a.9.9 0 0 0 0-1.5L9.8 4.45a.9.9 0 0 0-1.4.75z" fill="currentColor"/></svg></a>
+		El &iacute;ndice lateral sigue disponible para ir directamente a cualquier p&aacute;gina.</p>
+		Deber&iacute;as ver una mol&eacute;cula de hemoglobina dando vueltas.
 		<br>
 		<br>Estas p&aacute;ginas utilizan JSmol (<a href="http://jmol.sourceforge.net/">http://jmol.sourceforge.net/</a>).
 		<br><img src="images/JSmol_logo.png" width="116" height="40" alt="JSmol" border="0"/>

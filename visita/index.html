@@ -44,6 +44,7 @@
   display: grid;
   grid-template-columns: 52px 1fr;
   grid-template-rows: auto auto 1fr;
+  min-height: 0;
   align-items: start;
   gap: 4px 14px;
   padding: 16px 18px 16px 16px;
@@ -83,7 +84,6 @@
 .vg-capitulo.en-construccion h2 { color: #3d5466; }
 .en-construccion .vg-estado { background: #f3efe3; color: #6b5a24; border: 1px solid #e2d8b8; }
 /* Capítulo abierto: toda la tarjeta enlaza al capítulo */
-.vg-capitulo.abierto .vg-estado { background: var(--accent); color: #fff; }
 .vg-capitulo.abierto a { color: var(--title); }
 .vg-capitulo.abierto a::after { content: ""; position: absolute; inset: 0; }
 .vg-capitulo.abierto:hover { border-color: var(--accent); }
@@ -112,7 +112,6 @@
       <span class="vg-num" aria-hidden="true">0</span>
       <h2><a href="capitulo0.htm">Cómo leer un modelo 3D</a></h2>
       <p>Representaciones (esferas, varillas, cintas), colores por elemento y escala: de los angstroms a los nanómetros.</p>
-      <span class="vg-estado">Disponible</span>
     </li>
     <li class="vg-capitulo en-construccion">
       <span class="vg-num" aria-hidden="true">1</span>

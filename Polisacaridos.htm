@@ -35,6 +35,8 @@ table.cc-resumen th { background:#e8eef3; }
 .ps-enlace { color:#c06a10; font-weight:bold; }
 .ps-red { color:#b0258c; font-weight:bold; }
 .ps-b { color:#4a6fb5; font-weight:bold; }
+.referencias { font-size:0.9em; max-width:1000px; }
+.referencias li { margin-bottom:4px; }
 @media (max-width:900px) {
   .cc-fila { grid-template-columns:1fr; }
   .cc-visor { height:290px; }
@@ -291,7 +293,10 @@ entre anillos es O3&ndash;H&middot;&middot;&middot;O5, como en la celobiosa; en 
 Los dos modelos están a la misma escala. La <b>amilosa</b>, la fracción lineal del almidón, repite el enlace &alpha;(1&rarr;4): cada
 glucosa gira respecto a la anterior y la cadena se enrolla. Aquí se muestra la hélice V, levógira, con seis glucosas por vuelta y un paso
 de unos 8&nbsp;&Aring; (<a href="https://doi.org/10.1073/pnas.96.8.4246">Gessler et al., 1999</a>); visto a lo largo del eje, deja un canal
-central en el que se alojan el yodo o los lípidos. La <b>celulosa</b> repite el enlace &beta;(1&rarr;4): cada glucosa está girada
+central en el que se alojan los lípidos o el yodo: en el lugol (yodo disuelto en yoduro potásico), el yodo forma iones
+triyoduro (I₃⁻) y pentayoduro (I₅⁻) que se introducen en el canal y dan el
+color azul oscuro de la reacción del almidón con el yodo (<a href="https://biomodel.uah.es/model5/cho/almidon.htm">Complejo del yodo
+con almidón, Biomodel, Universidad de Alcalá</a>). La <b>celulosa</b> repite el enlace &beta;(1&rarr;4): cada glucosa está girada
 180&deg; respecto a la anterior y la cadena es recta y extendida, estabilizada por puentes de hidrógeno O3&ndash;H&middot;&middot;&middot;O5
 entre glucosas vecinas.
 </p>
@@ -353,6 +358,19 @@ cadena y dos láminas de celulosa I&beta; y un fragmento ramificado de glucógen
 construyeron con las coordenadas ideales del <a href="https://www.wwpdb.org/data/ccd">Chemical Component Dictionary</a> del PDB; las
 torsiones de los disacáridos son las de sus cristales optimizados con PM7 en openmopac.net (<a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Maltose_monohydrate__MALTOS11__Jmol.html">maltosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Cellobiose__CELLOB04__Jmol.html">celobiosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/alpha-Lactose_monohydrate__LACTOS10__Jmol.html">lactosa</a> y <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/Sucrose__SUCROS01__jmol.html">sacarosa</a>). Los OH de los puentes de hidrógeno entre anillos se orientaron como en esos cristales, y la sacarosa usa directamente las coordenadas del suyo. En la apertura del anillo, la forma abierta se optimizó con MMFF (RDKit) y los pasos intermedios son interpolados, solo ilustrativos. La ramificación del glucógeno se relajó con el campo de fuerzas MMFF.
 </p>
+
+<h3>Referencias</h3>
+<ul class="referencias">
+  <li>Gessler K, Usón I, Takaha T, Krauss N, Smith SM, Okada S, Sheldrick GM, Saenger W. (1999). V-Amylose at atomic resolution: X-ray structure of a cycloamylose with 26 glucose residues (cyclomaltohexaicosaose). <i>Proc Natl Acad Sci USA</i> 96: 4246–4251. <a href="https://doi.org/10.1073/pnas.96.8.4246">https://doi.org/10.1073/pnas.96.8.4246</a></li>
+  <li>Nishiyama Y, Langan P, Chanzy H. (2002). Crystal structure and hydrogen-bonding system in cellulose I&beta; from synchrotron X-ray and neutron fiber diffraction. <i>J Am Chem Soc</i> 124: 9074–9082. <a href="https://doi.org/10.1021/ja0257319">https://doi.org/10.1021/ja0257319</a></li>
+  <li>Westbrook JD, Shao C, Feng Z, Zhuravleva M, Velankar S, Young J. (2015). The chemical component dictionary: complete descriptions of constituent molecules in experimentally determined 3D macromolecules in the Protein Data Bank. <i>Bioinformatics</i> 31: 1274–1278. <a href="https://doi.org/10.1093/bioinformatics/btu789">https://doi.org/10.1093/bioinformatics/btu789</a></li>
+  <li>Stewart JJP. (2013). Optimization of parameters for semiempirical methods VI: more modifications to the NDDO approximations and re-optimization of parameters. <i>J Mol Model</i> 19: 1–32. <a href="https://doi.org/10.1007/s00894-012-1667-x">https://doi.org/10.1007/s00894-012-1667-x</a></li>
+  <li>Halgren TA. (1996). Merck molecular force field. I. Basis, form, scope, parameterization, and performance of MMFF94. <i>J Comput Chem</i> 17: 490–519. <a href="https://doi.org/10.1002/(SICI)1096-987X(199604)17:5/6%3C490::AID-JCC1%3E3.0.CO;2-P">https://doi.org/10.1002/(SICI)1096-987X(199604)17:5/6&lt;490::AID-JCC1&gt;3.0.CO;2-P</a></li>
+  <li>Estructuras cristalinas de los disacáridos optimizadas con PM7: openmopac.net, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Maltose_monohydrate__MALTOS11__Jmol.html">&beta;-maltosa monohidrato (MALTOS11)</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Cellobiose__CELLOB04__Jmol.html">&beta;-celobiosa (CELLOB04)</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/alpha-Lactose_monohydrate__LACTOS10__Jmol.html">&alpha;-lactosa monohidrato (LACTOS10)</a> y <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/Sucrose__SUCROS01__jmol.html">sacarosa (SUCROS01)</a>.</li>
+  <li>RDKit: Open-source cheminformatics. <a href="https://www.rdkit.org">https://www.rdkit.org</a></li>
+  <li>Oregon State University. BB 450: Glycogen biosynthesis; glycogen breakdown. <a href="https://courses.ecampus.oregonstate.edu/bb450/lecture/glycogennotes.html">https://courses.ecampus.oregonstate.edu/bb450/lecture/glycogennotes.html</a></li>
+  <li>Herráez A. Complejo del yodo con almidón. Biomodel, Universidad de Alcalá. <a href="https://biomodel.uah.es/model5/cho/almidon.htm">https://biomodel.uah.es/model5/cho/almidon.htm</a></li>
+</ul>
 </font>
 </body>
 </html>

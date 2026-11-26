@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css?v=20261125.2">
+<script src="js/marco.js?v=20261126.1"></script>
+
+<title>Formas cíclicas de los monosacáridos | Atlas de estructuras</title>
+<meta name="description" content="Modelos 3D interactivos del cierre del anillo de la D-glucosa, los anómeros alfa y beta, las furanosas de fructosa, ribosa y desoxirribosa, y su proyección de Haworth.">
+<link rel="canonical" href="https://biomodels.es/FormasCiclicas.htm">
+<meta property="og:title" content="Formas cíclicas de los monosacáridos">
+<meta property="og:description" content="Modelos 3D interactivos del cierre del anillo de la D-glucosa, los anómeros alfa y beta, las furanosas de fructosa, ribosa y desoxirribosa, y su proyección de Haworth.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/FormasCiclicas.htm">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="./jsmol/JSmol.min.js?v=20261113" type="text/javascript"></script>
+<style>
+.cc-concepto { margin:0 0 4px; font-size:1.45rem; color:var(--title); }
+.cc-fila { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:22px; margin:0 0 10px; max-width:1180px; }
+.cc-celda h2 { margin:0 0 6px; font-size:1.2rem; }
+.cc-visor { width:100%; height:300px; }
+.cc-controles { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:8px 0; max-width:1180px; }
+.cc-controles input[type="button"] { margin:0 !important; }
+.cc-controles label { white-space:nowrap; }
+.cc-estado { border:1px solid #c9d3dc; background:#fff; padding:6px 10px; margin:8px 0; font-size:.95em; line-height:1.5; }
+.cc-texto { max-width:1180px; margin:6px 0 28px; }
+.cc-texto p { margin:6px 0; }
+.fc-haworth { display:block; width:100%; max-width:300px; height:auto; margin:6px auto 0; }
+.fc-reglas { display:flex; flex-wrap:wrap; gap:22px; align-items:flex-start; max-width:1180px; margin:0 0 20px; }
+.fc-reglas figure { margin:0; text-align:center; font-size:.9em; }
+.fc-reglas figure img { display:block; }
+table.cc-resumen { border-collapse:collapse; margin:6px 0 16px; max-width:760px; }
+table.cc-resumen th, table.cc-resumen td { border:1px solid #9aa7b2; padding:5px 9px; text-align:left; vertical-align:top; }
+table.cc-resumen th { background:#e8eef3; }
+.fc-anom { color:#b0258c; font-weight:bold; }
+.fc-c { color:#c06a10; font-weight:bold; }
+@media (max-width:900px) {
+  .cc-fila { grid-template-columns:1fr; }
+  .cc-visor { height:280px; }
+}
+</style>
+<script type="text/javascript">
+// Los visores se crean con su nombre como cadena; JSmol los guarda en window[nombre].
+function A(id) { return window[id]; }
+var JmolInfo = {
+	width:'100%',
+	height:'100%',
+	color:'#F0F8FF',
+	j2sPath:'./jsmol/j2s',
+	serverURL:'./jsmol/php/jsmol.php',
+	use:'html5'
+};
+var DIR = './pdb/glucidos/ciclicas/';
+var NARANJA = '[230,140,40]', MAGENTA = '[176,37,140]';
+// Orientación: todos los modelos tienen el plano medio del anillo en el plano xz
+// (y hacia arriba, observador en +z), el carbono anomérico a la derecha y el O
+// del anillo al fondo. "reset" da el anillo de perfil; con "rotate x 30" se ve
+// como en la proyección de Haworth.
+var VISTA_HAWORTH = 'reset; rotate x 30;';
+var VISTA_PERFIL = 'reset;';
+var VISTA_SUPERIOR = 'reset; rotate x 90;';
+var ESTILO = 'spacefill 22%; wireframe 0.15; colour cpk; set rotationRadius 5.6; font echo 16 sansserif bold; color echo [40,40,40]; font label 14 sansserif bold; color label [40,40,40]; set labelOffset 6 6;';
+
+// ---------------------------------------------------------------
+// 1. Cierre del anillo. Cada .sdf tiene 12 modelos: el 1 es la cadena abierta
+// (C1···O5 = 2,9 Å) y el 12 el anillo; los intermedios están interpolados.
+// Átomos: C1..C6 = 1..6, O1..O6 = 7..12 (O1: O del carbonilo, luego OH anomérico).
+// ---------------------------------------------------------------
+var CIC = [
+	{ id:'CicA', fich:'ciclacion_alfa.sdf', anillo:'&alpha;-D-glucopiranosa', est:'cicAestado' },
+	{ id:'CicB', fich:'ciclacion_beta.sdf', anillo:'&beta;-D-glucopiranosa', est:'cicBestado' }
+];
+var cicTimer = null;
+function cicInicio(v) {
+	return 'load ' + DIR + v.fich + '; ' + ESTILO
+		+ ' select atomno=1; colour atoms ' + NARANJA + '; select atomno=7; colour atoms ' + MAGENTA + ';'
+		+ ' select atomno=1; label "C1"; select atomno=11; label "O5"; select *;'
+		+ VISTA_HAWORTH + ' zoom 100; anim off; frame 1.1;';
+}
+function cicEstado(abierta) {
+	for (var i = 0; i < CIC.length; i++) {
+		var v = CIC[i];
+		Jmol.script(A(v.id), 'set echo txtE 4% 92%; echo "' + (abierta ? 'Cadena abierta' : (i ? 'beta' : 'alfa') + '-D-glucopiranosa') + '"');
+		document.getElementById(v.est).innerHTML = abierta ? 'D-glucosa, cadena abierta' : v.anillo;
+	}
+}
+function cicAbrir() {
+	if (cicTimer) { clearTimeout(cicTimer); cicTimer = null; }
+	for (var i = 0; i < CIC.length; i++) Jmol.script(A(CIC[i].id), 'anim off; frame 1.1');
+	cicEstado(true);
+}
+function cicCerrar() {
+	if (cicTimer) clearTimeout(cicTimer);
+	for (var i = 0; i < CIC.length; i++) {
+		Jmol.script(A(CIC[i].id), 'set echo txtE 4% 92%; echo "Cierre del anillo"; anim off; frame 1.1; anim mode once; anim fps 6; frame range 1.1 1.12; anim on');
+		document.getElementById(CIC[i].est).innerHTML = 'cierre del anillo (animación)';
+	}
+	cicTimer = setTimeout(function(){ cicTimer = null; cicEstado(false); }, 2400);
+}
+function cicAnillo() {
+	if (cicTimer) { clearTimeout(cicTimer); cicTimer = null; }
+	for (var i = 0; i < CIC.length; i++) Jmol.script(A(CIC[i].id), 'anim off; frame 1.12');
+	cicEstado(false);
+}
+function cicVista(s) { for (var i = 0; i < CIC.length; i++) Jmol.script(A(CIC[i].id), s); }
+function cicReiniciar() {
+	for (var i = 0; i < CIC.length; i++) Jmol.script(A(CIC[i].id), cicInicio(CIC[i]));
+	cicEstado(true);
+}
+
+// ---------------------------------------------------------------
+// 2 y 3. Anillos. ano = carbono anomérico; oano = su O.
+// ---------------------------------------------------------------
+var ANILLOS = {
+	glc: [ { id:'GlcA', fich:'alfa-D-glucopiranosa.pdb.gz', ano:'C1', oano:'O1', txt:'alfa-D-glucopiranosa' },
+	       { id:'GlcB', fich:'beta-D-glucopiranosa.pdb.gz', ano:'C1', oano:'O1', txt:'beta-D-glucopiranosa' } ],
+	fru: [ { id:'FruA', fich:'alfa-D-fructofuranosa.pdb.gz', ano:'C2', oano:'O2', txt:'alfa-D-fructofuranosa' },
+	       { id:'FruB', fich:'beta-D-fructofuranosa.pdb.gz', ano:'C2', oano:'O2', txt:'beta-D-fructofuranosa' } ],
+	rib: [ { id:'Rib', fich:'beta-D-ribofuranosa.pdb.gz', ano:'C1', oano:'O1', txt:'beta-D-ribofuranosa' },
+	       { id:'dRib', fich:'2-desoxi-beta-D-ribofuranosa.pdb.gz', ano:'C1', oano:'O1', txt:'2-desoxi-beta-D-ribofuranosa' } ]
+};
+function anilloInicio(v) {
+	return 'load ' + DIR + v.fich + '; ' + ESTILO
+		+ ' select atomName="' + v.ano + '"; colour atoms ' + NARANJA + ';'
+		+ ' select atomName="' + v.oano + '"; colour atoms ' + MAGENTA + '; select *;'
+		+ VISTA_HAWORTH + ' zoom 100; set echo txtE 4% 92%; echo "' + v.txt + '";';
+}
+function filaVista(f, s) { var L = ANILLOS[f]; for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), s); }
+function capasScript(f) {
+	var plano = document.getElementById('plano_' + f).checked;
+	var nums = document.getElementById('nums_' + f).checked;
+	return 'draw plano {-3.2 0 -3.2} {3.2 0 -3.2} {3.2 0 3.2} {-3.2 0 3.2}; color $plano translucent 0.65 [120,200,140]; draw plano ' + (plano ? 'on' : 'off') + ';'
+		+ ' select carbon; label ' + (nums ? '%a' : 'off') + '; select *;';
+}
+function filaCapas(f) { filaVista(f, capasScript(f)); }
+function filaReiniciar(f) {
+	var L = ANILLOS[f];
+	for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), anilloInicio(L[i]) + capasScript(f));
+}
+// Cada visor se inicia cuando JSmol avisa de que está listo.
+function visorListo(app) {
+	var id = app._id, i, f;
+	for (i = 0; i < CIC.length; i++) if (CIC[i].id === id) { Jmol.script(app, cicInicio(CIC[i])); cicEstado(true); return; }
+	for (f in ANILLOS) for (i = 0; i < ANILLOS[f].length; i++)
+		if (ANILLOS[f][i].id === id) { Jmol.script(app, anilloInicio(ANILLOS[f][i]) + capasScript(f)); return; }
+}
+JmolInfo.readyFunction = visorListo;
+
+$(document).ready(function(){
+	var i, f;
+	for (i = 0; i < CIC.length; i++) $('#JmolDiv_' + CIC[i].id).html(Jmol.getAppletHtml(CIC[i].id, JmolInfo));
+	for (f in ANILLOS) for (i = 0; i < ANILLOS[f].length; i++) $('#JmolDiv_' + ANILLOS[f][i].id).html(Jmol.getAppletHtml(ANILLOS[f][i].id, JmolInfo));
+});
+</script>
+</head>
+<body>
+<h1 class="solo-lectores">Formas cíclicas de los monosacáridos</h1>
+<font face="Tahoma">
+
+<p class="cc-texto">
+En disolución, las aldosas y cetosas de cinco o más carbonos están casi por completo en <FONT COLOR="#6633CC"><B>FORMA CÍCLICA</B></FONT>.
+Un hidroxilo de la propia molécula se adiciona al grupo carbonilo y forma un <b>hemiacetal</b> (aldosas) o un <b>hemicetal</b> (cetosas) intramolecular.
+En la D-glucosa, el OH del C5 se une al C1 y se forma un anillo de seis átomos (cinco carbonos y un oxígeno), una <b>piranosa</b>; en la
+D-fructosa, el OH del C5 se une al C2 y el anillo es de cinco átomos, una <b>furanosa</b>. El carbono del carbonilo pasa a ser un nuevo
+carbono asimétrico, el <span class="fc-c">carbono anomérico</span>, y su <span class="fc-anom">OH</span> puede quedar a uno u otro lado del anillo:
+son los anómeros <b>&alpha;</b> y <b>&beta;</b>.
+</p>
+
+<!-- Fila 1: cierre del anillo -->
+<h2 class="cc-concepto">Cierre del anillo de la D-glucosa</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>El O5 ataca al C1 por una cara: anómero &alpha;</h2>
+		<div id="JmolDiv_CicA" class="cc-visor"></div>
+		<div class="cc-estado">Forma: <b id="cicAestado"></b></div>
+	</div>
+	<div class="cc-celda">
+		<h2>El O5 ataca al C1 por la otra cara: anómero &beta;</h2>
+		<div id="JmolDiv_CicB" class="cc-visor"></div>
+		<div class="cc-estado">Forma: <b id="cicBestado"></b></div>
+	</div>
+</div>
+<div class="cc-controles">
+	<input type="button" value="Cadena abierta" onclick="cicAbrir()">
+	<input type="button" value="Cerrar el anillo (animación)" onclick="cicCerrar()">
+	<input type="button" value="Anillo" onclick="cicAnillo()">
+	<input type="button" value="Vista de Haworth" onclick="cicVista(VISTA_HAWORTH)">
+	<input type="button" value="De perfil" onclick="cicVista(VISTA_PERFIL)">
+	<input type="button" value="Vista inicial" onclick="cicReiniciar()">
+</div>
+<div class="cc-texto">
+<p>
+El C1 (<span class="fc-c">naranja</span>) del grupo aldehído es plano, y el O5 puede acercarse a él por cualquiera de sus dos caras.
+Las dos cadenas abiertas son la misma molécula en dos conformaciones, que difieren en el giro del enlace C1&ndash;C2. Al formarse el
+enlace C1&ndash;O5, el O del aldehído (<span class="fc-anom">magenta</span>) se convierte en el OH anomérico: queda por debajo del anillo
+en el anómero &alpha; y por encima en el &beta;. Los dos anillos difieren en la <a href="Configuracion-Conformacion.htm">configuración</a>
+del C1: son diastereoisómeros.
+<FONT SIZE="-1"><i>(Los pasos intermedios de la animación son interpolados, solo ilustrativos.)</i></FONT>
+</p>
+<p>
+En agua, el anillo se abre y se cierra continuamente, de modo que una disolución de &alpha;- o de &beta;-D-glucosa pura cambia su rotación
+óptica hasta llegar al equilibrio (<b>mutarrotación</b>), con un 36&nbsp;% de anómero &alpha;, un 64&nbsp;% de &beta; y menos del 0,02&nbsp;% de cadena
+abierta (<a href="https://chem.libretexts.org/Bookshelves/Organic_Chemistry/Map:_Organic_Chemistry_(Vollhardt_and_Schore)/24:_Carbohydrates:_Polyfunctional_Compounds_in_Nature/24.03:_Anomers__of_Simple__Sugars:__Mutarotation_of_Glucose">LibreTexts, Química orgánica, 24.3</a>).
+</p>
+</div>
+
+<!-- Fila 2: anómeros de la glucopiranosa -->
+<h2 class="cc-concepto">Anómeros &alpha; y &beta; de la D-glucopiranosa</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>&alpha;-D-glucopiranosa</h2>
+		<div id="JmolDiv_GlcA" class="cc-visor"></div>
+		<img class="fc-haworth" src="./pdb/glucidos/ciclicas/Haworth_alfa-D-glucopiranosa.svg?v=20261126b" alt="Proyección de Haworth de la alfa-D-glucopiranosa: OH del C1 hacia abajo">
+	</div>
+	<div class="cc-celda">
+		<h2>&beta;-D-glucopiranosa</h2>
+		<div id="JmolDiv_GlcB" class="cc-visor"></div>
+		<img class="fc-haworth" src="./pdb/glucidos/ciclicas/Haworth_beta-D-glucopiranosa.svg?v=20261126b" alt="Proyección de Haworth de la beta-D-glucopiranosa: OH del C1 hacia arriba">
+	</div>
+</div>
+<div class="cc-controles">
+	<input type="button" value="Vista de Haworth" onclick="filaVista('glc', VISTA_HAWORTH)">
+	<input type="button" value="De perfil" onclick="filaVista('glc', VISTA_PERFIL)">
+	<input type="button" value="Desde arriba" onclick="filaVista('glc', VISTA_SUPERIOR)">
+	<label><input type="checkbox" id="plano_glc" onclick="filaCapas('glc')"> Plano medio del anillo</label>
+	<label><input type="checkbox" id="nums_glc" onclick="filaCapas('glc')"> Nombres de los carbonos</label>
+	<input type="button" value="Vista inicial" onclick="filaReiniciar('glc')">
+</div>
+<div class="cc-texto">
+<p>
+La proyección de Haworth dibuja el anillo plano y cada sustituyente <b>arriba</b> o <b>abajo</b> del plano medio del anillo (en verde).
+En la serie D, el CH<sub>2</sub>OH del C5 queda arriba; en el anómero &alpha; el OH anomérico queda abajo, en trans respecto a ese
+CH<sub>2</sub>OH, y en el &beta;, arriba, en cis. El anillo real no es plano sino una silla (vista de perfil): en la &beta;-D-glucopiranosa
+todos los OH y el CH<sub>2</sub>OH son ecuatoriales; en la &alpha;, el OH del C1 es axial.
+</p>
+</div>
+
+<!-- Fila 3: furanosas -->
+<h2 class="cc-concepto">Furanosas: fructosa, ribosa y desoxirribosa</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>&alpha;-D-fructofuranosa</h2>
+		<div id="JmolDiv_FruA" class="cc-visor"></div>
+		<img class="fc-haworth" src="./pdb/glucidos/ciclicas/Haworth_alfa-D-fructofuranosa.svg?v=20261126b" alt="Proyección de Haworth de la alfa-D-fructofuranosa: OH del C2 hacia abajo">
+	</div>
+	<div class="cc-celda">
+		<h2>&beta;-D-fructofuranosa</h2>
+		<div id="JmolDiv_FruB" class="cc-visor"></div>
+		<img class="fc-haworth" src="./pdb/glucidos/ciclicas/Haworth_beta-D-fructofuranosa.svg?v=20261126b" alt="Proyección de Haworth de la beta-D-fructofuranosa: OH del C2 hacia arriba">
+	</div>
+</div>
+<div class="cc-controles">
+	<input type="button" value="Vista de Haworth" onclick="filaVista('fru', VISTA_HAWORTH)">
+	<input type="button" value="De perfil" onclick="filaVista('fru', VISTA_PERFIL)">
+	<input type="button" value="Desde arriba" onclick="filaVista('fru', VISTA_SUPERIOR)">
+	<label><input type="checkbox" id="plano_fru" onclick="filaCapas('fru')"> Plano medio del anillo</label>
+	<label><input type="checkbox" id="nums_fru" onclick="filaCapas('fru')"> Nombres de los carbonos</label>
+	<input type="button" value="Vista inicial" onclick="filaReiniciar('fru')">
+</div>
+<div class="cc-texto">
+<p>
+En la D-fructosa, una cetohexosa, el OH del C5 se une al C2, el carbono de la cetona: el anillo es de cinco átomos y el carbono anomérico
+lleva el OH anomérico y el CH<sub>2</sub>OH del C1. Como en la glucosa, el anómero &alpha; tiene el OH anomérico en trans respecto al
+CH<sub>2</sub>OH del C5 (el C6) y el &beta;, en cis. La fructosa también forma piranosas, pero en la sacarosa y en la fructosa
+1,6-bisfosfato está como furanosa.
+</p>
+</div>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>&beta;-D-ribofuranosa (RNA)</h2>
+		<div id="JmolDiv_Rib" class="cc-visor"></div>
+		<img class="fc-haworth" src="./pdb/glucidos/ciclicas/Haworth_beta-D-ribofuranosa.svg?v=20261126b" alt="Proyección de Haworth de la beta-D-ribofuranosa">
+	</div>
+	<div class="cc-celda">
+		<h2>2-desoxi-&beta;-D-ribofuranosa (DNA)</h2>
+		<div id="JmolDiv_dRib" class="cc-visor"></div>
+		<img class="fc-haworth" src="./pdb/glucidos/ciclicas/Haworth_2-desoxi-beta-D-ribofuranosa.svg?v=20261126b" alt="Proyección de Haworth de la 2-desoxi-beta-D-ribofuranosa: sin OH en el C2">
+	</div>
+</div>
+<div class="cc-controles">
+	<input type="button" value="Vista de Haworth" onclick="filaVista('rib', VISTA_HAWORTH)">
+	<input type="button" value="De perfil" onclick="filaVista('rib', VISTA_PERFIL)">
+	<input type="button" value="Desde arriba" onclick="filaVista('rib', VISTA_SUPERIOR)">
+	<label><input type="checkbox" id="plano_rib" onclick="filaCapas('rib')"> Plano medio del anillo</label>
+	<label><input type="checkbox" id="nums_rib" onclick="filaCapas('rib')"> Nombres de los carbonos</label>
+	<input type="button" value="Vista inicial" onclick="filaReiniciar('rib')">
+</div>
+<div class="cc-texto">
+<p>
+La D-ribosa, una aldopentosa, cierra el anillo entre el OH del C4 y el C1 y forma una furanosa. En los nucleótidos del RNA está como
+&beta;-D-ribofuranosa, unida por el C1 a la base y por el C5 al fosfato (véase <a href="nucleotidos.htm">Bases y nucleótidos</a>).
+La 2-desoxi-D-ribosa del DNA es igual salvo que el C2 no tiene OH.
+</p>
+</div>
+
+<!-- Fila 4: de Fischer a Haworth -->
+<h2 class="cc-concepto">De la proyección de Fischer a la de Haworth</h2>
+<div class="fc-reglas">
+	<figure>
+		<img src="./pdb/glucidos/D-Glucosa.png" style="width:110px;max-width:none;" alt="Proyección de Fischer de la D-glucosa">
+		<figcaption>D-glucosa (Fischer)</figcaption>
+	</figure>
+	<table class="cc-resumen">
+		<tr><th>En la proyección de Fischer</th><th>En la proyección de Haworth</th></tr>
+		<tr><td>Grupo a la <b>derecha</b></td><td>Abajo</td></tr>
+		<tr><td>Grupo a la <b>izquierda</b></td><td>Arriba</td></tr>
+		<tr><td>Serie <b>D</b> (OH del último carbono asimétrico a la derecha)</td><td>El CH<sub>2</sub>OH terminal queda arriba</td></tr>
+		<tr><td>Carbono anomérico <b>&alpha;</b></td><td>OH anomérico en trans respecto al CH<sub>2</sub>OH terminal (abajo en la serie D)</td></tr>
+		<tr><td>Carbono anomérico <b>&beta;</b></td><td>OH anomérico en cis respecto al CH<sub>2</sub>OH terminal (arriba en la serie D)</td></tr>
+		<tr><td>Anillo de 6 átomos (5 C + O)</td><td>Piranosa</td></tr>
+		<tr><td>Anillo de 5 átomos (4 C + O)</td><td>Furanosa</td></tr>
+	</table>
+</div>
+
+<p class="descripcion-pagina">
+Modelos 3D interactivos de las formas cíclicas de los monosacáridos: el cierre del anillo de la D-glucosa por una u otra cara del grupo
+carbonilo, los anómeros &alpha; y &beta; de la D-glucopiranosa y de la D-fructofuranosa, la &beta;-D-ribofuranosa y la
+2-desoxi-&beta;-D-ribofuranosa, con sus proyecciones de Haworth. Los anillos usan las coordenadas ideales del
+<a href="https://www.wwpdb.org/data/ccd">Chemical Component Dictionary</a> del PDB (componentes GLC, BGC, Z9N, FRU, BDR y 2DR); las cadenas
+abiertas se obtuvieron rompiendo el enlace C1&ndash;O5 y optimizando con el campo de fuerzas MMFF.
+</p>
+</font>
+</body>
+</html>

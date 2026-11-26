@@ -49,7 +49,8 @@
     { t: "Configuración y Conformación", href: "Configuracion-Conformacion.htm" },
     { t: "Aminoácidos", href: "aminoacidos.htm" },
     { cat: "Glúcidos", items: [
-      { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" }
+      { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" },
+      { t: "Polisacáridos", href: "Polisacaridos.htm" }
     ]},
     { t: "Lípidos", href: "AcidosGrasos.htm", sub: "lipidos" },
     { t: "Vitaminas y Coenzimas", href: "vitaminas.htm" },
@@ -101,6 +102,7 @@
         { t: "Tetrosas", href: "Tetrosas.htm" },
         { t: "Cetopentosas", href: "Cetopentosas.htm" },
         { t: "Cetohexosas", href: "Cetohexosas.htm" },
+        { t: "Formas cíclicas", href: "FormasCiclicas.htm" },
         { t: "Test", href: "Test-glucidos.htm" }
       ]
     },

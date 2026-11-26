@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/moderno.css?v=20261125.2">
+<script src="js/marco.js?v=20261126.1"></script>
+
+<title>Enlace glucosídico, disacáridos y polisacáridos | Atlas de estructuras</title>
+<meta name="description" content="Modelos 3D interactivos del enlace glucosídico alfa y beta en maltosa, celobiosa, lactosa y sacarosa, la hélice de la amilosa, las láminas de celulosa y la ramificación del glucógeno.">
+<link rel="canonical" href="https://biomodels.es/Polisacaridos.htm">
+<meta property="og:title" content="Enlace glucosídico, disacáridos y polisacáridos">
+<meta property="og:description" content="Modelos 3D interactivos del enlace glucosídico alfa y beta en maltosa, celobiosa, lactosa y sacarosa, la hélice de la amilosa, las láminas de celulosa y la ramificación del glucógeno.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/Polisacaridos.htm">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="./jsmol/JSmol.min.js?v=20261113" type="text/javascript"></script>
+<style>
+.cc-concepto { margin:0 0 4px; font-size:1.45rem; color:var(--title); }
+.cc-fila { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:22px; margin:0 0 10px; max-width:1180px; }
+.cc-celda h2 { margin:0 0 6px; font-size:1.2rem; }
+.cc-visor { width:100%; height:320px; }
+.cc-controles { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:8px 0; max-width:1180px; }
+.cc-controles input[type="button"] { margin:0 !important; }
+.cc-controles label { white-space:nowrap; }
+.cc-texto { max-width:1180px; margin:6px 0 28px; }
+.cc-texto p { margin:6px 0; }
+.cc-celda p { margin:6px 0; }
+table.cc-resumen { border-collapse:collapse; margin:6px 0 24px; max-width:1000px; }
+table.cc-resumen th, table.cc-resumen td { border:1px solid #9aa7b2; padding:5px 9px; text-align:left; vertical-align:top; }
+table.cc-resumen th { background:#e8eef3; }
+.ps-enlace { color:#c06a10; font-weight:bold; }
+.ps-red { color:#b0258c; font-weight:bold; }
+.ps-b { color:#4a6fb5; font-weight:bold; }
+@media (max-width:900px) {
+  .cc-fila { grid-template-columns:1fr; }
+  .cc-visor { height:290px; }
+}
+</style>
+<script type="text/javascript">
+// Los visores se crean con su nombre como cadena; JSmol los guarda en window[nombre].
+function A(id) { return window[id]; }
+var JmolInfo = {
+	width:'100%',
+	height:'100%',
+	color:'#F0F8FF',
+	j2sPath:'./jsmol/j2s',
+	serverURL:'./jsmol/php/jsmol.php',
+	use:'html5'
+};
+var DIR = './pdb/glucidos/polisacaridos/';
+var NARANJA = '[230,140,40]', MAGENTA = '[176,37,140]', AZUL = '[120,150,205]';
+// Pares O···O (números de átomo) a menos de 3,1 Å que pueden formar puentes de hidrógeno.
+var HB = {"maltosa":[[9,30]],"celobiosa":[[9,33]],"lactosa":[[9,33]],"sacarosa":[[8,30]],"celulosa_cadena":[[8,33],[11,30],[31,54],[34,51],[52,75],[55,72],[73,96],[76,93],[94,117],[97,114],[115,138],[118,135],[136,159],[139,156]],"celulosa_laminas":[[8,33],[8,182],[11,30],[31,54],[34,51],[34,202],[52,75],[52,226],[55,72],[73,96],[76,93],[76,244],[94,117],[94,268],[97,114],[115,138],[118,135],[118,286],[136,159],[136,310],[139,156],[160,328],[179,204],[179,353],[182,201],[202,225],[205,222],[205,373],[223,246],[223,397],[226,243],[244,267],[247,264],[247,415],[265,288],[265,439],[268,285],[286,309],[289,306],[289,457],[307,330],[307,481],[310,327],[331,499],[350,375],[353,372],[373,396],[376,393],[394,417],[397,414],[415,438],[418,435],[436,459],[439,456],[457,480],[460,477],[478,501],[481,498],[521,546],[521,695],[524,543],[544,567],[547,564],[547,715],[565,588],[565,739],[568,585],[586,609],[589,606],[589,757],[607,630],[607,781],[610,627],[628,651],[631,648],[631,799],[649,672],[649,823],[652,669],[673,841],[692,717],[692,866],[695,714],[715,738],[718,735],[718,886],[736,759],[736,910],[739,756],[757,780],[760,777],[760,928],[778,801],[778,952],[781,798],[799,822],[802,819],[802,970],[820,843],[820,994],[823,840],[844,1012],[863,888],[866,885],[886,909],[889,906],[907,930],[910,927],[928,951],[931,948],[949,972],[952,969],[970,993],[973,990],[991,1014],[994,1011]]};
+function hbScript(clave, on) {
+	var s = 'hbonds off; set hbondsSolid false; ';
+	if (!on) return s;
+	var L = HB[clave];
+	for (var i = 0; i < L.length; i++) s += 'connect (atomno=' + L[i][0] + ') (atomno=' + L[i][1] + ') HBOND; ';
+	return s + 'hbonds on; colour hbonds [20,120,20]; hbonds 0.12;';
+}
+var ESTILO = 'spacefill 22%; wireframe 0.15; colour cpk; font echo 16 sansserif bold; color echo [40,40,40];';
+
+// ---------------------------------------------------------------
+// 1 y 2. Disacáridos. Residuo 1: monosacárido de la derecha (el que conserva el
+// carbono anomérico libre, salvo en la sacarosa), con el anillo orientado como
+// en la proyección de Haworth (con "reset; rotate x 30"); residuo 2: el de la izquierda.
+// ---------------------------------------------------------------
+var VISTA_HAWORTH = 'reset; rotate x 30;';
+var DISAC = {
+	mc: [ { id:'Mal', fich:'maltosa', nombre:'Maltosa: Glc(\u03b11\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' },
+	      { id:'Cel', fich:'celobiosa', nombre:'Celobiosa: Glc(\u03b21\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' } ],
+	ls: [ { id:'Lac', fich:'lactosa', nombre:'Lactosa: Gal(\u03b21\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' },
+	      { id:'Suc', fich:'sacarosa', nombre:'Sacarosa: Glc(\u03b11\u2194\u03b22)Fru', enlace:'(resno=1 and atomName="O1") or (resno=1 and atomName="C1") or (resno=2 and atomName="C2")', red:null } ]
+};
+function disacInicio(v) {
+	return 'load ' + DIR + v.fich + '.pdb.gz; ' + ESTILO
+		+ ' select resno=2 and carbon; colour atoms ' + AZUL + '; select *;'
+		+ VISTA_HAWORTH + ' set rotationRadius 9.5; zoom 100; set echo txtE 4% 92%; echo "' + v.nombre + '";';
+}
+function disacScript(f, v) {
+	var enl = document.getElementById('enl_' + f).checked, red = document.getElementById('red_' + f).checked, hb = document.getElementById('hb_' + f).checked;
+		var s = 'select *; halos off; select carbon and resno=1; colour atoms [144,144,144]; select carbon and resno=2; colour atoms ' + AZUL + ';'
+			+ ' select oxygen; colour atoms cpk;';
+		if (enl) s += ' select ' + v.enlace + '; colour atoms ' + NARANJA + ';';
+		if (red && v.red) s += ' select ' + v.red + '; colour halos ' + MAGENTA + '; halos 45%;';
+		s += ' select *; ' + hbScript(v.fich, hb);
+		s += ' set echo txtR 4% 6%; echo "' + (red ? (v.red ? 'Extremo reductor: C1 del residuo de la derecha' : 'Sin extremo reductor') : '') + '";';
+		return s;
+}
+function disacCapas(f) { var L = DISAC[f]; for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), disacScript(f, L[i])); }
+function disacVista(f, s) { var L = DISAC[f]; for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), s); }
+function disacReiniciar(f) {
+	var L = DISAC[f];
+	for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), disacInicio(L[i]) + disacScript(f, L[i]));
+}
+
+// ---------------------------------------------------------------
+// 3. Amilosa (hélice V) y una cadena de celulosa, a la misma escala.
+// En ambos ficheros el eje de la hélice o de la cadena es el eje x; residuo 1 = extremo reductor.
+// ---------------------------------------------------------------
+var CAD = [ { id:'Ami', fich:'amilosa_helice', nombre:'Amilosa (\u03b11\u21924), h\u00e9lice V', hb:null },
+            { id:'CelC', fich:'celulosa_cadena', nombre:'Celulosa (\u03b21\u21924)', hb:'celulosa_cadena' } ];
+function cadInicio(v) {
+	return 'load ' + DIR + v.fich + '.pdb.gz; ' + ESTILO + ' reset; set rotationRadius 23; zoom 100; set echo txtE 4% 92%; echo "' + v.nombre + '";';
+}
+function cadScript(v) {
+	var esf = document.getElementById('esf_cad').checked, res = document.getElementById('res_cad').checked,
+		hb = document.getElementById('hb_cad').checked, red = document.getElementById('red_cad').checked;
+		var s = 'select *; halos off; spacefill ' + (esf ? '100%' : '22%') + '; wireframe ' + (esf ? 'off' : '0.15') + ';'
+			+ ' colour cpk; select carbon; colour atoms ' + (res ? 'group' : '[144,144,144]') + ';';
+		if (red) s += ' select resno=1 and (atomName="C1" or atomName="O1"); colour halos ' + MAGENTA + '; halos 45%;';
+		s += ' select *; ' + (v.hb ? hbScript(v.hb, hb && !esf) : 'hbonds off;');
+		return s;
+}
+function cadCapas() { for (var i = 0; i < CAD.length; i++) Jmol.script(A(CAD[i].id), cadScript(CAD[i])); }
+function cadVista(s) { for (var i = 0; i < CAD.length; i++) Jmol.script(A(CAD[i].id), s); }
+function cadReiniciar() {
+	for (var i = 0; i < CAD.length; i++) Jmol.script(A(CAD[i].id), cadInicio(CAD[i]) + cadScript(CAD[i]));
+}
+
+// ---------------------------------------------------------------
+// 4a. Celulosa I-beta: 2 láminas x 3 cadenas. Cadenas A-C: lámina 1; D-F: lámina 2.
+// Eje de las cadenas = x; las láminas se apilan a lo largo de y.
+// ---------------------------------------------------------------
+var LAM_C1 = '[150,150,150]', LAM_C2 = '[120,150,205]';
+function lamInicio() {
+	return 'load ' + DIR + 'celulosa_laminas.pdb.gz; ' + ESTILO
+		+ ' select carbon and (chain=A or chain=B or chain=C); colour atoms ' + LAM_C1 + ';'
+		+ ' select carbon and (chain=D or chain=E or chain=F); colour atoms ' + LAM_C2 + '; select *;'
+		+ ' reset; rotate x 20; set rotationRadius 24; zoom 100;';
+}
+function lamScript() {
+	var hb = document.getElementById('hb_lam').checked, esf = document.getElementById('esf_lam').checked;
+	return ('select *; spacefill ' + (esf ? '100%' : '22%') + '; wireframe ' + (esf ? 'off' : '0.15') + '; ' + hbScript('celulosa_laminas', hb && !esf));
+}
+function lamCapas() { Jmol.script(A('Lam'), lamScript()); }
+function lamReiniciar() { Jmol.script(A('Lam'), lamInicio() + lamScript()); }
+
+// ---------------------------------------------------------------
+// 4b. Fragmento ramificado de glucógeno: cadena A (8 Glc, A1 = extremo reductor)
+// y cadena B (5 Glc) unida por alfa(1-6) al O6 de A4.
+// ---------------------------------------------------------------
+var GLU_B = '[120,150,205]';
+function gluInicio() {
+	return 'load ' + DIR + 'glucogeno_ramificacion.pdb.gz; ' + ESTILO
+		+ ' select carbon and chain=B; colour atoms ' + GLU_B + '; select *;'
+		+ ' reset; set rotationRadius 19; zoom 100;';
+}
+function gluScript() {
+	var ram = document.getElementById('ram_glu').checked, ext = document.getElementById('ext_glu').checked;
+	var s = 'select *; halos off; select carbon and chain=A; colour atoms [144,144,144]; select carbon and chain=B; colour atoms ' + GLU_B + ';';
+	if (ram) s += ' select (chain=A and resno=4 and (atomName="C6" or atomName="O6")) or (chain=B and resno=1 and atomName="C1"); colour atoms ' + NARANJA + ';';
+	if (ext) s += ' select (chain=A and resno=1 and (atomName="C1" or atomName="O1")); colour halos ' + MAGENTA + '; halos 45%;'
+		+ ' select (chain=A and resno=8 and (atomName="C4" or atomName="O4")) or (chain=B and resno=5 and (atomName="C4" or atomName="O4")); colour halos [20,120,20]; halos 45%;';
+	return s + ' select *;';
+}
+function gluCapas() { Jmol.script(A('Glu'), gluScript()); }
+function gluReiniciar() { Jmol.script(A('Glu'), gluInicio() + gluScript()); }
+
+// Cada visor se inicia cuando JSmol avisa de que está listo.
+function visorListo(app) {
+	var id = app._id, i, f;
+	for (f in DISAC) for (i = 0; i < DISAC[f].length; i++)
+		if (DISAC[f][i].id === id) { Jmol.script(app, disacInicio(DISAC[f][i]) + disacScript(f, DISAC[f][i])); return; }
+	for (i = 0; i < CAD.length; i++) if (CAD[i].id === id) { Jmol.script(app, cadInicio(CAD[i]) + cadScript(CAD[i])); return; }
+	if (id === 'Lam') Jmol.script(app, lamInicio() + lamScript());
+	if (id === 'Glu') Jmol.script(app, gluInicio() + gluScript());
+}
+JmolInfo.readyFunction = visorListo;
+
+$(document).ready(function(){
+	var ids = ['Mal','Cel','Lac','Suc','Ami','CelC','Lam','Glu'];
+	for (var i = 0; i < ids.length; i++) $('#JmolDiv_' + ids[i]).html(Jmol.getAppletHtml(ids[i], JmolInfo));
+});
+</script>
+</head>
+<body>
+<h1 class="solo-lectores">Enlace glucosídico, disacáridos y polisacáridos</h1>
+<font face="Tahoma">
+
+<p class="cc-texto">
+El <FONT COLOR="#6633CC"><B>ENLACE O-GLUCOSÍDICO</B></FONT> se forma entre el OH del carbono anomérico de un monosacárido y un OH de otra
+molécula, con pérdida de una molécula de agua. El carbono anomérico pasa de hemiacetal a <b>acetal</b>: su anillo ya no se abre, no hay
+mutarrotación y la configuración &alpha; o &beta; queda fijada (véase <a href="FormasCiclicas.htm">Formas cíclicas</a>). El enlace se nombra
+por la configuración del carbono anomérico y los carbonos que une: &alpha;(1&rarr;4), &beta;(1&rarr;4), &alpha;(1&rarr;6)... El
+monosacárido que conserva libre su carbono anomérico es el <b>extremo reductor</b>: su anillo puede abrirse y el grupo aldehído
+reduce a otros compuestos.
+</p>
+
+<!-- Fila 1: maltosa y celobiosa -->
+<h2 class="cc-concepto">&alpha; frente a &beta;: maltosa y celobiosa</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>Maltosa: Glc(&alpha;1&rarr;4)Glc</h2>
+		<div id="JmolDiv_Mal" class="cc-visor"></div>
+	</div>
+	<div class="cc-celda">
+		<h2>Celobiosa: Glc(&beta;1&rarr;4)Glc</h2>
+		<div id="JmolDiv_Cel" class="cc-visor"></div>
+	</div>
+</div>
+<div class="cc-controles">
+	<label><input type="checkbox" id="enl_mc" checked onclick="disacCapas('mc')"> Enlace glucosídico</label>
+	<label><input type="checkbox" id="red_mc" onclick="disacCapas('mc')"> Extremo reductor</label>
+	<label><input type="checkbox" id="hb_mc" onclick="disacCapas('mc')"> Puente de hidrógeno entre anillos</label>
+	<input type="button" value="Vista de Haworth" onclick="disacVista('mc', VISTA_HAWORTH)">
+	<input type="button" value="De perfil" onclick="disacVista('mc', 'reset')">
+	<input type="button" value="Vista inicial" onclick="disacReiniciar('mc')">
+</div>
+<div class="cc-texto">
+<p>
+Las dos son dímeros de glucosa unidos por los carbonos 1 y 4, y solo difieren en la configuración del C1 que forma el enlace
+(<span class="ps-enlace">naranja</span>: C1, O puente y C4). La glucosa de la izquierda (carbonos en <span class="ps-b">azul</span>) aporta su
+carbono anomérico; la de la derecha conserva el suyo libre y es el extremo reductor. En la <b>maltosa</b> (&alpha;) los dos anillos quedan
+en ángulo, y la repetición de ese giro enrolla la amilosa en una hélice. En la <b>celobiosa</b> (&beta;) el anillo de la izquierda está
+girado unos 180&deg; respecto al de la derecha, con un puente de hidrógeno O3&ndash;H&middot;&middot;&middot;O5 entre ambos, y la
+repetición da una cadena recta: la de la celulosa.
+</p>
+</div>
+
+<!-- Fila 2: lactosa y sacarosa -->
+<h2 class="cc-concepto">Lactosa y sacarosa</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>Lactosa: Gal(&beta;1&rarr;4)Glc</h2>
+		<div id="JmolDiv_Lac" class="cc-visor"></div>
+	</div>
+	<div class="cc-celda">
+		<h2>Sacarosa: Glc(&alpha;1&harr;&beta;2)Fru</h2>
+		<div id="JmolDiv_Suc" class="cc-visor"></div>
+	</div>
+</div>
+<div class="cc-controles">
+	<label><input type="checkbox" id="enl_ls" checked onclick="disacCapas('ls')"> Enlace glucosídico</label>
+	<label><input type="checkbox" id="red_ls" onclick="disacCapas('ls')"> Extremo reductor</label>
+	<label><input type="checkbox" id="hb_ls" onclick="disacCapas('ls')"> Puente de hidrógeno entre anillos</label>
+	<input type="button" value="Vista de Haworth" onclick="disacVista('ls', VISTA_HAWORTH)">
+	<input type="button" value="De perfil" onclick="disacVista('ls', 'reset')">
+	<input type="button" value="Vista inicial" onclick="disacReiniciar('ls')">
+</div>
+<div class="cc-texto">
+<p>
+La <b>lactosa</b>, el azúcar de la leche, une el C1 de una &beta;-D-galactosa (izquierda) al O4 de una glucosa, que es el extremo reductor.
+En la <b>sacarosa</b> el enlace une los dos carbonos anoméricos, el C1 de la &alpha;-D-glucosa y el C2 de la &beta;-D-fructofuranosa
+(derecha): ninguno de los dos anillos puede abrirse, y la sacarosa <b>no es reductora</b>.
+</p>
+</div>
+<table class="cc-resumen">
+	<tr><th>Disacárido</th><th>Composición y enlace</th><th>¿Reductor?</th><th>Dónde se encuentra</th></tr>
+	<tr><td>Maltosa</td><td>Glc(&alpha;1&rarr;4)Glc</td><td>Sí</td><td>Producto de la digestión del almidón y el glucógeno</td></tr>
+	<tr><td>Celobiosa</td><td>Glc(&beta;1&rarr;4)Glc</td><td>Sí</td><td>Unidad que se repite en la celulosa</td></tr>
+	<tr><td>Lactosa</td><td>Gal(&beta;1&rarr;4)Glc</td><td>Sí</td><td>Leche</td></tr>
+	<tr><td>Sacarosa</td><td>Glc(&alpha;1&harr;&beta;2)Fru</td><td>No</td><td>Caña de azúcar, remolacha; forma de transporte en las plantas</td></tr>
+	<tr><td>Trehalosa (sin modelo)</td><td>Glc(&alpha;1&harr;&alpha;1)Glc</td><td>No</td><td>Hongos, levaduras e insectos</td></tr>
+</table>
+
+<!-- Fila 3: amilosa y celulosa -->
+<h2 class="cc-concepto">Polisacáridos: hélice de amilosa y cadena de celulosa</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>Amilosa: 12 glucosas (&alpha;1&rarr;4)</h2>
+		<div id="JmolDiv_Ami" class="cc-visor"></div>
+	</div>
+	<div class="cc-celda">
+		<h2>Celulosa: 8 glucosas (&beta;1&rarr;4)</h2>
+		<div id="JmolDiv_CelC" class="cc-visor"></div>
+	</div>
+</div>
+<div class="cc-controles">
+	<input type="button" value="De lado" onclick="cadVista('reset')">
+	<input type="button" value="A lo largo del eje" onclick="cadVista('reset; rotate y 90')">
+	<label><input type="checkbox" id="esf_cad" onclick="cadCapas()"> Esferas de van der Waals</label>
+	<label><input type="checkbox" id="res_cad" onclick="cadCapas()"> Color por residuo</label>
+	<label><input type="checkbox" id="hb_cad" onclick="cadCapas()"> Puentes de hidrógeno (celulosa)</label>
+	<label><input type="checkbox" id="red_cad" onclick="cadCapas()"> Extremo reductor</label>
+	<input type="button" value="Vista inicial" onclick="cadReiniciar()">
+</div>
+<div class="cc-texto">
+<p>
+Los dos modelos están a la misma escala. La <b>amilosa</b>, la fracción lineal del almidón, repite el enlace &alpha;(1&rarr;4): cada
+glucosa gira respecto a la anterior y la cadena se enrolla. Aquí se muestra la hélice V, levógira, con seis glucosas por vuelta y un paso
+de unos 8&nbsp;&Aring; (<a href="https://doi.org/10.1073/pnas.96.8.4246">Gessler et al., 1999</a>); visto a lo largo del eje, deja un canal
+central en el que se alojan el yodo o los lípidos. La <b>celulosa</b> repite el enlace &beta;(1&rarr;4): cada glucosa está girada
+180&deg; respecto a la anterior y la cadena es recta y extendida, estabilizada por puentes de hidrógeno O3&ndash;H&middot;&middot;&middot;O5
+entre glucosas vecinas.
+</p>
+</div>
+
+<!-- Fila 4: láminas de celulosa y ramificación del glucógeno -->
+<h2 class="cc-concepto">Láminas de celulosa y ramificación del glucógeno</h2>
+<div class="cc-fila">
+	<div class="cc-celda">
+		<h2>Celulosa I&beta;: dos láminas de tres cadenas</h2>
+		<div id="JmolDiv_Lam" class="cc-visor"></div>
+		<div class="cc-controles">
+			<label><input type="checkbox" id="hb_lam" checked onclick="lamCapas()"> Puentes de hidrógeno</label>
+			<label><input type="checkbox" id="esf_lam" onclick="lamCapas()"> Esferas de van der Waals</label>
+			<input type="button" value="Láminas de canto" onclick="Jmol.script(A('Lam'), 'reset; rotate x 20')">
+			<input type="button" value="Una lámina de frente" onclick="Jmol.script(A('Lam'), 'reset; rotate x 90')">
+			<input type="button" value="A lo largo de las cadenas" onclick="Jmol.script(A('Lam'), 'reset; rotate y 90')">
+			<input type="button" value="Vista inicial" onclick="lamReiniciar()">
+		</div>
+		<p>
+		En la fibra de celulosa, las cadenas paralelas de cada lámina (carbonos en gris en una, en <span class="ps-b">azul</span> en la otra)
+		se unen por puentes de hidrógeno entre sus OH (en verde); entre láminas no hay puentes O&ndash;H&middot;&middot;&middot;O, y se
+		mantienen unidas por contactos de van der Waals. Coordenadas del cristal de celulosa I&beta;
+		(<a href="https://doi.org/10.1021/ja0257319">Nishiyama, Langan y Chanzy, 2002</a>).
+		</p>
+	</div>
+	<div class="cc-celda">
+		<h2>Glucógeno: ramificación &alpha;(1&rarr;6)</h2>
+		<div id="JmolDiv_Glu" class="cc-visor"></div>
+		<div class="cc-controles">
+			<label><input type="checkbox" id="ram_glu" checked onclick="gluCapas()"> Enlace &alpha;(1&rarr;6)</label>
+			<label><input type="checkbox" id="ext_glu" onclick="gluCapas()"> Extremos reductor y no reductores</label>
+			<input type="button" value="Girar 90°" onclick="Jmol.script(A('Glu'), 'rotate x 90')">
+			<input type="button" value="Vista inicial" onclick="gluReiniciar()">
+		</div>
+		<p>
+		Fragmento de glucógeno o amilopectina: una rama de cinco glucosas (<span class="ps-b">azul</span>) se une por su C1 al O6 de la
+		cuarta glucosa de la cadena principal (<span class="ps-enlace">naranja</span>). Cada rama añade un extremo no reductor (halo verde),
+		mientras que la molécula entera solo tiene un extremo reductor (<span class="ps-red">magenta</span>). El glucógeno se ramifica cada
+		8&ndash;12 glucosas y la amilopectina cada 24&ndash;30
+		(<a href="https://courses.ecampus.oregonstate.edu/bb450/lecture/glycogennotes.html">Oregon State University, BB 450</a>); los
+		extremos no reductores son los puntos donde se añaden o se liberan glucosas.
+		</p>
+	</div>
+</div>
+
+<table class="cc-resumen">
+	<tr><th>Polisacárido</th><th>Monómero y enlaces</th><th>Forma</th><th>Función</th></tr>
+	<tr><td>Amilosa</td><td>Glc &alpha;(1&rarr;4)</td><td>Lineal, helicoidal</td><td>Reserva en plantas (almidón)</td></tr>
+	<tr><td>Amilopectina</td><td>Glc &alpha;(1&rarr;4) y &alpha;(1&rarr;6) cada 24&ndash;30</td><td>Ramificada</td><td>Reserva en plantas (almidón)</td></tr>
+	<tr><td>Glucógeno</td><td>Glc &alpha;(1&rarr;4) y &alpha;(1&rarr;6) cada 8&ndash;12</td><td>Muy ramificada</td><td>Reserva en animales (hígado y músculo)</td></tr>
+	<tr><td>Celulosa</td><td>Glc &beta;(1&rarr;4)</td><td>Cadenas rectas en láminas (microfibrillas)</td><td>Estructural: pared celular vegetal</td></tr>
+	<tr><td>Quitina (sin modelo)</td><td>GlcNAc &beta;(1&rarr;4)</td><td>Cadenas rectas, como la celulosa</td><td>Estructural: exoesqueleto de artrópodos, pared de los hongos</td></tr>
+</table>
+
+<p class="descripcion-pagina">
+Modelos 3D interactivos del enlace glucosídico: maltosa y celobiosa (&alpha; y &beta;), lactosa y sacarosa, una hélice de amilosa, una
+cadena y dos láminas de celulosa I&beta; y un fragmento ramificado de glucógeno. Los disacáridos, la amilosa y el glucógeno se
+construyeron con las coordenadas ideales del <a href="https://www.wwpdb.org/data/ccd">Chemical Component Dictionary</a> del PDB; las
+torsiones de los disacáridos son las de sus cristales optimizados con PM7 en openmopac.net (<a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Maltose_monohydrate__MALTOS11__Jmol.html">maltosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Cellobiose__CELLOB04__Jmol.html">celobiosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/alpha-Lactose_monohydrate__LACTOS10__Jmol.html">lactosa</a> y <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/Sucrose__SUCROS01__jmol.html">sacarosa</a>). La ramificación del glucógeno se relajó con el campo de fuerzas MMFF.
+</p>
+</font>
+</body>
+</html>

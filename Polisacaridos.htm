@@ -53,8 +53,8 @@ var JmolInfo = {
 };
 var DIR = './pdb/glucidos/polisacaridos/';
 var NARANJA = '[230,140,40]', MAGENTA = '[176,37,140]', AZUL = '[120,150,205]';
-// Pares O···O (números de átomo) a menos de 3,1 Å que pueden formar puentes de hidrógeno.
-var HB = {"maltosa":[[9,30]],"celobiosa":[[9,33]],"lactosa":[[9,33]],"sacarosa":[[8,30]],"celulosa_cadena":[[8,33],[11,30],[31,54],[34,51],[52,75],[55,72],[73,96],[76,93],[94,117],[97,114],[115,138],[118,135],[136,159],[139,156]],"celulosa_laminas":[[8,33],[8,182],[11,30],[31,54],[34,51],[34,202],[52,75],[52,226],[55,72],[73,96],[76,93],[76,244],[94,117],[94,268],[97,114],[115,138],[118,135],[118,286],[136,159],[136,310],[139,156],[160,328],[179,204],[179,353],[182,201],[202,225],[205,222],[205,373],[223,246],[223,397],[226,243],[244,267],[247,264],[247,415],[265,288],[265,439],[268,285],[286,309],[289,306],[289,457],[307,330],[307,481],[310,327],[331,499],[350,375],[353,372],[373,396],[376,393],[394,417],[397,414],[415,438],[418,435],[436,459],[439,456],[457,480],[460,477],[478,501],[481,498],[521,546],[521,695],[524,543],[544,567],[547,564],[547,715],[565,588],[565,739],[568,585],[586,609],[589,606],[589,757],[607,630],[607,781],[610,627],[628,651],[631,648],[631,799],[649,672],[649,823],[652,669],[673,841],[692,717],[692,866],[695,714],[715,738],[718,735],[718,886],[736,759],[736,910],[739,756],[757,780],[760,777],[760,928],[778,801],[778,952],[781,798],[799,822],[802,819],[802,970],[820,843],[820,994],[823,840],[844,1012],[863,888],[866,885],[886,909],[889,906],[907,930],[910,927],[928,951],[931,948],[949,972],[952,969],[970,993],[973,990],[991,1014],[994,1011]]};
+// Puentes de hidrógeno [H del donador, O aceptor] (números de átomo), con H···O < 2,6 Å.
+var HB = {"maltosa":[[42,9]],"celobiosa":[[22,33]],"lactosa":[[22,33]],"sacarosa":[[42,8],[45,11]],"celulosa_cadena":[[21,30],[43,54],[63,34],[65,72],[85,96],[105,76],[107,114],[127,138],[147,118],[149,156]],"celulosa_laminas":[[20,182],[21,30],[43,54],[63,34],[64,226],[65,72],[85,96],[105,76],[106,268],[107,114],[127,138],[147,118],[148,310],[149,156],[191,353],[192,201],[214,225],[234,205],[235,397],[236,243],[256,267],[276,247],[277,439],[278,285],[298,309],[318,289],[319,481],[320,327],[363,372],[385,396],[405,376],[407,414],[427,438],[447,418],[449,456],[469,480],[489,460],[491,498],[533,546],[534,543],[556,567],[576,547],[577,588],[578,585],[598,609],[618,589],[619,630],[620,627],[640,651],[660,631],[661,672],[662,669],[704,717],[705,714],[727,738],[747,718],[748,759],[749,756],[769,780],[789,760],[790,801],[791,798],[811,822],[831,802],[832,843],[833,840],[875,888],[876,885],[898,909],[918,889],[919,930],[920,927],[940,951],[960,931],[961,972],[962,969],[982,993],[1002,973],[1003,1014],[1004,1011]]};
 function hbScript(clave, on) {
 	var s = 'hbonds off; set hbondsSolid false; ';
 	if (!on) return s;
@@ -71,13 +71,13 @@ var ESTILO = 'spacefill 22%; wireframe 0.15; colour cpk; font echo 16 sansserif 
 // ---------------------------------------------------------------
 var VISTA_HAWORTH = 'reset; rotate x 30;';
 var DISAC = {
-	mc: [ { id:'Mal', fich:'maltosa', nombre:'Maltosa: Glc(\u03b11\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' },
-	      { id:'Cel', fich:'celobiosa', nombre:'Celobiosa: Glc(\u03b21\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' } ],
-	ls: [ { id:'Lac', fich:'lactosa', nombre:'Lactosa: Gal(\u03b21\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' },
+	mc: [ { id:'Mal', fich:'maltosa', anim:'maltosa_apertura', nombre:'Maltosa: Glc(\u03b11\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' },
+	      { id:'Cel', fich:'celobiosa', anim:'celobiosa_apertura', nombre:'Celobiosa: Glc(\u03b21\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' } ],
+	ls: [ { id:'Lac', fich:'lactosa', anim:'lactosa_apertura', nombre:'Lactosa: Gal(\u03b21\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' },
 	      { id:'Suc', fich:'sacarosa', nombre:'Sacarosa: Glc(\u03b11\u2194\u03b22)Fru', enlace:'(resno=1 and atomName="O1") or (resno=1 and atomName="C1") or (resno=2 and atomName="C2")', red:null } ]
 };
 function disacInicio(v) {
-	return 'load ' + DIR + v.fich + '.pdb.gz; ' + ESTILO
+	return 'load ' + DIR + (v.anim || v.fich) + '.pdb.gz; anim off; frame 1.1; ' + ESTILO
 		+ ' select resno=2 and carbon; colour atoms ' + AZUL + '; select *;'
 		+ VISTA_HAWORTH + ' set rotationRadius 9.5; zoom 100; set echo txtE 4% 92%; echo "' + v.nombre + '";';
 }
@@ -88,7 +88,9 @@ function disacScript(f, v) {
 		if (enl) s += ' select ' + v.enlace + '; colour atoms ' + NARANJA + ';';
 		if (red && v.red) s += ' select ' + v.red + '; colour halos ' + MAGENTA + '; halos 45%;';
 		s += ' select *; ' + hbScript(v.fich, hb);
-		s += ' set echo txtR 4% 6%; echo "' + (red ? (v.red ? 'Extremo reductor: C1 del residuo de la derecha' : 'Sin extremo reductor') : '') + '";';
+		if (red && v.anim) s += ' set echo txtR 4% 6%; echo \"@{[\'Extremo reductor: anillo cerrado (hemiacetal)\',\'Extremo reductor: anillo cerrado (hemiacetal)\',\'Extremo reductor: el anillo se abre y se cierra\',\'Extremo reductor: el anillo se abre y se cierra\',\'Extremo reductor: el anillo se abre y se cierra\',\'Extremo reductor: el anillo se abre y se cierra\',\'Extremo reductor: el anillo se abre y se cierra\',\'Extremo reductor: el anillo se abre y se cierra\',\'Extremo reductor: anillo abierto (aldehído)\',\'Extremo reductor: anillo abierto (aldehído)\'][_currentModelNumberInFile]}\";'
+			+ ' anim off; frame 1.1; anim mode palindrome 1 1; anim fps 5; frame range 1.1 1.10; anim on;';
+		else s += ' anim off; frame 1.1; set echo txtR 4% 6%; echo \"' + (red ? 'Sin extremo reductor' : '') + '\";';
 		return s;
 }
 function disacCapas(f) { var L = DISAC[f]; for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), disacScript(f, L[i])); }
@@ -105,7 +107,7 @@ function disacReiniciar(f) {
 var CAD = [ { id:'Ami', fich:'amilosa_helice', nombre:'Amilosa (\u03b11\u21924), h\u00e9lice V', hb:null },
             { id:'CelC', fich:'celulosa_cadena', nombre:'Celulosa (\u03b21\u21924)', hb:'celulosa_cadena' } ];
 function cadInicio(v) {
-	return 'load ' + DIR + v.fich + '.pdb.gz; ' + ESTILO + ' reset; set rotationRadius 23; zoom 100; set echo txtE 4% 92%; echo "' + v.nombre + '";';
+	return 'load ' + DIR + (v.anim || v.fich) + '.pdb.gz; anim off; frame 1.1; ' + ESTILO + ' reset; set rotationRadius 23; zoom 100; set echo txtE 4% 92%; echo "' + v.nombre + '";';
 }
 function cadScript(v) {
 	var esf = document.getElementById('esf_cad').checked, res = document.getElementById('res_cad').checked,
@@ -216,9 +218,12 @@ reduce a otros compuestos.
 Las dos son dímeros de glucosa unidos por los carbonos 1 y 4, y solo difieren en la configuración del C1 que forma el enlace
 (<span class="ps-enlace">naranja</span>: C1, O puente y C4). La glucosa de la izquierda (carbonos en <span class="ps-b">azul</span>) aporta su
 carbono anomérico; la de la derecha conserva el suyo libre y es el extremo reductor. En la <b>maltosa</b> (&alpha;) los dos anillos quedan
-en ángulo, y la repetición de ese giro enrolla la amilosa en una hélice. En la <b>celobiosa</b> (&beta;) el anillo de la izquierda está
-girado unos 180&deg; respecto al de la derecha, con un puente de hidrógeno O3&ndash;H&middot;&middot;&middot;O5 entre ambos, y la
-repetición da una cadena recta: la de la celulosa.
+en ángulo, unidos por un puente de hidrógeno del OH del C2 de la glucosa izquierda al O3 de la derecha (O2&ndash;H&middot;&middot;&middot;O3), y
+la repetición de ese giro enrolla la amilosa en una hélice. En la <b>celobiosa</b> (&beta;) el anillo de la izquierda está girado unos
+180&deg; respecto al de la derecha; el puente de hidrógeno va del OH del C3 de la glucosa derecha al O5 del anillo izquierdo
+(O3&ndash;H&middot;&middot;&middot;O5), y la repetición da una cadena recta: la de la celulosa. La línea verde une el H del donador con el
+O aceptor; donador y aceptor son los de los cristales. Al marcar <b>Extremo reductor</b>, el anillo de la derecha se abre y se cierra: se rompe el enlace hemiacetal
+C1&ndash;O5, el H del OH anomérico pasa al O5 y el C1 queda como <b>aldehído</b> (C=O), el grupo que reduce a otros compuestos.
 </p>
 </div>
 
@@ -246,7 +251,9 @@ repetición da una cadena recta: la de la celulosa.
 <p>
 La <b>lactosa</b>, el azúcar de la leche, une el C1 de una &beta;-D-galactosa (izquierda) al O4 de una glucosa, que es el extremo reductor.
 En la <b>sacarosa</b> el enlace une los dos carbonos anoméricos, el C1 de la &alpha;-D-glucosa y el C2 de la &beta;-D-fructofuranosa
-(derecha): ninguno de los dos anillos puede abrirse, y la sacarosa <b>no es reductora</b>.
+(derecha): ninguno de los dos anillos puede abrirse, y la sacarosa <b>no es reductora</b>. En la lactosa, el puente de hidrógeno
+entre anillos es O3&ndash;H&middot;&middot;&middot;O5, como en la celobiosa; en la sacarosa hay dos, ambos del OH de la fructosa
+(O1 y O6) al O2 y al O5 de la glucosa.
 </p>
 </div>
 <table class="cc-resumen">
@@ -344,7 +351,7 @@ entre glucosas vecinas.
 Modelos 3D interactivos del enlace glucosídico: maltosa y celobiosa (&alpha; y &beta;), lactosa y sacarosa, una hélice de amilosa, una
 cadena y dos láminas de celulosa I&beta; y un fragmento ramificado de glucógeno. Los disacáridos, la amilosa y el glucógeno se
 construyeron con las coordenadas ideales del <a href="https://www.wwpdb.org/data/ccd">Chemical Component Dictionary</a> del PDB; las
-torsiones de los disacáridos son las de sus cristales optimizados con PM7 en openmopac.net (<a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Maltose_monohydrate__MALTOS11__Jmol.html">maltosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Cellobiose__CELLOB04__Jmol.html">celobiosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/alpha-Lactose_monohydrate__LACTOS10__Jmol.html">lactosa</a> y <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/Sucrose__SUCROS01__jmol.html">sacarosa</a>). La ramificación del glucógeno se relajó con el campo de fuerzas MMFF.
+torsiones de los disacáridos son las de sus cristales optimizados con PM7 en openmopac.net (<a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Maltose_monohydrate__MALTOS11__Jmol.html">maltosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/beta-Cellobiose__CELLOB04__Jmol.html">celobiosa</a>, <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/alpha-Lactose_monohydrate__LACTOS10__Jmol.html">lactosa</a> y <a href="https://openmopac.net/PM7_and_PM6-D3H4_accuracy/data_solids/Sucrose__SUCROS01__jmol.html">sacarosa</a>). Los OH de los puentes de hidrógeno entre anillos se orientaron como en esos cristales, y la sacarosa usa directamente las coordenadas del suyo. En la apertura del anillo, la forma abierta se optimizó con MMFF (RDKit) y los pasos intermedios son interpolados, solo ilustrativos. La ramificación del glucógeno se relajó con el campo de fuerzas MMFF.
 </p>
 </font>
 </body>

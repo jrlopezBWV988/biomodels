@@ -22,7 +22,7 @@
 .cc-concepto { margin:0 0 4px; font-size:1.45rem; color:var(--title); }
 .cc-fila { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:22px; margin:0 0 10px; max-width:1180px; }
 .cc-celda h2 { margin:0 0 6px; font-size:1.2rem; }
-.cc-visor { width:100%; height:300px; }
+.cc-visor { width:100%; height:360px; }
 .cc-controles { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:8px 0; max-width:1180px; }
 .cc-controles input[type="button"] { margin:0 !important; }
 .cc-controles label { white-space:nowrap; }
@@ -38,9 +38,11 @@ table.cc-resumen th, table.cc-resumen td { border:1px solid #9aa7b2; padding:5px
 table.cc-resumen th { background:#e8eef3; }
 .fc-anom { color:#b0258c; font-weight:bold; }
 .fc-c { color:#c06a10; font-weight:bold; }
+.fc-ax { color:#2f5fd0; font-weight:bold; }
+.fc-ec { color:#b08a00; font-weight:bold; }
 @media (max-width:900px) {
   .cc-fila { grid-template-columns:1fr; }
-  .cc-visor { height:280px; }
+  .cc-visor { height:320px; }
 }
 </style>
 <script type="text/javascript">
@@ -60,10 +62,14 @@ var NARANJA = '[230,140,40]', MAGENTA = '[176,37,140]';
 // (y hacia arriba, observador en +z), el carbono anomérico a la derecha y el O
 // del anillo al fondo. "reset" da el anillo de perfil; con "rotate x 30" se ve
 // como en la proyección de Haworth.
-var VISTA_HAWORTH = 'reset; rotate x 30;';
-var VISTA_PERFIL = 'reset;';
-var VISTA_SUPERIOR = 'reset; rotate x 90;';
-var ESTILO = 'spacefill 22%; wireframe 0.15; colour cpk; set rotationRadius 5.6; font echo 16 sansserif bold; color echo [40,40,40]; font label 14 sansserif bold; color label [40,40,40]; set labelOffset 6 6;';
+// "reset" devuelve el radio de giro calculado por JSmol, que es demasiado justo: al girar
+// con el ratón, la perspectiva acerca los átomos y se salen del visor. ESCALA fija, tras
+// cada reset, un radio común que deja margen en cualquier orientación.
+var ESCALA = ' set rotationRadius 7; zoom 100;';
+var VISTA_HAWORTH = 'reset; rotate x 30;' + ESCALA;
+var VISTA_PERFIL = 'reset;' + ESCALA;
+var VISTA_SUPERIOR = 'reset; rotate x 90;' + ESCALA;
+var ESTILO = 'spacefill 22%; wireframe 0.15; colour cpk; font echo 16 sansserif bold; color echo [40,40,40]; font label 14 sansserif bold; color label [40,40,40]; set labelOffset 6 6;';
 
 // ---------------------------------------------------------------
 // 1. Cierre del anillo. Cada .sdf tiene 12 modelos: el 1 es la cadena abierta
@@ -116,8 +122,10 @@ function cicReiniciar() {
 // 2 y 3. Anillos. ano = carbono anomérico; oano = su O.
 // ---------------------------------------------------------------
 var ANILLOS = {
-	glc: [ { id:'GlcA', fich:'alfa-D-glucopiranosa.pdb.gz', ano:'C1', oano:'O1', txt:'alfa-D-glucopiranosa' },
-	       { id:'GlcB', fich:'beta-D-glucopiranosa.pdb.gz', ano:'C1', oano:'O1', txt:'beta-D-glucopiranosa' } ],
+	glc: [ { id:'GlcA', fich:'alfa-D-glucopiranosa.pdb.gz', ano:'C1', oano:'O1', txt:'alfa-D-glucopiranosa',
+	         ax:'O1,H2,H3,H4,H5', ec:'H1,O2,O3,O4,C6' },
+	       { id:'GlcB', fich:'beta-D-glucopiranosa.pdb.gz', ano:'C1', oano:'O1', txt:'beta-D-glucopiranosa',
+	         ax:'H1,H2,H3,H4,H5', ec:'O1,O2,O3,O4,C6' } ],
 	fru: [ { id:'FruA', fich:'alfa-D-fructofuranosa.pdb.gz', ano:'C2', oano:'O2', txt:'alfa-D-fructofuranosa' },
 	       { id:'FruB', fich:'beta-D-fructofuranosa.pdb.gz', ano:'C2', oano:'O2', txt:'beta-D-fructofuranosa' } ],
 	rib: [ { id:'Rib', fich:'beta-D-ribofuranosa.pdb.gz', ano:'C1', oano:'O1', txt:'beta-D-ribofuranosa' },
@@ -130,23 +138,29 @@ function anilloInicio(v) {
 		+ VISTA_HAWORTH + ' zoom 100; set echo txtE 4% 92%; echo "' + v.txt + '";';
 }
 function filaVista(f, s) { var L = ANILLOS[f]; for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), s); }
-function capasScript(f) {
+// Átomo unido al carbono del anillo en cada posición axial (ax) o ecuatorial (ec) de la silla.
+function nombres(lista) { return 'atomName="' + lista.split(',').join('" or atomName="') + '"'; }
+function capasScript(f, v) {
 	var plano = document.getElementById('plano_' + f).checked;
 	var nums = document.getElementById('nums_' + f).checked;
-	return 'draw plano {-3.2 0 -3.2} {3.2 0 -3.2} {3.2 0 3.2} {-3.2 0 3.2}; color $plano translucent 0.65 [120,200,140]; draw plano ' + (plano ? 'on' : 'off') + ';'
+	var axec = document.getElementById('axec_' + f), s = 'select *; halos off;';
+	if (axec && axec.checked && v.ax)
+		s += ' select ' + nombres(v.ax) + '; colour halos [47,95,208]; halos 30%;'
+			+ ' select ' + nombres(v.ec) + '; colour halos [225,180,20]; halos 30%;';
+	return s + ' draw plano {-3.2 0 -3.2} {3.2 0 -3.2} {3.2 0 3.2} {-3.2 0 3.2}; color $plano translucent 0.65 [120,200,140]; draw plano ' + (plano ? 'on' : 'off') + ';'
 		+ ' select carbon; label ' + (nums ? '%a' : 'off') + '; select *;';
 }
-function filaCapas(f) { filaVista(f, capasScript(f)); }
+function filaCapas(f) { var L = ANILLOS[f]; for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), capasScript(f, L[i])); }
 function filaReiniciar(f) {
 	var L = ANILLOS[f];
-	for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), anilloInicio(L[i]) + capasScript(f));
+	for (var i = 0; i < L.length; i++) Jmol.script(A(L[i].id), anilloInicio(L[i]) + capasScript(f, L[i]));
 }
 // Cada visor se inicia cuando JSmol avisa de que está listo.
 function visorListo(app) {
 	var id = app._id, i, f;
 	for (i = 0; i < CIC.length; i++) if (CIC[i].id === id) { Jmol.script(app, cicInicio(CIC[i])); cicEstado(true); return; }
 	for (f in ANILLOS) for (i = 0; i < ANILLOS[f].length; i++)
-		if (ANILLOS[f][i].id === id) { Jmol.script(app, anilloInicio(ANILLOS[f][i]) + capasScript(f)); return; }
+		if (ANILLOS[f][i].id === id) { Jmol.script(app, anilloInicio(ANILLOS[f][i]) + capasScript(f, ANILLOS[f][i])); return; }
 }
 JmolInfo.readyFunction = visorListo;
 
@@ -228,14 +242,37 @@ abierta (<a href="https://chem.libretexts.org/Bookshelves/Organic_Chemistry/Map:
 	<input type="button" value="Desde arriba" onclick="filaVista('glc', VISTA_SUPERIOR)">
 	<label><input type="checkbox" id="plano_glc" onclick="filaCapas('glc')"> Plano medio del anillo</label>
 	<label><input type="checkbox" id="nums_glc" onclick="filaCapas('glc')"> Nombres de los carbonos</label>
+	<label><input type="checkbox" id="axec_glc" onclick="filaCapas('glc')"> Posiciones axiales y ecuatoriales</label>
 	<input type="button" value="Vista inicial" onclick="filaReiniciar('glc')">
 </div>
 <div class="cc-texto">
 <p>
-La proyección de Haworth dibuja el anillo plano y cada sustituyente <b>arriba</b> o <b>abajo</b> del plano medio del anillo (en verde).
-En la serie D, el CH<sub>2</sub>OH del C5 queda arriba; en el anómero &alpha; el OH anomérico queda abajo, en trans respecto a ese
-CH<sub>2</sub>OH, y en el &beta;, arriba, en cis. El anillo real no es plano sino una silla (vista de perfil): en la &beta;-D-glucopiranosa
-todos los OH y el CH<sub>2</sub>OH son ecuatoriales; en la &alpha;, el OH del C1 es axial.
+La proyección de Haworth dibuja el anillo plano y sitúa cada sustituyente <b>arriba</b> o <b>abajo</b> del plano medio del anillo (en verde):
+cada carbono del anillo lleva uno arriba y otro abajo. En la D-glucopiranosa, los OH del C2 y del C4 quedan abajo, el del C3 arriba y el
+CH<sub>2</sub>OH del C5, arriba (serie D). El OH anomérico queda abajo en el anómero &alpha;, en trans respecto al CH<sub>2</sub>OH, y arriba
+en el &beta;, en cis.
+</p>
+<p>
+El anillo real no es plano sino una <b>silla</b> (botón <i>De perfil</i>), y en ella las dos posiciones de cada carbono son distintas.
+La posición <span class="fc-ax">axial</span> es perpendicular al plano medio, como un eje vertical; la <span class="fc-ec">ecuatorial</span>
+sale hacia fuera, por el contorno del anillo, y solo se inclina unos 20&deg; hacia arriba o hacia abajo. Arriba/abajo indica a qué cara del
+anillo apunta un sustituyente; axial/ecuatorial, en qué dirección sale. Son dos descripciones independientes: en la silla, la posición
+axial apunta abajo en C1, C3 y C5 y arriba en C2 y C4, de modo que un sustituyente que está arriba es axial en unos carbonos y ecuatorial
+en otros. Al marcar <b>Posiciones axiales y ecuatoriales</b>, los átomos unidos en posición axial se rodean de un halo
+<span class="fc-ax">azul</span> y los ecuatoriales, de uno <span class="fc-ec">amarillo</span>.
+</p>
+<table class="cc-resumen">
+	<tr><th>Carbono</th><th>Arriba (Haworth)</th><th>Abajo (Haworth)</th></tr>
+	<tr><td>C1, anómero &alpha;</td><td>H, <span class="fc-ec">ecuatorial</span></td><td>OH, <span class="fc-ax">axial</span></td></tr>
+	<tr><td>C1, anómero &beta;</td><td>OH, <span class="fc-ec">ecuatorial</span></td><td>H, <span class="fc-ax">axial</span></td></tr>
+	<tr><td>C2</td><td>H, <span class="fc-ax">axial</span></td><td>OH, <span class="fc-ec">ecuatorial</span></td></tr>
+	<tr><td>C3</td><td>OH, <span class="fc-ec">ecuatorial</span></td><td>H, <span class="fc-ax">axial</span></td></tr>
+	<tr><td>C4</td><td>H, <span class="fc-ax">axial</span></td><td>OH, <span class="fc-ec">ecuatorial</span></td></tr>
+	<tr><td>C5</td><td>CH<sub>2</sub>OH, <span class="fc-ec">ecuatorial</span></td><td>H, <span class="fc-ax">axial</span></td></tr>
+</table>
+<p>
+Por tanto, en la &beta;-D-glucopiranosa todos los OH y el CH<sub>2</sub>OH son ecuatoriales y todos los H del anillo, axiales. La
+&alpha;-D-glucopiranosa solo difiere en el C1: su OH es axial (abajo) y su H, ecuatorial (arriba).
 </p>
 </div>
 

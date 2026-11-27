@@ -26,9 +26,10 @@
 <line x1="290" y1="140" x2="290" y2="174" stroke="#b0258c" stroke-width="2.2"/>
 <text x="290" y="190" font-size="17" text-anchor="middle" fill="#b0258c" font-weight="bold">OH</text>
 <circle cx="235" cy="98" r="11" fill="#fff"/><text x="235" y="104" font-size="17" text-anchor="middle" fill="#c00000">O</text>
-<text x="276" y="145" font-size="12" text-anchor="middle" fill="#5a6772">1</text>
-<text x="240" y="175" font-size="12" text-anchor="middle" fill="#5a6772">2</text>
-<text x="120" y="175" font-size="12" text-anchor="middle" fill="#5a6772">3</text>
-<text x="84" y="145" font-size="12" text-anchor="middle" fill="#5a6772">4</text>
-<text x="135" y="114" font-size="12" text-anchor="middle" fill="#5a6772">5</text>
+<text x="305" y="145" font-size="14" text-anchor="middle" fill="#3d4852" stroke="#fff" stroke-width="3" paint-order="stroke">1</text>
+<text x="247" y="204" font-size="14" text-anchor="middle" fill="#3d4852" stroke="#fff" stroke-width="3" paint-order="stroke">2</text>
+<text x="113" y="204" font-size="14" text-anchor="middle" fill="#3d4852" stroke="#fff" stroke-width="3" paint-order="stroke">3</text>
+<text x="55" y="145" font-size="14" text-anchor="middle" fill="#3d4852" stroke="#fff" stroke-width="3" paint-order="stroke">4</text>
+<text x="110" y="90" font-size="14" text-anchor="middle" fill="#3d4852" stroke="#fff" stroke-width="3" paint-order="stroke">5</text>
+<text x="93" y="55" font-size="14" text-anchor="end" fill="#3d4852" stroke="#fff" stroke-width="3" paint-order="stroke">6</text>
 </svg>

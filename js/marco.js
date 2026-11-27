@@ -1,6 +1,6 @@
 /* Atlas de estructuras – navegación sin marcos.
    Cada página carga este script en su <head>. El script añade:
-   - el índice lateral fijo a la izquierda (en el móvil, desplegable con el botón «Índice»);
+   - el índice lateral fijo a la izquierda (en el móvil, desplegable con el botón «Índice» de la barra superior);
    - el submenú superior en los apartados que lo tienen (glúcidos, lípidos, hemoglobina e inmunoglobulinas);
    - el resaltado de la página activa;
    - el botón de la visita guiada, junto al escudo de la UVa en todas las páginas;
@@ -233,7 +233,9 @@
     var boton = document.createElement("button");
     boton.type = "button";
     boton.className = "marco-boton";
-    boton.textContent = "Índice";
+    boton.innerHTML = ICONO_INDICE;
+    boton.title = "Índice";
+    boton.setAttribute("aria-label", "Índice");
     boton.setAttribute("aria-controls", "marco-indice");
     boton.setAttribute("aria-expanded", "false");
     boton.addEventListener("click", function () {
@@ -241,8 +243,14 @@
       boton.setAttribute("aria-expanded", abierto ? "true" : "false");
     });
 
+    // Barra superior del móvil: botón «Índice» a la izquierda; la visita guiada
+    // y el ratón se colocan después, a la derecha.
+    var barraMovil = document.createElement("div");
+    barraMovil.className = "marco-barra";
+    barraMovil.appendChild(boton);
+
     var primero = body.firstChild;
-    body.insertBefore(boton, primero);
+    body.insertBefore(barraMovil, primero);
     body.insertBefore(aside, primero);
 
     // Submenú superior
@@ -283,6 +291,11 @@
   // independiente del índice; el índice no cambia.
   // En pantallas estrechas, el botón pasa a la barra «Índice», como el del ratón.
   // ---------------------------------------------------------------
+  // Icono del índice: tres líneas horizontales
+  var ICONO_INDICE =
+    '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">' +
+    '<path d="M5 7h14M5 12h14M5 17h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
   var VISITA = location.protocol === "file:" ? "visita/index.html" : "visita/";
 
   // Icono de «reproducir», como en un reproductor de audio o vídeo

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/moderno.css?v=20261125.2">
-<script src="js/marco.js?v=20261126.1"></script>
+<link rel="stylesheet" href="css/moderno.css?v=20261127.1">
+<script src="js/marco.js?v=20261127.1"></script>
 
 <title>Enlace glucosídico, disacáridos y polisacáridos | Atlas de estructuras</title>
 <meta name="description" content="Modelos 3D interactivos del enlace glucosídico alfa y beta en maltosa, celobiosa, lactosa y sacarosa, la hélice de la amilosa, las láminas de celulosa y la ramificación del glucógeno.">
@@ -78,8 +78,15 @@ var DISAC = {
 	ls: [ { id:'Lac', fich:'lactosa', anim:'lactosa_apertura', nombre:'Lactosa: Gal(\u03b21\u21924)Glc', enlace:'(resno=1 and atomName="O4") or (resno=1 and atomName="C4") or (resno=2 and atomName="C1")', red:'resno=1 and (atomName="C1" or atomName="O1")' },
 	      { id:'Suc', fich:'sacarosa', nombre:'Sacarosa: Glc(\u03b11\u2194\u03b22)Fru', enlace:'(resno=1 and atomName="O1") or (resno=1 and atomName="C1") or (resno=2 and atomName="C2")', red:null } ]
 };
+// En la animación de apertura, JSmol deja de dibujar el enlace C1–O5 a partir del
+// fotograma 4; desde ahí el C1–O1 del extremo reductor se dibuja doble (C=O del aldehído).
+function dobleCO() {
+	var s = '';
+	for (var m = 4; m <= 10; m++) s += ' connect (model=' + m + ' and resno=1 and atomName="C1") (model=' + m + ' and resno=1 and atomName="O1") DOUBLE modify;';
+	return s + ' set showMultipleBonds true;';
+}
 function disacInicio(v) {
-	return 'load ' + DIR + (v.anim || v.fich) + '.pdb.gz; anim off; frame 1.1; ' + ESTILO
+	return 'load ' + DIR + (v.anim || v.fich) + '.pdb.gz;' + (v.anim ? dobleCO() : '') + ' anim off; frame 1.1; ' + ESTILO
 		+ ' select resno=2 and carbon; colour atoms ' + AZUL + '; select *;'
 		+ VISTA_HAWORTH + ' set rotationRadius 9.5; zoom 100; set echo txtE 4% 92%; echo "' + v.nombre + '";';
 }

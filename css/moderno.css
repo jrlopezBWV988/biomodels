@@ -366,28 +366,24 @@ html.con-marco body { padding-left: 228px !important; }
 }
 .marco-superior li { margin: 0; }
 .marco-superior a { padding: 3px 11px; }
-.marco-boton { display: none; }
+.marco-barra { display: none; }
 
 @media (max-width: 760px) {
   html.con-marco body { padding-left: 14px !important; }
-  .marco-boton {
-    display: block;
+  /* Barra superior: «Índice» a la izquierda; visita guiada y ratón a la derecha */
+  .marco-barra {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     box-sizing: border-box;
     width: 100vw;
-    max-width: none;
     margin: -16px -14px 0;
-    border-radius: 0;
-    border: 0;
+    padding: 5px 10px;
     background: var(--nav-bg);
-    color: #eef4f9;
-    text-align: left;
-    padding: 12px 16px;
-    font-size: 15px;
-    font-weight: 600;
   }
-  .marco-boton::after { content: "  ▾"; color: var(--nav-accent); }
-  .marco-boton[aria-expanded="true"]::after { content: "  ▴"; }
-  .marco-boton:hover { background: var(--nav-hover); }
+  .marco-barra .marco-boton { order: 0; }
+  .marco-barra .visita-boton { order: 1; margin-left: auto; }
+  .marco-barra .raton-boton { order: 2; }
   .marco-lateral {
     display: none;
     position: static;
@@ -416,7 +412,7 @@ html.con-marco body { padding-left: 228px !important; }
 }
 .nav-lateral .marco-cabecera img[src*="LogoUva"] { margin-bottom: 0; }
 .marco-botones { display: flex; align-items: center; gap: 8px; }
-.raton-boton, .visita-boton {
+.raton-boton, .visita-boton, .marco-boton {
   flex: none;
   width: 42px;
   height: 42px;
@@ -432,11 +428,11 @@ html.con-marco body { padding-left: 228px !important; }
   box-shadow: none;
   cursor: pointer;
 }
-.raton-boton:hover, .visita-boton:hover { background: var(--nav-hover); color: #fff; text-decoration: none; }
+.raton-boton:hover, .visita-boton:hover, .marco-boton:hover { background: var(--nav-hover); color: #fff; text-decoration: none; }
 .visita-boton { box-sizing: border-box; }
 .visita-boton[aria-current="page"] { background: var(--nav-accent); border-color: var(--nav-accent); color: var(--nav-bg); }
 .marco-lateral .visita-boton { padding: 0; }
-.raton-boton[aria-expanded="true"] { background: var(--nav-accent); border-color: var(--nav-accent); color: var(--nav-bg); }
+.raton-boton[aria-expanded="true"], .marco-boton[aria-expanded="true"] { background: var(--nav-accent); border-color: var(--nav-accent); color: var(--nav-bg); }
 .raton-ayuda {
   position: fixed;
   left: 212px;
@@ -488,17 +484,11 @@ html.con-marco body { padding-left: 228px !important; }
   font-size: 12.5px;
 }
 @media (max-width: 760px) {
-  /* El botón se sitúa sobre el extremo derecho de la barra «Índice» */
-  .raton-boton, .visita-boton {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    z-index: 60;
+  /* Los tres botones van en la barra superior (.marco-barra), a menor tamaño */
+  .raton-boton, .visita-boton, .marco-boton {
     width: 36px;
     height: 36px;
   }
-  /* Con los dos botones, el de la visita queda a la izquierda del ratón */
-  html.con-raton .visita-boton { right: 54px; }
   .raton-ayuda {
     position: fixed;
     left: 10px;

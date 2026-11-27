@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/moderno.css?v=20261127.1">
-<script src="js/marco.js?v=20261127.1"></script>
+<script src="js/marco.js?v=20261127.2"></script>
 
-<title>Aminoácidos en 3D – modelos moleculares | Atlas de estructuras</title>
-<meta name="description" content="Modelos moleculares 3D interactivos de los 20 aminoácidos proteicos en su estado de protonación a pH fisiológico.">
+<title>Aminoácidos en 3D: propiedades de las cadenas laterales | Atlas de estructuras</title>
+<meta name="description" content="Modelos 3D interactivos y fórmulas de los 20 aminoácidos proteicos y de cuatro no proteicos, por familias, con las propiedades de su cadena lateral (tamaño, polaridad, carga, pKa, hidropatía) que explican su papel en la estructura de las proteínas.">
 <link rel="canonical" href="https://biomodels.es/aminoacidos.htm">
-<meta property="og:title" content="Aminoácidos en 3D – modelos moleculares">
-<meta property="og:description" content="Modelos moleculares 3D interactivos de los 20 aminoácidos proteicos en su estado de protonación a pH fisiológico.">
+<meta property="og:title" content="Aminoácidos en 3D: propiedades de las cadenas laterales">
+<meta property="og:description" content="Modelos 3D interactivos y fórmulas de los aminoácidos por familias, con las propiedades de su cadena lateral que explican su papel en la estructura de las proteínas.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://biomodels.es/aminoacidos.htm">
 <meta property="og:locale" content="es_ES">
@@ -18,111 +18,407 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-</HEAD>
 <script src="./jsmol/JSmol.min.js?v=20261113"></script>
 <script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
 <style>
-.controles-aa { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 14px; padding:8px 0; position:sticky; top:0; z-index:100000; background:#f5f7f9 !important; transform:translateZ(0); border-bottom:1px solid var(--line); }
-.controles-aa input[type="button"] { margin:0 !important; white-space:nowrap; }
-.controles-aa input[type="button"].activo { background:#f6c48d; border-color:#e08a2c; }
-.controles-aa label { margin-left:6px; white-space:nowrap; }
-.familia-aa { margin:0 0 12px; }
-.familia-aa h3 { font-size:1.3rem; margin:0 0 4px; color:var(--title); }
-.fila-aa { display:flex; flex-wrap:wrap; gap:5px; }
-.celda-aa { display:flex; flex-direction:column; align-items:center; width:264px; }
-.celda-aa .nombre-aa { font-size:.95em; font-weight:700; text-align:center; margin-top:2px; line-height:1.25; }
+.aa-pagina { max-width: 1080px; }
+.aa-titulo { margin: 0 0 8px; font-size: 1.6rem; color: var(--title); line-height: 1.25; }
+.aa-intro p { line-height: 1.5; margin: 0 0 10px; max-width: 78ch; }
+.aa-intro .uso { background: var(--accent-soft); border-radius: var(--radius); padding: 10px 14px; }
+.indice-familias { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 4px; padding: 0; list-style: none; }
+.indice-familias a { display: inline-block; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; font-size: .92em; }
+.indice-familias a::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--fam); margin-right: 6px; position: relative; top: 1px; }
+.familia { margin: 22px 0 0; padding: 14px 16px 16px; background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--fam); border-radius: var(--radius); box-shadow: var(--shadow); scroll-margin-top: 12px; }
+.familia h2 { margin: 0 0 6px; font-size: 1.3rem; color: var(--title); }
+.familia-texto { margin: 0 0 12px; line-height: 1.5; }
+.familia-cuerpo { display: grid; grid-template-columns: minmax(260px, 400px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.columna-visor { min-width: 0; }
+.etiqueta-menu { display: block; font-size: .85em; color: var(--muted); margin: 0 0 3px; }
+.menu-aa { width: 100%; font-size: 1rem; padding: 6px 8px; margin: 0 0 8px; border-radius: 8px; border: 1px solid var(--line); background: #fff; }
+.visor-aa { width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: aliceblue; }
+.controles-visor { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 0; }
+.controles-visor .grupo-botones { display: inline-flex; gap: 0; }
+.controles-visor .grupo-botones input:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.controles-visor .grupo-botones input:last-child { border-top-left-radius: 0; border-bottom-left-radius: 0; margin-left: -1px !important; }
+.controles-visor input[type="button"] { margin: 0 !important; font-size: .88em; padding: 5px 9px; white-space: nowrap; }
+.controles-visor input[type="button"].activo { background: #f6c48d; border-color: #e08a2c; }
+.aviso-visor { min-height: 1.2em; margin: 6px 0 0; font-size: .85em; color: var(--muted); }
+.ficha { min-width: 0; }
+.caja-formula { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 6px; display: flex; justify-content: center; }
+.caja-formula img { width: 100%; max-width: 300px; height: auto; display: block; }
+.ficha h3 { margin: 12px 0 6px; font-size: 1.2rem; color: var(--title); }
+.ficha h3 .codigo { font-weight: 400; color: var(--muted); font-size: .85em; margin-left: 6px; }
+.datos { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.dato { background: var(--surface-soft); border-radius: 6px; padding: 3px 8px; font-size: .9em; }
+.hidropatia { margin: 0 0 10px; font-size: .85em; }
+.hidropatia.sin-escala { color: var(--muted); }
+.hp-cab { display: flex; justify-content: space-between; margin: 0 0 3px; }
+.hp-pista { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #2b7bba 0%, #e9eef2 50%, #d9822b 100%); }
+.hp-marca { position: absolute; top: -4px; width: 4px; height: 18px; margin-left: -2px; background: var(--ink); border-radius: 2px; }
+.hp-ejes { display: flex; justify-content: space-between; color: var(--muted); font-size: .9em; margin-top: 2px; }
+.texto-ficha { line-height: 1.5; margin: 0; }
+.aa-pie { margin: 26px 0 0; font-size: .9em; color: var(--muted); line-height: 1.45; }
+.aa-pie h2 { font-size: 1.05rem; color: var(--title); margin: 0 0 6px; }
+.aa-pie ol { padding-left: 20px; margin: 0; }
+.aa-pie li { margin: 0 0 4px; }
+@media (max-width: 820px) {
+  .familia-cuerpo { grid-template-columns: minmax(0, 1fr); }
+  /* En el móvil el visor no ocupa todo el ancho: queda margen para desplazar la página con el dedo */
+  .visor-aa { width: 86%; margin: 0 auto; }
+  .caja-formula img { max-width: 260px; }
+}
+@media (max-width: 640px) {
+  .familia { padding: 12px 10px 14px; border-left-width: 5px; }
+  .aa-titulo { font-size: 1.35rem; }
+  .controles-visor { justify-content: center; }
+}
 </style>
-<body>
-<h1 class="solo-lectores">Aminoácidos en 3D – modelos moleculares</h1>
-<div class="controles-aa">
-	<input type="button" value="Esferas y varillas" onclick="estiloAA('select *; spacefill 25%; isosurface off')">
-	<input type="button" value="Esferas y varillas (superficie transparente)" onclick="estiloAA('select *; spacefill 25%; isosurface ignore(solvent) molecular; color isosurface translucent')">
-	<input type="button" id="botonCA" value="C&alpha; en naranja" onclick="alternarCA()">
-	<input type="button" value="Vista inicial" onclick="vistaInicialAA()">
-	<label><input type="checkbox" id="giroAA" onclick="todosAA(this.checked ? 'set spinX 0; set spinY 20; spin on' : 'spin off')"> Rotaci&oacute;n</label>
-</div>
 <script>
-	// Cada entrada: [archivo .mol, etiqueta, n.º de átomo del Calfa, orientación (eje y ángulo), centro].
-	// La orientación coloca N a la izquierda, el carboxilato a la derecha y la cadena lateral hacia arriba.
+	var AA = {"Glicina":{"n":"Glicina","c":"Gly · G","mr":75,"pk":null,"kd":-0.4,"q":"0","t":"La cadena lateral es un solo átomo de hidrógeno: es el aminoácido más pequeño y el único sin carbono quiral. Sin una cadena lateral que choque con el resto de la molécula, la glicina admite giros que no permite ningún otro aminoácido; por eso da flexibilidad y aparece en giros cerrados y bucles, y desestabiliza la hélice α. Su tamaño permite empaquetamientos muy compactos: en el <a href=\"proteinas/colageno.htm\">colágeno</a> ocupa una de cada tres posiciones, en el centro de la triple hélice, donde no cabe otra cadena lateral.","o":"{-0.1626 -0.4999 -0.8507} 122.89","cen":"{-1.055 -2.798 2.525}","r":[6],"p":[]},"Alanina":{"n":"Alanina","c":"Ala · A","mr":89,"pk":null,"kd":1.8,"q":"0","t":"Cadena lateral metilo: pequeña, apolar y sin grupos reactivos. No restringe la conformación y es uno de los aminoácidos que más favorecen la <a href=\"proteinas/helicealfa.htm\">hélice α</a>. Su contribución hidrofóbica es modesta, así que aparece tanto en el interior como en la superficie de las proteínas.","o":"{0.9773 0.1442 -0.1554} 150.11","cen":"{-1.326 -3.278 -0.519}","r":[3,7,8,9],"p":[]},"Valina":{"n":"Valina","c":"Val · V","mr":117,"pk":null,"kd":4.2,"q":"0","t":"Cadena isopropilo, ramificada en el carbono β, el primero de la cadena lateral. Es muy hidrofóbica y tiende a quedar enterrada en el núcleo de la proteína o en los segmentos transmembrana. La ramificación junto al esqueleto limita los giros posibles y favorece la <a href=\"proteinas/hojabeta.htm\">hoja β</a> frente a la hélice α.","o":"{0.8960 0.3202 -0.3075} 171.87","cen":"{0.146 -3.056 0.570}","r":[3,4,5,9,10,11,12,13,14,15],"p":[]},"Leucina":{"n":"Leucina","c":"Leu · L","mr":131,"pk":null,"kd":3.8,"q":"0","t":"Cadena isobutilo, ramificada en el carbono γ. Es hidrofóbica y es el aminoácido más abundante en las proteínas. Como la ramificación está más lejos del esqueleto, encaja bien en la hélice α. Sus cadenas forman superficies hidrofóbicas de empaquetamiento, como en las <b>cremalleras de leucina</b>, donde dos hélices se asocian por leucinas situadas cada siete residuos.","o":"{-0.9095 -0.2517 0.3308} 177.80","cen":"{-0.004 -2.392 0.927}","r":[3,4,5,6,10,11,12,13,14,15,16,17,18],"p":[]},"Isoleucina":{"n":"Isoleucina","c":"Ile · I","mr":131,"pk":null,"kd":4.5,"q":"0","t":"Isómero de la leucina con la ramificación en el carbono β, que además es quiral: la isoleucina tiene dos carbonos asimétricos. Es el aminoácido más hidrofóbico en la escala de Kyte y Doolittle. Como la valina, se entierra en el interior de la proteína y favorece la hoja β.","o":"{0.8959 0.2084 -0.3922} 160.94","cen":"{-0.474 -2.620 0.491}","r":[3,4,5,6,7,11,12,13,14,15,16,17,18],"p":[]},"Metionina":{"n":"Metionina","c":"Met · M","mr":149,"pk":null,"kd":1.9,"q":"0","t":"Cadena lineal con un tioéter (–CH<sub>2</sub>–CH<sub>2</sub>–S–CH<sub>3</sub>). El azufre apenas forma puentes de hidrógeno, y la cadena es hidrofóbica y flexible, lo que le permite adaptarse a superficies irregulares de empaquetamiento y de unión. Es el aminoácido con el que empieza la síntesis de las proteínas (codón AUG). El azufre puede oxidarse a sulfóxido, un daño oxidativo que reparan las metionina sulfóxido reductasas.","o":"{0.8987 0.2960 -0.3237} 163.24","cen":"{-0.093 -1.851 0.280}","r":[3,4,5,6,10,11,12,13,14,15,16],"p":[]},"Prolina":{"n":"Prolina","c":"Pro · P","mr":115,"pk":null,"kd":-1.6,"q":"0","t":"Su cadena lateral se cierra sobre el propio grupo amino y forma un anillo de pirrolidina: el nitrógeno es una amina secundaria, y por eso a la prolina se le llama a veces iminoácido. El anillo fija el giro alrededor del enlace N–Cα, lo que la hace el aminoácido más rígido. Interrumpe la hélice α (salvo en su primera vuelta) y es frecuente en giros y bucles. Es abundante en el <a href=\"proteinas/colageno.htm\">colágeno</a>, donde, junto con la hidroxiprolina, estabiliza la triple hélice.","o":"{0.9145 0.2719 -0.2996} 148.23","cen":"{-0.103 -2.832 -0.594}","r":[6,7,8,9,10,11,12,13,14],"p":[]},"Fenilalanina":{"n":"Fenilalanina","c":"Phe · F","mr":165,"pk":null,"kd":2.8,"q":"0","t":"Cadena bencilo: un anillo de benceno unido al Cα por un metileno. Es voluminosa y muy hidrofóbica, y suele quedar enterrada en el núcleo de la proteína. Los anillos aromáticos se empaquetan entre sí (apilamiento π) y su nube de electrones π puede atraer cationes, como el grupo amino de la lisina (interacción catión-π). Absorbe poco a 280&nbsp;nm.","o":"{-0.9443 -0.2968 0.1425} 176.67","cen":"{0.182 -1.668 0.361}","r":[3,4,5,6,7,8,9,13,14,15,16,17,18,19],"p":[]},"Tirosina":{"n":"Tirosina","c":"Tyr · Y","mr":181,"pk":"10,07","kd":-1.3,"q":"0","t":"Como la fenilalanina, con un hidroxilo en posición para (un fenol). El –OH forma puentes de hidrógeno, por lo que la tirosina se sitúa a menudo en zonas de transición, con el anillo en parte enterrado. Con un pK<sub>R</sub> de 10,1, a pH fisiológico está protonada y sin carga. El hidroxilo es la diana de las tirosina quinasas, como <a href=\"SRC.htm\">Src</a>: su fosforilación es una señal reguladora central. Junto con el triptófano, es responsable de la absorción de las proteínas a 280&nbsp;nm.","o":"{0.9003 0.3716 -0.2267} 170.49","cen":"{0.445 -1.222 -0.072}","r":[3,4,5,6,7,8,9,10,14,15,16,17,18,19,20],"p":[10]},"Triptofano":{"n":"Triptófano","c":"Trp · W","mr":204,"pk":null,"kd":-0.9,"q":"0","t":"Cadena indol: un anillo aromático doble, el mayor de los aminoácidos. El N–H del indol dona un puente de hidrógeno, de modo que, aunque es sobre todo apolar, el triptófano es menos hidrofóbico de lo que sugiere su tamaño. En las proteínas de membrana es frecuente en la frontera entre la bicapa lipídica y el agua. Es el aminoácido menos abundante y el que más absorbe a 280&nbsp;nm, y su fluorescencia se usa para seguir el plegamiento.","o":"{0.8579 0.3337 -0.3907} 165.47","cen":"{0.601 -0.956 -0.323}","r":[3,4,5,6,7,8,9,10,11,12,16,17,18,19,20,21,22,23],"p":[6]},"Serina":{"n":"Serina","c":"Ser · S","mr":105,"pk":null,"kd":-0.8,"q":"0","t":"Cadena hidroximetilo: pequeña y polar. El –OH forma puentes de hidrógeno con el agua y con otros grupos de la proteína, por lo que la serina suele estar en la superficie. Cuando la activa el entorno del centro activo, actúa como nucleófilo, como en las serina proteasas (tripsina, quimotripsina). Es diana de las serina/treonina quinasas y lugar de O-glicosilación.","o":"{0.9210 0.2852 -0.2653} 176.10","cen":"{0.099 -3.117 0.721}","r":[3,4,8,9,10],"p":[4]},"Treonina":{"n":"Treonina","c":"Thr · T","mr":119,"pk":null,"kd":-0.7,"q":"0","t":"Un hidroxilo, como la serina, y un metilo más. Está ramificada en el carbono β, que es quiral: como la isoleucina, tiene dos carbonos asimétricos. Es polar, forma puentes de hidrógeno y, como la valina, favorece la hoja β. También se fosforila y se O-glicosila.","o":"{0.8690 0.0835 -0.4877} 146.94","cen":"{-0.941 -2.708 0.421}","r":[3,4,5,6,10,11,12,13],"p":[5]},"Cisteina":{"n":"Cisteína","c":"Cys · C","mr":121,"pk":"8,18","kd":2.5,"q":"0 (en parte −1)","t":"Cadena con un tiol (–SH), menos polar que el hidroxilo de la serina; la cisteína suele estar en parte enterrada. Su pK<sub>R</sub> (8,2 en el aminoácido libre) varía mucho en las proteínas, de modo que una fracción puede estar como tiolato (–S<sup>−</sup>), muy nucleófilo, en los centros activos. Dos cisteínas próximas pueden oxidarse y formar un <b>puente disulfuro</b> (cistina), un enlace covalente que estabiliza proteínas extracelulares como las <a href=\"proteinas/igg.htm\">inmunoglobulinas</a>. También une metales como el Zn<sup>2+</sup> y el hierro.","o":"{0.9099 0.2412 -0.3375} 158.84","cen":"{-0.249 -2.757 -0.017}","r":[3,4,8,9,10],"p":[4]},"Asparragina":{"n":"Asparragina","c":"Asn · N","mr":132,"pk":null,"kd":-3.5,"q":"0","t":"Cadena carboxamida (–CH<sub>2</sub>–CO–NH<sub>2</sub>). Es polar, sin carga, y a la vez donadora (NH<sub>2</sub>) y aceptora (C=O) de puentes de hidrógeno. Es frecuente en la superficie y en los giros. Es el lugar de <b>N-glicosilación</b> en la secuencia Asn-X-Ser/Thr. Puede desamidarse espontáneamente a aspartato, un cambio que introduce una carga negativa.","o":"{0.1185 -0.1892 -0.9748} 149.15","cen":"{0.198 -2.405 0.813}","r":[3,4,5,6,10,11,12,13],"p":[5,6]},"Glutamina":{"n":"Glutamina","c":"Gln · Q","mr":146,"pk":null,"kd":-3.5,"q":"0","t":"La amida de la asparagina con un metileno más: más larga y flexible. Polar y sin carga, es donadora y aceptora de puentes de hidrógeno y suele estar en la superficie. Las repeticiones de glutamina (poliglutamina) favorecen la agregación de proteínas, como en la enfermedad de Huntington. Las transglutaminasas unen su amida con una lisina y forman enlaces cruzados entre proteínas, como en la fibrina de la coagulación.","o":"{-0.9739 -0.2226 -0.0432} 173.90","cen":"{-0.793 -1.816 0.352}","r":[3,4,5,6,7,11,12,13,14,15,16],"p":[6,7]},"Lisina":{"n":"Lisina","c":"Lys · K","mr":146,"pk":"10,53","kd":-3.9,"q":"+1","t":"Cuatro metilenos terminados en un grupo amino ε. Con un pK<sub>R</sub> de 10,5, está protonada (–NH<sub>3</sub><sup>+</sup>) a pH fisiológico. La cadena hidrocarbonada puede quedar en parte enterrada mientras la carga del extremo queda en el agua; con ella forma puentes salinos con el aspartato y el glutamato y se une a los fosfatos del DNA. El grupo ε-amino se modifica mucho: acetilación (histonas), metilación, ubiquitinación y unión covalente de coenzimas como la biotina o el lipoato (véase el brazo lipoilo de la <a href=\"PiruvatoDH.htm\">piruvato deshidrogenasa</a>).","o":"{0.9374 0.1579 -0.3105} 179.19","cen":"{-0.459 -1.476 0.801}","r":[3,4,5,6,7,11,12,13,14,15,16,17,18,22,23,24],"p":[7]},"Arginina":{"n":"Arginina","c":"Arg · R","mr":174,"pk":"12,48","kd":-4.5,"q":"+1","t":"Cadena terminada en un grupo <b>guanidinio</b>. Con un pK<sub>R</sub> de 12,5, está siempre protonada en las proteínas. La carga positiva se reparte por resonancia entre los tres nitrógenos de un grupo plano que puede donar hasta cinco puentes de hidrógeno. Por eso la arginina une muy bien fosfatos y carboxilatos (sitios de unión de nucleótidos, DNA y RNA) y forma puentes salinos. Es la cadena más hidrofílica en la escala de Kyte y Doolittle.","o":"{0.1488 -0.0823 -0.9854} 144.26","cen":"{0.494 -0.859 0.089}","r":[3,4,5,6,7,8,9,13,14,15,16,17,18,19,20,24,25,26],"p":[6,8,9]},"Histidina":{"n":"Histidina","c":"His · H","mr":155,"pk":"6,00","kd":-3.2,"q":"0 (en parte +1)","t":"Cadena imidazol: un anillo aromático con dos nitrógenos. Su pK<sub>R</sub> (6,0 en el aminoácido libre; de media, 6,6 en las proteínas) está cerca del pH fisiológico, así que puede estar neutra o protonada según su entorno. Es la única cadena que capta y cede protones en ese intervalo, lo que la convierte en el catalizador ácido-base más frecuente en las enzimas. Sus nitrógenos coordinan metales: el hierro del hemo en la histidina proximal de la <a href=\"proteinas/MioHb.htm\">hemoglobina</a> o el Zn<sup>2+</sup> de muchas enzimas. El modelo muestra la forma neutra, mayoritaria a pH 7.","o":"{0.9212 0.2615 -0.2882} 167.05","cen":"{0.036 -1.934 0.061}","r":[3,4,5,6,7,8,12,13,14,15,16],"p":[6,8]},"Aspartato":{"n":"Aspartato (ácido aspártico)","c":"Asp · D","mr":133,"pk":"3,65","kd":-3.5,"q":"−1","t":"Cadena carboxilato (–CH<sub>2</sub>–COO<sup>−</sup>). Con un pK<sub>R</sub> de 3,7, a pH fisiológico está ionizada y tiene carga negativa. Es muy hidrofílica y aparece en la superficie y en los giros. Forma puentes salinos con la lisina, la arginina y la histidina, une cationes como el Ca<sup>2+</sup> y el Mg<sup>2+</sup> y actúa en la catálisis ácido-base, como en las aspartil proteasas. El modelo muestra la forma ionizada.","o":"{0.9507 0.1089 -0.2904} 179.91","cen":"{-0.631 -2.274 0.902}","r":[3,4,5,6,10,11],"p":[5,6]},"Glutamato":{"n":"Glutamato (ácido glutámico)","c":"Glu · E","mr":147,"pk":"4,25","kd":-3.5,"q":"−1","t":"Un metileno más que el aspartato: un carboxilato con un pK<sub>R</sub> de 4,3, ionizado a pH fisiológico. Es más largo y flexible y favorece la hélice α. Forma puentes salinos, une metales y participa en la catálisis. En las proteínas de la coagulación, la carboxilasa dependiente de la <a href=\"vitaminas.htm\">vitamina K</a> convierte algunos glutamatos en γ-carboxiglutamato, que une Ca<sup>2+</sup>.","o":"{0.8351 0.1496 -0.5294} 158.53","cen":"{-0.281 -1.871 0.676}","r":[3,4,5,6,7,11,12,13,14],"p":[6,7]},"Homocisteina":{"n":"Homocisteína","c":"Hcy","mr":135,"pk":null,"kd":null,"q":"0","t":"Homóloga de la cisteína, con un metileno más (–CH<sub>2</sub>–CH<sub>2</sub>–SH). Es un intermediario del ciclo de la metionina: se forma tras las reacciones de metilación de la S-adenosilmetionina y vuelve a metionina (con folato y vitamina B<sub>12</sub>) o se convierte en cisteína. La <a href=\"tRNASintetasas.htm\">metionil-tRNA sintetasa</a> la confunde a veces con la metionina, pero corrige el error ciclándola a homocisteína tiolactona, lo que impide que se incorpore a las proteínas. El aumento de homocisteína en sangre (hiperhomocisteinemia) se asocia a riesgo vascular.","o":"{0.9664 0.2179 -0.1362} 161.04","cen":"{-0.695 -2.161 -0.027}","r":[3,4,5,9,10,11,12,13],"p":[5]},"Homoserina":{"n":"Homoserina","c":"Hse","mr":119,"pk":null,"kd":null,"q":"0","t":"Homóloga de la serina, con un metileno más (–CH<sub>2</sub>–CH<sub>2</sub>–OH). En bacterias, hongos y plantas es el intermediario común de la síntesis de treonina y metionina a partir del aspartato; los animales no la sintetizan por esa vía y obtienen ambos aminoácidos de la dieta. También aparece en el laboratorio: el bromuro de cianógeno corta las proteínas tras cada metionina y la transforma en homoserina lactona.","o":"{0.9442 0.2272 -0.2383} 167.34","cen":"{-0.442 -2.659 0.334}","r":[3,4,5,9,10,11,12,13],"p":[5]},"Citrulina":{"n":"Citrulina","c":"Cit","mr":175,"pk":null,"kd":null,"q":"0","t":"Cadena terminada en un grupo ureido (–NH–CO–NH<sub>2</sub>), sin carga: es como una arginina en la que un nitrógeno del guanidinio se ha sustituido por un oxígeno. Es un intermediario del ciclo de la urea y se forma también, junto con el óxido nítrico, a partir de arginina por la NO sintasa. Aunque no tiene codón, aparece en las proteínas por una modificación postraduccional: las peptidilarginina deiminasas (PAD) convierten la arginina en citrulina (citrulinación). Los anticuerpos contra proteínas citrulinadas son característicos de la artritis reumatoide.","o":"{0.9623 0.2644 -0.0634} 179.58","cen":"{-0.499 -0.774 0.295}","r":[3,4,5,6,7,8,9,13,14,15,16,17,18,19,20,21],"p":[6,8,9]},"Ornitina":{"n":"Ornitina","c":"Orn","mr":132,"pk":null,"kd":null,"q":"+1","t":"Como una lisina con un metileno menos: tres metilenos y un grupo amino δ, protonado a pH fisiológico. Es un intermediario del ciclo de la urea: la ornitina transcarbamilasa la convierte en citrulina, y la arginasa la regenera al liberar urea a partir de la arginina. Es también la precursora de las poliaminas.","o":"{0.9124 0.2208 -0.3446} 168.38","cen":"{-0.247 -2.184 0.514}","r":[3,4,5,6,10,11,12,13,14,15,19,20,21],"p":[6]}};
+	var FAMILIAS_AA = [["Glicina", "Alanina", "Valina", "Leucina", "Isoleucina", "Metionina", "Prolina"], ["Fenilalanina", "Tirosina", "Triptofano"], ["Serina", "Treonina", "Cisteina", "Asparragina", "Glutamina"], ["Lisina", "Arginina", "Histidina"], ["Aspartato", "Glutamato"], ["Homocisteina", "Homoserina", "Citrulina", "Ornitina"]];
 	// Todos los visores usan el mismo radio de rotación (escala fija) para comparar tamaños.
-	var RADIO_AA = 8.5;
-	var ZOOM_AA = 120;
-	var familiasAA = [
-		["Apolares alif&aacute;ticos", [
-			["Glicina", "Glicina (Gly, G)", 2, "{0.1066 -0.0534 -0.9929} 121.3", "{-1.613 -1.818 0.118}"],
-			["Alanina", "Alanina (Ala, A)", 2, "{0.9773 0.1442 -0.1554} 150.11", "{-0.065 -1.822 -0.276}"],
-			["Valina", "Valina (Val, V)", 2, "{0.8928 0.2831 -0.3503} 158.97", "{0.292 -1.197 -0.164}"],
-			["Leucina", "Leucina (Leu, L)", 2, "{0.907 0.1834 -0.379} 161.41", "{0.125 -0.734 -0.346}"],
-			["Isoleucina", "Isoleucina (Ile, I)", 2, "{0.8911 0.1677 -0.4217} 149.7", "{-0.0 -0.812 -0.192}"],
-			["Metionina", "Metionina (Met, M)", 2, "{0.8926 0.2533 -0.3731} 148.43", "{0.128 0.076 -0.297}"],
-			["Prolina", "Prolina (Pro, P)", 2, "{0.9168 0.284 -0.2809} 153.91", "{0.783 -1.106 -0.365}"]
-		]],
-		["Apolares arom&aacute;ticos", [
-			["Fenilalanina", "Fenilalanina (Phe, F)", 2, "{0.9416 0.2565 -0.2181} 155.54", "{0.514 0.176 -0.765}"],
-			["Tirosina", "Tirosina (Tyr, Y)", 2, "{0.8885 0.3112 -0.3371} 141.99", "{0.242 0.83 -0.903}"],
-			["Triptofano", "Triptofano (Trp, W)", 2, "{0.8525 0.2924 -0.4333} 154.38", "{0.59 0.941 -0.932}"]
-		]],
-		["Polares sin carga", [
-			["Serina", "Serina (Ser, S)", 2, "{0.9196 0.2575 -0.2966} 164.85", "{0.478 -1.329 -0.059}"],
-			["Treonina", "Treonina (Thr, T)", 2, "{0.8733 0.1138 -0.4738} 153.55", "{0.25 -1.229 -0.062}"],
-			["Cisteina", "Ciste&iacute;na (Cys, C)", 2, "{0.9051 0.2065 -0.3717} 147.03", "{0.245 -0.892 -0.515}"],
-			["Asparragina", "Asparragina (Asn, N)", 2, "{0.0672 -0.3633 -0.9292} 147.21", "{-0.548 -0.509 0.458}"],
-			["Glutamina", "Glutamina (Gln, Q)", 2, "{0.9739 0.2259 0.0194} 174.23", "{0.192 -0.128 -0.004}"]
-		]],
-		["Polares con carga positiva", [
-			["Lisina", "Lisina (Lys, K)", 2, "{0.9361 0.1132 -0.3331} 163.86", "{0.167 0.071 -0.339}"],
-			["Arginina", "Arginina (Arg, R)", 2, "{0.1012 -0.2255 -0.969} 142.18", "{-0.139 1.056 -0.075}"],
-			["Histidina", "Histidina (His, H)", 2, "{0.9123 0.1941 -0.3607} 141.51", "{0.225 0.04 -0.8}"]
-		]],
-		["Polares con carga negativa", [
-			["Aspartato", "&Aacute;cido asp&aacute;rtico (Asp, D)", 2, "{0.9491 0.055 -0.3101} 159.98", "{0.117 -0.804 -0.35}"],
-			["Glutamato", "&Aacute;cido glut&aacute;mico (Glu, E)", 2, "{0.8275 0.0954 -0.5534} 148.55", "{0.047 -0.122 -0.204}"]
-		]],
-		["No prote&iacute;cos", [
-			["Homocisteina", "Homociste&iacute;na", 2, "{0.9648 0.2066 -0.1628} 149.01", "{0.179 -0.383 -0.196}"],
-			["Homoserina", "Homoserina", 2, "{0.9421 0.2021 -0.2675} 154.97", "{0.223 -0.868 -0.234}"],
-			["Citrulina", "Citrulina", 2, "{0.9615 0.2549 -0.1026} 163.32", "{0.218 1.031 -0.283}"],
-			["Ornitina", "Ornitina", 2, "{0.9084 0.1739 -0.3803} 153.64", "{0.162 -0.397 -0.334}"]
-		]]
-	];
-	var vistasAA = [];
-	var caActivo = false;
-	function vistaAA(a) {
-		return "moveto 0 " + a[3] + " " + ZOOM_AA + " 0 0 " + a[4] + " " + RADIO_AA + ";";
+	// La orientación coloca N a la izquierda, el carboxilato a la derecha y la cadena lateral hacia arriba.
+	var RADIO_AA = 7.0, ZOOM_AA = 100;
+	var actual = [], estado = [];
+	for (var i = 0; i < FAMILIAS_AA.length; i++) {
+		actual.push(FAMILIAS_AA[i][0]);
+		estado.push({ rep: "esferas", sup: false, r: false, pol: false, ca: false, giro: false });
 	}
-	function marcaCA() {
-		return caActivo ? "select ca; color orange; select *;" : "select *; color cpk;";
+	function bitset(l) { return l.length ? "({" + l.join(" ") + "})" : "none"; }
+	function vistaAA(a) { return "moveto 0 " + AA[a].o + " " + ZOOM_AA + " 0 0 " + AA[a].cen + " " + RADIO_AA + ";"; }
+	// Estilo según el estado de los botones del visor f
+	function scriptEstilo(f) {
+		var e = estado[f] || { rep: "esferas" };
+		var s = "select *; color cpk; halos off; " + (e.rep == "esferas" ? "spacefill 100%; wireframe 0.15; " : "spacefill 25%; wireframe 0.15; ");
+		if (e.ca) s += "select ca; color orange; ";
+		if (e.r) s += "select not cadena; color translucent 0.75; ";
+		if (e.pol) s += e.rep == "esferas" ? "select polares; color gold; " : "select polares; halos 50%; color halos gold; ";
+		s += "select *; ";
+		s += e.sup ? "isosurface s1 ignore(solvent) molecular; color isosurface translucent 0.55 [xB0C4DE]; " : "isosurface s1 delete; ";
+		return s;
 	}
-	function todosAA(cmd) {
-		for (var i = 0; i < nAA; i++) Jmol.script(window["jmolApplet" + i], cmd);
+	function scriptCarga(a, f) {
+		var d = AA[a];
+		return "load ./pdb/aminoacidos/" + a + ".mol; background aliceblue; set antialiasDisplay true; " +
+			"define ca atomno=2; define cadena " + bitset(d.r) + "; define polares " + bitset(d.p) + "; " +
+			vistaAA(a) + " " + scriptEstilo(f) + (f != null && estado[f].giro ? "set spinX 0; set spinY 20; spin on;" : "");
 	}
-	function estiloAA(cmd) { todosAA(cmd + "; " + marcaCA()); }
-	function alternarCA() {
-		caActivo = !caActivo;
-		document.getElementById("botonCA").className = caActivo ? "activo" : "";
-		todosAA(marcaCA());
+	function visor(f) { return window["jmolApplet" + f]; }
+	function aviso(f) {
+		var e = estado[f], a = actual[f], t = "";
+		if (e.pol && !AA[a].p.length) t = "La cadena lateral de " + AA[a].n.replace(/ \(.*\)/, "").toLowerCase() + " no tiene grupos polares.";
+		else if (e.pol) t = "En dorado, los átomos de la cadena lateral que forman puentes de hidrógeno o llevan la carga.";
+		else if (e.r) t = "Se atenúa todo salvo la cadena lateral (R).";
+		document.getElementById("aviso" + f).textContent = t;
 	}
-	function vistaInicialAA() {
-		document.getElementById("giroAA").checked = false;
-		for (var i = 0; i < vistasAA.length; i++) Jmol.script(window["jmolApplet" + i], vistasAA[i] + " " + marcaCA());
+	function marcarBotones(f) {
+		var e = estado[f], bs = document.querySelectorAll("#controles" + f + " input[data-op]");
+		for (var i = 0; i < bs.length; i++) {
+			var op = bs[i].getAttribute("data-op");
+			var on = op == "esferas" ? e.rep == "esferas" : op == "varillas" ? e.rep == "varillas" : e[op];
+			bs[i].className = on ? "activo" : "";
+		}
+	}
+	function opcion(f, op) {
+		var e = estado[f];
+		if (op == "esferas" || op == "varillas") e.rep = op;
+		else e[op] = !e[op];
+		if (op == "giro") Jmol.script(visor(f), e.giro ? "set spinX 0; set spinY 20; spin on" : "spin off");
+		else Jmol.script(visor(f), scriptEstilo(f));
+		marcarBotones(f); aviso(f);
+	}
+	function vistaInicial(f) {
+		var e = estado[f];
+		e.rep = "esferas"; e.giro = e.sup = e.r = e.pol = e.ca = false;
+		Jmol.script(visor(f), "spin off; " + vistaAA(actual[f]) + " " + scriptEstilo(f));
+		marcarBotones(f); aviso(f);
+	}
+	function numero(x) { return (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(1).replace(".", ","); }
+	function cargarAA(f, a) {
+		var d = AA[a];
+		actual[f] = a;
+		Jmol.script(visor(f), scriptCarga(a, f));
+		var img = document.getElementById("formula" + f);
+		img.src = "images/aminoacidos/" + a + ".svg";
+		img.alt = "Fórmula de " + d.n;
+		document.getElementById("nombre" + f).innerHTML = d.n + ' <span class="codigo">' + d.c + "</span>";
+		document.getElementById("datos" + f).innerHTML =
+			'<span class="dato"><b>M<sub>r</sub></b> ' + d.mr + "</span> " +
+			'<span class="dato"><b>pK<sub>R</sub></b> ' + (d.pk || "—") + "</span> " +
+			'<span class="dato"><b>Carga de R a pH 7</b> ' + d.q + "</span>";
+		document.getElementById("barra" + f).innerHTML = d.kd == null ?
+			'<div class="hidropatia sin-escala">Sin valor en la escala de hidropatía, que solo incluye los 20 aminoácidos proteicos.</div>' :
+			'<div class="hidropatia"><div class="hp-cab"><span>Hidropatía (Kyte-Doolittle)</span><b class="hp-valor">' + numero(d.kd) + "</b></div>" +
+			'<div class="hp-pista"><span class="hp-marca" style="left:' + ((d.kd + 4.5) / 9 * 100).toFixed(1) + '%"></span></div>' +
+			'<div class="hp-ejes"><span>−4,5 hidrofílico</span><span>0</span><span>hidrofóbico +4,5</span></div></div>';
+		document.getElementById("texto" + f).innerHTML = d.t;
+		aviso(f);
 	}
 	jmolInitialize("./jsmol/js");
 	jmolSetParameter("UseCommandThread", "true");
-	var nAA = 0;
-	for (var f = 0; f < familiasAA.length; f++) {
-		jmolHtml('<div class="familia-aa"><h3>' + familiasAA[f][0] + '</h3><div class="fila-aa">');
-		var lista = familiasAA[f][1];
-		for (var k = 0; k < lista.length; k++) {
-			var a = lista[k];
-			vistasAA.push("spin off; select *; spacefill 100%; isosurface off; " + vistaAA(a));
-			jmolHtml('<div class="celda-aa">');
-			jmolApplet(264, "load ./pdb/aminoacidos/" + a[0] + ".mol; background aliceblue; select *; spacefill 100%; define ca atomno=" + a[2] + "; " + vistaAA(a), String(nAA));
-			jmolHtml('<div class="nombre-aa">' + a[1] + '</div></div>');
-			nAA++;
-		}
-		jmolHtml('</div></div>');
-	}
 </script>
-<p>Todos los modelos se presentan en su estado de protonaci&oacute;n a pH fisiol&oacute;gico, a la misma escala y con la misma orientaci&oacute;n del esqueleto (N a la izquierda, carboxilato a la derecha, cadena lateral hacia arriba).</p>
+</HEAD>
+<body>
+<div class="aa-pagina">
+<h1 class="aa-titulo">Aminoácidos: las cadenas laterales</h1>
+<div class="aa-intro">
+<p>Los 20 aminoácidos de las proteínas comparten la misma estructura: un <b>carbono α</b> (Cα) unido a un grupo amino, a un grupo carboxilo, a un hidrógeno y a una <b>cadena lateral</b> (R). Salvo en la glicina, el Cα es quiral, y en las proteínas tiene siempre la configuración L. A pH fisiológico el grupo amino está protonado (–NH<sub>3</sub><sup>+</sup>) y el carboxilo ionizado (–COO<sup>−</sup>): el aminoácido libre es un ion dipolar, y así se muestran los modelos.</p>
+<p>Cuando los aminoácidos se unen para formar una proteína, el grupo amino y el carboxilo del Cα quedan en la cadena principal (el enlace peptídico se trata en otra página) y lo que distingue a cada residuo es su cadena lateral. Su <b>tamaño</b> y su <b>forma</b>, su <b>polaridad</b>, su <b>carga</b> y su capacidad de formar <b>puentes de hidrógeno</b> o <b>enlaces covalentes</b> deciden dónde se sitúa cada residuo y cómo se pliega la proteína: las cadenas apolares se agrupan en el interior, las polares y cargadas quedan en contacto con el agua, y algunas, como la glicina y la prolina, condicionan la forma de la propia cadena.</p>
+<p class="uso">Elige un aminoácido en el desplegable de cada familia. Todos los modelos están a la misma escala y con la misma orientación: el grupo amino a la izquierda, el carboxilato a la derecha y la cadena lateral hacia arriba. <b>Cadena lateral</b> atenúa el resto de la molécula; <b>Grupos polares</b> marca los átomos de la cadena lateral que forman puentes de hidrógeno o llevan la carga; <b>Cα</b> lo colorea de naranja. En la fórmula, la cadena lateral está sombreada con el color de su familia.</p>
+</div>
+<ul class="indice-familias">
+	<li><a href="#alifaticos" style="--fam:#2211FF">Apolares alifáticos</a></li>
+	<li><a href="#aromaticos" style="--fam:#8C5CE6">Apolares aromáticos</a></li>
+	<li><a href="#polares" style="--fam:#F6999A">Polares sin carga</a></li>
+	<li><a href="#positivos" style="--fam:#FF2009">Carga positiva</a></li>
+	<li><a href="#negativos" style="--fam:#FE7200">Carga negativa</a></li>
+	<li><a href="#noproteicos" style="--fam:#8a8a8a">No proteicos</a></li>
+</ul>
+
+<section class="familia" id="alifaticos" style="--fam:#2211FF">
+<h2>Apolares alifáticos</h2>
+<p class="familia-texto">Cadenas laterales hidrocarbonadas (en la metionina, con un tioéter) que ni tienen carga ni forman puentes de hidrógeno. En el agua tienden a agruparse por el <b>efecto hidrofóbico</b>, y por eso se concentran en el interior de las proteínas solubles, donde forman el núcleo que estabiliza el plegamiento (véase <a href="proteinas/hidrofobicidad.htm">Hidrofobicidad</a>), y en los segmentos que atraviesan las membranas. La glicina y la prolina son casos especiales: importan menos por su hidrofobicidad que por cómo condicionan la conformación de la cadena.</p>
+<div class="familia-cuerpo">
+	<div class="columna-visor">
+		<label class="etiqueta-menu" for="menu0">Aminoácido</label>
+		<select id="menu0" class="menu-aa" onchange="cargarAA(0, this.value)">
+		<option value="Glicina" selected>Glicina (Gly, G)</option>
+		<option value="Alanina">Alanina (Ala, A)</option>
+		<option value="Valina">Valina (Val, V)</option>
+		<option value="Leucina">Leucina (Leu, L)</option>
+		<option value="Isoleucina">Isoleucina (Ile, I)</option>
+		<option value="Metionina">Metionina (Met, M)</option>
+		<option value="Prolina">Prolina (Pro, P)</option>
+		</select>
+		<div class="visor-aa" id="visor0">
+		<script>jmolApplet(["100%","100%"], scriptCarga("Glicina", 0), "0");</script>
+		</div>
+		<div class="controles-visor" id="controles0">
+			<span class="grupo-botones" role="group" aria-label="Representación">
+				<input type="button" value="Esferas" data-op="esferas" class="activo" onclick="opcion(0, 'esferas')">
+				<input type="button" value="Varillas" data-op="varillas" onclick="opcion(0, 'varillas')">
+			</span>
+			<input type="button" value="Superficie" data-op="sup" onclick="opcion(0, 'sup')">
+			<input type="button" value="Cadena lateral" data-op="r" onclick="opcion(0, 'r')">
+			<input type="button" value="Grupos polares" data-op="pol" onclick="opcion(0, 'pol')">
+			<input type="button" value="C&alpha;" data-op="ca" onclick="opcion(0, 'ca')">
+			<input type="button" value="Giro" data-op="giro" onclick="opcion(0, 'giro')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial(0)">
+		</div>
+		<p class="aviso-visor" id="aviso0" aria-live="polite"></p>
+	</div>
+	<div class="ficha" id="ficha0">
+		<div class="caja-formula"><img id="formula0" src="images/aminoacidos/Glicina.svg" alt="Fórmula de Glicina" width="340" height="360"></div>
+		<h3 id="nombre0">Glicina <span class="codigo">Gly · G</span></h3>
+		<div class="datos" id="datos0"><span class="dato"><b>M<sub>r</sub></b> 75</span> <span class="dato"><b>pK<sub>R</sub></b> —</span> <span class="dato"><b>Carga de R a pH 7</b> 0</span></div>
+		<div id="barra0"><div class="hidropatia"><div class="hp-cab"><span>Hidropatía (Kyte-Doolittle)</span><b class="hp-valor">−0,4</b></div><div class="hp-pista"><span class="hp-marca" style="left:45.6%"></span></div><div class="hp-ejes"><span>−4,5 hidrofílico</span><span>0</span><span>hidrofóbico +4,5</span></div></div></div>
+		<p class="texto-ficha" id="texto0">La cadena lateral es un solo átomo de hidrógeno: es el aminoácido más pequeño y el único sin carbono quiral. Sin una cadena lateral que choque con el resto de la molécula, la glicina admite giros que no permite ningún otro aminoácido; por eso da flexibilidad y aparece en giros cerrados y bucles, y desestabiliza la hélice α. Su tamaño permite empaquetamientos muy compactos: en el <a href="proteinas/colageno.htm">colágeno</a> ocupa una de cada tres posiciones, en el centro de la triple hélice, donde no cabe otra cadena lateral.</p>
+	</div>
+</div>
+</section>
+
+<section class="familia" id="aromaticos" style="--fam:#8C5CE6">
+<h2>Apolares aromáticos</h2>
+<p class="familia-texto">Anillos aromáticos planos y voluminosos. La fenilalanina es apolar; la tirosina (–OH) y el triptófano (N–H del indol) tienen además un grupo que forma puentes de hidrógeno, lo que los sitúa a menudo en zonas de transición entre el interior y la superficie de la proteína. Los anillos se apilan entre sí y atraen cationes (interacción catión-π). La tirosina y el triptófano absorben luz ultravioleta a 280&nbsp;nm, lo que permite medir la concentración de proteínas.</p>
+<div class="familia-cuerpo">
+	<div class="columna-visor">
+		<label class="etiqueta-menu" for="menu1">Aminoácido</label>
+		<select id="menu1" class="menu-aa" onchange="cargarAA(1, this.value)">
+		<option value="Fenilalanina" selected>Fenilalanina (Phe, F)</option>
+		<option value="Tirosina">Tirosina (Tyr, Y)</option>
+		<option value="Triptofano">Triptófano (Trp, W)</option>
+		</select>
+		<div class="visor-aa" id="visor1">
+		<script>jmolApplet(["100%","100%"], scriptCarga("Fenilalanina", 1), "1");</script>
+		</div>
+		<div class="controles-visor" id="controles1">
+			<span class="grupo-botones" role="group" aria-label="Representación">
+				<input type="button" value="Esferas" data-op="esferas" class="activo" onclick="opcion(1, 'esferas')">
+				<input type="button" value="Varillas" data-op="varillas" onclick="opcion(1, 'varillas')">
+			</span>
+			<input type="button" value="Superficie" data-op="sup" onclick="opcion(1, 'sup')">
+			<input type="button" value="Cadena lateral" data-op="r" onclick="opcion(1, 'r')">
+			<input type="button" value="Grupos polares" data-op="pol" onclick="opcion(1, 'pol')">
+			<input type="button" value="C&alpha;" data-op="ca" onclick="opcion(1, 'ca')">
+			<input type="button" value="Giro" data-op="giro" onclick="opcion(1, 'giro')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial(1)">
+		</div>
+		<p class="aviso-visor" id="aviso1" aria-live="polite"></p>
+	</div>
+	<div class="ficha" id="ficha1">
+		<div class="caja-formula"><img id="formula1" src="images/aminoacidos/Fenilalanina.svg" alt="Fórmula de Fenilalanina" width="340" height="360"></div>
+		<h3 id="nombre1">Fenilalanina <span class="codigo">Phe · F</span></h3>
+		<div class="datos" id="datos1"><span class="dato"><b>M<sub>r</sub></b> 165</span> <span class="dato"><b>pK<sub>R</sub></b> —</span> <span class="dato"><b>Carga de R a pH 7</b> 0</span></div>
+		<div id="barra1"><div class="hidropatia"><div class="hp-cab"><span>Hidropatía (Kyte-Doolittle)</span><b class="hp-valor">+2,8</b></div><div class="hp-pista"><span class="hp-marca" style="left:81.1%"></span></div><div class="hp-ejes"><span>−4,5 hidrofílico</span><span>0</span><span>hidrofóbico +4,5</span></div></div></div>
+		<p class="texto-ficha" id="texto1">Cadena bencilo: un anillo de benceno unido al Cα por un metileno. Es voluminosa y muy hidrofóbica, y suele quedar enterrada en el núcleo de la proteína. Los anillos aromáticos se empaquetan entre sí (apilamiento π) y su nube de electrones π puede atraer cationes, como el grupo amino de la lisina (interacción catión-π). Absorbe poco a 280&nbsp;nm.</p>
+	</div>
+</div>
+</section>
+
+<section class="familia" id="polares" style="--fam:#F6999A">
+<h2>Polares sin carga</h2>
+<p class="familia-texto">Tienen grupos hidroxilo, tiol o amida que forman puentes de hidrógeno con el agua y con otros grupos de la proteína, pero no tienen carga a pH fisiológico. Suelen estar en la superficie y en los centros activos. La serina y la treonina son lugares de fosforilación y de O-glicosilación, y la asparagina de N-glicosilación. La cisteína es un caso aparte: es poco polar y forma puentes disulfuro.</p>
+<div class="familia-cuerpo">
+	<div class="columna-visor">
+		<label class="etiqueta-menu" for="menu2">Aminoácido</label>
+		<select id="menu2" class="menu-aa" onchange="cargarAA(2, this.value)">
+		<option value="Serina" selected>Serina (Ser, S)</option>
+		<option value="Treonina">Treonina (Thr, T)</option>
+		<option value="Cisteina">Cisteína (Cys, C)</option>
+		<option value="Asparragina">Asparragina (Asn, N)</option>
+		<option value="Glutamina">Glutamina (Gln, Q)</option>
+		</select>
+		<div class="visor-aa" id="visor2">
+		<script>jmolApplet(["100%","100%"], scriptCarga("Serina", 2), "2");</script>
+		</div>
+		<div class="controles-visor" id="controles2">
+			<span class="grupo-botones" role="group" aria-label="Representación">
+				<input type="button" value="Esferas" data-op="esferas" class="activo" onclick="opcion(2, 'esferas')">
+				<input type="button" value="Varillas" data-op="varillas" onclick="opcion(2, 'varillas')">
+			</span>
+			<input type="button" value="Superficie" data-op="sup" onclick="opcion(2, 'sup')">
+			<input type="button" value="Cadena lateral" data-op="r" onclick="opcion(2, 'r')">
+			<input type="button" value="Grupos polares" data-op="pol" onclick="opcion(2, 'pol')">
+			<input type="button" value="C&alpha;" data-op="ca" onclick="opcion(2, 'ca')">
+			<input type="button" value="Giro" data-op="giro" onclick="opcion(2, 'giro')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial(2)">
+		</div>
+		<p class="aviso-visor" id="aviso2" aria-live="polite"></p>
+	</div>
+	<div class="ficha" id="ficha2">
+		<div class="caja-formula"><img id="formula2" src="images/aminoacidos/Serina.svg" alt="Fórmula de Serina" width="340" height="360"></div>
+		<h3 id="nombre2">Serina <span class="codigo">Ser · S</span></h3>
+		<div class="datos" id="datos2"><span class="dato"><b>M<sub>r</sub></b> 105</span> <span class="dato"><b>pK<sub>R</sub></b> —</span> <span class="dato"><b>Carga de R a pH 7</b> 0</span></div>
+		<div id="barra2"><div class="hidropatia"><div class="hp-cab"><span>Hidropatía (Kyte-Doolittle)</span><b class="hp-valor">−0,8</b></div><div class="hp-pista"><span class="hp-marca" style="left:41.1%"></span></div><div class="hp-ejes"><span>−4,5 hidrofílico</span><span>0</span><span>hidrofóbico +4,5</span></div></div></div>
+		<p class="texto-ficha" id="texto2">Cadena hidroximetilo: pequeña y polar. El –OH forma puentes de hidrógeno con el agua y con otros grupos de la proteína, por lo que la serina suele estar en la superficie. Cuando la activa el entorno del centro activo, actúa como nucleófilo, como en las serina proteasas (tripsina, quimotripsina). Es diana de las serina/treonina quinasas y lugar de O-glicosilación.</p>
+	</div>
+</div>
+</section>
+
+<section class="familia" id="positivos" style="--fam:#FF2009">
+<h2>Polares con carga positiva</h2>
+<p class="familia-texto">Cadenas con un grupo nitrogenado que capta un protón. La lisina y la arginina están cargadas positivamente a pH fisiológico: se sitúan en la superficie, se rodean de agua y forman <b>puentes salinos</b> con el aspartato y el glutamato (véanse los de la <a href="proteinas/TyR.htm">hemoglobina</a>) e interacciones con los fosfatos de los ácidos nucleicos. La histidina, con un pK<sub>R</sub> cercano a 6, está mayoritariamente neutra a pH 7, pero se protona con facilidad; se incluye aquí por esa capacidad.</p>
+<div class="familia-cuerpo">
+	<div class="columna-visor">
+		<label class="etiqueta-menu" for="menu3">Aminoácido</label>
+		<select id="menu3" class="menu-aa" onchange="cargarAA(3, this.value)">
+		<option value="Lisina" selected>Lisina (Lys, K)</option>
+		<option value="Arginina">Arginina (Arg, R)</option>
+		<option value="Histidina">Histidina (His, H)</option>
+		</select>
+		<div class="visor-aa" id="visor3">
+		<script>jmolApplet(["100%","100%"], scriptCarga("Lisina", 3), "3");</script>
+		</div>
+		<div class="controles-visor" id="controles3">
+			<span class="grupo-botones" role="group" aria-label="Representación">
+				<input type="button" value="Esferas" data-op="esferas" class="activo" onclick="opcion(3, 'esferas')">
+				<input type="button" value="Varillas" data-op="varillas" onclick="opcion(3, 'varillas')">
+			</span>
+			<input type="button" value="Superficie" data-op="sup" onclick="opcion(3, 'sup')">
+			<input type="button" value="Cadena lateral" data-op="r" onclick="opcion(3, 'r')">
+			<input type="button" value="Grupos polares" data-op="pol" onclick="opcion(3, 'pol')">
+			<input type="button" value="C&alpha;" data-op="ca" onclick="opcion(3, 'ca')">
+			<input type="button" value="Giro" data-op="giro" onclick="opcion(3, 'giro')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial(3)">
+		</div>
+		<p class="aviso-visor" id="aviso3" aria-live="polite"></p>
+	</div>
+	<div class="ficha" id="ficha3">
+		<div class="caja-formula"><img id="formula3" src="images/aminoacidos/Lisina.svg" alt="Fórmula de Lisina" width="340" height="360"></div>
+		<h3 id="nombre3">Lisina <span class="codigo">Lys · K</span></h3>
+		<div class="datos" id="datos3"><span class="dato"><b>M<sub>r</sub></b> 146</span> <span class="dato"><b>pK<sub>R</sub></b> 10,53</span> <span class="dato"><b>Carga de R a pH 7</b> +1</span></div>
+		<div id="barra3"><div class="hidropatia"><div class="hp-cab"><span>Hidropatía (Kyte-Doolittle)</span><b class="hp-valor">−3,9</b></div><div class="hp-pista"><span class="hp-marca" style="left:6.7%"></span></div><div class="hp-ejes"><span>−4,5 hidrofílico</span><span>0</span><span>hidrofóbico +4,5</span></div></div></div>
+		<p class="texto-ficha" id="texto3">Cuatro metilenos terminados en un grupo amino ε. Con un pK<sub>R</sub> de 10,5, está protonada (–NH<sub>3</sub><sup>+</sup>) a pH fisiológico. La cadena hidrocarbonada puede quedar en parte enterrada mientras la carga del extremo queda en el agua; con ella forma puentes salinos con el aspartato y el glutamato y se une a los fosfatos del DNA. El grupo ε-amino se modifica mucho: acetilación (histonas), metilación, ubiquitinación y unión covalente de coenzimas como la biotina o el lipoato (véase el brazo lipoilo de la <a href="PiruvatoDH.htm">piruvato deshidrogenasa</a>).</p>
+	</div>
+</div>
+</section>
+
+<section class="familia" id="negativos" style="--fam:#FE7200">
+<h2>Polares con carga negativa</h2>
+<p class="familia-texto">Cadenas con un grupo carboxilo de pK<sub>R</sub> bajo (3,7–4,3): a pH fisiológico están ionizadas como carboxilatos y tienen carga negativa, por lo que se nombran como aspartato y glutamato. Junto con las básicas, son las cadenas más hidrofílicas y se sitúan en la superficie. Forman puentes salinos con la lisina y la arginina, unen cationes metálicos (Ca<sup>2+</sup>, Mg<sup>2+</sup>) y actúan como ácidos o bases en la catálisis. Sus amidas son la asparagina y la glutamina.</p>
+<div class="familia-cuerpo">
+	<div class="columna-visor">
+		<label class="etiqueta-menu" for="menu4">Aminoácido</label>
+		<select id="menu4" class="menu-aa" onchange="cargarAA(4, this.value)">
+		<option value="Aspartato" selected>Aspartato (ácido aspártico) (Asp, D)</option>
+		<option value="Glutamato">Glutamato (ácido glutámico) (Glu, E)</option>
+		</select>
+		<div class="visor-aa" id="visor4">
+		<script>jmolApplet(["100%","100%"], scriptCarga("Aspartato", 4), "4");</script>
+		</div>
+		<div class="controles-visor" id="controles4">
+			<span class="grupo-botones" role="group" aria-label="Representación">
+				<input type="button" value="Esferas" data-op="esferas" class="activo" onclick="opcion(4, 'esferas')">
+				<input type="button" value="Varillas" data-op="varillas" onclick="opcion(4, 'varillas')">
+			</span>
+			<input type="button" value="Superficie" data-op="sup" onclick="opcion(4, 'sup')">
+			<input type="button" value="Cadena lateral" data-op="r" onclick="opcion(4, 'r')">
+			<input type="button" value="Grupos polares" data-op="pol" onclick="opcion(4, 'pol')">
+			<input type="button" value="C&alpha;" data-op="ca" onclick="opcion(4, 'ca')">
+			<input type="button" value="Giro" data-op="giro" onclick="opcion(4, 'giro')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial(4)">
+		</div>
+		<p class="aviso-visor" id="aviso4" aria-live="polite"></p>
+	</div>
+	<div class="ficha" id="ficha4">
+		<div class="caja-formula"><img id="formula4" src="images/aminoacidos/Aspartato.svg" alt="Fórmula de Aspartato (ácido aspártico)" width="340" height="360"></div>
+		<h3 id="nombre4">Aspartato (ácido aspártico) <span class="codigo">Asp · D</span></h3>
+		<div class="datos" id="datos4"><span class="dato"><b>M<sub>r</sub></b> 133</span> <span class="dato"><b>pK<sub>R</sub></b> 3,65</span> <span class="dato"><b>Carga de R a pH 7</b> −1</span></div>
+		<div id="barra4"><div class="hidropatia"><div class="hp-cab"><span>Hidropatía (Kyte-Doolittle)</span><b class="hp-valor">−3,5</b></div><div class="hp-pista"><span class="hp-marca" style="left:11.1%"></span></div><div class="hp-ejes"><span>−4,5 hidrofílico</span><span>0</span><span>hidrofóbico +4,5</span></div></div></div>
+		<p class="texto-ficha" id="texto4">Cadena carboxilato (–CH<sub>2</sub>–COO<sup>−</sup>). Con un pK<sub>R</sub> de 3,7, a pH fisiológico está ionizada y tiene carga negativa. Es muy hidrofílica y aparece en la superficie y en los giros. Forma puentes salinos con la lisina, la arginina y la histidina, une cationes como el Ca<sup>2+</sup> y el Mg<sup>2+</sup> y actúa en la catálisis ácido-base, como en las aspartil proteasas. El modelo muestra la forma ionizada.</p>
+	</div>
+</div>
+</section>
+
+<section class="familia" id="noproteicos" style="--fam:#8a8a8a">
+<h2>No proteicos</h2>
+<p class="familia-texto">Tienen el mismo Cα con sus grupos amino y carboxilo, pero <b>no tienen codón</b>: no se incorporan a las proteínas durante la traducción. Son intermediarios metabólicos y se incluyen para comparar, porque cada uno se diferencia de un aminoácido proteico en un solo metileno o en un solo grupo.</p>
+<div class="familia-cuerpo">
+	<div class="columna-visor">
+		<label class="etiqueta-menu" for="menu5">Aminoácido</label>
+		<select id="menu5" class="menu-aa" onchange="cargarAA(5, this.value)">
+		<option value="Homocisteina" selected>Homocisteína (Hcy)</option>
+		<option value="Homoserina">Homoserina (Hse)</option>
+		<option value="Citrulina">Citrulina (Cit)</option>
+		<option value="Ornitina">Ornitina (Orn)</option>
+		</select>
+		<div class="visor-aa" id="visor5">
+		<script>jmolApplet(["100%","100%"], scriptCarga("Homocisteina", 5), "5");</script>
+		</div>
+		<div class="controles-visor" id="controles5">
+			<span class="grupo-botones" role="group" aria-label="Representación">
+				<input type="button" value="Esferas" data-op="esferas" class="activo" onclick="opcion(5, 'esferas')">
+				<input type="button" value="Varillas" data-op="varillas" onclick="opcion(5, 'varillas')">
+			</span>
+			<input type="button" value="Superficie" data-op="sup" onclick="opcion(5, 'sup')">
+			<input type="button" value="Cadena lateral" data-op="r" onclick="opcion(5, 'r')">
+			<input type="button" value="Grupos polares" data-op="pol" onclick="opcion(5, 'pol')">
+			<input type="button" value="C&alpha;" data-op="ca" onclick="opcion(5, 'ca')">
+			<input type="button" value="Giro" data-op="giro" onclick="opcion(5, 'giro')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial(5)">
+		</div>
+		<p class="aviso-visor" id="aviso5" aria-live="polite"></p>
+	</div>
+	<div class="ficha" id="ficha5">
+		<div class="caja-formula"><img id="formula5" src="images/aminoacidos/Homocisteina.svg" alt="Fórmula de Homocisteína" width="340" height="360"></div>
+		<h3 id="nombre5">Homocisteína <span class="codigo">Hcy</span></h3>
+		<div class="datos" id="datos5"><span class="dato"><b>M<sub>r</sub></b> 135</span> <span class="dato"><b>pK<sub>R</sub></b> —</span> <span class="dato"><b>Carga de R a pH 7</b> 0</span></div>
+		<div id="barra5"><div class="hidropatia sin-escala">Sin valor en la escala de hidropatía, que solo incluye los 20 aminoácidos proteicos.</div></div>
+		<p class="texto-ficha" id="texto5">Homóloga de la cisteína, con un metileno más (–CH<sub>2</sub>–CH<sub>2</sub>–SH). Es un intermediario del ciclo de la metionina: se forma tras las reacciones de metilación de la S-adenosilmetionina y vuelve a metionina (con folato y vitamina B<sub>12</sub>) o se convierte en cisteína. La <a href="tRNASintetasas.htm">metionil-tRNA sintetasa</a> la confunde a veces con la metionina, pero corrige el error ciclándola a homocisteína tiolactona, lo que impide que se incorpore a las proteínas. El aumento de homocisteína en sangre (hiperhomocisteinemia) se asocia a riesgo vascular.</p>
+	</div>
+</div>
+</section>
+<div class="aa-pie">
+<h2>Datos y referencias</h2>
+<p>M<sub>r</sub> y pK<sub>R</sub> de los aminoácidos libres (para los no proteicos, M<sub>r</sub> calculada a partir de su fórmula), según Nelson y Cox; el pK<sub>R</sub> de un residuo dentro de una proteína puede desplazarse según su entorno. Índice de hidropatía de Kyte y Doolittle: valores positivos, más hidrofóbico. Las fórmulas se han dibujado a partir de los mismos modelos 3D, que están en su estado de protonación a pH fisiológico.</p>
+<ol>
+	<li>Nelson DL, Cox MM. <i>Lehninger Principles of Biochemistry</i>, 7.ª ed. Nueva York: W. H. Freeman; 2017. Tabla 3-1.</li>
+	<li>Kyte J, Doolittle RF. A simple method for displaying the hydropathic character of a protein. <i>J Mol Biol</i>. 1982;157(1):105–132. <a href="https://doi.org/10.1016/0022-2836(82)90515-0" target="_blank" rel="noopener">doi:10.1016/0022-2836(82)90515-0</a></li>
+	<li>Grimsley GR, Scholtz JM, Pace CN. A summary of the measured pK values of the ionizable groups in folded proteins. <i>Protein Sci</i>. 2009;18(1):247–251. <a href="https://doi.org/10.1002/pro.19" target="_blank" rel="noopener">doi:10.1002/pro.19</a></li>
+	<li>Jakubowski H. Homocysteine thiolactone: metabolic origin and protein homocysteinylation in humans. <i>J Nutr</i>. 2000;130(2S Suppl):377S–381S. <a href="https://doi.org/10.1093/jn/130.2.377S" target="_blank" rel="noopener">doi:10.1093/jn/130.2.377S</a></li>
+	<li>Vossenaar ER, Zendman AJW, van Venrooij WJ, Pruijn GJM. PAD, a growing family of citrullinating enzymes: genes, features and involvement in disease. <i>BioEssays</i>. 2003;25(11):1106–1118. <a href="https://doi.org/10.1002/bies.10357" target="_blank" rel="noopener">doi:10.1002/bies.10357</a></li>
+</ol>
+</div>
+</div>
 </BODY>
 </HTML>

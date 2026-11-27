@@ -47,7 +47,6 @@
   var MENU = [
     { t: "Inicio", href: INICIO },
     { t: "Configuración y Conformación", href: "Configuracion-Conformacion.htm" },
-    { t: "Aminoácidos", href: "aminoacidos.htm" },
     { cat: "Glúcidos", items: [
       { t: "Monosácaridos", href: "Introglucidos.htm", sub: "glucidos" },
       { t: "Polisacáridos", href: "Polisacaridos.htm" }
@@ -55,6 +54,7 @@
     { t: "Lípidos", href: "AcidosGrasos.htm", sub: "lipidos" },
     { t: "Vitaminas y Coenzimas", href: "vitaminas.htm" },
     { cat: "Proteínas", items: [
+      { t: "Aminoácidos", href: "aminoacidos.htm" },
       { t: "Oligopéptidos", href: "oligopeptidos.htm" },
       { grupo: "Estructura Secundaria", items: [
         { t: "Hélice alfa", href: "proteinas/helicealfa.htm" },

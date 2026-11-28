@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="css/moderno.css?v=20261127.1">
 <script src="js/marco.js?v=20261127.2"></script>
 <title>Ácidos grasos saturados e insaturados | Atlas de estructuras</title>
-<meta name="description" content="Tablas de ácidos grasos saturados (nombre trivial, nombre IUPAC y C:D) e insaturados (posición y configuración de los dobles enlaces, C:D y serie ω), con animaciones de modelos de esferas en agua y fórmulas del ácido palmítico y del ácido docosahexaenoico (DHA).">
+<meta name="description" content="Tablas de ácidos grasos saturados (nombre trivial, nombre IUPAC y C:D) e insaturados (posición y configuración de los dobles enlaces, C:D y serie ω), con modelos 3D animados (JSmol) de la dinámica molecular del ácido palmítico y del ácido docosahexaenoico (DHA) que muestran cómo los dobles enlaces cis cambian la conformación de la cadena.">
 <link rel="canonical" href="https://biomodels.es/AcidosGrasos.htm">
 <meta property="og:title" content="Ácidos grasos saturados e insaturados">
 <meta property="og:description" content="Nomenclatura de los ácidos grasos saturados e insaturados: nombre trivial, IUPAC, posición de los dobles enlaces y serie ω.">
@@ -24,11 +24,17 @@
 .ag-tipos li { margin: 2px 0; }
 .ag-tipos li::before { content: "\2713"; display: inline-block; width: 1.4em; font-style: normal; font-weight: 600; }
 .ag-figuras { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 20px; margin: 0 0 16px; }
-.ag-figuras img, .ag-figuras video { display: block; height: auto; max-width: 100%; }
+.ag-figuras img { display: block; height: auto; max-width: 100%; }
 .ag-sat .ag-figuras { flex-direction: column; gap: 10px; }
-.ag-video { margin: 0; width: 250px; max-width: 100%; }
-.vid-esferas { width: 100%; mix-blend-mode: multiply; cursor: pointer; }
-.ag-video figcaption { margin-top: 4px; font-size: 12.5px; line-height: 1.35; color: #444; text-align: center; }
+.visor-bloque { margin: 0; width: 100%; max-width: 330px; }
+.visor-ag { width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #fff; border: 1px solid #dbe2e9; }
+.controles-ag { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 7px 0 0; }
+.controles-ag input[type="button"] { margin: 0 !important; font-size: .86em; padding: 5px 8px; white-space: nowrap; }
+.controles-ag input[type="button"].activo { background: #f6c48d; border-color: #e08a2c; }
+.visor-bloque figcaption { margin-top: 6px; font-size: 12.5px; line-height: 1.4; color: #444; }
+.como-se-hizo { max-width: 1000px; margin: 22px 0 0; padding-top: 10px; border-top: 1px solid var(--line, #dbe2e9); font-size: .86em; line-height: 1.45; color: #444; }
+.como-se-hizo h2 { margin: 0 0 6px; font-size: 1.05em; color: #6633CC; }
+.como-se-hizo p { margin: 0 0 7px; }
 .img-est-formula { width: 100%; }
 .img-dha-formula { width: 180px; }
 .tabla-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -39,6 +45,7 @@ table.tabla-ag { border-collapse: collapse; width: auto; margin: 0 auto; font-si
 .tabla-ag a:hover { color: #0B0080; text-decoration: underline; }
 .tabla-ag a.clave { color: #FF0000; font-weight: 700; }
 .tabla-ag .azul { color: #0645AD; }
+.tabla-ag .nw { white-space: nowrap; }
 .tabla-ag sup { font-size: .72em; line-height: 0; }
 .tabla-ins td:nth-child(3), .tabla-ins td:nth-child(4) { white-space: nowrap; text-align: center; }
 .tabla-sat td:nth-child(3) { white-space: nowrap; }
@@ -50,14 +57,97 @@ table.tabla-ag { border-collapse: collapse; width: auto; margin: 0 auto; font-si
 .f-naranja { background: #FBE5D6; }
 .f-naranja-osc { background: #F4B183; }
 .tabla-ag td[class$="-osc"] a { color: #fff; font-weight: 700; }
+@media (max-width: 960px) {
+  .ag-sat, .ag-ins { flex: 1 1 100%; max-width: 100%; }
+  .ag-ins { padding-top: 6px; }
+}
 @media (max-width: 640px) {
-  .ag-sat { padding: 14px 10px 16px; }
-  table.tabla-ag { font-size: 12px; }
+  .ag { gap: 18px; }
+  .ag-sat { padding: 14px 8px 16px; }
+  .ag h2 { font-size: 1.3em; }
+  /* En el móvil el visor no ocupa todo el ancho: queda margen para desplazar la página con el dedo */
+  .visor-bloque { max-width: 86%; }
+  .visor-bloque figcaption { font-size: 12px; }
+  .tabla-scroll { overflow-x: visible; }
+  table.tabla-ag { width: 100%; font-size: 11.5px; line-height: 1.25; }
+  .tabla-ag th, .tabla-ag td { padding: 3px 4px; }
+  .tabla-ins td:nth-child(2) { white-space: normal; }
 }
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="./jsmol/JSmol.min.js?v=20261113"></script>
+<script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
+<script>
+// Dinámica molecular del palmitato y del DHA (pdb/lipidos/). Los dos visores usan la misma escala.
+var AG = {
+	pal: { dm: "./pdb/lipidos/palmitato_dm.xyz.gz", conj: "./pdb/lipidos/palmitato_conformaciones.xyz.gz",
+		dobles: [], c1: 16, cw: 1, ox: [17, 18], nombre: "C1–C16" },
+	dha: { dm: "./pdb/lipidos/dha_dm.xyz.gz", conj: "./pdb/lipidos/dha_conformaciones.xyz.gz",
+		dobles: [[3, 4], [6, 7], [9, 10], [12, 13], [15, 16], [18, 19]], c1: 22, cw: 1, ox: [23, 24], nombre: "C1–C22" }
+};
+var RADIO_DM = 12.5, RADIO_CONJ = 12.5;
+var estadoAG = { pal: { esf: true, dist: false, conj: false, pausa: false }, dha: { esf: true, dist: false, conj: false, pausa: false } };
+var reducir = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (reducir) { estadoAG.pal.pausa = estadoAG.dha.pausa = true; }
+function enlacesAG(k) {
+	var d = AG[k], s = "connect 1.0 1.45 (atomno=" + d.c1 + ") (atomno=" + d.ox[0] + " or atomno=" + d.ox[1] + ") partialDouble modify; ";
+	var verdes = [];
+	for (var i = 0; i < d.dobles.length; i++) {
+		s += "connect 1.0 1.6 (atomno=" + d.dobles[i][0] + ") (atomno=" + d.dobles[i][1] + ") double modify; ";
+		verdes.push(d.dobles[i][0], d.dobles[i][1]);
+	}
+	s += "select *; color cpk; ";
+	if (verdes.length) s += "select atomno=" + verdes.join(" or atomno=") + "; color [x22B14C]; ";
+	return s + "select *; ";
+}
+function estiloAG(k) {
+	var e = estadoAG[k];
+	return "select *; " + (e.esf ? "spacefill 100%; wireframe 0.15; " : "spacefill 22%; wireframe 0.16; ") +
+		(e.conj ? "" : (e.dist ? "measure delete; measure (atomno=" + AG[k].cw + ") (atomno=" + AG[k].c1 + "); " : "measure delete; "));
+}
+function scriptAG(k) {
+	var e = estadoAG[k], d = AG[k];
+	var s = "set antialiasDisplay true; set measurementUnits angstroms; set defaultDistanceLabel \"%0.1VALUE %UNITS\"; " +
+		"font measures 16; color measures [x6633CC]; set measureAllModels true; ";
+	if (e.conj) {
+		return s + "load \"" + d.conj + "\"; background white; " + enlacesAG(k) + "frame all; spacefill off; wireframe 0.12; " +
+			"hide hydrogen; " +
+			"moveto 0 {0 0 1 0} 100 0 0 {0 0 0} " + RADIO_CONJ + ";";
+	}
+	return s + "load \"" + d.dm + "\"; background white; " + enlacesAG(k) + estiloAG(k) +
+		"moveto 0 {0 0 1 0} 100 0 0 {0 0 0} " + RADIO_DM + "; anim mode palindrome 0 0; anim fps 12; frame 1.1; " +
+		(e.pausa ? "anim off;" : "anim on;");
+}
+function visorAG(k) { return window["jmolApplet" + k]; }
+function marcarAG(k) {
+	var e = estadoAG[k], bs = document.querySelectorAll("#controles-" + k + " input[data-op]");
+	for (var i = 0; i < bs.length; i++) {
+		var op = bs[i].getAttribute("data-op");
+		var on = op == "esf" ? e.esf : op == "var" ? !e.esf : op == "pausa" ? e.pausa : e[op];
+		bs[i].className = on ? "activo" : "";
+		if (op == "pausa") bs[i].value = e.pausa ? "Reanudar" : "Pausa";
+		if (op == "esf" || op == "var" || op == "dist" || op == "pausa") bs[i].disabled = e.conj;
+	}
+}
+function opcionAG(k, op) {
+	var e = estadoAG[k];
+	if (op == "esf") e.esf = true;
+	else if (op == "var") e.esf = false;
+	else e[op] = !e[op];
+	if (op == "conj") Jmol.script(visorAG(k), scriptAG(k));
+	else if (op == "pausa") Jmol.script(visorAG(k), e.pausa ? "anim off" : "anim on");
+	else Jmol.script(visorAG(k), estiloAG(k));
+	marcarAG(k);
+}
+function inicialAG(k) {
+	var e = estadoAG[k]; e.esf = true; e.dist = false; e.conj = false; e.pausa = reducir;
+	Jmol.script(visorAG(k), scriptAG(k)); marcarAG(k);
+}
+jmolInitialize("./jsmol/js");
+jmolSetParameter("UseCommandThread", "true");
+</script>
 </head>
 <body>
 <h1 class="solo-lectores">Ácidos grasos saturados e insaturados</h1>
@@ -66,12 +156,19 @@ table.tabla-ag { border-collapse: collapse; width: auto; margin: 0 auto; font-si
   <section class="ag-col ag-sat" aria-labelledby="t-sat">
     <h2 id="t-sat">Saturados (sin dobles enlaces)</h2>
     <div class="ag-figuras">
-      <figure class="ag-video">
-      <video class="vid-esferas" autoplay loop muted playsinline preload="auto" tabindex="0" title="Pulse sobre la animación para detenerla o reanudarla" width="572" height="540" poster="videos/palmitato_agua.jpg" aria-label="Animación del modelo de esferas del palmitato (ácido palmítico ionizado) en agua, obtenida por dinámica molecular">
-        <source src="videos/palmitato_agua.mp4" type="video/mp4">
-        <a href="videos/palmitato_agua.mp4">Descargar el vídeo del palmitato (MP4)</a>
-      </video>
-      <figcaption>Modelo de esferas del <b>ácido palmítico</b> (C16:0) en agua, ionizado como palmitato, obtenido por dinámica molecular: la cadena saturada se mantiene casi extendida y solo se dobla ocasionalmente.</figcaption>
+      <figure class="visor-bloque">
+        <div class="visor-ag" id="visor-pal" role="img" aria-label="Modelo 3D animado de la dinámica molecular del palmitato (ácido palmítico ionizado)">
+        <script>jmolApplet(["100%","100%"], scriptAG("pal"), "pal");</script>
+        </div>
+        <div class="controles-ag" id="controles-pal">
+          <input type="button" value="Pausa" data-op="pausa" onclick="opcionAG('pal', 'pausa')">
+          <input type="button" value="Esferas" data-op="esf" class="activo" onclick="opcionAG('pal', 'esf')">
+          <input type="button" value="Varillas" data-op="var" onclick="opcionAG('pal', 'var')">
+          <input type="button" value="Distancia C1–C16" data-op="dist" onclick="opcionAG('pal', 'dist')">
+          <input type="button" value="20 conformaciones" data-op="conj" onclick="opcionAG('pal', 'conj')">
+          <input type="button" value="Vista inicial" onclick="inicialAG('pal')">
+        </div>
+        <figcaption>Dinámica molecular del <b>ácido palmítico</b> (C16:0), ionizado como palmitato. Los enlaces sencillos C–C giran y la cadena se dobla a ratos (conformaciones <i>gauche</i>), pero vuelve una y otra vez a la conformación extendida en zigzag (todo-<i>trans</i>), con los dos extremos a unos 19 Å. <b>20 conformaciones</b> superpone, lo mejor posible, 20 instantes de la simulación: las cadenas quedan en un haz estrecho y alargado.</figcaption>
       </figure>
       <img class="img-est-formula" src="images/acidosgrasos/palmitico_formula.svg" width="1498" height="257" alt="Fórmula del ácido palmítico, CH3-(CH2)14-COOH">
     </div>
@@ -113,12 +210,19 @@ table.tabla-ag { border-collapse: collapse; width: auto; margin: 0 auto; font-si
       <li>Poliinsaturados (PUFAs)</li>
     </ul>
     <div class="ag-figuras">
-      <figure class="ag-video">
-      <video class="vid-esferas" autoplay loop muted playsinline preload="auto" tabindex="0" title="Pulse sobre la animación para detenerla o reanudarla" width="530" height="540" poster="videos/dha_agua.jpg" aria-label="Animación del modelo de esferas del DHA ionizado en agua, obtenida por dinámica molecular, con los carbonos de los dobles enlaces en verde">
-        <source src="videos/dha_agua.mp4" type="video/mp4">
-        <a href="videos/dha_agua.mp4">Descargar el vídeo del DHA (MP4)</a>
-      </video>
-      <figcaption>Modelo de esferas del <b>ácido docosahexaenoico (DHA)</b> (C22:6, <i>ω</i>−3) en agua, ionizado, obtenido por dinámica molecular: los carbonos de sus seis dobles enlaces <i>cis</i> (en verde) hacen que la cadena se pliegue continuamente.</figcaption>
+      <figure class="visor-bloque">
+        <div class="visor-ag" id="visor-dha" role="img" aria-label="Modelo 3D animado de la dinámica molecular del DHA ionizado, con los carbonos de los dobles enlaces en verde">
+        <script>jmolApplet(["100%","100%"], scriptAG("dha"), "dha");</script>
+        </div>
+        <div class="controles-ag" id="controles-dha">
+          <input type="button" value="Pausa" data-op="pausa" onclick="opcionAG('dha', 'pausa')">
+          <input type="button" value="Esferas" data-op="esf" class="activo" onclick="opcionAG('dha', 'esf')">
+          <input type="button" value="Varillas" data-op="var" onclick="opcionAG('dha', 'var')">
+          <input type="button" value="Distancia C1–C22" data-op="dist" onclick="opcionAG('dha', 'dist')">
+          <input type="button" value="20 conformaciones" data-op="conj" onclick="opcionAG('dha', 'conj')">
+          <input type="button" value="Vista inicial" onclick="inicialAG('dha')">
+        </div>
+        <figcaption>Dinámica molecular del <b>ácido docosahexaenoico (DHA)</b> (C22:6, <i>ω</i>−3), ionizado; los carbonos de sus seis dobles enlaces <i>cis</i> están en verde. Los dobles enlaces no giran y cada uno introduce un codo; los enlaces sencillos de los metilenos que los separan giran con facilidad, y la cadena se pliega y se despliega sin cesar. Aunque tiene 22 carbonos, sus extremos suelen estar más cerca que los del palmitato. En <b>20 conformaciones</b>, superpuestas igual que las del palmitato, las cadenas no coinciden: cada instante tiene una forma distinta.</figcaption>
       </figure>
       <img class="img-dha-formula" src="images/acidosgrasos/dha_formula.svg" width="127" height="169" alt="Fórmula del ácido docosahexaenoico (DHA, C22:6, ω−3) con los seis dobles enlaces cis señalados en verde">
     </div>
@@ -132,36 +236,28 @@ table.tabla-ag { border-collapse: collapse; width: auto; margin: 0 auto; font-si
 <tr><td class="f-verde"><a href="https://es.wikipedia.org/wiki/%C3%81cido_oleico" target="_blank" rel="noopener" class="clave">Ácido oleico</a></td><td class="f-verde"><i>cis</i>-Δ<sup>9</sup></td><td class="f-verde">C18:1</td><td class="f-verde-osc"><a href="https://en.wikipedia.org/wiki/Omega-9_fatty_acid" target="_blank" rel="noopener"><i>ω</i>−9</a></td></tr>
 <tr><td class="f-azul"><a href="https://es.wikipedia.org/wiki/%C3%81cido_linoleico" target="_blank" rel="noopener" class="clave">Ácido linoleico</a></td><td class="f-azul"><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup></td><td class="f-azul">C18:2</td><td class="f-azul-osc"><a href="https://en.wikipedia.org/wiki/Omega-6_fatty_acid" target="_blank" rel="noopener"><i>ω</i>−6</a></td></tr>
 <tr><td class="f-azul"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_linoel%C3%A1idico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido linoeláidico</a></td><td class="f-azul"><i>trans</i>,<wbr><i>trans</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup></td><td class="f-azul">C18:2</td><td class="f-azul">ω<span class="azul">−6</span></td></tr>
-<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_alfa-linol%C3%A9nico" target="_blank" rel="noopener" class="clave">Ácido α-Linolénico</a><b> </b>(ALA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup></td><td class="f-naranja">C18:3</td><td class="f-naranja-osc"><a href="https://en.wikipedia.org/wiki/Omega-3_fatty_acid" target="_blank" rel="noopener">ω−3</a></td></tr>
-<tr><td class="f-azul"><a href="https://es.wikipedia.org/wiki/%C3%81cido_gamma-linol%C3%A9nico" target="_blank" rel="noopener">Ácido γ-Linolénico</a> (GLA)</td><td class="f-azul"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>6</sup>,<wbr>Δ<sup>9</sup>,<wbr>Δ<sup>12</sup></td><td class="f-azul">C18:3</td><td class="f-azul">ω<span class="azul">−6</span></td></tr>
-<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_estearid%C3%B3nico" target="_blank" rel="noopener">Ácido estearidónico</a> (SDA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>6</sup>,<wbr>Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup></td><td class="f-naranja">C18:4</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_alfa-linol%C3%A9nico" target="_blank" rel="noopener" class="clave">Ácido α-Linolénico</a> <span class="nw">(ALA)</span></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup></td><td class="f-naranja">C18:3</td><td class="f-naranja-osc"><a href="https://en.wikipedia.org/wiki/Omega-3_fatty_acid" target="_blank" rel="noopener">ω−3</a></td></tr>
+<tr><td class="f-azul"><a href="https://es.wikipedia.org/wiki/%C3%81cido_gamma-linol%C3%A9nico" target="_blank" rel="noopener">Ácido γ-Linolénico</a> <span class="nw">(GLA)</span></td><td class="f-azul"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>6</sup>,<wbr>Δ<sup>9</sup>,<wbr>Δ<sup>12</sup></td><td class="f-azul">C18:3</td><td class="f-azul">ω<span class="azul">−6</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_estearid%C3%B3nico" target="_blank" rel="noopener">Ácido estearidó&shy;nico</a> <span class="nw">(SDA)</span></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>6</sup>,<wbr>Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup></td><td class="f-naranja">C18:4</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
 <tr><td class="f-gris"><a href="https://es.wikipedia.org/wiki/%C3%81cido_pun%C3%ADcico" target="_blank" rel="noopener">Ácido punícico</a></td><td class="f-gris"><i>cis</i>,<wbr><i>tra</i><i>n</i><i>s</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>13</sup></td><td class="f-gris">C18:3</td><td class="f-gris">ω−5</td></tr>
 <tr><td class="f-verde"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_eicosenoico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido eicosenoico</a></td><td class="f-verde"><i>cis</i>-Δ<sup>11</sup></td><td class="f-verde">C20:1</td><td class="f-verde">ω<span class="azul">−9</span></td></tr>
 <tr><td class="f-azul"><a href="https://es.wikipedia.org/wiki/%C3%81cido_araquid%C3%B3nico" target="_blank" rel="noopener">Ácido araquidónico</a></td><td class="f-azul"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>5</sup>,<wbr>Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup></td><td class="f-azul">C20:4</td><td class="f-azul">ω<span class="azul">−6</span></td></tr>
-<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_eicosatetraenoico" target="_blank" rel="noopener">Ácido eicosatetraenoico</a> (ETA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup>,<wbr>Δ<sup>17</sup></td><td class="f-naranja">C20:4</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
-<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_eicosapentaenoico" target="_blank" rel="noopener">Ácido eicosapentaenoico</a> (EPA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>5</sup>,<wbr>Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup>,<wbr>Δ<sup>17</sup></td><td class="f-naranja">C20:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
-<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_docosapentaenoico" target="_blank" rel="noopener">Ácido docosapentaenoico</a> (DPA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>7</sup>,<wbr>Δ<sup>10</sup>,<wbr>Δ<sup>13</sup>,<wbr>Δ<sup>16</sup>,<wbr>Δ<sup>19</sup></td><td class="f-naranja">C22:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
-<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_docosahexaenoico" target="_blank" rel="noopener">Ácido docosahexaenoico</a> (DHA)</td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>4</sup>,<wbr>Δ<sup>7</sup>,<wbr>Δ<sup>10</sup>,<wbr>Δ<sup>13</sup>,<wbr>Δ<sup>16</sup>,<wbr>Δ<sup>19</sup></td><td class="f-naranja">C22:6</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_eicosatetraenoico" target="_blank" rel="noopener">Ácido eicosa&shy;tetra&shy;enoico</a> <span class="nw">(ETA)</span></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup>,<wbr>Δ<sup>17</sup></td><td class="f-naranja">C20:4</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_eicosapentaenoico" target="_blank" rel="noopener">Ácido eicosa&shy;penta&shy;enoico</a> <span class="nw">(EPA)</span></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>5</sup>,<wbr>Δ<sup>8</sup>,<wbr>Δ<sup>11</sup>,<wbr>Δ<sup>14</sup>,<wbr>Δ<sup>17</sup></td><td class="f-naranja">C20:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_docosapentaenoico" target="_blank" rel="noopener">Ácido docosa&shy;penta&shy;enoico</a> <span class="nw">(DPA)</span></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>7</sup>,<wbr>Δ<sup>10</sup>,<wbr>Δ<sup>13</sup>,<wbr>Δ<sup>16</sup>,<wbr>Δ<sup>19</sup></td><td class="f-naranja">C22:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/wiki/%C3%81cido_docosahexaenoico" target="_blank" rel="noopener">Ácido docosa&shy;hexa&shy;enoico</a> <span class="nw">(DHA)</span></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>4</sup>,<wbr>Δ<sup>7</sup>,<wbr>Δ<sup>10</sup>,<wbr>Δ<sup>13</sup>,<wbr>Δ<sup>16</sup>,<wbr>Δ<sup>19</sup></td><td class="f-naranja">C22:6</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
 <tr><td class="f-verde"><a href="https://es.wikipedia.org/wiki/%C3%81cido_nerv%C3%B3nico" target="_blank" rel="noopener">Ácido nervónico</a></td><td class="f-verde"><i>cis</i>-Δ<sup>15</sup></td><td class="f-verde">C24:1</td><td class="f-verde">ω<span class="azul">−9</span></td></tr>
-<tr><td class="f-naranja"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_tetracosapentaenoico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido tetracosapentaenoico</a></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup>,<wbr>Δ<sup>18</sup>,<wbr>Δ<sup>21</sup></td><td class="f-naranja">C24:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
+<tr><td class="f-naranja"><a href="https://es.wikipedia.org/w/index.php?title=%C3%81cido_tetracosapentaenoico&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">Ácido tetracosa&shy;penta&shy;enoico</a></td><td class="f-naranja"><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>,<wbr><i>cis</i>-Δ<sup>9</sup>,<wbr>Δ<sup>12</sup>,<wbr>Δ<sup>15</sup>,<wbr>Δ<sup>18</sup>,<wbr>Δ<sup>21</sup></td><td class="f-naranja">C24:5</td><td class="f-naranja">ω<span class="azul">−3</span></td></tr>
 </tbody>
 </table>
     </div>
   </section>
 </div>
 
-<script>
-// Pulsar (o Intro/espacio) detiene o reanuda cada animación; con «reducir movimiento» empiezan detenidas.
-document.querySelectorAll('video.vid-esferas').forEach(function (v) {
-  function alternar() { if (v.paused) { v.play(); } else { v.pause(); } }
-  v.addEventListener('click', alternar);
-  v.addEventListener('keydown', function (e) {
-    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); alternar(); }
-  });
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    v.removeAttribute('autoplay'); v.pause();
-  }
-});
-</script>
+<section class="como-se-hizo" aria-labelledby="t-como">
+  <h2 id="t-como">Cómo se han obtenido los modelos animados</h2>
+  <p>Cada molécula, ionizada como a pH 7,4, se simuló durante 1,5 ns a 37 °C (dinámica de Langevin, paso de 1 fs) con el campo de fuerzas MMFF94 y un dieléctrico dependiente de la distancia (ε = 4<i>r</i>), que atenúa las interacciones electrostáticas como lo haría el agua; no hay moléculas de agua explícitas. La animación recorre 400 ps (un fotograma por picosegundo), adelante y atrás, con el giro y el desplazamiento de la molécula entera eliminados para que solo se vean los cambios de conformación.</p>
+  <p>En la simulación completa, la distancia entre los carbonos de los extremos fue de 14,5 ± 2,1 Å en el palmitato (90 % del tiempo entre 10,7 y 17,3 Å; 18,8 Å con la cadena extendida) y de 11,8 ± 4,2 Å en el DHA (entre 5,3 y 19,2 Å). Se trata de una ilustración cualitativa de la flexibilidad de una molécula aislada, no de su comportamiento en una membrana o una micela.</p>
+</section>
 </body>
 </html>

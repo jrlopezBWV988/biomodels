@@ -3,16 +3,197 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
 <link rel="stylesheet" href="css/moderno.css?v=20261127.1">
 <script src="js/marco.js?v=20261127.2"></script>
-<title>Triacilgliceroles | Atlas de estructuras</title>
+<title>Triacilgliceroles en 3D: glicerol y tres ácidos grasos | Atlas de estructuras</title>
+<meta name="description" content="Modelos 3D interactivos y fórmulas de triacilgliceroles simples (tripalmitina, triestearina, trioleína, trilinoleína) y mixtos (POS de la manteca de cacao, OPO de la leche humana), con la numeración sn del glicerol.">
+<link rel="canonical" href="https://biomodels.es/Triacilgliceroles.htm">
+<meta property="og:title" content="Triacilgliceroles en 3D: glicerol y tres ácidos grasos">
+<meta property="og:description" content="Modelos 3D interactivos y fórmulas de triacilgliceroles simples (tripalmitina, triestearina, trioleína, trilinoleína) y mixtos (POS de la manteca de cacao, OPO de la leche humana), con la numeración sn del glicerol.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://biomodels.es/Triacilgliceroles.htm">
+<meta property="og:locale" content="es_ES">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="./jsmol/JSmol.min.js?v=20261113"></script>
+<script src="./jsmol/js/Jmol2.js?v=20261113b"></script>
+<style>
+.lp-pagina { max-width: 1080px; }
+.lp-titulo { margin: 0 0 8px; font-size: 1.6rem; color: var(--title); line-height: 1.25; }
+.lp-intro p { line-height: 1.5; margin: 0 0 10px; max-width: 80ch; }
+.lp-intro .uso { background: var(--accent-soft); border-radius: var(--radius); padding: 10px 14px; }
+.lp-caja { margin: 18px 0 0; padding: 14px 16px 16px; background: var(--surface); border: 1px solid var(--line); border-left: 6px solid #6633CC; border-radius: var(--radius); box-shadow: var(--shadow); }
+.lp-cuerpo { display: grid; grid-template-columns: minmax(260px, 420px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.columna-visor { min-width: 0; }
+.etiqueta-menu { display: block; font-size: .85em; color: var(--muted); margin: 0 0 3px; }
+.menu-lp { width: 100%; font-size: 1rem; padding: 6px 8px; margin: 0 0 8px; border-radius: 8px; border: 1px solid var(--line); background: #fff; }
+.visor-lp { width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: aliceblue; }
+.controles-visor { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 0; }
+.controles-visor .grupo-botones { display: inline-flex; gap: 0; }
+.controles-visor .grupo-botones input:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.controles-visor .grupo-botones input:last-child { border-top-left-radius: 0; border-bottom-left-radius: 0; margin-left: -1px !important; }
+.controles-visor input[type="button"] { margin: 0 !important; font-size: .88em; padding: 5px 9px; white-space: nowrap; }
+.controles-visor input[type="button"].activo { background: #f6c48d; border-color: #e08a2c; }
+.leyenda { display: flex; flex-wrap: wrap; gap: 4px 12px; min-height: 1.3em; margin: 7px 0 0; padding: 0; list-style: none; font-size: .85em; color: var(--muted); }
+.leyenda li::before { content: ""; display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--c); margin-right: 5px; position: relative; top: 1px; border: 1px solid rgba(0,0,0,.25); }
+.leyenda li.sin::before { display: none; }
+.ficha { min-width: 0; }
+.caja-formula { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 6px; display: flex; justify-content: center; align-items: center; height: 600px; box-sizing: border-box; }
+.caja-formula img { max-width: 100%; max-height: 100%; width: auto; height: auto; display: block; }
+.nota-formula { margin: 4px 0 0; font-size: .82em; color: var(--muted); line-height: 1.4; }
+.ficha h3 { margin: 12px 0 6px; font-size: 1.2rem; color: var(--title); line-height: 1.3; }
+.ficha h3 .codigo { font-weight: 400; color: var(--muted); font-size: .85em; margin-left: 6px; white-space: nowrap; }
+.datos { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.dato { background: var(--surface-soft); border-radius: 6px; padding: 3px 8px; font-size: .9em; }
+.texto-ficha { line-height: 1.5; margin: 0; }
+.lp-pie { margin: 26px 0 0; font-size: .9em; color: var(--muted); line-height: 1.45; }
+.lp-pie h2 { font-size: 1.05rem; color: var(--title); margin: 16px 0 6px; }
+.lp-pie p { margin: 0 0 7px; max-width: 95ch; }
+.lp-pie ol { padding-left: 20px; margin: 0; }
+.lp-pie li { margin: 0 0 4px; overflow-wrap: break-word; }
+@media (max-width: 820px) {
+  .lp-cuerpo { grid-template-columns: minmax(0, 1fr); }
+  /* En el móvil el visor no ocupa todo el ancho: queda margen para desplazar la página con el dedo */
+  .visor-lp { width: 86%; margin: 0 auto; }
+  .caja-formula { height: 510px; }
+}
+@media (max-width: 640px) {
+  .lp-caja { padding: 12px 10px 14px; border-left-width: 5px; }
+  .lp-titulo { font-size: 1.35rem; }
+  .controles-visor, .leyenda { justify-content: center; }
+}
+</style>
+<script>
+var LP = {"PPP":{"n":"Tripalmitina","c":"PPP · 16:0/16:0/16:0","t":"Triacilglicerol simple, con tres cadenas de palmitato (16:0), el producto principal de la síntesis de ácidos grasos. Las cadenas saturadas son rectas y se empaquetan de forma compacta, como en las grasas sólidas a temperatura ambiente.","datos":[["Tipo","simple, saturado"],["M<sub>r<\/sub>","807"],["Fórmula","C<sub>5<\/sub><sub>1<\/sub>H<sub>9<\/sub><sub>8<\/sub>O<sub>6<\/sub>"]],"et":["sn-1","sn-2","sn-3"],"etl":"Posiciones estereoespecíficas del glicerol: sn-1, sn-2 y sn-3.","nf":"En la fórmula, la cadena de sn-2 se dibuja hacia arriba para que no se cruce con las otras dos.","gli":"({18:20 88:92})","est":"({15:17 21:23 39:41})","cad":"({0:14 24:38 42:87 93:154})","db":"({})","sn":[[18,19,20]],"cen":"{0.34 -1.03 0.08}","svg":[195,668],"rot":20,"off":[[[-30,0],[30,-17],[30,0]]]},"SSS":{"n":"Triestearina","c":"SSS · 18:0/18:0/18:0","t":"Tres cadenas de estearato (18:0), dos carbonos más largas que las de la tripalmitina. Las cadenas más largas aumentan las interacciones de van der Waals entre moléculas vecinas, y por eso las grasas ricas en estearato funden a temperatura más alta.","datos":[["Tipo","simple, saturado"],["M<sub>r<\/sub>","892"],["Fórmula","C<sub>5<\/sub><sub>7<\/sub>H<sub>1<\/sub><sub>1<\/sub><sub>0<\/sub>O<sub>6<\/sub>"]],"et":["sn-1","sn-2","sn-3"],"etl":"Posiciones estereoespecíficas del glicerol: sn-1, sn-2 y sn-3.","nf":"En la fórmula, la cadena de sn-2 se dibuja hacia arriba para que no se cruce con las otras dos.","gli":"({20:22 98:102})","est":"({17:19 23:25 43:45})","cad":"({0:16 26:42 46:97 103:172})","db":"({})","sn":[[20,21,22]],"cen":"{0.00 -1.20 -0.22}","svg":[195,741],"rot":0,"off":[[[-30,0],[30,-14],[30,0]]]},"OOO":{"n":"Trioleína","c":"OOO · 18:1/18:1/18:1","t":"Tres cadenas de oleato (18:1 <i>cis<\/i>-9). Cada doble enlace <i>cis<\/i> acoda su cadena y las moléculas no se empaquetan tan bien como las saturadas: la trioleína es líquida a temperatura ambiente y es abundante en el aceite de oliva. Compárala con la triestearina, que tiene el mismo número de carbonos.","datos":[["Tipo","simple, insaturado"],["M<sub>r<\/sub>","886"],["Fórmula","C<sub>5<\/sub><sub>7<\/sub>H<sub>1<\/sub><sub>0<\/sub><sub>4<\/sub>O<sub>6<\/sub>"]],"et":["sn-1","sn-2","sn-3"],"etl":"Posiciones estereoespecíficas del glicerol: sn-1, sn-2 y sn-3.","nf":"En la fórmula, la cadena de sn-2 se dibuja hacia arriba para que no se cruce con las otras dos.","gli":"({20:22 96:100})","est":"({17:19 23:25 43:45})","cad":"({0:16 26:42 46:95 101:166})","db":"({8:9 33:34 53:54})","sn":[[20,21,22]],"cen":"{-0.60 -0.45 -0.36}","svg":[395,595],"rot":10,"off":[[[-30,0],[-30,-13],[30,0]]]},"LLL":{"n":"Trilinoleína","c":"LLL · 18:2/18:2/18:2","t":"Tres cadenas de linoleato (18:2 <i>cis<\/i>-9,12), un ácido graso ω-6 esencial. Con dos dobles enlaces por cadena, las cadenas son aún más irregulares. Abunda en los aceites de semillas ricos en ácido linoleico.","datos":[["Tipo","simple, insaturado"],["M<sub>r<\/sub>","879"],["Fórmula","C<sub>5<\/sub><sub>7<\/sub>H<sub>9<\/sub><sub>8<\/sub>O<sub>6<\/sub>"]],"et":["sn-1","sn-2","sn-3"],"etl":"Posiciones estereoespecíficas del glicerol: sn-1, sn-2 y sn-3.","nf":"En la fórmula, la cadena de sn-2 se dibuja hacia arriba para que no se cruce con las otras dos.","gli":"({20:22 94:98})","est":"({17:19 23:25 43:45})","cad":"({0:16 26:42 46:93 99:160})","db":"({5:6 8:9 33:34 36:37 53:54 56:57})","sn":[[20,21,22]],"cen":"{-0.37 -1.12 0.23}","svg":[395,595],"rot":10,"off":[[[30,0],[30,-25],[-30,0]]]},"POS":{"n":"1-Palmitoil-2-oleoil-3-estearoil-<i>sn<\/i>-glicerol","c":"POS · 16:0/18:1/18:0","t":"Triacilglicerol mixto, con un ácido graso distinto en cada posición. Como sn-1 y sn-3 llevan cadenas diferentes, el carbono 2 del glicerol es quiral. Junto con su enantiómero (SOP), que está en proporción parecida, es el triacilglicerol más abundante de la <b>manteca de cacao<\/b>, seguido del SOS y el POP: los tres tienen un ácido graso saturado en sn-1 y sn-3 y oleato en sn-2. Esta composición tan uniforme explica que la manteca de cacao funda en un intervalo estrecho, poco por debajo de la temperatura del cuerpo.","datos":[["Tipo","mixto, quiral"],["M<sub>r<\/sub>","861"],["Fórmula","C<sub>5<\/sub><sub>5<\/sub>H<sub>1<\/sub><sub>0<\/sub><sub>4<\/sub>O<sub>6<\/sub>"]],"et":["sn-1","sn-2","sn-3"],"etl":"Posiciones estereoespecíficas del glicerol: sn-1, sn-2 y sn-3.","nf":"En la fórmula, la cadena de sn-2 se dibuja hacia arriba para que no se cruce con las otras dos.","gli":"({18:20 92:96})","est":"({15:17 21:23 41:43})","cad":"({0:14 24:40 44:91 97:164})","db":"({51:52})","sn":[[18,19,20]],"cen":"{-0.41 -1.00 -0.36}","svg":[269,668],"rot":20,"off":[[[-30,0],[30,-17],[30,0]]]},"OPO":{"n":"1,3-Dioleoil-2-palmitoilglicerol","c":"OPO · 18:1/16:0/18:1","t":"El palmitato ocupa la posición central. En la leche humana, cerca del 70&nbsp;% del palmitato está esterificado en sn-2, y el oleato y el linoleato se sitúan preferentemente en sn-1 y sn-3. Las lipasas digestivas liberan los ácidos grasos de sn-1 y sn-3, de modo que el palmitato se absorbe como 2-monoacilglicerol; libre, tendería a formar jabones de calcio insolubles. Por eso algunas fórmulas infantiles incorporan grasas de este tipo.","datos":[["Tipo","mixto"],["M<sub>r<\/sub>","859"],["Fórmula","C<sub>5<\/sub><sub>5<\/sub>H<sub>1<\/sub><sub>0<\/sub><sub>2<\/sub>O<sub>6<\/sub>"]],"et":["sn-1","sn-2","sn-3"],"etl":"Posiciones estereoespecíficas del glicerol: sn-1, sn-2 y sn-3.","nf":"En la fórmula, la cadena de sn-2 se dibuja hacia arriba para que no se cruce con las otras dos.","gli":"({20:22 94:98})","est":"({17:19 23:25 43:45})","cad":"({0:16 26:42 46:93 99:162})","db":"({8:9 33:34})","sn":[[20,21,22]],"cen":"{0.20 -0.96 0.22}","svg":[321,632],"rot":155,"off":[[[30,0],[30,-12],[-30,0]]]}};
+var REGIONES = [["gli", "xA27BD0", "Glicerol"], ["est", "xE8636B", "Grupos \u00e9ster (\u2013O\u2013C=O)"], ["cad", "xF4E79A", "Cadenas hidrocarbonadas"]];
+var CARPETA = "triacilgliceroles", RADIO = 18.0;
+var actual = "PPP";
+var estado = { rep: "esferas", reg: false, db: false, sn: false, giro: false };
+function vista(k) { return "moveto 0 {0 1 0} " + LP[k].rot + " 100 0 0 " + LP[k].cen + " " + RADIO + ";"; }
+function scriptEstilo(k) {
+	var d = LP[k], e = estado;
+	var s = "select *; color cpk; label off; halos off; " + (e.rep == "esferas" ? "spacefill 100%; wireframe 0.15; " : "spacefill 25%; wireframe 0.15; ");
+	if (e.reg) for (var i = 0; i < REGIONES.length; i++) if (d[REGIONES[i][0]] != "({})") s += "select " + d[REGIONES[i][0]] + "; color [" + REGIONES[i][1] + "]; ";
+	if (e.db && d.db != "({})") s += "select " + d.db + "; color [x22B14C]; ";
+	if (e.sn) for (var j = 0; j < d.sn.length; j++) for (var m = 0; m < 3; m++)
+		s += "select ({" + d.sn[j][m] + "}); label \"" + d.et[m] + "\"; set labelOffset " + d.off[j][m][0] + " " + d.off[j][m][1] + "; ";
+	if (e.sn) { var t = []; for (var j2 = 0; j2 < d.sn.length; j2++) t = t.concat(d.sn[j2]);
+		s += "select ({" + t.join(" ") + "}); halos " + (e.rep == "esferas" ? "40%" : "90%") + "; color halos [xFFB000]; "; }
+	return s + "select none; ";
+}
+function scriptCarga(k) {
+	return "load ./pdb/lipidos/" + CARPETA + "/" + k + ".mol; background aliceblue; set antialiasDisplay true; " +
+		"set labelFront true; font label 13 sansserif bold; color labels [x111111]; background labels [xFFFFFF]; set labelOffset 0 0; " +
+		vista(k) + " " + scriptEstilo(k) + (estado.giro ? "set spinX 0; set spinY 20; spin on;" : "");
+}
+function visor() { return window["jmolAppletlp"]; }
+function leyenda() {
+	var d = LP[actual], e = estado, h = "";
+	if (e.reg) for (var i = 0; i < REGIONES.length; i++) if (d[REGIONES[i][0]] != "({})") h += '<li style="--c:#' + REGIONES[i][1].slice(1) + '">' + (d.nr && d.nr[REGIONES[i][0]] || REGIONES[i][2]) + "</li>";
+	if (e.db) h += d.db != "({})" ? '<li style="--c:#22B14C">Carbonos de los dobles enlaces</li>' : "<li class=\"sin\">Sin dobles enlaces C=C</li>";
+	if (e.sn) h += '<li class="sin">' + d.etl + "</li>";
+	document.getElementById("leyenda").innerHTML = h;
+}
+function marcarBotones() {
+	var bs = document.querySelectorAll("#controles input[data-op]");
+	for (var i = 0; i < bs.length; i++) {
+		var op = bs[i].getAttribute("data-op");
+		var on = op == "esferas" ? estado.rep == "esferas" : op == "varillas" ? estado.rep == "varillas" : estado[op];
+		bs[i].className = on ? "activo" : "";
+	}
+}
+function opcion(op) {
+	if (op == "esferas" || op == "varillas") estado.rep = op; else estado[op] = !estado[op];
+	if (op == "giro") Jmol.script(visor(), estado.giro ? "set spinX 0; set spinY 20; spin on" : "spin off");
+	else Jmol.script(visor(), scriptEstilo(actual));
+	marcarBotones(); leyenda();
+}
+function vistaInicial() {
+	estado.rep = "esferas"; estado.reg = estado.db = estado.sn = estado.giro = false;
+	Jmol.script(visor(), "spin off; " + vista(actual) + " " + scriptEstilo(actual));
+	marcarBotones(); leyenda();
+}
+function ficha(k) {
+	var d = LP[k];
+	var img = document.getElementById("formula");
+	img.src = "images/" + CARPETA + "/" + k + ".svg"; img.width = d.svg[0]; img.height = d.svg[1];
+	img.alt = "Fórmula de " + d.n.toLowerCase();
+	document.getElementById("nombre").innerHTML = d.n + ' <span class="codigo">' + d.c + "</span>";
+	var h = "";
+	for (var i = 0; i < d.datos.length; i++) h += '<span class="dato"><b>' + d.datos[i][0] + "</b> " + d.datos[i][1] + "</span> ";
+	document.getElementById("datos").innerHTML = h;
+	document.getElementById("texto").innerHTML = d.t;
+	document.getElementById("notaformula").innerHTML = d.nf || "";
+}
+function cargar(k) {
+	actual = k;
+	Jmol.script(visor(), scriptCarga(k));
+	ficha(k); leyenda();
+}
+jmolInitialize("./jsmol/js");
+jmolSetParameter("UseCommandThread", "true");
+</script>
 </head>
 <body>
-<h2 style="color:#6633CC">Triacilgliceroles</h2>
-<p>Página en preparación.</p>
+<div class="lp-pagina">
+<h1 class="lp-titulo">Triacilgliceroles: glicerol y tres ácidos grasos</h1>
+<div class="lp-intro">
+<p>Los <b>triacilgliceroles</b> (triglicéridos) son ésteres del glicerol con tres ácidos grasos. Al esterificarse los tres hidroxilos desaparecen los grupos polares del glicerol: son moléculas <b>apolares</b>, insolubles en agua, que no forman bicapas como los <a href="Fosfolipidos.htm">fosfolípidos</a>. Se almacenan en el citoplasma como <b>gotas lipídicas</b>, un núcleo de lípidos neutros rodeado por una monocapa de fosfolípidos, que en los adipocitos ocupan casi toda la célula.</p>
+<p>Son la principal reserva de energía del organismo: sus cadenas están muy reducidas, y su oxidación rinde más del doble de energía por gramo que la de los glúcidos o las proteínas. Además, por ser apolares se almacenan sin agua, mientras que el glucógeno se guarda hidratado.</p>
+<p>Los tres carbonos del glicerol se numeran de forma estereoespecífica (<b>sn</b>): con el glicerol en proyección de Fischer y el hidroxilo de C2 a la izquierda, el carbono de arriba es sn-1. Los triacilgliceroles <b>simples</b> llevan el mismo ácido graso en las tres posiciones; los naturales son casi siempre <b>mixtos</b>, y cada grasa tiene una distribución característica de ácidos grasos en cada posición. La proporción de cadenas saturadas e insaturadas decide si es sólida (grasa) o líquida (aceite) a temperatura ambiente (véase <a href="AcidosGrasos.htm">Ácidos grasos</a>).</p>
+<p class="uso">Elige un triacilglicerol en el desplegable. Los modelos están a la misma escala que los de los fosfolípidos, con el glicerol arriba y las tres cadenas hacia abajo. <b>Regiones</b> colorea el glicerol, los grupos éster y las cadenas, con los mismos colores que la fórmula; <b>Dobles enlaces</b> marca en verde los carbonos de los dobles enlaces; <b>Posiciones sn</b> rotula los carbonos del glicerol y los rodea de un halo dorado.</p>
+</div>
+<section class="lp-caja" aria-label="Visor de modelos">
+<div class="lp-cuerpo">
+	<div class="columna-visor">
+		<label class="etiqueta-menu" for="menu">Triacilglicerol</label>
+		<select id="menu" class="menu-lp" onchange="cargar(this.value)">
+		<option value="PPP" selected>Tripalmitina (PPP)</option>
+		<option value="SSS">Triestearina (SSS)</option>
+		<option value="OOO">Trioleína (OOO)</option>
+		<option value="LLL">Trilinoleína (LLL)</option>
+		<option value="POS">1-Palmitoil-2-oleoil-3-estearoil-sn-glicerol (POS)</option>
+		<option value="OPO">1,3-Dioleoil-2-palmitoilglicerol (OPO)</option>
+		</select>
+		<div class="visor-lp" id="visor">
+		<script>jmolApplet(["100%","100%"], scriptCarga("PPP"), "lp");</script>
+		</div>
+		<div class="controles-visor" id="controles">
+			<span class="grupo-botones" role="group" aria-label="Representación">
+				<input type="button" value="Esferas" data-op="esferas" class="activo" onclick="opcion('esferas')">
+				<input type="button" value="Varillas" data-op="varillas" onclick="opcion('varillas')">
+			</span>
+			<input type="button" value="Regiones" data-op="reg" onclick="opcion('reg')">
+			<input type="button" value="Dobles enlaces" data-op="db" onclick="opcion('db')">
+			<input type="button" value="Posiciones sn" data-op="sn" onclick="opcion('sn')">
+			<input type="button" value="Giro" data-op="giro" onclick="opcion('giro')">
+			<input type="button" value="Vista inicial" onclick="vistaInicial()">
+		</div>
+		<ul class="leyenda" id="leyenda" aria-live="polite"></ul>
+	</div>
+	<div class="ficha">
+		<div class="caja-formula"><img id="formula" src="images/triacilgliceroles/PPP.svg" alt="Fórmula de tripalmitina" width="195" height="668"></div>
+		<p class="nota-formula" id="notaformula">En la fórmula, la cadena de sn-2 se dibuja hacia arriba para que no se cruce con las otras dos.</p>
+		<h3 id="nombre">Tripalmitina <span class="codigo">PPP · 16:0/16:0/16:0</span></h3>
+		<div class="datos" id="datos"><span class="dato"><b>Tipo</b> simple, saturado</span> <span class="dato"><b>M<sub>r</sub></b> 807</span> <span class="dato"><b>Fórmula</b> C<sub>5</sub><sub>1</sub>H<sub>9</sub><sub>8</sub>O<sub>6</sub></span></div>
+		<p class="texto-ficha" id="texto">Triacilglicerol simple, con tres cadenas de palmitato (16:0), el producto principal de la síntesis de ácidos grasos. Las cadenas saturadas son rectas y se empaquetan de forma compacta, como en las grasas sólidas a temperatura ambiente.</p>
+	</div>
+</div>
+</section>
+<div class="lp-pie">
+<h2>Cómo se han obtenido los modelos</h2>
+<p>Cada molécula se construyó con las tres cadenas extendidas y paralelas, con el codo de cada doble enlace <i>cis</i>; los ángulos de giro del glicerol y de los ésteres se ajustaron por búsqueda aleatoria, y la energía se minimizó con el campo de fuerzas MMFF94 y un dieléctrico dependiente de la distancia. Son modelos idealizados de una conformación posible de la molécula aislada: en una gota lipídica o en un cristal de grasa, las cadenas adoptan otras disposiciones (por ejemplo, en diapasón o en silla). Las fórmulas se han dibujado a partir de los mismos modelos.</p>
+<h2>Datos y referencias</h2>
+<p>Notación: ácidos grasos en sn-1/sn-2/sn-3 (P, palmitato; S, estearato; O, oleato; L, linoleato) y número de carbonos:dobles enlaces.</p>
+<ol>
+	<li>Nelson DL, Cox MM. <i>Lehninger Principles of Biochemistry</i>, 7.ª ed. Nueva York: W. H. Freeman; 2017. Capítulo 10.</li>
+	<li>Walther TC, Farese RV Jr. Lipid droplets and cellular lipid metabolism. <i>Annu Rev Biochem</i>. 2012;81:687–714. <a href="https://doi.org/10.1146/annurev-biochem-061009-102430" target="_blank" rel="noopener">doi:10.1146/annurev-biochem-061009-102430</a></li>
+	<li>Takagi T, Ando Y. Stereospecific analysis of monounsaturated triacylglycerols in cocoa butter. <i>J Am Oil Chem Soc</i>. 1995;72(10):1203–1206. <a href="https://doi.org/10.1007/BF02540989" target="_blank" rel="noopener">doi:10.1007/BF02540989</a></li>
+	<li>Lipp M, Anklam E. Review of cocoa butter and alternative fats for use in chocolate—Part A. Compositional data. <i>Food Chem</i>. 1998;62(1):73–97. <a href="https://doi.org/10.1016/S0308-8146(97)00160-X" target="_blank" rel="noopener">doi:10.1016/S0308-8146(97)00160-X</a></li>
+	<li>Innis SM. Dietary triacylglycerol structure and its role in infant nutrition. <i>Adv Nutr</i>. 2011;2(3):275–283. <a href="https://doi.org/10.3945/an.111.000448" target="_blank" rel="noopener">doi:10.3945/an.111.000448</a></li>
+</ol>
+</div>
+</div>
 </body>
 </html>
